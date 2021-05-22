@@ -421,8 +421,8 @@ void G_DoNewGame (void)
 	{
 		gameskill = d_skill;
 	}
-	G_InitNew (d_mapname, false);
 	gameaction = ga_nothing;
+	G_InitNew (d_mapname, false);
 }
 
 //==========================================================================
@@ -824,7 +824,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(FLevelLocals, SecretExitLevel, LevelLocals_SecretE
 //==========================================================================
 static wbstartstruct_t staticWmInfo;
 
-void G_DoCompleted (void)
+void G_DoCompletedCont (bool)
 {
 	gameaction = ga_nothing;
 	
@@ -868,6 +868,22 @@ void G_DoCompleted (void)
 		
 		WI_Start (&staticWmInfo);
 	}
+}
+
+void G_DoCompleted(void)
+{
+	auto info = FindLevelInfo(nextlevel, false);
+	auto exitscene = &primaryLevel->info->exitScene;
+	if (!exitscene->isdefined())
+	{
+		if (info == nullptr || info->cluster != primaryLevel->cluster)
+		{
+			auto cluster = FindClusterInfo(primaryLevel->cluster);
+			if (cluster) exitscene = &cluster->exitScene;
+
+		}
+	}
+	if ((exitscene->transitiononly && info == nullptr) || !StartCutscene(primaryLevel->info->exitScene, 0, G_DoCompletedCont)) G_DoCompletedCont(false);
 }
 
 //==========================================================================
@@ -1072,38 +1088,62 @@ extern gamestate_t 	wipegamestate;
 void G_DoLoadLevel(const FString &nextmapname, int position, bool autosave, bool newGame)
 {
 	gamestate_t oldgs = gamestate;
+	gamestate_t oldwgs = wipegamestate;
 
-	// Here the new level needs to be allocated.
-	primaryLevel->DoLoadLevel(nextmapname, position, autosave, newGame);
-
-	// Reset the global state for the new level.
-	if (wipegamestate == GS_LEVEL)
-		wipegamestate = GS_FORCEWIPE;
-
-	if (gamestate != GS_TITLELEVEL)
+	CutsceneDef sink;
+	CutsceneDef* def = &sink;
+	auto info = FindLevelInfo(nextmapname, false);
+	if (info)
 	{
-		gamestate = GS_LEVEL;
+		def = &info->enterScene;
+		if (!def->isdefined())
+		{
+			if (info->cluster != primaryLevel->cluster)
+			{
+				auto cluster = FindClusterInfo(info->cluster);
+				if (cluster) def = &cluster->enterScene;
+			}
+		}
 	}
+	auto completion = [=](bool)
+	{
+		gamestate = oldgs;
+		wipegamestate = oldwgs;
+		// Here the new level needs to be allocated.
+		primaryLevel->DoLoadLevel(nextmapname, position, autosave, newGame);
 
-	gameaction = ga_nothing;
+		// Reset the global state for the new level.
+		if (wipegamestate == GS_LEVEL)
+			wipegamestate = GS_FORCEWIPE;
 
-	// clear cmd building stuff
-	buttonMap.ResetButtonStates();
+		if (gamestate != GS_TITLELEVEL)
+		{
+			gamestate = GS_LEVEL;
+		}
 
-	SendItemUse = nullptr;
-	SendItemDrop = nullptr;
-	mousex = mousey = 0;
-	sendpause = sendsave = sendturn180 = SendLand = false;
-	LocalViewAngle = 0;
-	LocalViewPitch = 0;
-	paused = 0;
+		gameaction = ga_nothing;
 
-	if (demoplayback || oldgs == GS_STARTUP || oldgs == GS_TITLELEVEL)
-		C_HideConsole();
+		// clear cmd building stuff
+		buttonMap.ResetButtonStates();
 
-	C_FlushDisplay();
-	P_ResetSightCounters(true);
-	I_UpdateWindowTitle();
+		SendItemUse = nullptr;
+		SendItemDrop = nullptr;
+		mousex = mousey = 0;
+		sendpause = sendsave = sendturn180 = SendLand = false;
+		LocalViewAngle = 0;
+		LocalViewPitch = 0;
+		paused = 0;
+
+		if (demoplayback || oldgs == GS_STARTUP || oldgs == GS_TITLELEVEL)
+			C_HideConsole();
+
+		C_FlushDisplay();
+		P_ResetSightCounters(true);
+		I_UpdateWindowTitle();
+	};
+
+	if ((newGame && def->transitiononly) || !StartCutscene(*def, 0, completion)) 
+		completion(false);
 }
 
 void FLevelLocals::DoLoadLevel(const FString &nextmapname, int position, bool autosave, bool newGame)

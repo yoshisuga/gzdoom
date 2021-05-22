@@ -692,6 +692,30 @@ void FMapInfoParser::ParseExitMusic(FName formap, level_info_t *info)
 //==========================================================================
 //
 //
+//
+//==========================================================================
+
+void FMapInfoParser::ParseCutscene(CutsceneDef& cdef)
+{
+	FString sound;
+	sc.MustGetStringName("{");
+	while (!sc.CheckString("}"))
+	{
+		sc.MustGetString();
+		if (sc.Compare("video")) { ParseAssign(); sc.MustGetString(); cdef.video = sc.String; cdef.function = ""; }
+		else if (sc.Compare("function")) { ParseAssign(); sc.SetCMode(false); sc.MustGetString(); sc.SetCMode(true); cdef.function = sc.String; cdef.video = ""; }
+		else if (sc.Compare("sound")) { ParseAssign(); sc.MustGetString(); cdef.soundName = sc.String; }
+		else if (sc.Compare("soundid")) { ParseAssign(); sc.MustGetNumber(); cdef.soundID = sc.Number; }
+		else if (sc.Compare("fps")) { ParseAssign();  sc.MustGetNumber();  cdef.framespersec = sc.Number; }
+		else if (sc.Compare("transitiononly")) cdef.transitiononly = true;
+		else if (sc.Compare("delete")) { cdef.function = "none"; cdef.video = ""; } // this means 'play nothing', not 'not defined'.
+		else if (sc.Compare("clear")) cdef = {};
+	}
+}
+
+//==========================================================================
+//
+//
 //==========================================================================
 
 void FMapInfoParser::ParseExitBackdrop(FName formap, level_info_t *info, bool ispic)
@@ -844,6 +868,14 @@ void FMapInfoParser::ParseCluster()
 		else if (sc.Compare("exittextislump"))
 		{
 			clusterinfo->flags |= CLUSTER_EXITTEXTINLUMP;
+		}
+		else if (sc.Compare("enterscene"))
+		{
+			ParseCutscene(clusterinfo->enterScene);
+		}
+		else if (sc.Compare("exitscene"))
+		{
+			ParseCutscene(clusterinfo->exitScene);
 		}
 		else if (!ParseCloseBrace())
 		{
@@ -1540,6 +1572,15 @@ DEFINE_MAP_OPTION(loadacs, false)
 	info->acsName = parse.sc.String;
 }
 
+DEFINE_MAP_OPTION(enterscene, false)
+{
+	parse.ParseCutscene(info->enterScene);
+}
+
+DEFINE_MAP_OPTION(exitscene, false)
+{
+	parse.ParseCutscene(info->exitScene);
+}
 
 //==========================================================================
 //

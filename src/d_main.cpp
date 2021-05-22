@@ -117,6 +117,7 @@
 #include "texturemanager.h"
 #include "hw_clock.h"
 #include "hwrenderer/scene/hw_drawinfo.h"
+#include "screenjob.h"
 
 #ifdef __unix__
 #include "i_system.h"  // for SHARE_DIR
@@ -1103,6 +1104,11 @@ void D_Display ()
 				D_PageDrawer ();
 				break;
 				
+			case GS_INTRO:
+			case GS_CUTSCENE:
+				ScreenJobDraw();
+				break;
+
 			default:
 				break;
 		}
@@ -3433,6 +3439,7 @@ static int D_DoomMain_Internal (void)
 
 		R_ParseTrnslate();
 		PClassActor::StaticInit ();
+		Job_Init();
 
 		// [GRB] Initialize player class list
 		SetupPlayerClasses ();

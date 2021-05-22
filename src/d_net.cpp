@@ -2247,6 +2247,10 @@ void Net_DoCommand (int type, uint8_t **stream, int player)
 		cht_SetInv(&players[player], s, i, !!ReadByte(stream));
 		break;
 
+	case DEM_ENDSCREENJOB:
+		gameaction = ga_endscreenjob;
+		break;
+
 	case DEM_WARPCHEAT:
 		{
 			int x, y, z;

@@ -78,6 +78,7 @@
 #include "s_music.h"
 #include "p_setup.h"
 #include "d_event.h"
+#include "screenjob.h"
 
 #include "v_video.h"
 #include "g_hub.h"
@@ -966,6 +967,11 @@ CCMD (spycancel)
 //
 bool G_Responder (event_t *ev)
 {
+	if (gamestate == GS_INTRO || gamestate == GS_CUTSCENE)
+	{
+		return ScreenJobResponder(ev);
+	}
+
 	// check events
 	if (ev->type != EV_Mouse && primaryLevel->localEventManager->Responder(ev)) // [ZZ] ZScript ate the event // update 07.03.17: mouse events are handled directly
 		return true;
@@ -1108,18 +1114,21 @@ void G_Ticker ()
 	int i;
 	gamestate_t	oldgamestate;
 
-	// do player reborns if needed
-	for (i = 0; i < MAXPLAYERS; i++)
+	if (gamestate == GS_LEVEL || gamestate == GS_TITLELEVEL)
 	{
-		if (playeringame[i])
+		// do player reborns if needed
+		for (i = 0; i < MAXPLAYERS; i++)
 		{
-			if (players[i].playerstate == PST_GONE)
+			if (playeringame[i])
 			{
-				G_DoPlayerPop(i);
-			}
-			if (players[i].playerstate == PST_REBORN || players[i].playerstate == PST_ENTER)
-			{
-				primaryLevel->DoReborn(i, false);
+				if (players[i].playerstate == PST_GONE)
+				{
+					G_DoPlayerPop(i);
+				}
+				if (players[i].playerstate == PST_REBORN || players[i].playerstate == PST_ENTER)
+				{
+					primaryLevel->DoReborn(i, false);
+				}
 			}
 		}
 	}
@@ -1185,6 +1194,19 @@ void G_Ticker ()
 			shotfile = "";
 			gameaction = ga_nothing;
 			break;
+		case ga_intro:
+			wipegamestate = gamestate = GS_INTRO;
+			gameaction = ga_nothing;
+			break;
+		case ga_intermission:
+			wipegamestate = gamestate = GS_CUTSCENE;
+			gameaction = ga_nothing;
+			break;
+		case ga_endscreenjob:
+			EndScreenJob();
+			if (gameaction == ga_endscreenjob) gameaction = ga_nothing;
+			break;
+
 		case ga_fullconsole:
 			G_FullConsole ();
 			gameaction = ga_nothing;
@@ -1296,6 +1318,20 @@ void G_Ticker ()
 
 	case GS_INTERMISSION:
 		WI_Ticker ();
+		break;
+
+	case GS_INTRO:
+	case GS_CUTSCENE:
+		if (intermissiondelay > 0)
+		{
+			intermissiondelay--;
+			break;
+		}
+		if (ScreenJobTick())
+		{
+			// synchronize termination with the playsim.
+			Net_WriteByte(DEM_ENDSCREENJOB);
+		}
 		break;
 
 	case GS_FINALE:

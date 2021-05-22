@@ -39,6 +39,7 @@
 #include "vectors.h"
 #include "sc_man.h"
 #include "file_zip.h"
+#include "screenjob.h"
 
 struct level_info_t;
 struct cluster_info_t;
@@ -100,6 +101,7 @@ struct FMapInfoParser
 	void ParseExitText(FName formap, level_info_t *info);
 	void ParseExitMusic(FName formap, level_info_t *info);
 	void ParseExitBackdrop(FName formap, level_info_t *info, bool ispic);
+	void ParseCutscene(CutsceneDef& cdef);
 
 	void ParseCluster();
 	void ParseNextMap(FString &mapname);
@@ -393,6 +395,8 @@ struct level_info_t
 	FString		acsName;
 	bool		fs_nocheckposition;
 
+	CutsceneDef exitScene, enterScene;
+
 
 	level_info_t() 
 	{ 
@@ -426,6 +430,7 @@ struct cluster_info_t
 	int			cdtrack;
 	FString		ClusterName;
 	unsigned int cdid;
+	CutsceneDef exitScene, enterScene;
 
 	void Reset();
 
