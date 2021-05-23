@@ -1024,11 +1024,6 @@ bool G_Responder (event_t *ev)
 		if (!viewactive && primaryLevel->automap->Responder (ev, false))
 			return true;		// automap ate it
 	}
-	else if (gamestate == GS_FINALE)
-	{
-		if (F_Responder (ev))
-			return true;		// finale ate the event
-	}
 
 	switch (ev->type)
 	{
@@ -1226,14 +1221,6 @@ void G_Ticker ()
 		C_AdjustBottom ();
 	}
 
-	if (oldgamestate != gamestate)
-	{
-		if (oldgamestate == GS_FINALE)
-		{
-			F_EndFinale ();
-		}
-	}
-
 	// get commands, check consistancy, and build new consistancy check
 	int buf = (gametic/ticdup)%BACKUPTICS;
 
@@ -1316,10 +1303,6 @@ void G_Ticker ()
 		P_Ticker ();
 		break;
 
-	case GS_INTERMISSION:
-		WI_Ticker ();
-		break;
-
 	case GS_INTRO:
 	case GS_CUTSCENE:
 		if (intermissiondelay > 0)
@@ -1332,10 +1315,6 @@ void G_Ticker ()
 			// synchronize termination with the playsim.
 			Net_WriteByte(DEM_ENDSCREENJOB);
 		}
-		break;
-
-	case GS_FINALE:
-		F_Ticker ();
 		break;
 
 	case GS_DEMOSCREEN:

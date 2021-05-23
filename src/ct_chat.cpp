@@ -241,8 +241,7 @@ void CT_Drawer (void)
 		(buttonMap.ButtonDown(Button_ShowScores) ||
 		 players[consoleplayer].camera->health <= 0 ||
 		 SB_ForceActive) &&
-		 // Don't draw during intermission, since it has its own scoreboard in wi_stuff.cpp.
-		 gamestate != GS_INTERMISSION)
+		 gamestate == GS_LEVEL)
 	{
 		HU_DrawScores (&players[consoleplayer]);
 	}

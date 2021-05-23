@@ -1014,17 +1014,19 @@ void F_StartIntermission(FIntermissionDescriptor *desc, bool deleteme, uint8_t s
 	}
 	S_StopAllChannels ();
 	gameaction = ga_nothing;
-	gamestate = GS_FINALE;
-	if (state == FSTATE_InLevel) wipegamestate = GS_FINALE;	// don't wipe when within a level.
+	//gamestate = GS_FINALE;
+	//if (state == FSTATE_InLevel) wipegamestate = GS_FINALE;	// don't wipe when within a level.
 	viewactive = false;
 	automapactive = false;
 	DIntermissionController::CurrentIntermission = Create<DIntermissionController>(desc, deleteme, state);
 
 	// If the intermission finishes straight away then cancel the wipe.
+	/*
 	if (!DIntermissionController::CurrentIntermission->NextPage())
 	{
 		wipegamestate = GS_FINALE;
 	}
+	*/
 
 	GC::WriteBarrier(DIntermissionController::CurrentIntermission);
 }

@@ -1092,14 +1092,6 @@ void D_Display ()
 				End2DAndUpdate ();
 				return;
 				
-			case GS_INTERMISSION:
-				WI_Drawer ();
-				break;
-				
-			case GS_FINALE:
-				F_Drawer ();
-				break;
-				
 			case GS_DEMOSCREEN:
 				D_PageDrawer ();
 				break;
@@ -1234,7 +1226,7 @@ void D_ErrorCleanup ()
 	{
 		menuactive = MENU_Off;
 	}
-	if (gamestate == GS_INTERMISSION) gamestate = GS_DEMOSCREEN;
+	if (gamestate == GS_CUTSCENE) gamestate = GS_DEMOSCREEN;
 	insave = false;
 	ClearGlobalVMStack();
 }
@@ -2791,7 +2783,7 @@ static bool System_CaptureModeInGame()
 	case 0:
 		return gamestate == GS_LEVEL;
 	case 1:
-		return gamestate == GS_LEVEL || gamestate == GS_INTERMISSION || gamestate == GS_FINALE;
+		return gamestate == GS_LEVEL || gamestate == GS_CUTSCENE;
 	case 2:
 		return true;
 	}
