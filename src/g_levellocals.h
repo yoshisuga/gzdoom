@@ -193,7 +193,6 @@ public:
 	void StartLightning();
 	void ForceLightning(int mode);
 	void ClearDynamic3DFloorData();
-	void WorldDone(void);
 	void AirControlChanged();
 	AActor *SelectTeleDest(int tid, int tag, bool norandom);
 	bool AlignFlat(int linenum, int side, int fc);

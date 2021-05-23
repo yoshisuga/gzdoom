@@ -696,7 +696,7 @@ void FLevelLocals::ChangeLevel(const char *levelname, int position, int inflags,
 	// [ZZ] safe world unload
 	for (auto Level : AllLevels())
 	{
-		// Todo: This must be exolicitly sandboxed!
+		// Todo: This must be explicitly sandboxed!
 		Level->localEventManager->WorldUnloaded();
 	}
 	// [ZZ] unsafe world unload (changemap != map)
@@ -822,68 +822,47 @@ DEFINE_ACTION_FUNCTION_NATIVE(FLevelLocals, SecretExitLevel, LevelLocals_SecretE
 //
 //
 //==========================================================================
+
 static wbstartstruct_t staticWmInfo;
 
-void G_DoCompletedCont (bool)
+void G_DoCompleted(void)
 {
-	gameaction = ga_nothing;
-	
-	if (   gamestate == GS_DEMOSCREEN
-		|| gamestate == GS_FULLCONSOLE
-		|| gamestate == GS_STARTUP)
+
+	if (gamestate != GS_LEVEL)
 	{
+		gameaction = ga_nothing;
 		return;
 	}
-	
 	if (gamestate == GS_TITLELEVEL)
 	{
-		G_DoLoadLevel (nextlevel, startpos, false, false);
+		G_DoLoadLevel(nextlevel, startpos, false, false);
 		startpos = 0;
 		viewactive = true;
+		gameaction = ga_nothing;
 		return;
 	}
-	
+
 	if (automapactive)
-		AM_Stop ();
+		AM_Stop();
 
 	// Close the conversation menu if open.
-	P_FreeStrifeConversations ();
+	P_FreeStrifeConversations();
 
-	bool playinter = primaryLevel->DoCompleted(nextlevel, staticWmInfo);
 	S_StopAllChannels();
 	for (auto Level : AllLevels())
 	{
 		SN_StopAllSequences(Level);
 	}
 
-	if (playinter)
+	//Added by mc
+	if (deathmatch)
 	{
-		gamestate = GS_INTERMISSION;
-		viewactive = false;
-		automapactive = false;
-		
-		// [RH] If you ever get a statistics driver operational, adapt this.
-		//	if (statcopy)
-		//		memcpy (statcopy, &wminfo, sizeof(wminfo));
-		
-		WI_Start (&staticWmInfo);
+		primaryLevel->BotInfo.RemoveAllBots(primaryLevel, consoleplayer != Net_Arbitrator);
 	}
-}
 
-void G_DoCompleted(void)
-{
-	auto info = FindLevelInfo(nextlevel, false);
-	auto exitscene = &primaryLevel->info->exitScene;
-	if (!exitscene->isdefined())
-	{
-		if (info == nullptr || info->cluster != primaryLevel->cluster)
-		{
-			auto cluster = FindClusterInfo(primaryLevel->cluster);
-			if (cluster) exitscene = &cluster->exitScene;
-
-		}
-	}
-	if ((exitscene->transitiononly && info == nullptr) || !StartCutscene(primaryLevel->info->exitScene, 0, G_DoCompletedCont)) G_DoCompletedCont(false);
+	bool playinter = primaryLevel->DoCompleted(nextlevel, staticWmInfo);
+	//RunIntermission(playinter, [](bool) { gameaction = ga_worlddone; });
+	gameaction = ga_worlddone;
 }
 
 //==========================================================================
@@ -1048,12 +1027,7 @@ bool FLevelLocals::DoCompleted (FString nextlevel, wbstartstruct_t &wminfo)
 
 	finishstate = mode;
 
-	if (!ShouldDoIntermission(nextcluster, thiscluster))
-	{
-		WorldDone ();
-		return false;
-	}
-	return true;
+	return ShouldDoIntermission(nextcluster, thiscluster);
 }
 
 //==========================================================================
@@ -1087,63 +1061,38 @@ extern gamestate_t 	wipegamestate;
  
 void G_DoLoadLevel(const FString &nextmapname, int position, bool autosave, bool newGame)
 {
-	gamestate_t oldgs = gamestate;
-	gamestate_t oldwgs = wipegamestate;
+	int oldgs = gamestate;
+	// Here the new level needs to be allocated.
+	primaryLevel->DoLoadLevel(nextmapname, position, autosave, newGame);
 
-	CutsceneDef sink;
-	CutsceneDef* def = &sink;
-	auto info = FindLevelInfo(nextmapname, false);
-	if (info)
+	// Reset the global state for the new level.
+	if (wipegamestate == GS_LEVEL)
+		wipegamestate = GS_FORCEWIPE;
+
+	if (gamestate != GS_TITLELEVEL)
 	{
-		def = &info->enterScene;
-		if (!def->isdefined())
-		{
-			if (info->cluster != primaryLevel->cluster)
-			{
-				auto cluster = FindClusterInfo(info->cluster);
-				if (cluster) def = &cluster->enterScene;
-			}
-		}
+		gamestate = GS_LEVEL;
 	}
-	auto completion = [=](bool)
-	{
-		gamestate = oldgs;
-		wipegamestate = oldwgs;
-		// Here the new level needs to be allocated.
-		primaryLevel->DoLoadLevel(nextmapname, position, autosave, newGame);
 
-		// Reset the global state for the new level.
-		if (wipegamestate == GS_LEVEL)
-			wipegamestate = GS_FORCEWIPE;
+	gameaction = ga_nothing;
 
-		if (gamestate != GS_TITLELEVEL)
-		{
-			gamestate = GS_LEVEL;
-		}
+	// clear cmd building stuff
+	buttonMap.ResetButtonStates();
 
-		gameaction = ga_nothing;
+	SendItemUse = nullptr;
+	SendItemDrop = nullptr;
+	mousex = mousey = 0;
+	sendpause = sendsave = sendturn180 = SendLand = false;
+	LocalViewAngle = 0;
+	LocalViewPitch = 0;
+	paused = 0;
 
-		// clear cmd building stuff
-		buttonMap.ResetButtonStates();
+	if (demoplayback || oldgs == GS_STARTUP || oldgs == GS_TITLELEVEL)
+		C_HideConsole();
 
-		SendItemUse = nullptr;
-		SendItemDrop = nullptr;
-		mousex = mousey = 0;
-		sendpause = sendsave = sendturn180 = SendLand = false;
-		LocalViewAngle = 0;
-		LocalViewPitch = 0;
-		paused = 0;
-
-		if (demoplayback || oldgs == GS_STARTUP || oldgs == GS_TITLELEVEL)
-			C_HideConsole();
-
-		C_FlushDisplay();
-		P_ResetSightCounters(true);
-		I_UpdateWindowTitle();
-	};
-
-	if ((newGame && def->transitiononly) || !StartCutscene(*def, 0, completion)) 
-		completion(false);
+	C_FlushDisplay();
+	P_ResetSightCounters(true);
+	I_UpdateWindowTitle();
 }
 
 void FLevelLocals::DoLoadLevel(const FString &nextmapname, int position, bool autosave, bool newGame)
@@ -1307,134 +1256,6 @@ void FLevelLocals::DoLoadLevel(const FString &nextmapname, int position, bool au
 	{
 		I_Error("no start for player %d found.", pnumerr);
 	}
-}
-
-
-//==========================================================================
-//
-// G_WorldDone 
-//
-//==========================================================================
-
-void FLevelLocals::WorldDone (void) 
-{ 
-	cluster_info_t *nextcluster;
-	cluster_info_t *thiscluster;
-
-	gameaction = ga_worlddone; 
-
-
-	//Added by mc
-	if (deathmatch)
-	{
-		BotInfo.RemoveAllBots(this, consoleplayer != Net_Arbitrator);
-	}
-
-	if (flags & LEVEL_CHANGEMAPCHEAT)
-		return;
-
-	thiscluster = FindClusterInfo (cluster);
-
-	if (strncmp (nextlevel, "enDSeQ", 6) == 0)
-	{
-		FName endsequence = ENamedName(strtoll(nextlevel.GetChars()+6, NULL, 16));
-		// Strife needs a special case here to choose between good and sad ending. Bad is handled elsewhere.
-		if (endsequence == NAME_Inter_Strife)
-		{
-			if (Players[0]->mo->FindInventory (NAME_QuestItem25) ||
-				Players[0]->mo->FindInventory (NAME_QuestItem28))
-			{
-				endsequence = NAME_Inter_Strife_Good;
-			}
-			else
-			{
-				endsequence = NAME_Inter_Strife_Sad;
-			}
-		}
-
-		auto ext = info->ExitMapTexts.CheckKey(flags3 & LEVEL3_EXITSECRETUSED ? NAME_Secret : NAME_Normal);
-		if (ext != nullptr && (ext->mDefined & FExitText::DEF_TEXT))
-		{
-			F_StartFinale(ext->mDefined & FExitText::DEF_MUSIC ? ext->mMusic : gameinfo.finaleMusic,
-				ext->mDefined & FExitText::DEF_MUSIC ? ext->mOrder : gameinfo.finaleOrder,
-				-1, 0,
-				ext->mDefined & FExitText::DEF_BACKDROP ? ext->mBackdrop : gameinfo.FinaleFlat,
-				ext->mText,
-				false,
-				ext->mDefined & FExitText::DEF_PIC,
-				ext->mDefined & FExitText::DEF_LOOKUP,
-				true, endsequence);
-		}
-		else if (!(info->flags2 & LEVEL2_NOCLUSTERTEXT))
-		{
-			F_StartFinale(thiscluster->MessageMusic, thiscluster->musicorder,
-				thiscluster->cdtrack, thiscluster->cdid,
-				thiscluster->FinaleFlat, thiscluster->ExitText,
-				thiscluster->flags & CLUSTER_EXITTEXTINLUMP,
-				thiscluster->flags & CLUSTER_FINALEPIC,
-				thiscluster->flags & CLUSTER_LOOKUPEXITTEXT,
-				true, endsequence);
-		}
-	}
-	else if (!deathmatch)
-	{
-		FExitText *ext = nullptr;
-		
-		if (flags3 & LEVEL3_EXITSECRETUSED) ext = info->ExitMapTexts.CheckKey(NAME_Secret);
-		else if (flags3 & LEVEL3_EXITNORMALUSED) ext = info->ExitMapTexts.CheckKey(NAME_Normal);
-		if (ext == nullptr) ext = info->ExitMapTexts.CheckKey(nextlevel);
-
-		if (ext != nullptr)
-		{
-			if ((ext->mDefined & FExitText::DEF_TEXT))
-			{
-				F_StartFinale(ext->mDefined & FExitText::DEF_MUSIC ? ext->mMusic : gameinfo.finaleMusic,
-					ext->mDefined & FExitText::DEF_MUSIC ? ext->mOrder : gameinfo.finaleOrder,
-					-1, 0,
-					ext->mDefined & FExitText::DEF_BACKDROP ? ext->mBackdrop : gameinfo.FinaleFlat,
-					ext->mText,
-					false,
-					ext->mDefined & FExitText::DEF_PIC,
-					ext->mDefined & FExitText::DEF_LOOKUP,
-					false);
-			}
-			return;
-		}
-
-		nextcluster = FindClusterInfo (FindLevelInfo (nextlevel)->cluster);
-
-		if (nextcluster->cluster != cluster && !(info->flags2 & LEVEL2_NOCLUSTERTEXT))
-		{
-			// Only start the finale if the next level's cluster is different
-			// than the current one and we're not in deathmatch.
-			if (nextcluster->EnterText.IsNotEmpty())
-			{
-				F_StartFinale (nextcluster->MessageMusic, nextcluster->musicorder,
-					nextcluster->cdtrack, nextcluster->cdid,
-					nextcluster->FinaleFlat, nextcluster->EnterText,
-					nextcluster->flags & CLUSTER_ENTERTEXTINLUMP,
-					nextcluster->flags & CLUSTER_FINALEPIC,
-					nextcluster->flags & CLUSTER_LOOKUPENTERTEXT,
-					false);
-			}
-			else if (thiscluster->ExitText.IsNotEmpty())
-			{
-				F_StartFinale (thiscluster->MessageMusic, thiscluster->musicorder,
-					thiscluster->cdtrack, nextcluster->cdid,
-					thiscluster->FinaleFlat, thiscluster->ExitText,
-					thiscluster->flags & CLUSTER_EXITTEXTINLUMP,
-					thiscluster->flags & CLUSTER_FINALEPIC,
-					thiscluster->flags & CLUSTER_LOOKUPEXITTEXT,
-					false);
-			}
-		}
-	}
-} 
- 
-DEFINE_ACTION_FUNCTION(FLevelLocals, WorldDone)
-{
-	primaryLevel->WorldDone();
-	return 0;
 }
 
 //==========================================================================

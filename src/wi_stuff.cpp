@@ -866,6 +866,20 @@ DEFINE_ACTION_FUNCTION(DStatusScreen, GetSortedPlayers)
 	return 0;
 }
 
+//==========================================================================
+//
+// This is a relic of the original setup required for backwards compatibility.
+//
+//==========================================================================
+
+
+DEFINE_ACTION_FUNCTION(FLevelLocals, WorldDone)
+{
+	// this is deprecated.
+	// todo: advance screen job runner.
+	return 0;
+}
+
 //====================================================================
 // 
 //
