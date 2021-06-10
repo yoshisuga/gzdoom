@@ -146,7 +146,7 @@ public:
 		{
 			return Tics;
 		}
-		return Tics + pr_statetics.GenRand32() % (TicRange + 1);
+		return Tics + pr_statetics.GetRand() % (TicRange + 1);
 	}
 	inline int GetMisc1() const
 	{

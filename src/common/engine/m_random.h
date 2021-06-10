@@ -41,12 +41,15 @@
 
 class FSerializer;
 
-class FRandom : public SFMTObj
+class FRandom : protected SFMTObj
 {
 public:
 	FRandom ();
 	FRandom (const char *name);
 	~FRandom ();
+
+	unsigned int GetRand();
+	uint64_t GetRand64();
 
 	int Seed() const
 	{
@@ -56,7 +59,7 @@ public:
 	// Returns a random number in the range [0,255]
 	int operator()()
 	{
-		return GenRand32() & 255;
+		return GetRand() & 255;
 	}
 
 	// Returns a random number in the range [0,mod)
@@ -64,7 +67,7 @@ public:
 	{
 		return (0 == mod)
 			? 0
-			: (GenRand32() % mod);
+			: (GetRand() % mod);
 	}
 
 	// Returns rand# - rand#
@@ -76,14 +79,14 @@ public:
 // Returns (rand# & mask) - (rand# & mask)
 	int Random2(int mask)
 	{
-		int t = GenRand32() & mask & 255;
-		return t - (GenRand32() & mask & 255);
+		int t = GetRand() & mask & 255;
+		return t - (GetRand() & mask & 255);
 	}
 
 	// HITDICE macro used in Heretic and Hexen
 	int HitDice(int count)
 	{
-		return (1 + (GenRand32() & 7)) * count;
+		return (1 + (GetRand() & 7)) * count;
 	}
 
 	int Random()				// synonym for ()
@@ -104,7 +107,7 @@ public:
 	/** generates a random number on [0,1]-real-interval */
 	inline double GenRand_Real1()
 	{
-		return ToReal1(GenRand32());
+		return ToReal1(GetRand());
 	}
 
 	/** generates a random number on [0,1)-real-interval */
@@ -117,7 +120,7 @@ public:
 	/** generates a random number on [0,1)-real-interval */
 	inline double GenRand_Real2()
 	{
-		return ToReal2(GenRand32());
+		return ToReal2(GetRand());
 	}
 
 	/** generates a random number on (0,1)-real-interval */
@@ -130,7 +133,7 @@ public:
 	/** generates a random number on (0,1)-real-interval */
 	inline double GenRand_Real3(void)
 	{
-		return ToReal3(GenRand32());
+		return ToReal3(GetRand());
 	}
 	/** These real versions are due to Isaku Wada */
 
@@ -151,7 +154,7 @@ public:
 	 */
 	inline double GenRand_Res53(void) 
 	{ 
-		return ToRes53(GenRand64());
+		return ToRes53(GetRand64());
 	} 
 
 	/** generates a random number on [0,1) with 53-bit resolution
@@ -161,8 +164,8 @@ public:
 	{ 
 		uint32_t x, y;
 
-		x = GenRand32();
-		y = GenRand32();
+		x = GetRand();
+		y = GetRand();
 		return ToRes53Mix(x, y);
 	}
 

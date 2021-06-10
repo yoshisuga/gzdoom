@@ -3048,7 +3048,7 @@ int FLevelLocals::FindUniqueTID(int start_tid, int limit)
 	for (int i = 0; i < limit; i += 5)
 	{
 		// Use a positive starting TID.
-		tid = pr_uniquetid.GenRand32() & INT_MAX;
+		tid = pr_uniquetid.GetRand() & INT_MAX;
 		tid = FindUniqueTID(tid == 0 ? 1 : tid, 5);
 		if (tid != 0)
 		{

@@ -64,6 +64,8 @@
 #include "m_crc32.h"
 #include "c_dispatch.h"
 #include "printf.h"
+#include "c_cvars.h"
+#include "i_net.h"
 
 // MACROS ------------------------------------------------------------------
 
@@ -370,6 +372,50 @@ FRandom *FRandom::StaticFindRNG (const char *name)
 		NewRNGs.Push(probe);
 	}
 	return probe;
+}
+
+#include <random>
+extern bool demoplayback, demorecording;
+CUSTOM_CVAR(Int, rngmode, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+	if (self < 0 || self > 4) self = 0;
+}
+
+std::minstd_rand0 rand2;
+std::minstd_rand rand3;
+std::ranlux24_base rand4;
+
+unsigned int FRandom::GetRand()
+{
+	if (rngmode == 0 || netgame || demoplayback || demorecording)
+		return GenRand32();
+
+	if (rngmode == 1)
+		return pr_exrandom.GenRand32();
+	if (rngmode == 2)
+		return rand2();
+	if (rngmode == 3)
+		return rand3();
+	if (rngmode == 4)
+		return rand4();
+
+	return GenRand32();
+}
+
+uint64_t FRandom::GetRand64()
+{
+	if (rngmode == 0 || netgame || demoplayback || demorecording)
+		return GenRand64();
+
+	if (rngmode == 1)
+		return pr_exrandom.GenRand64();
+
+	if (rngmode == 2)
+		return (uint64_t(rand2()) << 32) + rand2();
+	if (rngmode == 3)
+		return (uint64_t(rand3()) << 32) + rand3();
+	if (rngmode == 4)
+		return (uint64_t(rand4()) << 32) + rand4();
 }
 
 //==========================================================================
