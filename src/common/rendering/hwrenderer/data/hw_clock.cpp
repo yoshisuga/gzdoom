@@ -43,6 +43,7 @@
 
 glcycle_t RenderWall,SetupWall,ClipWall;
 glcycle_t RenderFlat,SetupFlat;
+glcycle_t RenderFlatAsync, RenderWallAsync;
 glcycle_t RenderSprite,SetupSprite;
 glcycle_t All, Finish, PortalAll, Bsp;
 glcycle_t ProcessAll, PostProcess;
@@ -75,6 +76,8 @@ void ResetProfilingData()
 	drawcalls.Reset();
 	MTWait.Reset();
 	WTTotal.Reset();
+	RenderFlatAsync.Reset();
+	RenderWallAsync.Reset();
 
 	flatvertices=flatprimitives=vertexcount=0;
 	render_texsplit=render_vertexsplit=rendered_lines=rendered_flats=rendered_sprites=rendered_decals=rendered_portals = 0;
@@ -93,15 +96,15 @@ static void AppendRenderTimes(FString &str)
 	double bsp = Bsp.TimeMS() - ClipWall.TimeMS();
 
 	str.AppendFormat("BSP = %2.3f, Clip=%2.3f\n"
-		"W: Render=%2.3f, Setup=%2.3f\n"
-		"F: Render=%2.3f, Setup=%2.3f\n"
+		"W: Render=%2.3f, Async=%2.3f, Setup=%2.3f\n"
+		"F: Render=%2.3f, Async=%2.3f, Setup=%2.3f\n"
 		"S: Render=%2.3f, Setup=%2.3f\n"
 		"2D: %2.3f Finish3D: %2.3f\n"
 		"Main thread total=%2.3f, Main thread waiting=%2.3f Worker thread total=%2.3f, Worker thread waiting=%2.3f\n"
 		"All=%2.3f, Render=%2.3f, Setup=%2.3f, Portal=%2.3f, Drawcalls=%2.3f, Postprocess=%2.3f, Finish=%2.3f\n",
 		bsp, clipwall,
-		RenderWall.TimeMS(), setupwall, 
-		RenderFlat.TimeMS(), SetupFlat.TimeMS(),
+		RenderWall.TimeMS(), RenderWallAsync.TimeMS(), setupwall, 
+		RenderFlat.TimeMS(), RenderFlatAsync.TimeMS(), SetupFlat.TimeMS(),
 		RenderSprite.TimeMS(), SetupSprite.TimeMS(), 
 		twoD.TimeMS(), Flush3D.TimeMS() - twoD.TimeMS(),
 		MTWait.TimeMS() + Bsp.TimeMS(), MTWait.TimeMS(), WTTotal.TimeMS(), WTTotal.TimeMS() - setupwall - SetupFlat.TimeMS() - SetupSprite.TimeMS(),

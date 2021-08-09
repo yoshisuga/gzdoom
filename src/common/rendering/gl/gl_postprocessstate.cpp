@@ -23,6 +23,7 @@
 #include "gl_system.h"
 #include "gl_interface.h"
 #include "gl_postprocessstate.h"
+#include "hw_renderstate.h"
 
 namespace OpenGLRenderer
 {
@@ -35,6 +36,7 @@ namespace OpenGLRenderer
 
 FGLPostProcessState::FGLPostProcessState()
 {
+	assert(!isWorkerThread);
 	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTex);
 	glActiveTexture(GL_TEXTURE0);
 	SaveTextureBindings(1);
@@ -59,6 +61,7 @@ FGLPostProcessState::FGLPostProcessState()
 
 void FGLPostProcessState::SaveTextureBindings(unsigned int numUnits)
 {
+	assert(!isWorkerThread);
 	while (textureBinding.Size() < numUnits)
 	{
 		unsigned int i = textureBinding.Size();
@@ -85,6 +88,7 @@ void FGLPostProcessState::SaveTextureBindings(unsigned int numUnits)
 
 FGLPostProcessState::~FGLPostProcessState()
 {
+	assert(!isWorkerThread);
 	if (blendEnabled)
 		glEnable(GL_BLEND);
 	else

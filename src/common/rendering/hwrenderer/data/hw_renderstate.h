@@ -10,6 +10,7 @@
 struct FColormap;
 class IVertexBuffer;
 class IIndexBuffer;
+extern thread_local bool isWorkerThread;
 
 enum EClearTarget
 {

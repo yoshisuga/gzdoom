@@ -197,6 +197,7 @@ void OpenGLFrameBuffer::Update()
 
 void OpenGLFrameBuffer::CopyScreenToBuffer(int width, int height, uint8_t* scr)
 {
+	assert(!isWorkerThread);
 	IntRect bounds;
 	bounds.left = 0;
 	bounds.top = 0;
@@ -217,6 +218,7 @@ void OpenGLFrameBuffer::CopyScreenToBuffer(int width, int height, uint8_t* scr)
 
 void OpenGLFrameBuffer::RenderTextureView(FCanvasTexture* tex, std::function<void(IntRect &)> renderFunc)
 {
+	assert(!isWorkerThread);
 	GLRenderer->StartOffscreen();
 	GLRenderer->BindToFrameBuffer(tex);
 
@@ -253,6 +255,7 @@ CVAR(Bool, gl_finishbeforeswap, false, CVAR_ARCHIVE|CVAR_GLOBALCONFIG);
 
 void OpenGLFrameBuffer::Swap()
 {
+	assert(!isWorkerThread);
 	bool swapbefore = gl_finishbeforeswap && camtexcount == 0;
 	Finish.Reset();
 	Finish.Clock();
@@ -275,6 +278,7 @@ void OpenGLFrameBuffer::Swap()
 
 void OpenGLFrameBuffer::SetVSync(bool vsync)
 {
+	assert(!isWorkerThread);
 	// Switch to the default frame buffer because some drivers associate the vsync state with the bound FB object.
 	GLint oldDrawFramebufferBinding = 0, oldReadFramebufferBinding = 0;
 	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &oldDrawFramebufferBinding);
@@ -307,6 +311,7 @@ void OpenGLFrameBuffer::PrecacheMaterial(FMaterial *mat, int translation)
 {
 	if (mat->Source()->GetUseType() == ETextureType::SWCanvas) return;
 
+	assert(!isWorkerThread);
 	int flags = mat->GetScaleFlags();
 	int numLayers = mat->NumLayers();
 	MaterialLayerInfo* layer;
@@ -342,11 +347,13 @@ IDataBuffer *OpenGLFrameBuffer::CreateDataBuffer(int bindingpoint, bool ssbo, bo
 
 void OpenGLFrameBuffer::BlurScene(float amount)
 {
+	assert(!isWorkerThread);
 	GLRenderer->BlurScene(amount);
 }
 
 void OpenGLFrameBuffer::SetViewportRects(IntRect *bounds)
 {
+	assert(!isWorkerThread);
 	Super::SetViewportRects(bounds);
 	if (!bounds)
 	{
@@ -357,17 +364,20 @@ void OpenGLFrameBuffer::SetViewportRects(IntRect *bounds)
 
 void OpenGLFrameBuffer::UpdatePalette()
 {
+	assert(!isWorkerThread);
 	if (GLRenderer)
 		GLRenderer->ClearTonemapPalette();
 }
 
 FRenderState* OpenGLFrameBuffer::RenderState()
 {
+	assert(!isWorkerThread);
 	return &gl_RenderState;
 }
 
 void OpenGLFrameBuffer::AmbientOccludeScene(float m5)
 {
+	assert(!isWorkerThread);
 	gl_RenderState.EnableDrawBuffers(1);
 	GLRenderer->AmbientOccludeScene(m5);
 	glViewport(screen->mSceneViewport.left, mSceneViewport.top, mSceneViewport.width, mSceneViewport.height);
@@ -378,21 +388,25 @@ void OpenGLFrameBuffer::AmbientOccludeScene(float m5)
 
 void OpenGLFrameBuffer::FirstEye()
 {
+	assert(!isWorkerThread);
 	GLRenderer->mBuffers->CurrentEye() = 0;  // always begin at zero, in case eye count changed
 }
 
 void OpenGLFrameBuffer::NextEye(int eyecount)
 {
+	assert(!isWorkerThread);
 	GLRenderer->mBuffers->NextEye(eyecount);
 }
 
 void OpenGLFrameBuffer::SetSceneRenderTarget(bool useSSAO)
 {
+	assert(!isWorkerThread);
 	GLRenderer->mBuffers->BindSceneFB(useSSAO);
 }
 
 void OpenGLFrameBuffer::UpdateShadowMap()
 {
+	assert(!isWorkerThread);
 	if (mShadowMap.PerformUpdate())
 	{
 		FGLDebug::PushGroup("ShadowMap");
@@ -425,11 +439,13 @@ void OpenGLFrameBuffer::UpdateShadowMap()
 
 void OpenGLFrameBuffer::WaitForCommands(bool finish)
 {
+	assert(!isWorkerThread);
 	glFinish();
 }
 
 void OpenGLFrameBuffer::SetSaveBuffers(bool yes)
 {
+	assert(!isWorkerThread);
 	if (!GLRenderer) return;
 	if (yes) GLRenderer->mBuffers = GLRenderer->mSaveBuffers;
 	else GLRenderer->mBuffers = GLRenderer->mScreenBuffers;
@@ -443,6 +459,7 @@ void OpenGLFrameBuffer::SetSaveBuffers(bool yes)
 
 void OpenGLFrameBuffer::BeginFrame()
 {
+	assert(!isWorkerThread);
 	SetViewportRects(nullptr);
 	if (GLRenderer != nullptr)
 		GLRenderer->BeginFrame();
@@ -456,6 +473,7 @@ void OpenGLFrameBuffer::BeginFrame()
 
 TArray<uint8_t> OpenGLFrameBuffer::GetScreenshotBuffer(int &pitch, ESSType &color_type, float &gamma)
 {
+	assert(!isWorkerThread);
 	const auto &viewport = mOutputLetterbox;
 
 	// Grab what is in the back buffer.
@@ -508,6 +526,7 @@ TArray<uint8_t> OpenGLFrameBuffer::GetScreenshotBuffer(int &pitch, ESSType &colo
 
 void OpenGLFrameBuffer::Draw2D()
 {
+	assert(!isWorkerThread);
 	if (GLRenderer != nullptr)
 	{
 		GLRenderer->mBuffers->BindCurrentFB();
@@ -517,6 +536,7 @@ void OpenGLFrameBuffer::Draw2D()
 
 void OpenGLFrameBuffer::PostProcessScene(bool swscene, int fixedcm, float flash, const std::function<void()> &afterBloomDrawEndScene2D)
 {
+	assert(!isWorkerThread);
 	if (!swscene) GLRenderer->mBuffers->BlitSceneToTexture(); // Copy the resulting scene to the current post process texture
 	GLRenderer->PostProcessScene(fixedcm, flash, afterBloomDrawEndScene2D);
 }
@@ -533,6 +553,7 @@ void OpenGLFrameBuffer::PostProcessScene(bool swscene, int fixedcm, float flash,
 
 FTexture *OpenGLFrameBuffer::WipeStartScreen()
 {
+	assert(!isWorkerThread);
 	const auto &viewport = screen->mScreenViewport;
 
 	auto tex = new FWrapperTexture(viewport.width, viewport.height, 1);
@@ -555,6 +576,7 @@ FTexture *OpenGLFrameBuffer::WipeStartScreen()
 
 FTexture *OpenGLFrameBuffer::WipeEndScreen()
 {
+	assert(!isWorkerThread);
 	GLRenderer->Flush();
 	const auto &viewport = screen->mScreenViewport;
 	auto tex = new FWrapperTexture(viewport.width, viewport.height, 1);

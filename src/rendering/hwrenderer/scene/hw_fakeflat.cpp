@@ -234,18 +234,10 @@ sector_t * hw_FakeFlat(sector_t * sec, area_t in_area, bool back, sector_t *loca
 		return sec;
 	}
 
-#ifdef _DEBUG
-	if (sec->sectornum==560)
-	{
-		int a = 0;
-	}
-#endif
-
 	if (fakesectorbuffer && fakesectorbuffer[sec->sectornum])
 	{
 		return fakesectorbuffer[sec->sectornum];
 	}
-	assert(!(isWorkerThread && localcopy == nullptr));
 
 	if (in_area==area_above)
 	{

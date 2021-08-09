@@ -56,11 +56,13 @@ static inline void InvalidateBufferState()
 GLBuffer::GLBuffer(int usetype)
 	: mUseType(usetype)
 {
+	assert(!isWorkerThread);
 	glGenBuffers(1, &mBufferId);
 }
 
 GLBuffer::~GLBuffer()
 {
+	assert(!isWorkerThread);
 	if (mBufferId != 0)
 	{
 		glBindBuffer(mUseType, mBufferId);
@@ -72,6 +74,7 @@ GLBuffer::~GLBuffer()
 
 void GLBuffer::Bind()
 {
+	assert(!isWorkerThread);
 	glBindBuffer(mUseType, mBufferId);
 }
 
@@ -110,6 +113,7 @@ void GLBuffer::SetSubData(size_t offset, size_t size, const void *data)
 
 void GLBuffer::Map()
 {
+	assert(!isWorkerThread);
 	assert(nomap == false);	// do not allow mapping of static buffers. Vulkan cannot do that so it should be blocked in OpenGL, too.
 	if (!mPersistent && !nomap)
 	{
@@ -121,6 +125,7 @@ void GLBuffer::Map()
 
 void GLBuffer::Unmap()
 {
+	assert(!isWorkerThread);
 	assert(nomap == false);
 	if (!mPersistent && map != nullptr)
 	{
@@ -147,6 +152,7 @@ void GLBuffer::Unlock()
 
 void GLBuffer::Resize(size_t newsize)
 {
+	assert(!isWorkerThread);
 	assert(!nomap);	// only mappable buffers can be resized. 
 	if (newsize > buffersize && !nomap)
 	{
@@ -222,11 +228,13 @@ void GLVertexBuffer::Bind(int *offsets)
 
 void GLDataBuffer::BindRange(FRenderState *state, size_t start, size_t length)
 {
+	assert(!isWorkerThread);
 	glBindBufferRange(mUseType, mBindingPoint, mBufferId, start, length);
 }
 
 void GLDataBuffer::BindBase()
 {
+	assert(!isWorkerThread);
 	glBindBufferBase(mUseType, mBindingPoint, mBufferId);
 }
 

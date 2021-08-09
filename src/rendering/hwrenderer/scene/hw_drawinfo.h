@@ -343,5 +343,8 @@ void CleanSWDrawer();
 sector_t* RenderViewpoint(FRenderViewpoint& mainvp, AActor* camera, IntRect* bounds, float fov, float ratio, float fovratio, bool mainview, bool toscreen);
 void WriteSavePic(player_t* player, FileWriter* file, int width, int height);
 sector_t* RenderView(player_t* player);
+void mt_draw(int list, void* data);
+void mt_renderloop(HWDrawInfo* di, FRenderState& state);
+
 
 

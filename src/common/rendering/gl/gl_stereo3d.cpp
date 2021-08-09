@@ -369,6 +369,7 @@ void FGLRenderer::PresentQuadStereo()
 
 void FGLRenderer::PresentStereo()
 {
+	assert(!isWorkerThread);
 	auto vrmode = VRMode::GetVRMode(true);
 	const int eyeCount = vrmode->mEyeCount;
 	// Don't invalidate the bound framebuffer (..., false)

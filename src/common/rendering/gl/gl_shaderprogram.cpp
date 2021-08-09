@@ -50,6 +50,7 @@ FShaderProgram::FShaderProgram()
 
 FShaderProgram::~FShaderProgram()
 {
+	assert(!isWorkerThread);
 	if (mProgram != 0)
 		glDeleteProgram(mProgram);
 
@@ -68,6 +69,7 @@ FShaderProgram::~FShaderProgram()
 
 void FShaderProgram::CreateShader(ShaderType type)
 {
+	assert(!isWorkerThread);
 	GLenum gltype = 0;
 	switch (type)
 	{
@@ -86,6 +88,7 @@ void FShaderProgram::CreateShader(ShaderType type)
 
 void FShaderProgram::Compile(ShaderType type, const char *lumpName, const char *defines, int maxGlslVersion)
 {
+	assert(!isWorkerThread);
 	int lump = fileSystem.CheckNumForFullName(lumpName);
 	if (lump == -1) I_FatalError("Unable to load '%s'", lumpName);
 	FString code = fileSystem.ReadFile(lump).GetString().GetChars();
@@ -94,12 +97,14 @@ void FShaderProgram::Compile(ShaderType type, const char *lumpName, const char *
 
 void FShaderProgram::Compile(ShaderType type, const char *name, const FString &code, const char *defines, int maxGlslVersion)
 {
+	assert(!isWorkerThread);
 	mShaderNames[type] = name;
 	mShaderSources[type] = PatchShader(type, code, defines, maxGlslVersion);
 }
 
 void FShaderProgram::CompileShader(ShaderType type)
 {
+	assert(!isWorkerThread);
 	CreateShader(type);
 
 	const auto &handle = mShaders[type];
@@ -135,6 +140,7 @@ void FShaderProgram::CompileShader(ShaderType type)
 
 void FShaderProgram::Link(const char *name)
 {
+	assert(!isWorkerThread);
 	FGLDebug::LabelObject(GL_PROGRAM, mProgram, name);
 
 	uint32_t binaryFormat = 0;
@@ -202,6 +208,7 @@ void FShaderProgram::Link(const char *name)
 
 void FShaderProgram::SetUniformBufferLocation(int index, const char *name)
 {
+	assert(!isWorkerThread);
 	if (screen->glslversion < 4.20)
 	{
 		GLuint uniformBlockIndex = glGetUniformBlockIndex(mProgram, name);
@@ -218,6 +225,7 @@ void FShaderProgram::SetUniformBufferLocation(int index, const char *name)
 
 void FShaderProgram::Bind()
 {
+	assert(!isWorkerThread);
 	glUseProgram(mProgram);
 }
 
@@ -229,6 +237,7 @@ void FShaderProgram::Bind()
 
 FString FShaderProgram::GetShaderInfoLog(GLuint handle)
 {
+	assert(!isWorkerThread);
 	static char buffer[10000];
 	GLsizei length = 0;
 	buffer[0] = 0;
@@ -244,6 +253,7 @@ FString FShaderProgram::GetShaderInfoLog(GLuint handle)
 
 FString FShaderProgram::GetProgramInfoLog(GLuint handle)
 {
+	assert(!isWorkerThread);
 	static char buffer[10000];
 	GLsizei length = 0;
 	buffer[0] = 0;
@@ -259,6 +269,7 @@ FString FShaderProgram::GetProgramInfoLog(GLuint handle)
 
 FString FShaderProgram::PatchShader(ShaderType type, const FString &code, const char *defines, int maxGlslVersion)
 {
+	assert(!isWorkerThread);
 	FString patchedCode;
 
 	// If we have 4.2, always use it because it adds important new syntax.
@@ -294,6 +305,7 @@ FString FShaderProgram::PatchShader(ShaderType type, const FString &code, const 
 
 void FPresentShaderBase::Init(const char * vtx_shader_name, const char * program_name)
 {
+	assert(!isWorkerThread);
 	FString prolog = Uniforms.CreateDeclaration("Uniforms", PresentUniforms::Desc());
 
 	mShader.reset(new FShaderProgram());

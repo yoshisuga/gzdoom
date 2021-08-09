@@ -5,6 +5,7 @@
 #include "m_fixed.h"
 
 extern glcycle_t RenderWall,SetupWall,ClipWall;
+extern glcycle_t RenderFlatAsync, RenderWallAsync;
 extern glcycle_t RenderFlat,SetupFlat;
 extern glcycle_t RenderSprite,SetupSprite;
 extern glcycle_t All, Finish, PortalAll, Bsp;

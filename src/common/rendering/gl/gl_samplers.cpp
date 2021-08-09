@@ -42,6 +42,7 @@
 #include "gl_samplers.h"
 #include "hw_material.h"
 #include "i_interface.h"
+#include "hw_renderstate.h"
 
 namespace OpenGLRenderer
 {
@@ -51,6 +52,7 @@ extern TexFilter_s TexFilter[];
 
 FSamplerManager::FSamplerManager()
 {
+	assert(!isWorkerThread);
 	glGenSamplers(NUMSAMPLERS, mSamplers);
 
 	glSamplerParameteri(mSamplers[CLAMP_X], GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -93,6 +95,7 @@ FSamplerManager::~FSamplerManager()
 
 void FSamplerManager::UnbindAll()
 {
+	assert(!isWorkerThread);
 	for (int i = 0; i < IHardwareTexture::MAX_TEXTURES; i++)
 	{
 		glBindSampler(i, 0);
@@ -101,6 +104,7 @@ void FSamplerManager::UnbindAll()
 	
 uint8_t FSamplerManager::Bind(int texunit, int num, int lastval)
 {
+	assert(!isWorkerThread);
 	unsigned int samp = mSamplers[num];
 	glBindSampler(texunit, samp);
 	return 255;
@@ -109,6 +113,7 @@ uint8_t FSamplerManager::Bind(int texunit, int num, int lastval)
 	
 void FSamplerManager::SetTextureFilterMode()
 {
+	assert(!isWorkerThread);
 	GLint bounds[IHardwareTexture::MAX_TEXTURES];
 	
 	// Unbind all

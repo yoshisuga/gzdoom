@@ -79,6 +79,7 @@ unsigned int FHardwareTexture::lastbound[FHardwareTexture::MAX_TEXTURES];
 
 unsigned int FHardwareTexture::CreateTexture(unsigned char * buffer, int w, int h, int texunit, bool mipmap, const char *name)
 {
+	assert(!isWorkerThread);
 	int rh,rw;
 	int texformat = GL_RGBA8;// TexFormat[gl_texture_format];
 	bool deletebuffer=false;
@@ -180,6 +181,7 @@ unsigned int FHardwareTexture::CreateTexture(unsigned char * buffer, int w, int 
 //===========================================================================
 void FHardwareTexture::AllocateBuffer(int w, int h, int texelsize)
 {
+	assert(!isWorkerThread);
 	int rw = GetTexDimension(w);
 	int rh = GetTexDimension(h);
 	if (texelsize < 1 || texelsize > 4) texelsize = 4;
@@ -197,6 +199,7 @@ void FHardwareTexture::AllocateBuffer(int w, int h, int texelsize)
 
 uint8_t *FHardwareTexture::MapBuffer()
 {
+	assert(!isWorkerThread);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, glBufferID);
 	return (uint8_t*)glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
 }
@@ -208,6 +211,7 @@ uint8_t *FHardwareTexture::MapBuffer()
 //===========================================================================
 FHardwareTexture::~FHardwareTexture() 
 { 
+	assert(!isWorkerThread);
 	if (glTexID != 0) glDeleteTextures(1, &glTexID);
 	if (glBufferID != 0) glDeleteBuffers(1, &glBufferID);
 }
@@ -220,6 +224,7 @@ FHardwareTexture::~FHardwareTexture()
 //===========================================================================
 unsigned int FHardwareTexture::Bind(int texunit, bool needmipmap)
 {
+	assert(!isWorkerThread);
 	if (glTexID != 0)
 	{
 		if (lastbound[texunit] == glTexID) return glTexID;
@@ -240,6 +245,7 @@ unsigned int FHardwareTexture::Bind(int texunit, bool needmipmap)
 
 void FHardwareTexture::Unbind(int texunit)
 {
+	assert(!isWorkerThread);
 	if (lastbound[texunit] != 0)
 	{
 		if (texunit != 0) glActiveTexture(GL_TEXTURE0+texunit);
@@ -265,6 +271,7 @@ void FHardwareTexture::UnbindAll()
 
 int FHardwareTexture::GetDepthBuffer(int width, int height)
 {
+	assert(!isWorkerThread);
 	if (glDepthID == 0)
 	{
 		glGenRenderbuffers(1, &glDepthID);
@@ -285,6 +292,7 @@ int FHardwareTexture::GetDepthBuffer(int width, int height)
 
 void FHardwareTexture::BindToFrameBuffer(int width, int height)
 {
+	assert(!isWorkerThread);
 	width = GetTexDimension(width);
 	height = GetTexDimension(height);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexID, 0);
@@ -301,6 +309,7 @@ void FHardwareTexture::BindToFrameBuffer(int width, int height)
 
 bool FHardwareTexture::BindOrCreate(FTexture *tex, int texunit, int clampmode, int translation, int flags)
 {
+	assert(!isWorkerThread);
 	int usebright = false;
 
 	bool needmipmap = (clampmode <= CLAMP_XY) && !forcenofilter;

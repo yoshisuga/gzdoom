@@ -44,18 +44,22 @@
 #include "hw_vrmodes.h"
 #include "hw_clipper.h"
 #include "v_draw.h"
+#include "ctpl.h"
 
 EXTERN_CVAR(Float, r_visibility)
 CVAR(Bool, gl_bandedswlight, false, CVAR_ARCHIVE)
 CVAR(Bool, gl_sort_textures, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 CVAR(Bool, gl_no_skyclear, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 CVAR(Int, gl_enhanced_nv_stealth, 3, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+CVAR(Bool, gl_multithread_scene, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 
 CVAR(Bool, gl_texture, true, 0)
 CVAR(Float, gl_mask_threshold, 0.5f, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 CVAR(Float, gl_mask_sprite_threshold, 0.5f, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 
 sector_t * hw_FakeFlat(sector_t * sec, sector_t * dest, area_t in_area, bool back);
+
+extern ctpl::thread_pool renderPool;
 
 //==========================================================================
 //
@@ -437,8 +441,6 @@ void HWDrawInfo::CreateScene(bool drawpsprites)
 	ProcessAll.Clock();
 
 	// clip the scene and fill the drawlists
-	screen->mVertexData->Map();
-	screen->mLights->Map();
 
 	RenderBSP(Level->HeadNode(), drawpsprites);
 
@@ -450,11 +452,9 @@ void HWDrawInfo::CreateScene(bool drawpsprites)
 	HandleHackedSubsectors();	// open sector hacks for deep water
 	PrepareUnhandledMissingTextures();
 	DispatchRenderHacks();
-	screen->mLights->Unmap();
-	screen->mVertexData->Unmap();
+	if (gl_multithread_scene) mt_draw(-1, nullptr);	// add terminator object
 
 	ProcessAll.Unclock();
-
 }
 
 //-----------------------------------------------------------------------------
@@ -676,20 +676,39 @@ void HWDrawInfo::DrawScene(int drawmode)
 		ssao_portals_available--;
 	}
 
-	if (vp.camera != nullptr)
+	screen->mVertexData->Map();
+	screen->mLights->Map();
+
+	auto drawme = [&](int id = 0)
 	{
-		ActorRenderFlags savedflags = vp.camera->renderflags;
-		CreateScene(drawmode == DM_MAINVIEW);
-		vp.camera->renderflags = savedflags;
-	}
-	else
+		isWorkerThread = true;	// for adding asserts in GL API code. The worker thread may never call any GL API. (put here so it also asserts in non-multithreaded mode)
+		if (vp.camera != nullptr)
+		{
+			ActorRenderFlags savedflags = vp.camera->renderflags;
+			CreateScene(drawmode == DM_MAINVIEW);
+			vp.camera->renderflags = savedflags;
+		}
+		else
+		{
+			CreateScene(false);
+		}
+		isWorkerThread = false;
+	};
+	if (!gl_multithread_scene) drawme();
+	else 
 	{
-		CreateScene(false);
+		auto future = renderPool.push(drawme);
+		mt_renderloop(this, *screen->RenderState());
+		future.wait();
 	}
+	screen->mLights->Unmap();
+	screen->mVertexData->Unmap();
+
 	auto& RenderState = *screen->RenderState();
 
 	RenderState.SetDepthMask(true);
-	if (!gl_no_skyclear) portalState.RenderFirstSkyPortal(recursion, this, RenderState);
+	// multithreaded scene renders its walls before this call so it has to use a stencil for the sky.
+ 	if (!gl_no_skyclear && !gl_multithread_scene) portalState.RenderFirstSkyPortal(recursion, this, RenderState);
 
 	RenderScene(RenderState);
 

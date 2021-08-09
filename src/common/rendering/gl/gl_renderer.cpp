@@ -131,6 +131,7 @@ FGLRenderer::~FGLRenderer()
 
 bool FGLRenderer::StartOffscreen()
 {
+	assert(!isWorkerThread);
 	bool firstBind = (mFBID == 0);
 	if (mFBID == 0)
 		glGenFramebuffers(1, &mFBID);
@@ -149,7 +150,8 @@ bool FGLRenderer::StartOffscreen()
 
 void FGLRenderer::EndOffscreen()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, mOldFBID); 
+	assert(!isWorkerThread);
+	glBindFramebuffer(GL_FRAMEBUFFER, mOldFBID);
 }
 
 //===========================================================================
@@ -160,6 +162,7 @@ void FGLRenderer::EndOffscreen()
 
 void FGLRenderer::BindToFrameBuffer(FTexture *tex)
 {
+	assert(!isWorkerThread);
 	auto BaseLayer = static_cast<FHardwareTexture*>(tex->GetHardwareTexture(0, 0));
 	// must create the hardware texture first
 	BaseLayer->BindOrCreate(tex, 0, 0, 0, 0);
@@ -176,6 +179,7 @@ void FGLRenderer::BindToFrameBuffer(FTexture *tex)
 
 void FGLRenderer::BeginFrame()
 {
+	assert(!isWorkerThread);
 	mScreenBuffers->Setup(screen->mScreenViewport.width, screen->mScreenViewport.height, screen->mSceneViewport.width, screen->mSceneViewport.height);
 	mSaveBuffers->Setup(SAVEPICWIDTH, SAVEPICHEIGHT, SAVEPICWIDTH, SAVEPICHEIGHT);
 }

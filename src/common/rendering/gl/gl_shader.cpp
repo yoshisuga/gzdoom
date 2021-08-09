@@ -652,6 +652,7 @@ FShader::~FShader()
 
 bool FShader::Bind()
 {
+	assert(!isWorkerThread);
 	GLRenderer->mShaderManager->SetActiveShader(this);
 	return true;
 }
@@ -664,6 +665,7 @@ bool FShader::Bind()
 
 FShader *FShaderCollection::Compile (const char *ShaderName, const char *ShaderPath, const char *LightModePath, const char *shaderdefines, bool usediscard, EPassType passType)
 {
+	assert(!isWorkerThread);
 	FString defines;
 	defines += shaderdefines;
 	// this can't be in the shader code due to ATI strangeness.
@@ -702,6 +704,7 @@ FShaderManager::FShaderManager()
 
 FShaderManager::~FShaderManager()
 {
+	assert(!isWorkerThread);
 	glUseProgram(0);
 	mActiveShader = NULL;
 
@@ -711,6 +714,7 @@ FShaderManager::~FShaderManager()
 
 void FShaderManager::SetActiveShader(FShader *sh)
 {
+	assert(!isWorkerThread);
 	if (mActiveShader != sh)
 	{
 		glUseProgram(sh!= NULL? sh->GetHandle() : 0);
@@ -720,6 +724,7 @@ void FShaderManager::SetActiveShader(FShader *sh)
 
 FShader *FShaderManager::BindEffect(int effect, EPassType passType)
 {
+	assert(!isWorkerThread);
 	if (passType < mPassShaders.Size())
 		return mPassShaders[passType]->BindEffect(effect);
 	else
@@ -728,6 +733,7 @@ FShader *FShaderManager::BindEffect(int effect, EPassType passType)
 
 FShader *FShaderManager::Get(unsigned int eff, bool alphateston, EPassType passType)
 {
+	assert(!isWorkerThread);
 	if (passType < mPassShaders.Size())
 		return mPassShaders[passType]->Get(eff, alphateston);
 	else
@@ -764,6 +770,7 @@ FShaderCollection::~FShaderCollection()
 
 void FShaderCollection::CompileShaders(EPassType passType)
 {
+	assert(!isWorkerThread);
 	mMaterialShaders.Clear();
 	mMaterialShadersNAT.Clear();
 	for (int i = 0; i < MAX_EFFECTS; i++)
@@ -810,6 +817,7 @@ void FShaderCollection::CompileShaders(EPassType passType)
 
 void FShaderCollection::Clean()
 {
+	assert(!isWorkerThread);
 	for (unsigned int i = 0; i < mMaterialShadersNAT.Size(); i++)
 	{
 		if (mMaterialShadersNAT[i] != NULL) delete mMaterialShadersNAT[i];
@@ -835,6 +843,7 @@ void FShaderCollection::Clean()
 
 int FShaderCollection::Find(const char * shn)
 {
+	assert(!isWorkerThread);
 	FName sfn = shn;
 
 	for(unsigned int i=0;i<mMaterialShaders.Size();i++)
@@ -856,6 +865,7 @@ int FShaderCollection::Find(const char * shn)
 
 FShader *FShaderCollection::BindEffect(int effect)
 {
+	assert(!isWorkerThread);
 	if (effect >= 0 && effect < MAX_EFFECTS && mEffectShaders[effect] != NULL)
 	{
 		mEffectShaders[effect]->Bind();

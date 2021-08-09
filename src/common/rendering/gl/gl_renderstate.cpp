@@ -285,6 +285,7 @@ void FGLRenderState::ApplyBuffers()
 
 void FGLRenderState::Apply()
 {
+	assert(!isWorkerThread);
 	ApplyState();
 	ApplyBuffers();
 	ApplyShader();
@@ -298,6 +299,7 @@ void FGLRenderState::Apply()
 
 void FGLRenderState::ApplyMaterial(FMaterial *mat, int clampmode, int translation, int overrideshader)
 {
+	assert(!isWorkerThread);
 	if (mat->Source()->isHardwareCanvas())
 	{
 		mTempTM = TM_OPAQUE;
@@ -365,6 +367,7 @@ void FGLRenderState::ApplyMaterial(FMaterial *mat, int clampmode, int translatio
 
 void FGLRenderState::ApplyBlendMode()
 {
+	assert(!isWorkerThread);
 	static int blendstyles[] = { GL_ZERO, GL_ONE, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA };
 	static int renderops[] = { 0, GL_FUNC_ADD, GL_FUNC_SUBTRACT, GL_FUNC_REVERSE_SUBTRACT, -1, -1, -1, -1,
 		-1, -1, -1, -1, -1, -1, -1, -1 };
@@ -405,6 +408,7 @@ static int dt2gl[] = { GL_POINTS, GL_LINES, GL_TRIANGLES, GL_TRIANGLE_FAN, GL_TR
 
 void FGLRenderState::Draw(int dt, int index, int count, bool apply)
 {
+	assert(!isWorkerThread);
 	if (apply)
 	{
 		Apply();
@@ -416,6 +420,7 @@ void FGLRenderState::Draw(int dt, int index, int count, bool apply)
 
 void FGLRenderState::DrawIndexed(int dt, int index, int count, bool apply)
 {
+	assert(!isWorkerThread);
 	if (apply)
 	{
 		Apply();
@@ -427,27 +432,32 @@ void FGLRenderState::DrawIndexed(int dt, int index, int count, bool apply)
 
 void FGLRenderState::SetDepthMask(bool on)
 {
+	assert(!isWorkerThread);
 	glDepthMask(on);
 }
 
 void FGLRenderState::SetDepthFunc(int func)
 {
+	assert(!isWorkerThread);
 	static int df2gl[] = { GL_LESS, GL_LEQUAL, GL_ALWAYS };
 	glDepthFunc(df2gl[func]);
 }
 
 void FGLRenderState::SetDepthRange(float min, float max)
 {
+	assert(!isWorkerThread);
 	glDepthRange(min, max);
 }
 
 void FGLRenderState::SetColorMask(bool r, bool g, bool b, bool a)
 {
+	assert(!isWorkerThread);
 	glColorMask(r, g, b, a);
 }
 
 void FGLRenderState::SetStencil(int offs, int op, int flags = -1)
 {
+	assert(!isWorkerThread);
 	static int op2gl[] = { GL_KEEP, GL_INCR, GL_DECR };
 
 	glStencilFunc(GL_EQUAL, screen->stencilValue + offs, ~0);		// draw sky into stencil
@@ -463,6 +473,7 @@ void FGLRenderState::SetStencil(int offs, int op, int flags = -1)
 
 void FGLRenderState::ToggleState(int state, bool on)
 {
+	assert(!isWorkerThread);
 	if (on)
 	{
 		glEnable(state);
@@ -475,6 +486,7 @@ void FGLRenderState::ToggleState(int state, bool on)
 
 void FGLRenderState::SetCulling(int mode)
 {
+	assert(!isWorkerThread);
 	if (mode != Cull_None)
 	{
 		glEnable(GL_CULL_FACE);
@@ -488,6 +500,7 @@ void FGLRenderState::SetCulling(int mode)
 
 void FGLRenderState::EnableClipDistance(int num, bool state)
 {
+	assert(!isWorkerThread);
 	// Update the viewpoint-related clip plane setting.
 	if (!(gl.flags & RFL_NO_CLIP_PLANES))
 	{
@@ -497,6 +510,7 @@ void FGLRenderState::EnableClipDistance(int num, bool state)
 
 void FGLRenderState::Clear(int targets)
 {
+	assert(!isWorkerThread);
 	// This always clears to default values.
 	int gltarget = 0;
 	if (targets & CT_Depth)
@@ -519,11 +533,13 @@ void FGLRenderState::Clear(int targets)
 
 void FGLRenderState::EnableStencil(bool on)
 {
+	assert(!isWorkerThread);
 	ToggleState(GL_STENCIL_TEST, on);
 }
 
 void FGLRenderState::SetScissor(int x, int y, int w, int h)
 {
+	assert(!isWorkerThread);
 	if (w > -1)
 	{
 		glEnable(GL_SCISSOR_TEST);
@@ -537,21 +553,25 @@ void FGLRenderState::SetScissor(int x, int y, int w, int h)
 
 void FGLRenderState::SetViewport(int x, int y, int w, int h)
 {
+	assert(!isWorkerThread);
 	glViewport(x, y, w, h);
 }
 
 void FGLRenderState::EnableDepthTest(bool on)
 {
+	assert(!isWorkerThread);
 	ToggleState(GL_DEPTH_TEST, on);
 }
 
 void FGLRenderState::EnableMultisampling(bool on)
 {
+	assert(!isWorkerThread);
 	ToggleState(GL_MULTISAMPLE, on);
 }
 
 void FGLRenderState::EnableLineSmooth(bool on)
 {
+	assert(!isWorkerThread);
 	ToggleState(GL_LINE_SMOOTH, on);
 }
 
@@ -562,6 +582,7 @@ void FGLRenderState::EnableLineSmooth(bool on)
 //==========================================================================
 void FGLRenderState::ClearScreen()
 {
+	assert(!isWorkerThread);
 	bool multi = !!glIsEnabled(GL_MULTISAMPLE);
 
 	screen->mViewpoints->Set2D(*this, SCREENWIDTH, SCREENHEIGHT);
@@ -588,6 +609,7 @@ void FGLRenderState::ClearScreen()
 
 bool FGLRenderState::SetDepthClamp(bool on)
 {
+	assert(!isWorkerThread);
 	bool res = mLastDepthClamp;
 	if (!on) glDisable(GL_DEPTH_CLAMP);
 	else glEnable(GL_DEPTH_CLAMP);

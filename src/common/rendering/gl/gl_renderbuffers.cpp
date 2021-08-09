@@ -47,6 +47,7 @@ namespace OpenGLRenderer
 
 FGLRenderBuffers::FGLRenderBuffers()
 {
+	assert(!isWorkerThread);
 	glGetIntegerv(GL_MAX_SAMPLES, &mMaxSamples);
 }
 
@@ -67,6 +68,7 @@ FGLRenderBuffers::~FGLRenderBuffers()
 
 void FGLRenderBuffers::ClearScene()
 {
+	assert(!isWorkerThread);
 	DeleteFrameBuffer(mSceneFB);
 	DeleteFrameBuffer(mSceneDataFB);
 	if (mSceneUsesTextures)
@@ -87,6 +89,7 @@ void FGLRenderBuffers::ClearScene()
 
 void FGLRenderBuffers::ClearPipeline()
 {
+	assert(!isWorkerThread);
 	for (int i = 0; i < NumPipelineTextures; i++)
 	{
 		DeleteFrameBuffer(mPipelineFB[i]);
@@ -96,6 +99,7 @@ void FGLRenderBuffers::ClearPipeline()
 
 void FGLRenderBuffers::ClearEyeBuffers()
 {
+	assert(!isWorkerThread);
 	for (auto handle : mEyeFBs)
 		DeleteFrameBuffer(handle);
 
@@ -108,6 +112,7 @@ void FGLRenderBuffers::ClearEyeBuffers()
 
 void FGLRenderBuffers::DeleteTexture(PPGLTexture &tex)
 {
+	assert(!isWorkerThread);
 	if (tex.handle != 0)
 		glDeleteTextures(1, &tex.handle);
 	tex.handle = 0;
@@ -115,6 +120,7 @@ void FGLRenderBuffers::DeleteTexture(PPGLTexture &tex)
 
 void FGLRenderBuffers::DeleteRenderBuffer(PPGLRenderBuffer &buf)
 {
+	assert(!isWorkerThread);
 	if (buf.handle != 0)
 		glDeleteRenderbuffers(1, &buf.handle);
 	buf.handle = 0;
@@ -122,6 +128,7 @@ void FGLRenderBuffers::DeleteRenderBuffer(PPGLRenderBuffer &buf)
 
 void FGLRenderBuffers::DeleteFrameBuffer(PPGLFrameBuffer &fb)
 {
+	assert(!isWorkerThread);
 	if (fb.handle != 0)
 		glDeleteFramebuffers(1, &fb.handle);
 	fb.handle = 0;
@@ -136,6 +143,7 @@ void FGLRenderBuffers::DeleteFrameBuffer(PPGLFrameBuffer &fb)
 
 void FGLRenderBuffers::Setup(int width, int height, int sceneWidth, int sceneHeight)
 {
+	assert(!isWorkerThread);
 	if (width <= 0 || height <= 0)
 		I_FatalError("Requested invalid render buffer sizes: screen = %dx%d", width, height);
 
@@ -254,6 +262,7 @@ void FGLRenderBuffers::CreatePipeline(int width, int height)
 
 void FGLRenderBuffers::CreateEyeBuffers(int eye)
 {
+	assert(!isWorkerThread);
 	if (mEyeFBs.Size() > unsigned(eye))
 		return;
 
@@ -283,6 +292,7 @@ void FGLRenderBuffers::CreateEyeBuffers(int eye)
 
 PPGLTexture FGLRenderBuffers::Create2DTexture(const char *name, GLuint format, int width, int height, const void *data)
 {
+	assert(!isWorkerThread);
 	PPGLTexture tex;
 	tex.Width = width;
 	tex.Height = height;
@@ -319,6 +329,7 @@ PPGLTexture FGLRenderBuffers::Create2DTexture(const char *name, GLuint format, i
 
 PPGLTexture FGLRenderBuffers::Create2DMultisampleTexture(const char *name, GLuint format, int width, int height, int samples, bool fixedSampleLocations)
 {
+	assert(!isWorkerThread);
 	PPGLTexture tex;
 	tex.Width = width;
 	tex.Height = height;
@@ -338,6 +349,7 @@ PPGLTexture FGLRenderBuffers::Create2DMultisampleTexture(const char *name, GLuin
 
 PPGLRenderBuffer FGLRenderBuffers::CreateRenderBuffer(const char *name, GLuint format, int width, int height)
 {
+	assert(!isWorkerThread);
 	PPGLRenderBuffer buf;
 	glGenRenderbuffers(1, &buf.handle);
 	glBindRenderbuffer(GL_RENDERBUFFER, buf.handle);
@@ -348,6 +360,7 @@ PPGLRenderBuffer FGLRenderBuffers::CreateRenderBuffer(const char *name, GLuint f
 
 PPGLRenderBuffer FGLRenderBuffers::CreateRenderBuffer(const char *name, GLuint format, int width, int height, int samples)
 {
+	assert(!isWorkerThread);
 	if (samples <= 1)
 		return CreateRenderBuffer(name, format, width, height);
 
@@ -367,6 +380,7 @@ PPGLRenderBuffer FGLRenderBuffers::CreateRenderBuffer(const char *name, GLuint f
 
 PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLTexture colorbuffer)
 {
+	assert(!isWorkerThread);
 	PPGLFrameBuffer fb;
 	glGenFramebuffers(1, &fb.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb.handle);
@@ -379,6 +393,7 @@ PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLTextur
 
 PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLTexture colorbuffer, PPGLRenderBuffer depthstencil)
 {
+	assert(!isWorkerThread);
 	PPGLFrameBuffer fb;
 	glGenFramebuffers(1, &fb.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb.handle);
@@ -392,6 +407,7 @@ PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLTextur
 
 PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLRenderBuffer colorbuffer, PPGLRenderBuffer depthstencil)
 {
+	assert(!isWorkerThread);
 	PPGLFrameBuffer fb;
 	glGenFramebuffers(1, &fb.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb.handle);
@@ -405,6 +421,7 @@ PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLRender
 
 PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLTexture colorbuffer0, PPGLTexture colorbuffer1, PPGLTexture colorbuffer2, PPGLTexture depthstencil, bool multisample)
 {
+	assert(!isWorkerThread);
 	PPGLFrameBuffer fb;
 	glGenFramebuffers(1, &fb.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb.handle);
@@ -440,6 +457,7 @@ PPGLFrameBuffer FGLRenderBuffers::CreateFrameBuffer(const char *name, PPGLTextur
 
 bool FGLRenderBuffers::CheckFrameBufferCompleteness()
 {
+	assert(!isWorkerThread);
 	GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (result == GL_FRAMEBUFFER_COMPLETE)
 		return true;
@@ -475,6 +493,7 @@ bool FGLRenderBuffers::CheckFrameBufferCompleteness()
 
 void FGLRenderBuffers::ClearFrameBuffer(bool stencil, bool depth)
 {
+	assert(!isWorkerThread);
 	GLboolean scissorEnabled;
 	GLint stencilValue;
 	GLdouble depthValue;
@@ -505,6 +524,7 @@ void FGLRenderBuffers::ClearFrameBuffer(bool stencil, bool depth)
 
 void FGLRenderBuffers::BlitSceneToTexture()
 {
+	assert(!isWorkerThread);
 	mCurrentPipelineTexture = 0;
 
 	if (mSamples <= 1)
@@ -532,6 +552,7 @@ void FGLRenderBuffers::BlitSceneToTexture()
 
 void FGLRenderBuffers::BlitToEyeTexture(int eye, bool allowInvalidate)
 {
+	assert(!isWorkerThread);
 	CreateEyeBuffers(eye);
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, mPipelineFB[mCurrentPipelineTexture].handle);
@@ -550,6 +571,7 @@ void FGLRenderBuffers::BlitToEyeTexture(int eye, bool allowInvalidate)
 
 void FGLRenderBuffers::BlitFromEyeTexture(int eye)
 {
+	assert(!isWorkerThread);
 	if (mEyeFBs.Size() <= unsigned(eye)) return;
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mPipelineFB[mCurrentPipelineTexture].handle);
@@ -568,6 +590,7 @@ void FGLRenderBuffers::BlitFromEyeTexture(int eye)
 
 void FGLRenderBuffers::BindEyeTexture(int eye, int texunit)
 {
+	assert(!isWorkerThread);
 	CreateEyeBuffers(eye);
 	glActiveTexture(GL_TEXTURE0 + texunit);
 	glBindTexture(GL_TEXTURE_2D, mEyeTextures[eye].handle);
@@ -575,6 +598,7 @@ void FGLRenderBuffers::BindEyeTexture(int eye, int texunit)
 
 void FGLRenderBuffers::BindDitherTexture(int texunit)
 {
+	assert(!isWorkerThread);
 	if (!mDitherTexture)
 	{
 		static const float data[64] =
@@ -603,12 +627,14 @@ void FGLRenderBuffers::BindDitherTexture(int texunit)
 
 void FGLRenderBuffers::BindShadowMapFB()
 {
+	assert(!isWorkerThread);
 	CreateShadowMap();
 	glBindFramebuffer(GL_FRAMEBUFFER, mShadowMapFB.handle);
 }
 
 void FGLRenderBuffers::BindShadowMapTexture(int texunit)
 {
+	assert(!isWorkerThread);
 	CreateShadowMap();
 	glActiveTexture(GL_TEXTURE0 + texunit);
 	glBindTexture(GL_TEXTURE_2D, mShadowMapTexture.handle);
@@ -616,6 +642,7 @@ void FGLRenderBuffers::BindShadowMapTexture(int texunit)
 
 void FGLRenderBuffers::ClearShadowMap()
 {
+	assert(!isWorkerThread);
 	DeleteFrameBuffer(mShadowMapFB);
 	DeleteTexture(mShadowMapTexture);
 	mCurrentShadowMapSize = 0;
@@ -623,6 +650,7 @@ void FGLRenderBuffers::ClearShadowMap()
 
 void FGLRenderBuffers::CreateShadowMap()
 {
+	assert(!isWorkerThread);
 	if (mShadowMapTexture.handle != 0 && gl_shadowmap_quality == mCurrentShadowMapSize)
 		return;
 
@@ -657,6 +685,7 @@ void FGLRenderBuffers::CreateShadowMap()
 
 void FGLRenderBuffers::BindSceneFB(bool sceneData)
 {
+	assert(!isWorkerThread);
 	glBindFramebuffer(GL_FRAMEBUFFER, sceneData ? mSceneDataFB.handle : mSceneFB.handle);
 }
 
@@ -668,6 +697,7 @@ void FGLRenderBuffers::BindSceneFB(bool sceneData)
 
 void FGLRenderBuffers::BindSceneColorTexture(int index)
 {
+	assert(!isWorkerThread);
 	glActiveTexture(GL_TEXTURE0 + index);
 	if (mSamples > 1)
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, mSceneMultisampleTex.handle);
@@ -683,6 +713,7 @@ void FGLRenderBuffers::BindSceneColorTexture(int index)
 
 void FGLRenderBuffers::BindSceneFogTexture(int index)
 {
+	assert(!isWorkerThread);
 	glActiveTexture(GL_TEXTURE0 + index);
 	if (mSamples > 1)
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, mSceneFogTex.handle);
@@ -698,6 +729,7 @@ void FGLRenderBuffers::BindSceneFogTexture(int index)
 
 void FGLRenderBuffers::BindSceneNormalTexture(int index)
 {
+	assert(!isWorkerThread);
 	glActiveTexture(GL_TEXTURE0 + index);
 	if (mSamples > 1)
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, mSceneNormalTex.handle);
@@ -713,6 +745,7 @@ void FGLRenderBuffers::BindSceneNormalTexture(int index)
 
 void FGLRenderBuffers::BindSceneDepthTexture(int index)
 {
+	assert(!isWorkerThread);
 	glActiveTexture(GL_TEXTURE0 + index);
 	if (mSamples > 1)
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, mSceneDepthStencilTex.handle);
@@ -728,6 +761,7 @@ void FGLRenderBuffers::BindSceneDepthTexture(int index)
 
 void FGLRenderBuffers::BindCurrentTexture(int index, int filter, int wrap)
 {
+	assert(!isWorkerThread);
 	mPipelineTexture[mCurrentPipelineTexture].Bind(index, filter, wrap);
 }
 
@@ -739,6 +773,7 @@ void FGLRenderBuffers::BindCurrentTexture(int index, int filter, int wrap)
 
 void FGLRenderBuffers::BindCurrentFB()
 {
+	assert(!isWorkerThread);
 	mPipelineFB[mCurrentPipelineTexture].Bind();
 }
 
@@ -750,6 +785,7 @@ void FGLRenderBuffers::BindCurrentFB()
 
 void FGLRenderBuffers::BindNextFB()
 {
+	assert(!isWorkerThread);
 	int out = (mCurrentPipelineTexture + 1) % NumPipelineTextures;
 	mPipelineFB[out].Bind();
 }
@@ -762,6 +798,7 @@ void FGLRenderBuffers::BindNextFB()
 
 void FGLRenderBuffers::NextTexture()
 {
+	assert(!isWorkerThread);
 	mCurrentPipelineTexture = (mCurrentPipelineTexture + 1) % NumPipelineTextures;
 }
 
@@ -773,6 +810,7 @@ void FGLRenderBuffers::NextTexture()
 
 void FGLRenderBuffers::BindOutputFB()
 {
+	assert(!isWorkerThread);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -792,6 +830,7 @@ bool FGLRenderBuffers::FailedCreate = false;
 
 PPGLTextureBackend *GLPPRenderState::GetGLTexture(PPTexture *texture)
 {
+	assert(!isWorkerThread);
 	if (!texture->Backend)
 	{
 		FGLPostProcessState savedState;
@@ -827,6 +866,7 @@ PPGLTextureBackend *GLPPRenderState::GetGLTexture(PPTexture *texture)
 
 FShaderProgram *GLPPRenderState::GetGLShader(PPShader *shader)
 {
+	assert(!isWorkerThread);
 	if (!shader->Backend)
 	{
 		auto glshader = std::make_unique<FShaderProgram>();
@@ -855,6 +895,7 @@ FShaderProgram *GLPPRenderState::GetGLShader(PPShader *shader)
 
 void GLPPRenderState::Draw()
 {
+	assert(!isWorkerThread);
 	FGLPostProcessState savedState;
 
 	// Bind input textures
@@ -971,11 +1012,13 @@ void GLPPRenderState::Draw()
 
 void GLPPRenderState::PushGroup(const FString &name)
 {
+	assert(!isWorkerThread);
 	FGLDebug::PushGroup(name.GetChars());
 }
 
 void GLPPRenderState::PopGroup()
 {
+	assert(!isWorkerThread);
 	FGLDebug::PopGroup();
 }
 
@@ -984,6 +1027,7 @@ void GLPPRenderState::PopGroup()
 
 int FGLRenderBuffers::NextEye(int eyeCount)
 {
+	assert(!isWorkerThread);
 	int nextEye = (mCurrentEye + 1) % eyeCount;
 	if (nextEye == mCurrentEye) return mCurrentEye;
 	BlitToEyeTexture(mCurrentEye);

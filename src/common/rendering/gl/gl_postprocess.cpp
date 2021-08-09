@@ -47,6 +47,7 @@ namespace OpenGLRenderer
 
 void FGLRenderer::RenderScreenQuad()
 {
+	assert(!isWorkerThread);
 	auto buffer = static_cast<GLVertexBuffer *>(screen->mVertexData->GetBufferObjects().first);
 	buffer->Bind(nullptr);
 	glDrawArrays(GL_TRIANGLE_STRIP, FFlatVertexBuffer::PRESENT_INDEX, 3);
@@ -54,6 +55,7 @@ void FGLRenderer::RenderScreenQuad()
 
 void FGLRenderer::PostProcessScene(int fixedcm, float flash, const std::function<void()> &afterBloomDrawEndScene2D)
 {
+	assert(!isWorkerThread);
 	int sceneWidth = mBuffers->GetSceneWidth();
 	int sceneHeight = mBuffers->GetSceneHeight();
 
@@ -73,6 +75,7 @@ void FGLRenderer::PostProcessScene(int fixedcm, float flash, const std::function
 
 void FGLRenderer::AmbientOccludeScene(float m5)
 {
+	assert(!isWorkerThread);
 	int sceneWidth = mBuffers->GetSceneWidth();
 	int sceneHeight = mBuffers->GetSceneHeight();
 
@@ -82,6 +85,7 @@ void FGLRenderer::AmbientOccludeScene(float m5)
 
 void FGLRenderer::BlurScene(float gameinfobluramount)
 {
+	assert(!isWorkerThread);
 	int sceneWidth = mBuffers->GetSceneWidth();
 	int sceneHeight = mBuffers->GetSceneHeight();
 
@@ -98,6 +102,7 @@ void FGLRenderer::BlurScene(float gameinfobluramount)
 
 void FGLRenderer::ClearTonemapPalette()
 {
+	assert(!isWorkerThread);
 	hw_postprocess.tonemap.ClearTonemapPalette();
 }
 
@@ -109,6 +114,7 @@ void FGLRenderer::ClearTonemapPalette()
 
 void FGLRenderer::Flush()
 {
+	assert(!isWorkerThread);
 	auto vrmode = VRMode::GetVRMode(true);
 	if (vrmode->mEyeCount == 1)
 	{
@@ -143,6 +149,7 @@ void FGLRenderer::Flush()
 
 void FGLRenderer::CopyToBackbuffer(const IntRect *bounds, bool applyGamma)
 {
+	assert(!isWorkerThread);
 	screen->Draw2D();	// draw all pending 2D stuff before copying the buffer
 	twod->Clear();
 
@@ -172,6 +179,7 @@ void FGLRenderer::CopyToBackbuffer(const IntRect *bounds, bool applyGamma)
 
 void FGLRenderer::DrawPresentTexture(const IntRect &box, bool applyGamma)
 {
+	assert(!isWorkerThread);
 	glViewport(box.left, box.top, box.width, box.height);
 
 	mBuffers->BindDitherTexture(1);
@@ -231,6 +239,7 @@ void FGLRenderer::DrawPresentTexture(const IntRect &box, bool applyGamma)
 
 void FGLRenderer::ClearBorders()
 {
+	assert(!isWorkerThread);
 	const auto &box = screen->mOutputLetterbox;
 
 	int clientWidth = framebuffer->GetClientWidth();
