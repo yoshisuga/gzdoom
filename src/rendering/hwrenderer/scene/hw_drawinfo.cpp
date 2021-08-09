@@ -51,7 +51,11 @@ CVAR(Bool, gl_bandedswlight, false, CVAR_ARCHIVE)
 CVAR(Bool, gl_sort_textures, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 CVAR(Bool, gl_no_skyclear, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 CVAR(Int, gl_enhanced_nv_stealth, 3, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
-CVAR(Bool, gl_multithread_scene, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+bool int_multithread_scene;
+CUSTOM_CVAR(Bool, gl_multithread_scene, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+{
+	int_multithread_scene = self;
+}
 
 CVAR(Bool, gl_texture, true, 0)
 CVAR(Float, gl_mask_threshold, 0.5f, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
@@ -452,7 +456,7 @@ void HWDrawInfo::CreateScene(bool drawpsprites)
 	HandleHackedSubsectors();	// open sector hacks for deep water
 	PrepareUnhandledMissingTextures();
 	DispatchRenderHacks();
-	if (gl_multithread_scene) mt_draw(-1, nullptr);	// add terminator object
+	if (int_multithread_scene) mt_draw(-1, nullptr);	// add terminator object
 
 	ProcessAll.Unclock();
 }
@@ -694,7 +698,9 @@ void HWDrawInfo::DrawScene(int drawmode)
 		}
 		isWorkerThread = false;
 	};
-	if (!gl_multithread_scene) drawme();
+	// Multithreading can only be done here if we have a coherent and persistent vertex buffer.
+	bool usemt = int_multithread_scene && screen->BuffersArePersistent();
+	if (!usemt) drawme();
 	else 
 	{
 		auto future = renderPool.push(drawme);
@@ -708,7 +714,7 @@ void HWDrawInfo::DrawScene(int drawmode)
 
 	RenderState.SetDepthMask(true);
 	// multithreaded scene renders its walls before this call so it has to use a stencil for the sky.
- 	if (!gl_no_skyclear && !gl_multithread_scene) portalState.RenderFirstSkyPortal(recursion, this, RenderState);
+ 	if (!gl_no_skyclear && !int_multithread_scene) portalState.RenderFirstSkyPortal(recursion, this, RenderState);
 
 	RenderScene(RenderState);
 

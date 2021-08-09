@@ -30,7 +30,7 @@
 #include "g_levellocals.h"
 
 EXTERN_CVAR(Bool, gl_seamless)
-EXTERN_CVAR(Bool, gl_multithread_scene)
+extern bool int_multithread_scene;
 
 //==========================================================================
 //
@@ -57,7 +57,7 @@ void HWDrawInfo::AddWall(HWWall *wall)
 		else
 		{
 			list = masked ? GLDL_MASKEDWALLS : GLDL_PLAINWALLS;
-			if (gl_multithread_scene)
+			if (int_multithread_scene)
 			{
 				auto newwall = (HWWall*)RenderDataAllocator.Alloc(sizeof(HWWall));
 				*newwall = *wall;
@@ -138,7 +138,7 @@ void HWDrawInfo::AddFlat(HWFlat *flat, bool fog)
 		bool masked = flat->texture->isMasked() && ((flat->renderflags&SSRF_RENDER3DPLANES) || flat->stack);
 		list = masked ? GLDL_MASKEDFLATS : GLDL_PLAINFLATS;
 	}
-	if (gl_multithread_scene && list <= GLDL_MASKEDFLATS)
+	if (int_multithread_scene && list <= GLDL_MASKEDFLATS)
 	{
 		auto newflat = (HWFlat*)RenderDataAllocator.Alloc(sizeof(HWFlat));
 		*newflat = *flat;
