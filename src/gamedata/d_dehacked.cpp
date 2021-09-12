@@ -104,6 +104,8 @@ struct DEHSprName
 	char c[5];
 };
 static TArray<DEHSprName> OrgSprNames;
+size_t OrgSprOrgSize;
+static TMap<FState, int> stateSprites;
 
 struct StateMapper
 {
@@ -129,7 +131,7 @@ static PClassActor* FindInfoName(int index, bool mustexist = false)
 
 	if (dsdhacked)
 	{
-		FStringf name = "~Dsdhacked~%d", index);
+		FStringf name("~Dsdhacked~%d", index);
 		auto cls = PClass::FindActor(name);
 		if (cls)
 		{
@@ -138,10 +140,72 @@ static PClassActor* FindInfoName(int index, bool mustexist = false)
 		}
 		if (!mustexist)
 		{
-			return RUNTIME_CLASS(AActor)->CreateDerivedClass(name.GetChars(), (unsigned)sizeof(AActor));
+			cls = RUNTIME_CLASS(AActor)->CreateDerivedClass(name.GetChars(), (unsigned)sizeof(AActor));
+			NewClassType(cls);	// This needs a VM type to work as intended.
+			return cls;
 		}
 	}
 	return nullptr;
+}
+
+static FSoundID DehFindSound(int index,bool mustexist = false)
+{
+	if (index < 0) return 0;
+	if (index < (int) SoundMap.Size()) return SoundMap[i];
+	FStringf name("~dsdhacked/#%d", index);
+	if (dsdhacked && !mustexist) return soundEngine->FindSoundTentative(name);
+	return nullptr;
+}
+
+static void ReplaceSoundName(int index, const char* newname)
+{
+	// This must physically replace the sound's lump name in the sound record.
+	auto snd = DehFindSound(index-1);
+	if (snd == 0) return;
+	auto sfx = soundEngine->GetSfx(snd);
+	FStringf dsname("ds%s", newname);
+	sfx->lumpnum = fileSystem.CheckNumForName(dsname, ns_sounds);
+	sfx->bTentative = false;
+	sfx->bRandomHeader = false;
+	sfx->bLoadRAW = false;
+	sfx->b16bit = false;
+	sfx->bUsed = false;
+	sfx->UserData[0] = 0;
+}
+
+void RemapAllSprites()
+{
+	TMap<FState*, int>::Iterator it(stateSprites);
+	TMap<FState*, int>::Pair *pair;
+	
+	while (it.NextPair(pair))
+	{
+		auto info = pair->Key;
+		int val = pair->Value;
+		unsigned int i;
+		
+		if (val >= 0 && val < (int)OrgSprNames.Size())
+		{
+			for (i = 0; i < sprites.Size(); i++)
+			{
+				if (memcmp (OrgSprNames[val].c, sprites[i].name, 4) == 0)
+				{
+					info->sprite = (int)i;
+					break;
+				}
+			}
+			if (i == sprites.Size ())
+			{
+				Printf ("Frame %d: Sprite %d (%s) is undefined\n",
+						frameNum, val, OrgSprNames[val].c);
+			}
+		}
+		else
+		{
+			Printf ("Frame %d: Sprite %d out of range\n", frameNum, val);
+		}
+	}
+	stateSprites.Clear();
 }
 
 // bit flags for PatchThing (a .bex extension):
@@ -204,8 +268,7 @@ struct MBFParamState
 	int GetSoundArg(int i, int def = 0)
 	{
 		int num = argsused & (1 << i) ? (int)args[i] : def;
-		if (num > 0 && num < int(SoundMap.Size())) return SoundMap[num];
-		return 0;
+		return DehFindSound(num-1, true);
 	}
 
 	double GetFloatArg(int i, double def = 0)
@@ -761,7 +824,7 @@ static void CreateFaceFunc(FunctionCallEmitter &emitters, int value1, int value2
 static void CreateScratchFunc(FunctionCallEmitter &emitters, int value1, int value2, MBFParamState* state)
 { // A_CustomMeleeAttack
 	emitters.AddParameterIntConst(value1);								// damage
-	emitters.AddParameterIntConst(value2 ? (int)SoundMap[value2 - 1] : 0);	// hit sound
+	emitters.AddParameterIntConst(DehFindSound(value2 - 1, true);		// hit sound
 	emitters.AddParameterIntConst(0);									// miss sound
 	emitters.AddParameterIntConst(NAME_None);							// damage type
 	emitters.AddParameterIntConst(true);								// bleed
@@ -770,7 +833,7 @@ static void CreateScratchFunc(FunctionCallEmitter &emitters, int value1, int val
 // misc1 = sound, misc2 = attenuation none (true) or normal (false)
 static void CreatePlaySoundFunc(FunctionCallEmitter &emitters, int value1, int value2, MBFParamState* state)
 { // A_PlaySound
-	emitters.AddParameterIntConst(value1 ? (int)SoundMap[value1 - 1] : 0);	// soundid
+	emitters.AddParameterIntConst(DehFindSound(value1 - 1, true));		// soundid
 	emitters.AddParameterIntConst(CHAN_BODY);							// channel
 	emitters.AddParameterFloatConst(1);									// volume
 	emitters.AddParameterIntConst(false);								// looping
@@ -1418,9 +1481,9 @@ static int PatchThing (int thingy)
 			}
 			else if (stricmp (Line1 + linelen - 6, " sound") == 0)
 			{
-				FSoundID snd = 0;
+				FSoundID snd = DehFindSound(val - 1);
 				
-				if (val == 0 || val >= SoundMap.Size())
+				if (snd == 0) // This won't trigger for dsdhacked patches!
 				{
 					if (endptr == Line2)
 					{ // Sound was not a (valid) number,
@@ -1428,10 +1491,6 @@ static int PatchThing (int thingy)
 						stripwhite (Line2);
 						snd = Line2;
 					}
-				}
-				else
-				{
-					snd = SoundMap[val-1];
 				}
 
 				if (!strnicmp (Line1, "Alert", 5))
@@ -1824,28 +1883,7 @@ static int PatchFrame (int frameNum)
 		}
 		else if (keylen == 13 && stricmp (Line1, "Sprite number") == 0)
 		{
-			unsigned int i;
-
-			if (val < (int)OrgSprNames.Size())
-			{
-				for (i = 0; i < sprites.Size(); i++)
-				{
-					if (memcmp (OrgSprNames[val].c, sprites[i].name, 4) == 0)
-					{
-						info->sprite = (int)i;
-						break;
-					}
-				}
-				if (i == sprites.Size ())
-				{
-					Printf ("Frame %d: Sprite %d (%s) is undefined\n",
-						frameNum, val, OrgSprNames[val].c);
-				}
-			}
-			else
-			{
-				Printf ("Frame %d: Sprite %d out of range\n", frameNum, val);
-			}
+			stateSprites.Insert(info, val);
 		}
 		else if (keylen == 10 && stricmp (Line1, "Next frame") == 0)
 		{
@@ -1947,7 +1985,7 @@ static int PatchSprite (int sprNum)
 	int result;
 	int offset = 0;
 
-	if ((unsigned)sprNum < OrgSprNames.Size())
+	if ((unsigned)sprNum < OrgSprOrgSize)
 	{
 		DPrintf (DMSG_SPAMMY, "Sprite %d\n", sprNum);
 	}
@@ -1964,12 +2002,12 @@ static int PatchSprite (int sprNum)
 		else Printf (unknown_str, Line1, "Sprite", sprNum);
 	}
 
-	if (offset > 0 && sprNum != -1)
+	if (offset > 0 && sprNum != -1 && !dsdhacked)
 	{
 		// Calculate offset from beginning of sprite names.
 		offset = (offset - toff[dversion] - 22044) / 8;
 	
-		if ((unsigned)offset < OrgSprNames.Size())
+		if ((unsigned)offset < OrgSprOrgSize)
 		{
 			sprNum = FindSprite (OrgSprNames[sprNum].c);
 			if (sprNum != -1)
@@ -2604,6 +2642,7 @@ static int PatchPars (int dummy)
 	return result;
 }
 
+								
 static int PatchCodePtrs (int dummy)
 {
 	int result;
@@ -2693,6 +2732,40 @@ static int PatchMusic (int dummy)
 
 	return result;
 }
+			
+// This repplaces a sprite name in the current working data
+static void ReplaceSpriteInData(const char* oldStr, const char* newStr)
+	{
+		if (strncmp ("PLAY", oldStr, 4) == 0)
+		{
+			strncpy (deh.PlayerSprite, newStr, 4);
+		}
+		// If this sprite is used by a pickup, then the DehackedPickup sprite map
+		// needs to be updated too.
+		for (size_t i = 0; i < countof(DehSpriteMappings); ++i)
+		{
+			if (strncmp (DehSpriteMappings[i].Sprite, oldStr, 4) == 0)
+			{
+				// Found a match, so change it.
+				strncpy (DehSpriteMappings[i].Sprite, newStr, 4);
+				
+				// Now shift the map's entries around so that it stays sorted.
+				// This must be done because the map is scanned using a binary search.
+				while (i > 0 && strncmp (DehSpriteMappings[i-1].Sprite, newStr, 4) > 0)
+				{
+					std::swap (DehSpriteMappings[i-1], DehSpriteMappings[i]);
+					--i;
+				}
+				while ((size_t)i < countof(DehSpriteMappings)-1 &&
+					   strncmp (DehSpriteMappings[i+1].Sprite, newStr, 4) < 0)
+				{
+					std::swap (DehSpriteMappings[i+1], DehSpriteMappings[i]);
+					++i;
+				}
+				break;
+			}
+		}
+	}
 
 static int PatchText (int oldSize)
 {
@@ -2750,42 +2823,14 @@ static int PatchText (int oldSize)
 		if (i != -1)
 		{
 			strncpy (sprites[i].name, newStr, 4);
-			if (strncmp ("PLAY", oldStr, 4) == 0)
-			{
-				strncpy (deh.PlayerSprite, newStr, 4);
-			}
-			for (unsigned ii = 0; ii < OrgSprNames.Size(); ii++)
+			for (unsigned ii = 0; ii < OrgSprOrgSize; ii++)
 			{
 				if (!stricmp(OrgSprNames[ii].c, oldStr))
 				{
 					strcpy(OrgSprNames[ii].c, newStr);
 				}
 			}
-			// If this sprite is used by a pickup, then the DehackedPickup sprite map
-			// needs to be updated too.
-			for (i = 0; (size_t)i < countof(DehSpriteMappings); ++i)
-			{
-				if (strncmp (DehSpriteMappings[i].Sprite, oldStr, 4) == 0)
-				{
-					// Found a match, so change it.
-					strncpy (DehSpriteMappings[i].Sprite, newStr, 4);
-
-					// Now shift the map's entries around so that it stays sorted.
-					// This must be done because the map is scanned using a binary search.
-					while (i > 0 && strncmp (DehSpriteMappings[i-1].Sprite, newStr, 4) > 0)
-					{
-						std::swap (DehSpriteMappings[i-1], DehSpriteMappings[i]);
-						--i;
-					}
-					while ((size_t)i < countof(DehSpriteMappings)-1 &&
-						strncmp (DehSpriteMappings[i+1].Sprite, newStr, 4) < 0)
-					{
-						std::swap (DehSpriteMappings[i+1], DehSpriteMappings[i]);
-						++i;
-					}
-					break;
-				}
-			}
+			ReplaceSpriteInData(oldStr, newStr);
 			goto donewithtext;
 		}
 	}
@@ -2855,6 +2900,55 @@ static int PatchStrings (int dummy)
 
 	return result;
 }
+
+static int PatchSoundNames (int dummy)
+{
+	int result;
+
+	DPrintf (DMSG_SPAMMY, "[Sounds]\n");
+
+	while ((result = GetLine()) == 1)
+	{
+		FString newname = skipwhite (Line2);
+		ReplaceSoundName((int)strtoll(Line1, nullptr, 10)), newname);
+		DPrintf (DMSG_SPAMMY, "Sound %d set to:\n%s\n", Line1, newname.GetChars());
+	}
+
+	return result;
+}
+
+static int PatchSpriteNames (int dummy)
+{
+		int result;
+		
+		DPrintf (DMSG_SPAMMY, "[Sprites]\n");
+		
+		while ((result = GetLine()) == 1)
+		{
+			FString newname = skipwhite (Line2);
+			if (newname.Len() != 4)
+			{
+				Printf("Sprite name must be 4 characters long, got '%s'\n", newname.GetChars());
+				continue;
+			}
+			if (Line1 >= OrgSprNames.Size())
+			{
+				unsigned osize = OrgSprNames.Size();
+				OrgSprNames.Resize(Line1 + 1);
+				for (unsigned o = osize; o < OrgSprNames.Size(); o++)
+				{
+					OrgSprNames[o] = 0;
+				}
+				int v = GetSpriteIndex(newname);
+				memcpy(OrgSprNames[Line1].c, sprites[v].name, 5);
+			}
+			
+			DPrintf (DMSG_SPAMMY, "Sprite %d set to:\n%s\n", Line1, newname.GetChars());
+		}
+		
+		return result;
+	}
+								  
 
 static int DoInclude (int dummy)
 {
@@ -3326,6 +3420,7 @@ static bool LoadDehSupp ()
 					if (sc.CheckString("}")) break;
 					sc.MustGetStringName(",");
 				}
+				OrgSprOrgSize = OrgSprNames.Size();
 			}
 			else if (sc.Compare("StateMap"))
 			{
@@ -3538,7 +3633,8 @@ void FinishDehPatch ()
 	{
 		GetDefaultByType(cls)->flags8 |= MF8_RETARGETAFTERSLAM;
 	}
-
+	RemapAllSprites();
+	
 	for (touchedIndex = 0; touchedIndex < TouchedActors.Size(); ++touchedIndex)
 	{
 		PClassActor *subclass;
