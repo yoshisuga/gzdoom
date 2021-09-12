@@ -122,6 +122,28 @@ static TArray<FSoundID> SoundMap;
 // Names of different actor types, in original Doom 2 order
 static TArray<PClassActor *> InfoNames;
 
+static PClassActor* FindInfoName(int index, bool mustexist = false)
+{
+	if (index < 0) return nullptr;
+	if (index < (int)InfoNames.Size()) return InfoNames[index];
+
+	if (dsdhacked)
+	{
+		FStringf name = "~Dsdhacked~%d", index);
+		auto cls = PClass::FindActor(name);
+		if (cls)
+		{
+			GetDefaultByType(cls)->flags8 |= MF8_RETARGETAFTERSLAM; // This flag is not a ZDoom default, but it must be a Dehacked default.
+			return cls;
+		}
+		if (!mustexist)
+		{
+			return RUNTIME_CLASS(AActor)->CreateDerivedClass(name.GetChars(), (unsigned)sizeof(AActor));
+		}
+	}
+	return nullptr;
+}
+
 // bit flags for PatchThing (a .bex extension):
 struct BitName
 {
@@ -163,10 +185,8 @@ struct MBFParamState
 
 	PClassActor* GetTypeArg(int i)
 	{
-		PClassActor* type = nullptr;
 		int num = (int)args[i];
-		if (num > 0 && num < int(InfoNames.Size())) type = InfoNames[num-1];	// Dehacked is 1-based.
-		return type;
+		return FindInfoName(num-1, true);
 	}
 
 	FState* GetStateArg(int i)
@@ -710,11 +730,12 @@ static void CreateMushroomFunc(FunctionCallEmitter &emitters, int value1, int va
 // misc1 = type (arg +0), misc2 = Z-pos (arg +2)
 static void CreateSpawnFunc(FunctionCallEmitter &emitters, int value1, int value2, MBFParamState* state)
 { // A_SpawnItem
-	if (InfoNames[value1-1] == nullptr)
+	auto p = FindInfoName(value1 - 1, true);
+	if (p == nullptr)
 	{
 		I_Error("No class found for dehackednum %d!\n", value1+1);
 	}
-	emitters.AddParameterPointerConst(InfoNames[value1-1]);	// itemtype
+	emitters.AddParameterPointerConst(p);	// itemtype
 	emitters.AddParameterFloatConst(0);						// distance
 	emitters.AddParameterFloatConst(value2);				// height
 	emitters.AddParameterIntConst(0);						// useammo
@@ -1142,29 +1163,16 @@ static int PatchThing (int thingy)
 	type = NULL;
 	info = (AActor *)&dummy;
 	ednum = &dummyed;
-	if (thingy > (int)InfoNames.Size() || thingy <= 0)
+	auto thingytype = FindInfoName(thingy-1);
+	if (thingytype == nullptr)
 	{
-		Printf ("Thing %d out of range.\n", thingy);
+		Printf ("Thing %d out of range or invalid.\n", thingy);
 	}
 	else
 	{
 		DPrintf (DMSG_SPAMMY, "Thing %d\n", thingy);
-		if (thingy > 0)
-		{
-			type = InfoNames[thingy - 1];
-			if (type == NULL)
-			{
-				info = (AActor *)&dummy;
-				ednum = &dummyed;
-				// An error for the name has already been printed while loading DEHSUPP.
-				Printf ("Could not find thing %d\n", thingy);
-			}
-			else
-			{
-				info = GetDefaultByType (type);
-				ednum = &type->ActorInfo()->DoomEdNum;
-			}
-		}
+		info = GetDefaultByType (type);
+		ednum = &type->ActorInfo()->DoomEdNum;
 	}
 
 	oldflags = info->flags;
@@ -1293,11 +1301,12 @@ static int PatchThing (int thingy)
 		}
 		else if (linelen == 12 && stricmp(Line1, "dropped item") == 0)
 		{
-			if ((unsigned)val < InfoNames.Size())
+			auto drop = FindInfoName(val - 1);
+			if (drop)
 			{
 				FDropItem* di = (FDropItem*)ClassDataAllocator.Alloc(sizeof(FDropItem));
 
-				di->Name = InfoNames[val]->TypeName.GetChars();
+				di->Name = drop->TypeName();
 				di->Probability = 255;
 				di->Amount = -1;
 				info->GetInfo()->DropItems = di;
