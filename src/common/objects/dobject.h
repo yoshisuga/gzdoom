@@ -363,7 +363,7 @@ T* Create(Args&&... args)
 	T *object = new(nono) T(std::forward<Args>(args)...);
 	if (object != nullptr)
 	{
-		object->SetClass(RUNTIME_CLASS(T));
+		object->SetClass(RUNTIME_CLASS_CASTLESS(T));
 		assert(object->GetClass() != nullptr);	// beware of objects that get created before the type system is up.
 	}
 	return object;

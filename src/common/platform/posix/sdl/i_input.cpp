@@ -46,6 +46,10 @@
 #include "engineerrors.h"
 #include "i_interface.h"
 
+#if TARGET_OS_IOS
+#include "ios-input-hook.h"
+#endif
+
 
 static void I_CheckGUICapture ();
 static void I_CheckNativeMouse ();
@@ -170,6 +174,9 @@ static void I_CheckGUICapture ()
 	if (wantCapt != GUICapture)
 	{
 		GUICapture = wantCapt;
+#if TARGET_OS_IOS
+        InputUpdateGUICapture(GUICapture);
+#endif
 		if (wantCapt)
 		{
 			buttonMap.ResetButtonStates();

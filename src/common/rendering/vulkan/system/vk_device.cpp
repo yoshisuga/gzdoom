@@ -122,8 +122,8 @@ void VulkanDevice::SelectPhysicalDevice()
 	{
 		const auto &info = AvailableDevices[idx];
 
-		if (!CheckRequiredFeatures(info.Features))
-			continue;
+//		if (!CheckRequiredFeatures(info.Features))
+//			continue;
 
 		std::set<std::string> requiredExtensionSearch(EnabledDeviceExtensions.begin(), EnabledDeviceExtensions.end());
 		for (const auto &ext : info.Extensions)

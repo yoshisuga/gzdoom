@@ -1975,10 +1975,18 @@ static void D_DoomInit()
 //
 //==========================================================================
 
+#if __APPLE__
+#import "TargetConditionals.h"
+#endif
+
 static void AddAutoloadFiles(const char *autoname)
 {
-	LumpFilterIWAD.Format("%s.", autoname);	// The '.' is appened to simplify parsing the string 
-
+	LumpFilterIWAD.Format("%s.", autoname);	// The '.' is appened to simplify parsing the string
+#if TARGET_OS_IOS
+    autoloadlights = true;
+    autoloadbrightmaps = true;
+    autoloadwidescreen = true;
+#endif
 	// [SP] Dialog reaction - load lights.pk3 and brightmaps.pk3 based on user choices
 	if (!(gameinfo.flags & GI_SHAREWARE))
 	{
@@ -2000,6 +2008,12 @@ static void AddAutoloadFiles(const char *autoname)
 			if (wswad)
 				D_AddFile (allwads, wswad, true, -1, GameConfig);
 		}
+#if TARGET_OS_IOS
+        printf("Yoshi wants to load Brutal DOOM!!\n");
+        const char *brutal = BaseFileSearch("brutalv21.pk3", NULL, true, GameConfig);
+        if (brutal)
+            D_AddFile(allwads, brutal, true, -1, GameConfig);
+#endif
 	}
 
 	if (!(gameinfo.flags & GI_SHAREWARE) && !Args->CheckParm("-noautoload") && !disableautoload)

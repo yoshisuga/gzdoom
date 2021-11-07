@@ -48,7 +48,11 @@ GLAPI PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
 #endif
 
 #if defined(__APPLE__)
+#import "TargetConditionals.h"
+#if TARGET_OS_IOS
+#else
 	#include <OpenGL/OpenGL.h>
+#endif
 #endif
 
 // This is the number of vec4s make up the light data

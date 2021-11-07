@@ -68,6 +68,11 @@
 #include <SDL_vulkan.h>
 #endif // HAVE_VULKAN
 
+#if TARGET_OS_IOS
+#include "ios-glue.h"
+#include "video-hook.h"
+#endif
+
 // TYPES -------------------------------------------------------------------
 
 // PUBLIC FUNCTION PROTOTYPES ----------------------------------------------
@@ -141,10 +146,21 @@ namespace Priv
 		caption.Format(GAMENAME " %s (%s)", GetVersionString(), GetGitTime());
 
 		const uint32_t windowFlags = (win_maximized ? SDL_WINDOW_MAXIMIZED : 0) | SDL_WINDOW_RESIZABLE | extraFlags;
+#if TARGET_OS_IOS
+        int width, height;
+        ios_get_screen_width_height(&width, &height);
+        SDL_Vulkan_LoadLibrary("libMoltenVK.dylib");
+        const char *errorv = SDL_GetError();
+        printf("SDL_CreateWindow error = %s",errorv);
+        Priv::window = SDL_CreateWindow(caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
+        const char *error = SDL_GetError();
+        printf("SDL_CreateWindow error = %s",error);
+#else
 		Priv::window = SDL_CreateWindow(caption,
 			(win_x <= 0) ? SDL_WINDOWPOS_CENTERED_DISPLAY(vid_adapter) : win_x,
 			(win_y <= 0) ? SDL_WINDOWPOS_CENTERED_DISPLAY(vid_adapter) : win_y,
 			win_w, win_h, windowFlags);
+#endif
 
 		if (Priv::window != nullptr)
 		{
@@ -407,7 +423,11 @@ SDLVideo::SDLVideo ()
 	Priv::softpolyEnabled = vid_preferbackend == 2;
 #endif
 #ifdef HAVE_VULKAN
+#if TARGET_OS_IOS
+    Priv::vulkanEnabled = true;
+#else
 	Priv::vulkanEnabled = vid_preferbackend == 1;
+#endif
 
 	if (Priv::vulkanEnabled)
 	{
@@ -437,6 +457,8 @@ SDLVideo::~SDLVideo ()
 	delete device;
 #endif
 }
+
+#import "TargetConditionals.h"
 
 DFrameBuffer *SDLVideo::CreateFrameBuffer ()
 {
@@ -500,6 +522,9 @@ SystemBaseFrameBuffer::SystemBaseFrameBuffer (void *, bool fullscreen)
 	{
 		SDL_SetWindowFullscreen(Priv::window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 		SDL_ShowWindow(Priv::window);
+#if TARGET_OS_IOS
+        SDLWindowAfterCreate(Priv::window);
+#endif
 	}
 }
 
@@ -687,7 +712,8 @@ int SystemGLFrameBuffer::GetClientHeight()
 
 void SystemGLFrameBuffer::SetVSync( bool vsync )
 {
-#if defined (__APPLE__)
+    // yoshi: for iOS use the default implementation - hope it works!
+#if defined (__APPLE__) && !defined(TARGET_OS_IOS)
 	const GLint value = vsync ? 1 : 0;
 	CGLSetParameter( CGLGetCurrentContext(), kCGLCPSwapInterval, &value );
 #else

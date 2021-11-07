@@ -27,7 +27,11 @@
 #include "gl_load/gl_load.h"
 
 #if defined(__APPLE__)
-	#include <OpenGL/OpenGL.h>
+#import "TargetConditionals.h"
+#if TARGET_OS_IOS
+#else
+#include <OpenGL/OpenGL.h>
+#endif
 #endif
 
 

@@ -25,7 +25,8 @@ if( FORCE_CROSSCOMPILE )
 endif()
 
 if(CMAKE_CROSSCOMPILING)
-	set(IMPORT_EXECUTABLES "IMPORTFILE-NOTFOUND" CACHE FILEPATH "Export file from native build.")
+	set(IMPORT_EXECUTABLES "/Users/yoshi/Code/personal/gzdoom/build-macos/ImportExecutables.cmake" CACHE FILEPATH "Export file from native build.")
+	message(STATUS "yoshi debug: import executables: ${IMPORT_EXECUTABLES}")
 	include(${IMPORT_EXECUTABLES})
 endif()
 
@@ -88,6 +89,7 @@ function( add_pk3 PK3_NAME PK3_DIR )
 	# Phase 2: Create the PK3 build rule, including the source file list for the IDE
 	# Touch the zipdir executable here so that the pk3s are forced to
 	# rebuild each time since their dependency has "changed."
+	message(STATUS "PK3_TARGET = ${PK3_TARGET}")
 	add_custom_target( ${PK3_TARGET} ALL
 		COMMAND ${CMAKE_COMMAND} -E touch $<TARGET_FILE:zipdir>
 		DEPENDS ${ZDOOM_OUTPUT_DIR}/${PK3_NAME}
@@ -173,16 +175,16 @@ include( CheckFunctionExists )
 
 macro( require_stricmp )
 	CHECK_FUNCTION_EXISTS( stricmp STRICMP_EXISTS )
-	if( NOT STRICMP_EXISTS )
+#	if( NOT STRICMP_EXISTS )
 		add_definitions( -Dstricmp=strcasecmp )
-	endif()
+#	endif()
 endmacro()
 
 macro( require_strnicmp )
 	CHECK_FUNCTION_EXISTS( strnicmp STRNICMP_EXISTS )
-	if( NOT STRNICMP_EXISTS )
+#	if( NOT STRNICMP_EXISTS )
 		add_definitions( -Dstrnicmp=strncasecmp )
-	endif()
+#	endif()
 endmacro()
 
 option( NO_OPENAL "Disable OpenAL sound support" OFF )

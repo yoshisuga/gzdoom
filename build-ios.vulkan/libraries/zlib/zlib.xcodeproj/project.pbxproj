@@ -1,0 +1,988 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		1E817478954243359A71FA7D /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 0EFCB583BFBC4DA8BBC1648C /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				A078CAB0905C0E179DC0B76E /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				8AEC4ADD39D84E9A9222190C /* PBXTargetDependency */,
+				1B516FEDF42E4712BE2B2A8C /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		34ED04C51E4A4AA1B4CACEB7 /* install */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FBD41F2569E54EAFAE395E0C /* Build configuration list for PBXAggregateTarget "install" */;
+			buildPhases = (
+				93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+				6BE989CDE5774C45B2BC7624 /* PBXTargetDependency */,
+			);
+			name = install;
+			productName = install;
+		};
+		5B791DD269B1442CBD6A8946 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 75A3009572BC405EBFC1D1EE /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				EC67E80474F3191BC09D0114 /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		3DF4AC46319844BF99117774 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/uncompr.c */ = {isa = PBXBuildFile; fileRef = E394684D3EC248C88D5DB65D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/uncompr.c */; };
+		5513E5FCBE9644C3B5978AB3 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.c */ = {isa = PBXBuildFile; fileRef = BBE01D62D6F041C8996700A3 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.c */; };
+		5EED7F4013A24B3C965C5F36 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.h */ = {isa = PBXBuildFile; fileRef = 95917147F1A3492FA09129DC /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.h */; };
+		648F43C1B50644E1BB5CD88E /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.c */ = {isa = PBXBuildFile; fileRef = 088D03829428493C99A53A0A /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.c */; };
+		6516CE49368946A68325F63D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffixed.h */ = {isa = PBXBuildFile; fileRef = 8E3FC330A3A64AEB92B0F54E /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffixed.h */; };
+		68E0ECE485CE4C929A85D361 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/infback.c */ = {isa = PBXBuildFile; fileRef = AE1C2C3B9D0A4734A5240932 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/infback.c */; };
+		77A7D2C392B743598C05BE27 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zconf.h */ = {isa = PBXBuildFile; fileRef = 2D3B4FFAF0E24D0195CB9000 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zconf.h */; };
+		86DE8B145F0242D189C716EF /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/gzguts.h */ = {isa = PBXBuildFile; fileRef = F06F35540694441A81A38339 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/gzguts.h */; };
+		961958D4271D455FA500967A /* /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeFiles/z.dir/Info.plist */ = {isa = PBXBuildFile; fileRef = 1773881FC2244B9FA9D0419E /* /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeFiles/z.dir/Info.plist */; };
+		9E9681CB39CB45C09110B5C7 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.h */ = {isa = PBXBuildFile; fileRef = 1636DE5E535545818F74858D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.h */; };
+		9F4050D7EA8F465BB3E2B8AF /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/compress.c */ = {isa = PBXBuildFile; fileRef = 8352E16EFF7942F18F69D44B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/compress.c */; };
+		A3E2518200854878A296A0FA /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.c */ = {isa = PBXBuildFile; fileRef = F2CAB61D8FFA46F9A841E2DC /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.c */; };
+		A4F2C5BB2FFF4AC3A90619D9 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 07B0E071C6274AFD800026A2 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/CMakeLists.txt */; };
+		AE1B52B6FBC947B8B28BC92F /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.c */ = {isa = PBXBuildFile; fileRef = 6DBF509F646D4F5091F2B938 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.c */; };
+		B6D701651BF64A54B0D7B45D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.h */ = {isa = PBXBuildFile; fileRef = E2E19960CE06445293E9A3CB /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.h */; };
+		CFA9F9B4BDB041878CCADF3B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.h */ = {isa = PBXBuildFile; fileRef = DCC7B308BD6C4B94BF4503AA /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.h */; };
+		D455BA7E9EF947E48A408D07 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/adler32.c */ = {isa = PBXBuildFile; fileRef = 64662FB4985C458283C786EF /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/adler32.c */; };
+		D8F80D0ABEF54D9FB81E5F6C /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.c */ = {isa = PBXBuildFile; fileRef = EFCDF1741EA14D81AD6FE1D9 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.c */; };
+		D9DBD290D337487FB7E556CD /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.c */ = {isa = PBXBuildFile; fileRef = AE2A20AF05F64796B22B1A84 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.c */; };
+		E9A968E9F96A4F92BED9A46C /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.h */ = {isa = PBXBuildFile; fileRef = 0B328343DE27439F81562C50 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.h */; };
+		EC2E9A92A63341F483F0852C /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.c */ = {isa = PBXBuildFile; fileRef = B0AC08616DC647BE86FFE9CE /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.c */; };
+		F7D3E7B35DE34744B2382C80 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.h */ = {isa = PBXBuildFile; fileRef = 841A6FD421734D2BAA0D9388 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.h */; };
+		FA87E2B0FF6243738CFA5ECD /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zlib.h */ = {isa = PBXBuildFile; fileRef = 4F51DC00DA1C4DF0BC648A2B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zlib.h */; };
+		FE2C0F728EC14E5ABF6F6C34 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.h */ = {isa = PBXBuildFile; fileRef = 5679CB3D249C40CBA7667B45 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		13BBE82BF9374221AC95CDC7 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		90B79762772442BB80B98752 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		E42E03BDAB5A4476B0A80DE7 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		E7D4CA9D68F64E35BCEBF551 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		82B7B411D5F14BBF88B48517 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5031978340B427A9560CC3D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B791DD269B1442CBD6A8946;
+			remoteInfo = ZERO_CHECK;
+		};
+		E2AEB01B8F344468993303BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5031978340B427A9560CC3D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2739478EED4475793B31F0B;
+			remoteInfo = z;
+		};
+		F24C6A86880247B0AE49DE76 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5031978340B427A9560CC3D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E817478954243359A71FA7D;
+			remoteInfo = ALL_BUILD;
+		};
+		F5683407E79B4D25BB6C1FC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5031978340B427A9560CC3D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B791DD269B1442CBD6A8946;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07B0E071C6274AFD800026A2 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		088D03829428493C99A53A0A /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = inflate.c; path = inflate.c; sourceTree = SOURCE_ROOT; };
+		0B328343DE27439F81562C50 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = inflate.h; path = inflate.h; sourceTree = SOURCE_ROOT; };
+		1636DE5E535545818F74858D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = inffast.h; path = inffast.h; sourceTree = SOURCE_ROOT; };
+		1773881FC2244B9FA9D0419E /* /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeFiles/z.dir/Info.plist */ = {isa = PBXFileReference; explicitFileType = sourcecode.text.plist; fileEncoding = 4; name = Info.plist; path = "../../build-ios.vulkan/libraries/zlib/CMakeFiles/z.dir/Info.plist"; sourceTree = SOURCE_ROOT; };
+		2D3B4FFAF0E24D0195CB9000 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zconf.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = zconf.h; path = zconf.h; sourceTree = SOURCE_ROOT; };
+		2FAA2E05A13A4AF19E482BD9 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		4F51DC00DA1C4DF0BC648A2B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zlib.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = zlib.h; path = zlib.h; sourceTree = SOURCE_ROOT; };
+		5679CB3D249C40CBA7667B45 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = zutil.h; path = zutil.h; sourceTree = SOURCE_ROOT; };
+		64662FB4985C458283C786EF /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/adler32.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = adler32.c; path = adler32.c; sourceTree = SOURCE_ROOT; };
+		6DBF509F646D4F5091F2B938 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = zutil.c; path = zutil.c; sourceTree = SOURCE_ROOT; };
+		8352E16EFF7942F18F69D44B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/compress.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = compress.c; path = compress.c; sourceTree = SOURCE_ROOT; };
+		841A6FD421734D2BAA0D9388 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = deflate.h; path = deflate.h; sourceTree = SOURCE_ROOT; };
+		8DE45C8F93B04B359268E747 /* z */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libz.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E3FC330A3A64AEB92B0F54E /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffixed.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = inffixed.h; path = inffixed.h; sourceTree = SOURCE_ROOT; };
+		95917147F1A3492FA09129DC /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = inftrees.h; path = inftrees.h; sourceTree = SOURCE_ROOT; };
+		AE1C2C3B9D0A4734A5240932 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/infback.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = infback.c; path = infback.c; sourceTree = SOURCE_ROOT; };
+		AE2A20AF05F64796B22B1A84 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = crc32.c; path = crc32.c; sourceTree = SOURCE_ROOT; };
+		B0AC08616DC647BE86FFE9CE /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = deflate.c; path = deflate.c; sourceTree = SOURCE_ROOT; };
+		BBE01D62D6F041C8996700A3 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = inftrees.c; path = inftrees.c; sourceTree = SOURCE_ROOT; };
+		DCC7B308BD6C4B94BF4503AA /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = trees.h; path = trees.h; sourceTree = SOURCE_ROOT; };
+		E2E19960CE06445293E9A3CB /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = crc32.h; path = crc32.h; sourceTree = SOURCE_ROOT; };
+		E394684D3EC248C88D5DB65D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/uncompr.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = uncompr.c; path = uncompr.c; sourceTree = SOURCE_ROOT; };
+		EFCDF1741EA14D81AD6FE1D9 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = inffast.c; path = inffast.c; sourceTree = SOURCE_ROOT; };
+		F06F35540694441A81A38339 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/gzguts.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = gzguts.h; path = gzguts.h; sourceTree = SOURCE_ROOT; };
+		F2CAB61D8FFA46F9A841E2DC /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = trees.c; path = trees.c; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9E96CF5478CC45A0972CF129 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08750247C4A948FA8F9E86A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DE45C8F93B04B359268E747 /* z */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		14FEC454BF294B9A9770A8ED /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				64662FB4985C458283C786EF /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/adler32.c */,
+				8352E16EFF7942F18F69D44B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/compress.c */,
+				AE2A20AF05F64796B22B1A84 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.c */,
+				B0AC08616DC647BE86FFE9CE /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.c */,
+				AE1C2C3B9D0A4734A5240932 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/infback.c */,
+				EFCDF1741EA14D81AD6FE1D9 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.c */,
+				088D03829428493C99A53A0A /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.c */,
+				BBE01D62D6F041C8996700A3 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.c */,
+				F2CAB61D8FFA46F9A841E2DC /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.c */,
+				E394684D3EC248C88D5DB65D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/uncompr.c */,
+				6DBF509F646D4F5091F2B938 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.c */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		4288C214187449C2B8B1CE14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3B2FFA03BEC4CC1A0C1F47B /* z */ = {
+			isa = PBXGroup;
+			children = (
+				14FEC454BF294B9A9770A8ED /* Source Files */,
+				E1DE2BBE1EAE43EC86494F9E /* Header Files */,
+				B1C8DE9DF9744AF5A9E145A8 /* Resources */,
+				07B0E071C6274AFD800026A2 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/CMakeLists.txt */,
+			);
+			name = z;
+			sourceTree = "<group>";
+		};
+		B1C8DE9DF9744AF5A9E145A8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1773881FC2244B9FA9D0419E /* /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeFiles/z.dir/Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B77822DC4BF847E4A76E0891 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		C06264E0D2D34B5F853E47AD /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				B77822DC4BF847E4A76E0891 /* CMake Rules */,
+				2FAA2E05A13A4AF19E482BD9 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		E1DE2BBE1EAE43EC86494F9E /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				E2E19960CE06445293E9A3CB /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.h */,
+				841A6FD421734D2BAA0D9388 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.h */,
+				F06F35540694441A81A38339 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/gzguts.h */,
+				1636DE5E535545818F74858D /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.h */,
+				8E3FC330A3A64AEB92B0F54E /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffixed.h */,
+				0B328343DE27439F81562C50 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.h */,
+				95917147F1A3492FA09129DC /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.h */,
+				DCC7B308BD6C4B94BF4503AA /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.h */,
+				2D3B4FFAF0E24D0195CB9000 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zconf.h */,
+				4F51DC00DA1C4DF0BC648A2B /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zlib.h */,
+				5679CB3D249C40CBA7667B45 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		FDFCA290E4164C1793266602 = {
+			isa = PBXGroup;
+			children = (
+				A3B2FFA03BEC4CC1A0C1F47B /* z */,
+				C06264E0D2D34B5F853E47AD /* ALL_BUILD */,
+				08750247C4A948FA8F9E86A1 /* Products */,
+				4288C214187449C2B8B1CE14 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D2739478EED4475793B31F0B /* z */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F89FF6D534F44995AB314123 /* Build configuration list for PBXNativeTarget "z" */;
+			buildPhases = (
+				0B90DCB9044247EFBE040913 /* Sources */,
+				9E96CF5478CC45A0972CF129 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				371E8B8FDC6C4C1B98630C0C /* PBXTargetDependency */,
+			);
+			name = z;
+			productName = z;
+			productReference = 8DE45C8F93B04B359268E747 /* z */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E5031978340B427A9560CC3D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1300;
+			};
+			buildConfigurationList = 1F5F26FCFFBD43E3AB3D02AF /* Build configuration list for PBXProject "zlib" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				13BBE82BF9374221AC95CDC7 /* Debug */,
+				E7D4CA9D68F64E35BCEBF551 /* Release */,
+				90B79762772442BB80B98752 /* MinSizeRel */,
+				E42E03BDAB5A4476B0A80DE7 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = FDFCA290E4164C1793266602;
+			projectDirPath = ../../../libraries/zlib;
+			projectRoot = "";
+			targets = (
+				1E817478954243359A71FA7D /* ALL_BUILD */,
+				5B791DD269B1442CBD6A8946 /* ZERO_CHECK */,
+				34ED04C51E4A4AA1B4CACEB7 /* install */,
+				D2739478EED4475793B31F0B /* z */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		87AF4882E018677E2624B544 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  /usr/local/Cellar/cmake/3.21.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION -DEFFECTIVE_PLATFORM_NAME=$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  /usr/local/Cellar/cmake/3.21.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION -DEFFECTIVE_PLATFORM_NAME=$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  /usr/local/Cellar/cmake/3.21.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION -DEFFECTIVE_PLATFORM_NAME=$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  /usr/local/Cellar/cmake/3.21.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION -DEFFECTIVE_PLATFORM_NAME=$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		A078CAB0905C0E179DC0B76E /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeFiles/ALL_BUILD"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		EC67E80474F3191BC09D0114 /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeFiles/ZERO_CHECK"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  make -f /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  make -f /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  make -f /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib
+  make -f /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0B90DCB9044247EFBE040913 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D455BA7E9EF947E48A408D07 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/adler32.c */,
+				9F4050D7EA8F465BB3E2B8AF /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/compress.c */,
+				D9DBD290D337487FB7E556CD /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/crc32.c */,
+				EC2E9A92A63341F483F0852C /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/deflate.c */,
+				68E0ECE485CE4C929A85D361 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/infback.c */,
+				D8F80D0ABEF54D9FB81E5F6C /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inffast.c */,
+				648F43C1B50644E1BB5CD88E /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inflate.c */,
+				5513E5FCBE9644C3B5978AB3 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/inftrees.c */,
+				A3E2518200854878A296A0FA /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/trees.c */,
+				3DF4AC46319844BF99117774 /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/uncompr.c */,
+				AE1B52B6FBC947B8B28BC92F /* /Users/yoshi/Code/personal/gzdoom/libraries/zlib/zutil.c */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1B516FEDF42E4712BE2B2A8C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B791DD269B1442CBD6A8946 /* ZERO_CHECK */;
+			targetProxy = 82B7B411D5F14BBF88B48517 /* PBXContainerItemProxy */;
+		};
+		371E8B8FDC6C4C1B98630C0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B791DD269B1442CBD6A8946 /* ZERO_CHECK */;
+			targetProxy = F5683407E79B4D25BB6C1FC5 /* PBXContainerItemProxy */;
+		};
+		6BE989CDE5774C45B2BC7624 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E817478954243359A71FA7D /* ALL_BUILD */;
+			targetProxy = F24C6A86880247B0AE49DE76 /* PBXContainerItemProxy */;
+		};
+		8AEC4ADD39D84E9A9222190C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2739478EED4475793B31F0B /* z */;
+			targetProxy = E2AEB01B8F344468993303BD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		06AFFD2AEAFA44E6A4571A04 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		1C36D8DCDB9346D7BB609D6E /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		1E2674E0236B4D299B1D29A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		2FD8BE28333E4E4D90B17213 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (" -ffp-contract=off -DHAVE_SOFTPOLY -DHAVE_VULKAN     -DNDEBUG  ","$(inherited)");
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = z;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		341C88B901134B5EAE686338 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		3A50BCA79B4E4A3085FEADF0 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (" -ffp-contract=off -DHAVE_SOFTPOLY -DHAVE_VULKAN     -DNDEBUG  ","$(inherited)");
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = z;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		5047CD873C06463D85FBE1A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (" -ffp-contract=off -DHAVE_SOFTPOLY -DHAVE_VULKAN     -DNDEBUG  ","$(inherited)");
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = z;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		5F4BFBA820DA477BB9065812 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (" -ffp-contract=off -DHAVE_SOFTPOLY -DHAVE_VULKAN     -DNDEBUG  ","$(inherited)");
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = z;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		63775AC9F28949A993E4DCC6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		6CB0A6D78F474A928223185A /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				"ARCHS[sdk=iphoneos*]" = arm64;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/build";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+			};
+			name = MinSizeRel;
+		};
+		763662963B5F44429BFD7C9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		844C98CE442448248E46F1DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				"ARCHS[sdk=iphoneos*]" = arm64;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/build";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+			};
+			name = Debug;
+		};
+		87A60C70AF3B4332A9D61012 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		8B66A9ED0552400E83F328C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		8C51C7A83C474849984134DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				"ARCHS[sdk=iphoneos*]" = arm64;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/build";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+			};
+			name = Release;
+		};
+		BF1E71C8075B47FF9291B115 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		C2C5E55C5ACD4448AEA3CA33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		DA45A287CB804901A8883F2B /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				"ARCHS[sdk=iphoneos*]" = arm64;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/build";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+			};
+			name = RelWithDebInfo;
+		};
+		EB2AB89C1EEC4E2DA3CB64BE /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		F22FFF1D510440AFA139D194 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0EFCB583BFBC4DA8BBC1648C /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2C5E55C5ACD4448AEA3CA33 /* Debug */,
+				63775AC9F28949A993E4DCC6 /* Release */,
+				F22FFF1D510440AFA139D194 /* MinSizeRel */,
+				EB2AB89C1EEC4E2DA3CB64BE /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1F5F26FCFFBD43E3AB3D02AF /* Build configuration list for PBXProject "zlib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				844C98CE442448248E46F1DC /* Debug */,
+				8C51C7A83C474849984134DF /* Release */,
+				6CB0A6D78F474A928223185A /* MinSizeRel */,
+				DA45A287CB804901A8883F2B /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		75A3009572BC405EBFC1D1EE /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B66A9ED0552400E83F328C2 /* Debug */,
+				763662963B5F44429BFD7C9C /* Release */,
+				06AFFD2AEAFA44E6A4571A04 /* MinSizeRel */,
+				87A60C70AF3B4332A9D61012 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F89FF6D534F44995AB314123 /* Build configuration list for PBXNativeTarget "z" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5047CD873C06463D85FBE1A2 /* Debug */,
+				2FD8BE28333E4E4D90B17213 /* Release */,
+				5F4BFBA820DA477BB9065812 /* MinSizeRel */,
+				3A50BCA79B4E4A3085FEADF0 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FBD41F2569E54EAFAE395E0C /* Build configuration list for PBXAggregateTarget "install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E2674E0236B4D299B1D29A2 /* Debug */,
+				341C88B901134B5EAE686338 /* Release */,
+				1C36D8DCDB9346D7BB609D6E /* MinSizeRel */,
+				BF1E71C8075B47FF9291B115 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E5031978340B427A9560CC3D /* Project object */;
+}

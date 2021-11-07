@@ -86,8 +86,6 @@ FArgs *Args;
 
 // CODE --------------------------------------------------------------------
 
-
-
 static int GetCrashInfo (char *buffer, char *end)
 {
 	if (sysCallbacks.CrashInfo) sysCallbacks.CrashInfo(buffer, end - buffer, "\n");
@@ -153,8 +151,9 @@ int main (int argc, char **argv)
 	}
 #endif // !__APPLE__
 
-	printf(GAMENAME" %s - %s - SDL version\nCompiled on %s\n",
+    printf(GAMENAME" %s - %s - SDL version\nCompiled on %s\n",
 		GetVersionString(), GetGitTime(), __DATE__);
+    SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
 
 	seteuid (getuid ());
 	// Set LC_NUMERIC environment variable in case some library decides to

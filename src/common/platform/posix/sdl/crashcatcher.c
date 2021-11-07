@@ -13,6 +13,7 @@
 #endif
 #elif defined (__APPLE__) || defined (BSD)
 #include <signal.h>
+#import "TargetConditionals.h"
 #endif
 
 
@@ -141,10 +142,11 @@ static void gdb_info(pid_t pid)
 		snprintf(cmd_buf, sizeof(cmd_buf), "gdb --quiet --batch --command=%s", respfile);
 		printf("Executing: %s\n", cmd_buf);
 		fflush(stdout);
-
+#if !defined(TARGET_OS_IOS)
 		system(cmd_buf);
 		/* Clean up */
 		remove(respfile);
+#endif
 	}
 	else
 	{
@@ -372,8 +374,9 @@ static void crash_handler(const char *logfile)
 			snprintf(buf, sizeof(buf), "gxmessage -buttons \"Okay:0\" -geometry 800x600 -title \"Very Fatal Error\" -center -file \"%s\"", logfile);
 		else
 			snprintf(buf, sizeof(buf), "xmessage -buttons \"Okay:0\" -center -file \"%s\"", logfile);
-
+#if !defined(TARGET_OS_IOS)
 		system(buf);
+#endif
 	}
 	exit(0);
 }

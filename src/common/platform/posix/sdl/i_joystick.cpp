@@ -293,6 +293,19 @@ public:
 		for(unsigned int i = 0;i < Joysticks.Size();++i)
 			Joysticks[i]->ProcessInput();
 	}
+    
+    void Refresh()
+    {
+        Joysticks.Clear();
+        for(int i = 0;i < SDL_NumJoysticks();i++)
+        {
+            SDLInputJoystick *device = new SDLInputJoystick(i);
+            if(device->IsValid())
+                Joysticks.Push(device);
+            else
+                delete device;
+        }
+    }
 protected:
 	TArray<SDLInputJoystick *> Joysticks;
 };
@@ -329,6 +342,7 @@ void I_GetAxes(float axes[NUM_JOYAXIS])
 		axes[i] = 0;
 	}
 	if (use_joystick && JoystickManager)
+//    if (JoystickManager)
 	{
 		JoystickManager->AddAxes(axes);
 	}
@@ -337,7 +351,12 @@ void I_GetAxes(float axes[NUM_JOYAXIS])
 void I_ProcessJoysticks()
 {
 	if (use_joystick && JoystickManager)
+//    if (JoystickManager)
+    {
+        // yoshi brute force..
+//        JoystickManager->Refresh();
 		JoystickManager->ProcessInput();
+    }
 }
 
 IJoystickConfig *I_UpdateDeviceList()

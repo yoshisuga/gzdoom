@@ -33,6 +33,28 @@
  **
  */
 
+#import "TargetConditionals.h"
+
+#if TARGET_OS_IOS
+// yoshi: don't include this
+
+// no-op this for now, might implement UIKit version?
+#include "cmdlib.h"
+#include "version.h"
+#include "c_cvars.h"
+#include "m_argv.h"
+#include "gameconfigfile.h"
+#include "engineerrors.h"
+#include "i_interface.h"
+
+int I_PickIWad_Cocoa (WadStuff *wads, int numwads, bool showwin, int defaultiwad)
+{
+    printf("yoshi: I_PickIWad_Cocoa: no implementation yet!");
+    return 0;
+}
+
+#else
+
 #include "cmdlib.h"
 #include "version.h"
 #include "c_cvars.h"
@@ -457,3 +479,4 @@ int I_PickIWad_Cocoa (WadStuff *wads, int numwads, bool showwin, int defaultiwad
 
 	return ret;
 }
+#endif

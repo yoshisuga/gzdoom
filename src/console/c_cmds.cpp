@@ -83,25 +83,26 @@ CVAR(Bool, show_obituaries, true, CVAR_ARCHIVE)
 
 bool CheckCheatmode (bool printmsg, bool sponly)
 {
-	if (sponly && netgame)
-	{
-		if (printmsg) Printf("Not in a singleplayer game.\n");
-		return true;
-	}
-	if ((G_SkillProperty(SKILLP_DisableCheats) || netgame || deathmatch) && (!sv_cheats))
-	{
-		if (printmsg) Printf ("sv_cheats must be true to enable this command.\n");
-		return true;
-	}
-	else if (cl_blockcheats != 0)
-	{
-		if (printmsg && cl_blockcheats == 1) Printf ("cl_blockcheats is turned on and disabled this command.\n");
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    return  false;
+//	if (sponly && netgame)
+//	{
+//		if (printmsg) Printf("Not in a singleplayer game.\n");
+//		return true;
+//	}
+//	if ((G_SkillProperty(SKILLP_DisableCheats) || netgame || deathmatch) && (!sv_cheats))
+//	{
+//		if (printmsg) Printf ("sv_cheats must be true to enable this command.\n");
+//		return true;
+//	}
+//	else if (cl_blockcheats != 0)
+//	{
+//		if (printmsg && cl_blockcheats == 1) Printf ("cl_blockcheats is turned on and disabled this command.\n");
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
 }
 
 /*
