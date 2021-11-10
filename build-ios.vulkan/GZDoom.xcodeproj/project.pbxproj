@@ -13385,7 +13385,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/gzdoom.pk3\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/gzdoom.pk3\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		4842D6D102ABC725FB9BAEB8 /* CMake PostBuild Rules */ = {
@@ -13419,7 +13419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/game_support.pk3\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/game_support.pk3\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6058B94E4929EEF7A9F321C3 /* Generate wadsrc/CMakeFiles/gzdoom_pk3 */ = {
@@ -13437,7 +13437,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		70F0F88B334F7FC386D5CC60 /* Generate CMakeFiles/ALL_BUILD */ = {
@@ -13472,7 +13472,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		89300D673B76F9C8AFF07248 /* Generate src/xlat_parser.c */ = {
@@ -13494,7 +13494,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Release/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
@@ -13562,7 +13562,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/lights.pk3\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/lights.pk3\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C4AE3F8A55F193900EF9E2F4 /* Generate wadsrc_widescreen/CMakeFiles/game_widescreen_gfx_pk3 */ = {
@@ -13580,7 +13580,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_widescreen\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C93877B9781B168A38C9F4D3 /* Generate game_widescreen_gfx.pk3 */ = {
@@ -13618,7 +13618,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E210B84B7EA2B0AD96358373 /* Generate wadsrc_lights/CMakeFiles/lights_pk3 */ = {
@@ -13636,7 +13636,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E58DB64E1BB1565A7BEFB5B5 /* Generate brightmaps.pk3 */ = {
@@ -13656,7 +13656,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/brightmaps.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/brightmaps.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/brightmaps.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/brightmaps.pk3\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/brightmaps.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/brightmaps.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/brightmaps.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_bm\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_bm/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/brightmaps.pk3\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F54B0E0DB131611B7C16C1C2 /* Generate src/sc_man_scanner.h */ = {
@@ -13677,7 +13677,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Debug/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Release/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/MinSizeRel/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/RelWithDebInfo/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Debug/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Debug/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/MinSizeRel/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/RelWithDebInfo/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FD89B960FE3396959D99D6A4 /* Generate src/zcc-parse.c */ = {
@@ -13699,7 +13699,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Release/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -14607,9 +14607,80 @@
 					"'__forceinline=inline'",
 					"'HAVE_DISPATCH_APPLY=1'",
 					"$(inherited)",
+					"'DYN_OPENAL=1'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					/Users/yoshi/Code/personal/gzdoom/libraries/glslang,
+					/Users/yoshi/Code/personal/gzdoom/libraries/zlib,
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/sdl/include,
+					/Users/yoshi/Code/personal/gzdoom/libraries/bzip2,
+					/Users/yoshi/Code/personal/gzdoom/libraries/lzma/C,
+					/Users/yoshi/Code/personal/gzdoom/libraries/jpeg,
+					/Users/yoshi/Code/personal/gzdoom/bin/windows/zmusic/include,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src",
+					/Users/yoshi/Code/personal/gzdoom/src/.,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/music,
+					/Users/yoshi/Code/personal/gzdoom/src/common/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/common/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/formats,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/hires,
+					/Users/yoshi/Code/personal/gzdoom/src/common/models,
+					/Users/yoshi/Code/personal/gzdoom/src/common/filesystem,
+					/Users/yoshi/Code/personal/gzdoom/src/common/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/common/console,
+					/Users/yoshi/Code/personal/gzdoom/src/common/engine,
+					/Users/yoshi/Code/personal/gzdoom/src/common/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/common/statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/common/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/common/objects,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/hwrenderer/data,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl_load,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/glad/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/Mali_OpenGL_ES_Emulator/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/vulkan/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/drawers,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/vm,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/jit,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/core,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/interface,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/g_statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/console,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/bots,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/mapthinkers,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/hwrenderer,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/r_data,
+					/Users/yoshi/Code/personal/gzdoom/src/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/sound/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/xlat,
+					/Users/yoshi/Code/personal/gzdoom/src/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/utility/nodebuilder,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting/zscript,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/gdtoa,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/glslang/Public,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/spirv,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa",
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix,
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix/sdl,
+					"$(inherited)",
+					/Users/yoshi/Code/personal/gzdoom/moltenvk/include,
+				);
 				INFOPLIST_FILE = "./build-ios.vulkan/src/CMakeFiles/zdoom.dir/Info.plist";
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -14656,7 +14727,6 @@
 					"@executable_path/Frameworks",
 					"-Wl,-search_paths_first",
 					"-Wl,-headerpad_max_install_names",
-					"-lrt",
 					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/Release${EFFECTIVE_PLATFORM_NAME}/libz.a",
 					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/jpeg/Release${EFFECTIVE_PLATFORM_NAME}/libjpeg.a",
 					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/bzip2/Release${EFFECTIVE_PLATFORM_NAME}/libbz2.a",
@@ -14671,7 +14741,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
@@ -15221,7 +15291,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
@@ -16175,7 +16245,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
@@ -16975,7 +17045,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
