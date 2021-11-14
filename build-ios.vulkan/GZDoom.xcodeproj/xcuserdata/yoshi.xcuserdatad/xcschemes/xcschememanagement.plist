@@ -99,6 +99,11 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>zdoom iOS Native.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>20</integer>
+		</dict>
 		<key>zdoom.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -123,6 +128,11 @@
 			<true/>
 		</dict>
 		<key>3441CFB8DD644791B80BE133</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92B7EB1F273BA19100054270</key>
 		<dict>
 			<key>primary</key>
 			<true/>

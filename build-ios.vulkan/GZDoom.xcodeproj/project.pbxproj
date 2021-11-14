@@ -468,6 +468,482 @@
 		929A354327269CEF003CB7B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929A354227269CEF003CB7B2 /* Launch Screen.storyboard */; };
 		929A354727292A26003CB7B2 /* brutalv21.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354627292A25003CB7B2 /* brutalv21.pk3 */; };
 		929A354927292C74003CB7B2 /* hdoom.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354827292C74003CB7B2 /* hdoom.pk3 */; };
+		92B7EB38273BA19100054270 /* brutalv21.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354627292A25003CB7B2 /* brutalv21.pk3 */; };
+		92B7EB39273BA19100054270 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929A354027269C4F003CB7B2 /* Images.xcassets */; };
+		92B7EB3A273BA19100054270 /* zdoom.icns in Resources */ = {isa = PBXBuildFile; fileRef = ACB9BD9858F948B585D928D6 /* zdoom.icns */; };
+		92B7EB3B273BA19100054270 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929A354227269CEF003CB7B2 /* Launch Screen.storyboard */; };
+		92B7EB3C273BA19100054270 /* hdoom.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354827292C74003CB7B2 /* hdoom.pk3 */; };
+		92B7EB3D273BA19100054270 /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92BAD8D527158FBE007F56E2 /* doom.wad */; };
+		92B7EB3F273BA19100054270 /* am_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC74E44DC2B446B38D2ACBCD /* am_map.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB40273BA19100054270 /* bbannouncer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4A787F09DC54FD09690333E /* bbannouncer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB41273BA19100054270 /* v_2ddrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4694A85C3744A86AB72B7CB /* v_2ddrawer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB42273BA19100054270 /* v_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92B9C283EB064DE2BA43B433 /* v_draw.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB43273BA19100054270 /* v_drawtext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2F50939DB642EF9D2689F0 /* v_drawtext.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB44273BA19100054270 /* i_music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4377B15374B240FD9261C375 /* i_music.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB45273BA19100054270 /* i_soundfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6AC069459E0A435392CD79B9 /* i_soundfont.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB46273BA19100054270 /* music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCEFC2C88F4F368C239862 /* music.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB47273BA19100054270 /* music_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C0E20F9B964809BFF96E10 /* music_config.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB48273BA19100054270 /* music_midi_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49B8A37067AE4CB981D53865 /* music_midi_base.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB49273BA19100054270 /* i_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBE4B9F7BFF1404EA0BF16A6 /* i_sound.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB4A273BA19100054270 /* oalsound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1239F87A5BAD441CBB4EDA4D /* oalsound.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB4B273BA19100054270 /* s_environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19672CDA55DE4BB6A7F11711 /* s_environment.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB4C273BA19100054270 /* s_reverbedit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B66E45F3E02540D18807E858 /* s_reverbedit.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB4D273BA19100054270 /* s_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F56F276554398A2008B54 /* s_sound.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB4E273BA19100054270 /* c_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 211B4D13B74B49508635F714 /* c_bind.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB4F273BA19100054270 /* c_buttons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186B006B0C09417184449387 /* c_buttons.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB50273BA19100054270 /* c_commandbuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 868C2F76A95F43B595147C72 /* c_commandbuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB51273BA19100054270 /* c_commandline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED24FF7C5CE94B8888412DD6 /* c_commandline.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB52273BA19100054270 /* c_console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC66BD973BB54D91AFE68C76 /* c_console.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB53273BA19100054270 /* c_consolebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89D6181802F04BC7B5B3DAA5 /* c_consolebuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB54273BA19100054270 /* c_cvars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159AD94308714BDC857DB0CA /* c_cvars.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB55273BA19100054270 /* c_dispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A14113F6D6924FAC8F78A803 /* c_dispatch.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB56273BA19100054270 /* c_enginecmds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E03A58F01403DBB9A468C /* c_enginecmds.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB57273BA19100054270 /* c_expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2C74D9D7592D438AA11B6D44 /* c_expr.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB58273BA19100054270 /* c_notifybufferbase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE42FDCFC85443948C914444 /* c_notifybufferbase.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB59273BA19100054270 /* c_tabcomplete.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CF33A1B59FE4E69AB5D6502 /* c_tabcomplete.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB5A273BA19100054270 /* cycler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35DAF1ED2B594D74B5A7161E /* cycler.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB5B273BA19100054270 /* d_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB8E2242AD364F3AB98B2E5F /* d_event.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB5C273BA19100054270 /* date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85D20060E44948CCBE4981A8 /* date.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB5D273BA19100054270 /* i_interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33AD92446B9F40C49402C9E5 /* i_interface.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB5E273BA19100054270 /* i_net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77DB4D5918A9481485AB17CF /* i_net.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB5F273BA19100054270 /* m_joy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B3AE43B26D714E0ABB591065 /* m_joy.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB60273BA19100054270 /* m_random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96DAA10440D6494BBED6BB62 /* m_random.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB61273BA19100054270 /* palettecontainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 653C9DBEDD964BF8B6CF3DFC /* palettecontainer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB62273BA19100054270 /* renderstyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3585A7CBC1E4484E82A0FE9B /* renderstyle.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB63273BA19100054270 /* sc_man.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15FB78BF4858417C974FB29D /* sc_man.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB64273BA19100054270 /* serializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3862295BD97A493585129F39 /* serializer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB65273BA19100054270 /* stats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F146804B42554ABB98EAC761 /* stats.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB66273BA19100054270 /* stringtable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1EC41F96BF14A999306687E /* stringtable.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB67273BA19100054270 /* v_colortables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78463DAD33544C4F9A1695E8 /* v_colortables.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB68273BA19100054270 /* ancientzip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 659A27E9566248B0A9E244E8 /* ancientzip.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB69273BA19100054270 /* file_7z.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37EC46E606F04248A6CE64C9 /* file_7z.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB6A273BA19100054270 /* file_directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E12347CFA73C45B996C57862 /* file_directory.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB6B273BA19100054270 /* file_grp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFBD473C16974527B501D5DD /* file_grp.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB6C273BA19100054270 /* file_lump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9587F3E1EC654B6AAB08CB6E /* file_lump.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB6D273BA19100054270 /* file_pak.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AA6704796344C4879C5AA8 /* file_pak.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB6E273BA19100054270 /* file_rff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 680410B5B499443FBBBED5C9 /* file_rff.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB6F273BA19100054270 /* file_ssi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73109D38C7145BF95825F56 /* file_ssi.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB70273BA19100054270 /* file_wad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48A4FC2BA1D04FE082D68C31 /* file_wad.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB71273BA19100054270 /* file_whres.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BEA698C72874E97A47E9256 /* file_whres.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB72273BA19100054270 /* file_zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41686DB407D34B94B466B63F /* file_zip.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB73273BA19100054270 /* filesystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FD34ED3285042DE96523AF4 /* filesystem.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB74273BA19100054270 /* resourcefile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58C672D9E938467BAA37FAB9 /* resourcefile.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB75273BA19100054270 /* font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54720E32F6424065B7465D06 /* font.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB76273BA19100054270 /* hexfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 900B1B997D304CDFB2053584 /* hexfont.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB77273BA19100054270 /* singlelumpfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF0FAC099A734AF3A3AB886F /* singlelumpfont.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB78273BA19100054270 /* singlepicfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1864CBB0EF1449108702086F /* singlepicfont.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB79273BA19100054270 /* specialfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E5C7E5BB2471E84711A4D /* specialfont.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB7A273BA19100054270 /* v_font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6019C9DE7C5045AB923B6934 /* v_font.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB7B273BA19100054270 /* v_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2DEFA1936CF4E8AA1DCA34E /* v_text.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB7C273BA19100054270 /* joystickmenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4EB4C25235D435C85278316 /* joystickmenu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB7D273BA19100054270 /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A90D6C2857E844AC8DBFAF50 /* menu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB7E273BA19100054270 /* menudef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B142EF0421D44E1DB827A5A1 /* menudef.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB7F273BA19100054270 /* messagebox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2C62D77788AE4AEAA02105CF /* messagebox.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB80273BA19100054270 /* optionmenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EF0A30E1B1504615898DDC75 /* optionmenu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB81273BA19100054270 /* resolutionmenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9634DEDD36234DC899CEFB01 /* resolutionmenu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB82273BA19100054270 /* savegamemanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9ED3DD38A44D40248C630241 /* savegamemanager.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB83273BA19100054270 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A58161ACECE34D3DA25F7ED9 /* model.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB84273BA19100054270 /* models_md2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D33C016AC36A40F5A42CF5EA /* models_md2.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB85273BA19100054270 /* models_md3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE47717AF89546D7801030C3 /* models_md3.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB86273BA19100054270 /* models_obj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F89ACA945F0C46C38DD2D166 /* models_obj.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB87273BA19100054270 /* models_ue1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8173E90986D94A5D98E6E4CF /* models_ue1.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB88273BA19100054270 /* models_voxel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F428C309B39043CC8A2E2D7A /* models_voxel.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB89273BA19100054270 /* voxels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 165B80089A844DBDAC0A44F8 /* voxels.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB8A273BA19100054270 /* autosegs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53F7BDE6FAA64749B76968A8 /* autosegs.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB8B273BA19100054270 /* dobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 587783055B88409FA6192B8F /* dobject.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB8C273BA19100054270 /* dobjgc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A6EC25965E041848EE25D8A /* dobjgc.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB8D273BA19100054270 /* dobjtype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 516611376D1D4F54851C15EB /* dobjtype.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB8E273BA19100054270 /* i_system_posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4999B6A06F0493788C97854 /* i_system_posix.cpp */; };
+		92B7EB8F273BA19100054270 /* i_specialpaths.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F799BB0354D188C985A1C /* i_specialpaths.mm */; };
+		92B7EB90273BA19100054270 /* iwadpicker_cocoa.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9F6209954E344737938656AC /* iwadpicker_cocoa.mm */; settings = {COMPILER_FLAGS = "-fobjc-exceptions"; }; };
+		92B7EB9B273BA19100054270 /* gl_buffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F56D6E0DC434025A718ADBE /* gl_buffers.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB9C273BA19100054270 /* gl_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11CE94F796F74B5082F3CAFF /* gl_debug.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB9D273BA19100054270 /* gl_framebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 512FC7E3C2474A08A3D0C160 /* gl_framebuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB9E273BA19100054270 /* gl_hwtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54843381324D41B0A107D465 /* gl_hwtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EB9F273BA19100054270 /* gl_postprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0625F0EECDF54677AE73868B /* gl_postprocess.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA0273BA19100054270 /* gl_postprocessstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFBE6DCA5CFA493D856981E4 /* gl_postprocessstate.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA1273BA19100054270 /* gl_renderbuffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6E0C5A3A32C04F57A09D38F9 /* gl_renderbuffers.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA2273BA19100054270 /* gl_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 835712C27C6841909279FB4C /* gl_renderer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA3273BA19100054270 /* gl_renderstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D04345DFFC44698970CA121 /* gl_renderstate.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA4273BA19100054270 /* gl_samplers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0A6EC0AF6C943A7B2CCE7DD /* gl_samplers.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA5273BA19100054270 /* gl_shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96CCC9F043D44EFFA1C77E0F /* gl_shader.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA6273BA19100054270 /* gl_shaderprogram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EDC4020FF0D4A0FBC38A4BD /* gl_shaderprogram.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA7273BA19100054270 /* gl_stereo3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE3C17478E2749FB8C5DFFF5 /* gl_stereo3d.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA8273BA19100054270 /* gl_interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52CE1B8E4CB24A3B8DC97050 /* gl_interface.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBA9273BA19100054270 /* gl_load.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FAF2403BDB64A4A94ABF5DC /* gl_load.c */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBAA273BA19100054270 /* flatvertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6AB0A20C9B7841BB9F611AB0 /* flatvertices.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBAB273BA19100054270 /* hw_aabbtree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA8BBF23D0B04309B35B0775 /* hw_aabbtree.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBAC273BA19100054270 /* hw_clock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F0F5A3E9DB845FAB44950DA /* hw_clock.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBAD273BA19100054270 /* hw_cvars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A2AA3B6844F47CB9E6F6D54 /* hw_cvars.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBAE273BA19100054270 /* hw_lightbuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 140965699ECC414EB54CF3E1 /* hw_lightbuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBAF273BA19100054270 /* hw_modelvertexbuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CDF26B0856445BA7611A75 /* hw_modelvertexbuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB0273BA19100054270 /* hw_shaderpatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD8B8DF55CD45AFB590CE29 /* hw_shaderpatcher.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB1273BA19100054270 /* hw_shadowmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47599DA39392462B88C4F2AB /* hw_shadowmap.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB2273BA19100054270 /* hw_skydome.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65EF5005012144479EC974C8 /* hw_skydome.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB3273BA19100054270 /* hw_viewpointbuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7614D1ACFF674372846EDE75 /* hw_viewpointbuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB4273BA19100054270 /* hw_vrmodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 866C5262E7024569845422CF /* hw_vrmodes.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB5273BA19100054270 /* hw_draw2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8EA6376C760D4A068194E454 /* hw_draw2d.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB6273BA19100054270 /* hw_postprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5F051F3222445249D82DBB9 /* hw_postprocess.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB7273BA19100054270 /* hw_postprocess_cvars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D71E428CC9A849379F7AB472 /* hw_postprocess_cvars.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBB8273BA19100054270 /* poly_buffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A86E1069475DA7413B1A /* poly_buffers.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBB9273BA19100054270 /* poly_framebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11EA1CCEB12C4327BA7822A5 /* poly_framebuffer.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBBA273BA19100054270 /* poly_hwtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A6BC10D80842DEA8CB7A5B /* poly_hwtexture.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBBB273BA19100054270 /* poly_renderstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B7B02E23CBD47F2B3C73745 /* poly_renderstate.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBBC273BA19100054270 /* poly_all.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A024D5DBB977402F9D98218E /* poly_all.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBBD273BA19100054270 /* r_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5434918ED30540BDA22F38F1 /* r_thread.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBBE273BA19100054270 /* r_videoscale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 73F2A60D9CBD4FDB8037ED23 /* r_videoscale.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBBF273BA19100054270 /* v_framebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 908A7BAC0D6745C09C582928 /* v_framebuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBC0273BA19100054270 /* v_video.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE5DD4484C6D4A40B91D7D49 /* v_video.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBC1273BA19100054270 /* vk_postprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57505DB2A6F14C1BADFC34AE /* vk_postprocess.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC2273BA19100054270 /* vk_renderbuffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DB70E8B9A4F46FFA02E6FCB /* vk_renderbuffers.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC3273BA19100054270 /* vk_renderpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F833EAFAAF494537B08BC9E7 /* vk_renderpass.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC4273BA19100054270 /* vk_renderstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A510D95FD0EB43009D7B71CC /* vk_renderstate.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC5273BA19100054270 /* vk_streambuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B98735A676E84F2FBB38563B /* vk_streambuffer.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC6273BA19100054270 /* vk_shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93EF1C78022F41AFB1BE33F7 /* vk_shader.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC7273BA19100054270 /* vk_buffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B4D676AFC9544E3B12B2ACE /* vk_buffers.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC8273BA19100054270 /* vk_builders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F5379E02A14C6A9D0EF0DC /* vk_builders.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBC9273BA19100054270 /* vk_device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B4FBC0F87F04BDBB25C08BF /* vk_device.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBCA273BA19100054270 /* vk_framebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E46F803559724F7D869B2242 /* vk_framebuffer.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBCB273BA19100054270 /* vk_swapchain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A32AEB540854E158FEA3D9B /* vk_swapchain.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBCC273BA19100054270 /* vk_hwtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746E1561D78046D5BFCA6674 /* vk_hwtexture.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBCD273BA19100054270 /* vk_imagetransition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A48EE0C2BE8943C8B5348A63 /* vk_imagetransition.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBCE273BA19100054270 /* vk_samplers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0312D702243A488190291DBF /* vk_samplers.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBCF273BA19100054270 /* vk_mem_alloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 903FF39B1A4F4DAFA640BED9 /* vk_mem_alloc.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBD0273BA19100054270 /* volk.c in Sources */ = {isa = PBXBuildFile; fileRef = 5257474D3A7B4E398B667946 /* volk.c */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBD1273BA19100054270 /* codegen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 73AB25A72DFD45EDA979882E /* codegen.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD2273BA19100054270 /* vmbuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7EFA354A3BF463E8B5BCC21 /* vmbuilder.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD3273BA19100054270 /* dictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9FFE2D210B545039DCDDE70 /* dictionary.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD4273BA19100054270 /* dynarrays.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2570FF6958214133942A1B99 /* dynarrays.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD5273BA19100054270 /* imports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 405DE5998717444EB59B52A5 /* imports.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD6273BA19100054270 /* scopebarrier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC3BE5F0ABAF46C5AB06D10F /* scopebarrier.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD7273BA19100054270 /* symbols.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C095AEB17DFE44C0B2FE1D80 /* symbols.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD8273BA19100054270 /* types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA680DC08A3342A4806C82CB /* types.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBD9273BA19100054270 /* vmdisasm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71359E1633C240C098DEA819 /* vmdisasm.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBDA273BA19100054270 /* ast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2D387AEB7184B4289DFFCC4 /* ast.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBDB273BA19100054270 /* zcc_compile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F58AA4AD06694504A8872FF5 /* zcc_compile.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBDC273BA19100054270 /* zcc_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D6538EDFFB740F4ACC0E763 /* zcc_parser.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBDD273BA19100054270 /* stringformat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5772838EF7844E2B6BEB9A1 /* stringformat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBDE273BA19100054270 /* vmnatives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B6AFA5D3AEE4480B8585C324 /* vmnatives.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBDF273BA19100054270 /* vmexec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778DA6913D904E55A4AFAF64 /* vmexec.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE0273BA19100054270 /* vmframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC6A82FEC0E145A8A3DDD196 /* vmframe.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE1273BA19100054270 /* base_sbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CA571B0AF95454ABADAAC2A /* base_sbar.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE2273BA19100054270 /* animlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FBA0B127CC642E2B6F9B210 /* animlib.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE3273BA19100054270 /* animtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 245B2EC6EBA24914BF3CECF9 /* animtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE4273BA19100054270 /* bitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA4696EDC4A04CF5A4E73B3F /* bitmap.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE5273BA19100054270 /* anmtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A0C531BCC3543C9B5D099E9 /* anmtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE6273BA19100054270 /* automaptexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CFEB5C520974C168206282F /* automaptexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE7273BA19100054270 /* brightmaptexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A404031B8824DD1A69C1865 /* brightmaptexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE8273BA19100054270 /* buildtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6F58C6E874618AD0F785C /* buildtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBE9273BA19100054270 /* ddstexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E655D13ADCD245A4906C0835 /* ddstexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBEA273BA19100054270 /* emptytexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95030ECC37B846A9B8DF8E40 /* emptytexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBEB273BA19100054270 /* flattexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E52B74605884085BC7AF587 /* flattexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBEC273BA19100054270 /* fontchars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60EE5A30DB5C4F69A5ECE40B /* fontchars.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBED273BA19100054270 /* imgztexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF6AD34B4A841968A95EE97 /* imgztexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBEE273BA19100054270 /* jpegtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E430A4B36715439A8D177C2D /* jpegtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBEF273BA19100054270 /* md5check.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA28B7A7118D4CB89124AD46 /* md5check.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF0273BA19100054270 /* multipatchtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C4C551B29D4479B9E40777E /* multipatchtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF1273BA19100054270 /* patchtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BD821594C584E2C9F633AA0 /* patchtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF2273BA19100054270 /* pcxtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 454C6F5CB6B64C68961AD57C /* pcxtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF3273BA19100054270 /* pngtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3460528A3A4842B695AD3FF5 /* pngtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF4273BA19100054270 /* rawpagetexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB984DAB4A62429DA51E5212 /* rawpagetexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF5273BA19100054270 /* shadertexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBFF9EEE740E6930520F7 /* shadertexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF6273BA19100054270 /* stbtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1377178305B4EE0AEF1E3F8 /* stbtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF7273BA19100054270 /* tgatexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 219F17F090464D758904BADF /* tgatexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF8273BA19100054270 /* gametexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 494AFBD7B9B748D8ADED6B06 /* gametexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBF9273BA19100054270 /* hq2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A987016DF8864A99AD4DD974 /* hq2x.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBFA273BA19100054270 /* hq3x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 598B82A5DF7A4203BE94AC9A /* hq3x.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBFB273BA19100054270 /* hq4x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE14732E583445D937D9445 /* hq4x.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBFC273BA19100054270 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 944181E39315489880DACBE7 /* init.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBFD273BA19100054270 /* hqresize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 606F421158C14913A85A6696 /* hqresize.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EBFE273BA19100054270 /* xbrz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 798F6876C8A84B44ACC607EA /* xbrz.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EBFF273BA19100054270 /* xbrz_old.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26D1A8119F2C4755994DDACB /* xbrz_old.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EC00273BA19100054270 /* hw_ihwtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A804B3ED88924177AF073C4B /* hw_ihwtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC01273BA19100054270 /* hw_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 84F7849BA3B548B38462227A /* hw_material.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC02273BA19100054270 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88CC3B633A74CA6AA8F9387 /* image.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC03273BA19100054270 /* imagetexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 894A69273893444B85D86ACC /* imagetexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC04273BA19100054270 /* m_png.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BCE602BEC924481CAC609CB2 /* m_png.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC05273BA19100054270 /* IOSUtils+EmulatorKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929A353E2725DCA4003CB7B2 /* IOSUtils+EmulatorKeyboard.swift */; };
+		92B7EC06273BA19100054270 /* multipatchtexturebuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F25D6E1FAFA494393778CB0 /* multipatchtexturebuilder.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC07273BA19100054270 /* skyboxtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2A862530A66423E9E9056E0 /* skyboxtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC08273BA19100054270 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AB956BFE85524F2DA5884C48 /* texture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC09273BA19100054270 /* texturemanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CC9CF2B5F4296B4DCEBE0 /* texturemanager.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC0A273BA19100054270 /* v_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC7CFEE6066740CA84039A26 /* v_collection.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC0B273BA19100054270 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1EA58C95C5F48DBB19C2C48 /* base64.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC0C273BA19100054270 /* gain_analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 148B77BD4A5146B0AEE1B777 /* gain_analysis.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC0D273BA19100054270 /* asin.c in Sources */ = {isa = PBXBuildFile; fileRef = 9998BFCFAF8D4E13990CAAD2 /* asin.c */; };
+		92B7EC0E273BA19100054270 /* atan.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CF5F3941014413882BB2AFF /* atan.c */; };
+		92B7EC0F273BA19100054270 /* const.c in Sources */ = {isa = PBXBuildFile; fileRef = 29E25E51D36D49B4BB10DF4C /* const.c */; };
+		92B7EC10273BA19100054270 /* cosh.c in Sources */ = {isa = PBXBuildFile; fileRef = F25DA1B6F4ED41599D73447D /* cosh.c */; };
+		92B7EC11273BA19100054270 /* exp.c in Sources */ = {isa = PBXBuildFile; fileRef = A8A95FF5E2084B7FB6C8EC83 /* exp.c */; };
+		92B7EC12273BA19100054270 /* fastsin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6687E17C41C5437E8B9E5C23 /* fastsin.cpp */; };
+		92B7EC13273BA19100054270 /* isnan.c in Sources */ = {isa = PBXBuildFile; fileRef = C2A0B5A2FF644C82BD0AFC23 /* isnan.c */; };
+		92B7EC14273BA19100054270 /* log.c in Sources */ = {isa = PBXBuildFile; fileRef = 408DDC971A90400892313CCA /* log.c */; };
+		92B7EC15273BA19100054270 /* log10.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E662B385D114B34B0085673 /* log10.c */; };
+		92B7EC16273BA19100054270 /* mtherr.c in Sources */ = {isa = PBXBuildFile; fileRef = 7D246F07D0F149C0877E3438 /* mtherr.c */; };
+		92B7EC17273BA19100054270 /* polevl.c in Sources */ = {isa = PBXBuildFile; fileRef = E2BEFF93AA0847D2902C3FFD /* polevl.c */; };
+		92B7EC18273BA19100054270 /* pow.c in Sources */ = {isa = PBXBuildFile; fileRef = 7D24A748F4CC4E28B3A51A1D /* pow.c */; };
+		92B7EC19273BA19100054270 /* powi.c in Sources */ = {isa = PBXBuildFile; fileRef = F59C83BFF3A64F7B9C233F19 /* powi.c */; };
+		92B7EC1A273BA19100054270 /* sin.c in Sources */ = {isa = PBXBuildFile; fileRef = 9E850CB98E7C445785BD4E60 /* sin.c */; };
+		92B7EC1B273BA19100054270 /* sinh.c in Sources */ = {isa = PBXBuildFile; fileRef = 8410F13F2FE7427D9A2EBF8B /* sinh.c */; };
+		92B7EC1C273BA19100054270 /* sqrt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BC020451A0A48808F730885 /* sqrt.c */; };
+		92B7EC1D273BA19100054270 /* tan.c in Sources */ = {isa = PBXBuildFile; fileRef = EA8DB3786616490D9E9AD8E7 /* tan.c */; };
+		92B7EC1E273BA19100054270 /* tanh.c in Sources */ = {isa = PBXBuildFile; fileRef = 342E61AED1AD4F94BED83184 /* tanh.c */; };
+		92B7EC1F273BA19100054270 /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7AAE6F437D41548962CCA2 /* md5.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC20273BA19100054270 /* SFMT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C8EB5CED249D1AFFECB27 /* SFMT.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC21273BA19100054270 /* strnatcmp.c in Sources */ = {isa = PBXBuildFile; fileRef = C97EF3169F1646E3BD7D8026 /* strnatcmp.c */; };
+		92B7EC22273BA19100054270 /* superfasthash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C35E38F3E771495FA5802F1D /* superfasthash.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC23273BA19100054270 /* cmdlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E5FE405154E7C8AAC9623 /* cmdlib.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC24273BA19100054270 /* configfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FE60833CF8F4C358AB60BAD /* configfile.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC25273BA19100054270 /* engineerrors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1434B69C88E4D69B34DCEA3 /* engineerrors.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC26273BA19100054270 /* files.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 787836E95864461CB5137A1C /* files.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC27273BA19100054270 /* files_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC853D5D31A243C6A571440B /* files_decompress.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC28273BA19100054270 /* findfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A818A30B9862433992E142D8 /* findfile.cpp */; };
+		92B7EC29273BA19100054270 /* i_module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E900F247C44848AEAF7F6BFC /* i_module.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC2A273BA19100054270 /* i_time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6E77527542FA85587004 /* i_time.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC2B273BA19100054270 /* m_alloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 025103E216884D5098D12887 /* m_alloc.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC2C273BA19100054270 /* m_argv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BCD53FA0C8AD4B698455C30C /* m_argv.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC2D273BA19100054270 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F17E681A67E84821AC21F609 /* matrix.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7EC2E273BA19100054270 /* memarena.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4B8506A399E403DBA6F8990 /* memarena.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC2F273BA19100054270 /* name.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB2F191F17594CDDBCF20C31 /* name.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC30273BA19100054270 /* palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F59ECC054E2E49AE93054B0C /* palette.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC31273BA19100054270 /* r_memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4032A90BF45D4F2C9DECDA5B /* r_memory.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC32273BA19100054270 /* s_playlist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCD05FF51D3E428CBB01496B /* s_playlist.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC33273BA19100054270 /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 982C2E70F97E40999E0FBC24 /* utf8.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC34273BA19100054270 /* x86.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 728A8F8A48A345DB8CBD28A2 /* x86.cpp */; };
+		92B7EC35273BA19100054270 /* zstrformat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB4D948517104275BD2540F1 /* zstrformat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC36273BA19100054270 /* zstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C590117AE82C457AAF2E28C6 /* zstring.cpp */; };
+		92B7EC37273BA19100054270 /* c_cmds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 314718CAACCB4C11B92D672E /* c_cmds.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC38273BA19100054270 /* c_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA911A2F28584065B5C005C4 /* c_functions.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC39273BA19100054270 /* c_notifybuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BBD82A91E24E4B8B9E71BF /* c_notifybuffer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC3A273BA19100054270 /* ct_chat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB618F607FEC4C49A607FC14 /* ct_chat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC3B273BA19100054270 /* d_anonstats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4A9051351BC48A8A0CA3C56 /* d_anonstats.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC3C273BA19100054270 /* d_defcvars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A575F842E32A4D0CA6CBD17B /* d_defcvars.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC3D273BA19100054270 /* d_iwad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9C23C42AB5448F6B3EE528A /* d_iwad.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC3E273BA19100054270 /* d_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A07D8A84E6FC4A1AB052B414 /* d_main.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC3F273BA19100054270 /* d_net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1825A2E428114B96851BE319 /* d_net.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC40273BA19100054270 /* d_netinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 103B40FC8E0542AD8E997AEA /* d_netinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC41273BA19100054270 /* d_protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B202873FC52545EE94EF3272 /* d_protocol.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC42273BA19100054270 /* doomstat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AB0A65C3556F4D8EAB463C71 /* doomstat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC43273BA19100054270 /* events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63E29A5BEBC849028966F1BB /* events.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC44273BA19100054270 /* g_cvars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EFD9DF821B2C47AFB0097284 /* g_cvars.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC45273BA19100054270 /* g_dumpinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD12709E695C4E7CB65ACEB7 /* g_dumpinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC46273BA19100054270 /* g_game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA69E0A27CD4F79AD0A06D3 /* g_game.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC47273BA19100054270 /* g_hub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD098C56B14C5798F9082C /* g_hub.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC48273BA19100054270 /* g_level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDB53056EE4A34968A4610 /* g_level.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC49273BA19100054270 /* hudmessages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C32BDF897A54563A31B30A1 /* hudmessages.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC4A273BA19100054270 /* sbar_mugshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1784FBDC9BB34843B9197238 /* sbar_mugshot.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC4B273BA19100054270 /* sbarinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB522D21C90D40FA9E7EB2CA /* sbarinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC4C273BA19100054270 /* shared_hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5F87E2519B94A2CA2DD99F4 /* shared_hud.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC4D273BA19100054270 /* shared_sbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB8FA0CE26D2413A998D8DFB /* shared_sbar.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC4E273BA19100054270 /* gameconfigfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43434996BD59478B89582151 /* gameconfigfile.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC4F273BA19100054270 /* a_keys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 62F2DA52DC3749BEBF8A9492 /* a_keys.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC50273BA19100054270 /* a_weapons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DBB09A30B441C5A1C55029 /* a_weapons.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC51273BA19100054270 /* d_dehacked.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D58C8002D1B4A40963296C4 /* d_dehacked.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC52273BA19100054270 /* decallib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF08D5FDC5AF4B37B66841DA /* decallib.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC53273BA19100054270 /* g_doomedmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59AA6094527C4742BFA4CA72 /* g_doomedmap.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC54273BA19100054270 /* g_mapinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5FC7613B6D6403BB60120BE /* g_mapinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC55273BA19100054270 /* g_skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FCF5061A7504DFB9A8CA590 /* g_skill.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC56273BA19100054270 /* gi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BE7CF028FA94DFE90C4D0FF /* gi.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC57273BA19100054270 /* info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A8E697C9CAC4C8F9C625DBE /* info.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC58273BA19100054270 /* keysections.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB092C40566245B5AE11F963 /* keysections.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC59273BA19100054270 /* p_terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9DB519017DF4ED792AE6889 /* p_terrain.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC5A273BA19100054270 /* p_xlat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8BD97EE49B5F4F018F3D63F5 /* p_xlat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC5B273BA19100054270 /* statistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5335D97E659E4FB5BCC13855 /* statistics.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC5C273BA19100054270 /* teaminfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4771E832066E40FE88D3DA7C /* teaminfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC5D273BA19100054270 /* anim_switches.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9BEFEBB95D94735A2C1A388 /* anim_switches.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC5E273BA19100054270 /* animations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36E976ED12A04801B7570F5E /* animations.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC5F273BA19100054270 /* buildloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D018D8A88424BB69B75BDA7 /* buildloader.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC60273BA19100054270 /* umapinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24F4FF1CF93F4F139552B9DC /* umapinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC61273BA19100054270 /* parse_xlat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10A5C719D59A4744A20E6B2F /* parse_xlat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC62273BA19100054270 /* parsecontext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9204DA84B3646EEB92DD45D /* parsecontext.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC63273BA19100054270 /* gitinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 09BE124E65EE422DA416703D /* gitinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC64273BA19100054270 /* hu_scores.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F52B566E76E1472E9D737440 /* hu_scores.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC65273BA19100054270 /* intermission.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB09ABE1ACF4661972B350D /* intermission.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC66273BA19100054270 /* intermission_parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C151C3712EAA4ED3A851290C /* intermission_parse.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC67273BA19100054270 /* m_cheat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 523E4E356D214B97ADE97F8F /* m_cheat.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC68273BA19100054270 /* m_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D8429C4543E439F952F0384 /* m_misc.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC69273BA19100054270 /* compatibility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F749D75243974B19A49856A6 /* compatibility.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC6A273BA19100054270 /* edata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1876B167ADB4A45966FB25A /* edata.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC6B273BA19100054270 /* glnodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75786292D8534F0A909ACC99 /* glnodes.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC6C273BA19100054270 /* maploader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E88E974668FF4FDFAE868F3D /* maploader.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC6D273BA19100054270 /* polyobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BFFE95CCE445D1A1C7E3B1 /* polyobjects.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC6E273BA19100054270 /* postprocessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F3B21600D747AEA0479D07 /* postprocessor.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC6F273BA19100054270 /* renderinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DAD7D80AFF84265AEB7FC71 /* renderinfo.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC70273BA19100054270 /* slopes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EFB88220C83A4442A6FC5623 /* slopes.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC71273BA19100054270 /* specials.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 037EA0DFBB72451780BC6EED /* specials.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC72273BA19100054270 /* strifedialogue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 67365F494DED47ACAA9269FD /* strifedialogue.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC73273BA19100054270 /* udmf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FEBFFBCEEA242468FF329B6 /* udmf.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC74273BA19100054270 /* usdf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 610DC82B4FA148BD9E224F9F /* usdf.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC75273BA19100054270 /* doommenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF605F3ABF404AE083BF0808 /* doommenu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC76273BA19100054270 /* loadsavemenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8545F97903054AAD9EF84E4C /* loadsavemenu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC77273BA19100054270 /* playermenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B43FE146BE342E1A1CD52BE /* playermenu.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC78273BA19100054270 /* p_conversation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D607CD6670B6454A95E4CA9D /* p_conversation.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC79273BA19100054270 /* p_openmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FC3D014D73B44B6AA74C1F5 /* p_openmap.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC7A273BA19100054270 /* p_saveg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CB51E0AE1EA42C5B7A11A99 /* p_saveg.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC7B273BA19100054270 /* p_setup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F29CF66A70B4604A18205A6 /* p_setup.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC7C273BA19100054270 /* p_states.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8736CB475E2A4EF29B7ADFD4 /* p_states.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC7D273BA19100054270 /* p_tick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18370C1EA2A1413487120322 /* p_tick.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC7E273BA19100054270 /* a_action.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72143CEC1BC442B790EBF01E /* a_action.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC7F273BA19100054270 /* a_decals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DB815CC964D43B0962C545D /* a_decals.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC80273BA19100054270 /* a_dynlight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96C62D1ED77E4B38AB55259E /* a_dynlight.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC81273BA19100054270 /* a_flashfader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F9AA56C95E44BE7B9206BFE /* a_flashfader.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC82273BA19100054270 /* a_morph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 788A5D395665413BB374F8AC /* a_morph.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC83273BA19100054270 /* a_pickups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A717D093D004A9DB05C7B38 /* a_pickups.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC84273BA19100054270 /* a_specialspot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AC3AAED8B27495281DFC2E8 /* a_specialspot.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC85273BA19100054270 /* actorptrselect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5FABC412A24BA9AE86DA0D /* actorptrselect.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC86273BA19100054270 /* b_bot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85BED399841F40639D3D3A67 /* b_bot.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC87273BA19100054270 /* b_func.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88DD5B5102414A23A09DA5AC /* b_func.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC88273BA19100054270 /* b_game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29446237A660461CABA19908 /* b_game.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC89273BA19100054270 /* b_move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE62E65CEF2346DA9C1BA2B2 /* b_move.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC8A273BA19100054270 /* b_think.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2D9E17333FC4B7FAC9E2C7C /* b_think.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC8B273BA19100054270 /* dthinker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F35DAFEF2E4421801A70B6 /* dthinker.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC8C273BA19100054270 /* t_cmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 76B9C94F77FD4274B935A259 /* t_cmd.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC8D273BA19100054270 /* t_func.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981AA7B54A024CE38E2C923D /* t_func.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC8E273BA19100054270 /* t_load.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60BE07685B864A888755E0B9 /* t_load.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC8F273BA19100054270 /* t_oper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B936CB78CB24024BBD81010 /* t_oper.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC90273BA19100054270 /* t_parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D12BB616D4D420CA3193743 /* t_parse.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC91273BA19100054270 /* t_prepro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D35E5F4949FC43C886D92280 /* t_prepro.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC92273BA19100054270 /* t_script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 62B099B78F86443D99926ED9 /* t_script.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC93273BA19100054270 /* t_spec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C26EB511CED64A22859152A1 /* t_spec.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC94273BA19100054270 /* t_variable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75FA55EAB3BF4DCEA93500ED /* t_variable.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC95273BA19100054270 /* a_ceiling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF1B04678BBF4A2091174716 /* a_ceiling.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC96273BA19100054270 /* a_decalfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA9540D85BA14E72A780A2A3 /* a_decalfx.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC97273BA19100054270 /* a_doors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 746608D0769B41FEBD79ED4B /* a_doors.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC98273BA19100054270 /* a_floor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 814AC3F4B6FF4B9EB9FB62CD /* a_floor.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC99273BA19100054270 /* a_lightning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B392E9B6286545509FB4CFC0 /* a_lightning.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC9A273BA19100054270 /* a_lights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F9E1926B48C40A1813C0F7B /* a_lights.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC9B273BA19100054270 /* a_lighttransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4D21D094BA4319AC217537 /* a_lighttransfer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC9C273BA19100054270 /* a_pillar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2948A944227F429FA04C8400 /* a_pillar.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC9D273BA19100054270 /* a_plats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 779EBCFAA31C410782D7B3EC /* a_plats.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC9E273BA19100054270 /* a_pusher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9AD16E7D3634FA58371FFDA /* a_pusher.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7EC9F273BA19100054270 /* a_quake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DFC406EB1507402FB7E7171D /* a_quake.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA0273BA19100054270 /* a_scroll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5742BA829EE4762AF1EC313 /* a_scroll.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA1273BA19100054270 /* dsectoreffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DAFFFC750D3485D940856FC /* dsectoreffect.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA2273BA19100054270 /* p_3dfloors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54E643B89D81440C913B3A71 /* p_3dfloors.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA3273BA19100054270 /* p_3dmidtex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E1AE701E54264707B4B42F69 /* p_3dmidtex.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA4273BA19100054270 /* p_acs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 618CEA6152894D37975C73A8 /* p_acs.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA5273BA19100054270 /* p_actionfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F47E2FDAD5A44F7E926B9C01 /* p_actionfunctions.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA6273BA19100054270 /* p_destructible.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10951EDBE43B4D0983333436 /* p_destructible.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA7273BA19100054270 /* p_effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C531AB274184C0A8C38C5F3 /* p_effect.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA8273BA19100054270 /* p_enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C590C21065B64CDF84CF0090 /* p_enemy.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECA9273BA19100054270 /* p_interaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA5C5633BB74F6F9518AEB9 /* p_interaction.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECAA273BA19100054270 /* p_linkedsectors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1C237A14ECB4636B597DD60 /* p_linkedsectors.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECAB273BA19100054270 /* EmulatorKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C2A3A927247AF900D1BCE2 /* EmulatorKeyboard.swift */; };
+		92B7ECAC273BA19100054270 /* p_lnspec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F995280F9B454EB4B2D458B9 /* p_lnspec.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECAD273BA19100054270 /* p_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A3A95DB100E4A2FA9CDAEE3 /* p_map.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECAE273BA19100054270 /* p_maputl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B97E984CEC042238F9E5318 /* p_maputl.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECAF273BA19100054270 /* p_mobj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89B245C46BB64E4E95695002 /* p_mobj.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB0273BA19100054270 /* p_pspr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DFFACD7E58C44FF90BBAF55 /* p_pspr.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB1273BA19100054270 /* p_secnodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B236738A4FE4C91863D16B7 /* p_secnodes.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB2273BA19100054270 /* p_sectors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC928B1A763B4671AF96CAD6 /* p_sectors.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB3273BA19100054270 /* p_sight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D63BDBF6B57D4DD996099421 /* p_sight.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB4273BA19100054270 /* p_spec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C51C77295EB04269BE4A884A /* p_spec.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB5273BA19100054270 /* p_switch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B406EEA7D8F047BA9D5C5FCA /* p_switch.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB6273BA19100054270 /* p_tags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E770DA4C77D4867ADDD7244 /* p_tags.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB7273BA19100054270 /* p_teleport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 514C430A99FD440BA762C14E /* p_teleport.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB8273BA19100054270 /* p_things.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 417D6806E6374C949ED020E1 /* p_things.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECB9273BA19100054270 /* p_trace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23089B659A7841ECA5E208D4 /* p_trace.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECBA273BA19100054270 /* p_user.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B3DB0AC28EDB48E49B689A9F /* p_user.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECBB273BA19100054270 /* po_man.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEC27B3B69A64CE0BBCCF30E /* po_man.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECBC273BA19100054270 /* portal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E58657114F8474FA2285F3E /* portal.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECBD273BA19100054270 /* i_steam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C98E2E76014B59B9A96C72 /* i_steam.cpp */; };
+		92B7ECBE273BA19100054270 /* a_dynlightdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA834318BAF64DC0A8A8AF5F /* a_dynlightdata.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECBF273BA19100054270 /* colormaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8DDD741F64A4E3FAD0A5DF9 /* colormaps.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC0273BA19100054270 /* gldefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2275DB9FF8314577BD8A60EF /* gldefs.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC1273BA19100054270 /* models.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 444289EB3329420CAB6EE552 /* models.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC2273BA19100054270 /* portalgroups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5F01F1DAADCD4BCDA97DDEC8 /* portalgroups.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC3273BA19100054270 /* r_canvastexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55403452B85E4108B6C325ED /* r_canvastexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC4273BA19100054270 /* r_interpolate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B6EB94C2EB8D49DDB1D50FAC /* r_interpolate.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC5273BA19100054270 /* r_sections.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F546B9F0A850432EAC7C8F2F /* r_sections.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC6273BA19100054270 /* r_translate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CCEADFD795F04536AE58A9D8 /* r_translate.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC7273BA19100054270 /* r_vanillatrans.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DB380EE28E4434EA3D4B603 /* r_vanillatrans.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC8273BA19100054270 /* sprites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC3AAD5C81B74E67991B13BA /* sprites.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECC9273BA19100054270 /* v_palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A07CFE3A38244E20965717FC /* v_palette.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECCA273BA19100054270 /* voxeldef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F3FFBB2DE864ABFBFD1035E /* voxeldef.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECCB273BA19100054270 /* f_wipe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7321D74251D4E558A27521A /* f_wipe.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECCC273BA19100054270 /* v_blend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F764FCEB28E42C18B99D351 /* v_blend.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECCD273BA19100054270 /* doom_aabbtree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 09A7F7D8BA8746B1BE8ED682 /* doom_aabbtree.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECCE273BA19100054270 /* hw_dynlightdata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EABF96D5D7964D6497726DA6 /* hw_dynlightdata.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECCF273BA19100054270 /* hw_entrypoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97391B597A9144F9883706D6 /* hw_entrypoint.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECD0273BA19100054270 /* hw_models.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14F65E9F62B54696AFFC3A96 /* hw_models.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECD1273BA19100054270 /* hw_postprocessshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C5495AD35B14660B9EFF5A7 /* hw_postprocessshader.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECD2273BA19100054270 /* hw_precache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EC857ABAFE646F1B8296521 /* hw_precache.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECD3273BA19100054270 /* hw_vertexbuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DADDB08D59EE425D8F148E97 /* hw_vertexbuilder.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECD4273BA19100054270 /* hw_bsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACEB4B71545445B7A1223A24 /* hw_bsp.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECD5273BA19100054270 /* hw_clipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED7F5D63275A4985849691A0 /* hw_clipper.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECD6273BA19100054270 /* hw_decal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA541A60CC8B4EB79C500443 /* hw_decal.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECD7273BA19100054270 /* hw_drawinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07021F989A864621BD6E094E /* hw_drawinfo.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECD8273BA19100054270 /* hw_drawlist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E46672661447889D3B503 /* hw_drawlist.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECD9273BA19100054270 /* hw_drawlistadd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22A79DCC96B4428A4008DA2 /* hw_drawlistadd.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECDA273BA19100054270 /* hw_fakeflat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A765ECA7C364B9B93B11764 /* hw_fakeflat.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECDB273BA19100054270 /* hw_flats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D8E5519C04F461984FE7BB5 /* hw_flats.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECDC273BA19100054270 /* hw_lighting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25DD0DD0AEA342DE94B3213B /* hw_lighting.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECDD273BA19100054270 /* IOSUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92C2A39C2716E24600D1BCE2 /* IOSUtils.mm */; };
+		92B7ECDE273BA19100054270 /* hw_portal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45D9B2428FB14950B9A449F8 /* hw_portal.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECDF273BA19100054270 /* hw_renderhacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D802E65C9FAF4BC5B654B3FB /* hw_renderhacks.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE0273BA19100054270 /* hw_setcolor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DD9C6ACCA834019B5126F79 /* hw_setcolor.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECE1273BA19100054270 /* hw_sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51214A6C033540A1B78FFAEA /* hw_sky.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE2273BA19100054270 /* hw_skyportal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 763C795EAB9543A38655D362 /* hw_skyportal.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE3273BA19100054270 /* hw_spritelight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AEDCE7C6F5B4746A90C8EB1 /* hw_spritelight.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE4273BA19100054270 /* hw_sprites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0627C411134472EAF3EC5F7 /* hw_sprites.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE5273BA19100054270 /* hw_walls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93688FC6557D49448A7242B0 /* hw_walls.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE6273BA19100054270 /* hw_walls_vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C3397360D374329A3779EED /* hw_walls_vertex.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE7273BA19100054270 /* hw_weapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23BBF473F92F43D59A00DC42 /* hw_weapon.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECE8273BA19100054270 /* r_sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C69E78C043004C04B99185D1 /* r_sky.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECE9273BA19100054270 /* r_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30C7D5E5202749BDB15495A6 /* r_utility.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECEA273BA19100054270 /* r_all.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0D5D86239ED4F67A3D19549 /* r_all.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECEB273BA19100054270 /* r_swscene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B46256A693354068BF30C391 /* r_swscene.cpp */; settings = {COMPILER_FLAGS = "-ffast-math -ffp-contract=fast"; }; };
+		92B7ECEC273BA19100054270 /* r_swtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2507E85FD9944BFEB2309202 /* r_swtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECED273BA19100054270 /* swcanvastexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA727A47231449B894C72CA9 /* swcanvastexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECEE273BA19100054270 /* warptexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F679607EAF424F928EE27C /* warptexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECEF273BA19100054270 /* codegen_doom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F60ABDB862D42D4A11ED391 /* codegen_doom.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF0273BA19100054270 /* olddecorations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266FADA61BDB404BB2EB1BA3 /* olddecorations.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF1273BA19100054270 /* thingdef_exp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFF0F3C20C2041BCB40F1762 /* thingdef_exp.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF2273BA19100054270 /* thingdef_parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F1600A0B794EF4A9A604FC /* thingdef_parse.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF3273BA19100054270 /* thingdef_states.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C273B2BE02E94C8E848902FE /* thingdef_states.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF4273BA19100054270 /* thingdef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1729CBF848B249FB9DF660B1 /* thingdef.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF5273BA19100054270 /* thingdef_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF4F75675B5C4675A1700AA3 /* thingdef_data.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF6273BA19100054270 /* thingdef_properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8BB17B8A66444A49C039DAB /* thingdef_properties.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF7273BA19100054270 /* vmiterators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A7F980010417EB19E7C29 /* vmiterators.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF8273BA19100054270 /* vmthunks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FED2DA702EE4CD592DFC625 /* vmthunks.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECF9273BA19100054270 /* vmthunks_actors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C861B570A0214288A8360D17 /* vmthunks_actors.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECFA273BA19100054270 /* zcc_compile_doom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47BD9C41E8684AD8B76315ED /* zcc_compile_doom.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECFB273BA19100054270 /* scriptutil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89800FC4F556485A8360E084 /* scriptutil.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECFC273BA19100054270 /* serializer_doom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 79408CB2F3EB4847B9CA3020 /* serializer_doom.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECFD273BA19100054270 /* s_advsound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC18152875D34B76BE33A2EB /* s_advsound.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECFE273BA19100054270 /* s_doomsound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD8714F27E46D09292E079 /* s_doomsound.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ECFF273BA19100054270 /* s_sndseq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE3434B806114F5C93C1AE86 /* s_sndseq.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED00273BA19100054270 /* st_stuff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E6DAAC47EFD4394BFF9B7C5 /* st_stuff.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED01273BA19100054270 /* nodebuild.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F802ADE856824E0BA6458A0F /* nodebuild.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED02273BA19100054270 /* nodebuild_classify_nosse2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2410CDB15B634919AD151EF4 /* nodebuild_classify_nosse2.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED03273BA19100054270 /* nodebuild_events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81C9DE0C45594AE9B15D66B6 /* nodebuild_events.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED04273BA19100054270 /* nodebuild_extract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AB46A709E4164D359707D855 /* nodebuild_extract.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED05273BA19100054270 /* nodebuild_gl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FED2B02F55E647E789021FFE /* nodebuild_gl.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED06273BA19100054270 /* nodebuild_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A31F63BA74E42D7B71C9C3A /* nodebuild_utility.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED07273BA19100054270 /* wi_stuff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF6D3E9ECE934DAC9F9396AC /* wi_stuff.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92B7ED09273BA19100054270 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E527159063007F56E2 /* IOSurface.framework */; };
+		92B7ED0A273BA19100054270 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8DC27158FF8007F56E2 /* AVFoundation.framework */; };
+		92B7ED0B273BA19100054270 /* libopenal.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9275BC0827364164006C90BE /* libopenal.1.dylib */; platformFilter = ios; };
+		92B7ED0C273BA19100054270 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E427159063007F56E2 /* UIKit.framework */; };
+		92B7ED0D273BA19100054270 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D827158FE2007F56E2 /* libSDL2.a */; };
+		92B7ED0E273BA19100054270 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8DA27158FED007F56E2 /* AudioToolbox.framework */; };
+		92B7ED0F273BA19100054270 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8DF27159062007F56E2 /* QuartzCore.framework */; };
+		92B7ED10273BA19100054270 /* libzmusic.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */; platformFilter = ios; };
+		92B7ED11273BA19100054270 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E627159064007F56E2 /* CoreMotion.framework */; };
+		92B7ED12273BA19100054270 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8DE27159062007F56E2 /* CoreAudio.framework */; };
+		92B7ED13273BA19100054270 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E327159063007F56E2 /* OpenGLES.framework */; };
+		92B7ED14273BA19100054270 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D0653827313A380007113A /* CoreMIDI.framework */; };
+		92B7ED15273BA19100054270 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E027159062007F56E2 /* Foundation.framework */; };
+		92B7ED16273BA19100054270 /* libMoltenVK.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C2A3A32717482900D1BCE2 /* libMoltenVK.dylib */; platformFilter = ios; };
+		92B7ED17273BA19100054270 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E727159064007F56E2 /* CoreGraphics.framework */; };
+		92B7ED18273BA19100054270 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E127159062007F56E2 /* CoreHaptics.framework */; };
+		92B7ED19273BA19100054270 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8F627159149007F56E2 /* Metal.framework */; };
+		92B7ED1A273BA19100054270 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8E227159063007F56E2 /* GameController.framework */; };
+		92B7ED1D273BA19100054270 /* libMoltenVK.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92C2A3A32717482900D1BCE2 /* libMoltenVK.dylib */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		92B7ED1E273BA19100054270 /* libzmusic.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		92B7ED1F273BA19100054270 /* libopenal.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9275BC0827364164006C90BE /* libopenal.1.dylib */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		92B7ED2B273BA28300054270 /* ios_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED29273BA26900054270 /* ios_main.mm */; };
+		92B7ED2D274105D200054270 /* ios_system.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED2C274105D200054270 /* ios_system.mm */; };
 		92BAD8D627158FBE007F56E2 /* libzmusic.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */; platformFilter = ios; };
 		92BAD8D727158FBE007F56E2 /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92BAD8D527158FBE007F56E2 /* doom.wad */; };
 		92BAD8D927158FE3007F56E2 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D827158FE2007F56E2 /* libSDL2.a */; };
@@ -910,6 +1386,76 @@
 			remoteGlobalIDString = A0BE32555D394DACB3871D28;
 			remoteInfo = bz2;
 		};
+		92B7EB21273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6976B8161D9E4AD795D8C491;
+			remoteInfo = OSDependent;
+		};
+		92B7EB23273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7B47045E0E041EFA8C167D6;
+			remoteInfo = SPIRV;
+		};
+		92B7EB25273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 404F16B568B6479793DE133C;
+			remoteInfo = glslang;
+		};
+		92B7EB27273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EE835DA447DE4B4E85CDDE2F;
+			remoteInfo = OGLCompiler;
+		};
+		92B7EB29273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2739478EED4475793B31F0B;
+			remoteInfo = z;
+		};
+		92B7EB2B273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 267D9FAA901B48C6BFD5DDDE;
+			remoteInfo = jpeg;
+		};
+		92B7EB2D273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0BE32555D394DACB3871D28;
+			remoteInfo = bz2;
+		};
+		92B7EB2F273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C60F79831AA14A058B9281DB;
+			remoteInfo = lzma;
+		};
+		92B7EB31273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 165AA24D2FE240FE8A05A3E5;
+			remoteInfo = gdtoa;
+		};
+		92B7EB33273BA19100054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7BED56BC7CD04BC3A1CCC892;
+			remoteInfo = revision_check;
+		};
 		982364781CF14929923709A7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
@@ -997,6 +1543,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		92B7ED1C273BA19100054270 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				92B7ED1D273BA19100054270 /* libMoltenVK.dylib in Embed Frameworks */,
+				92B7ED1E273BA19100054270 /* libzmusic.1.dylib in Embed Frameworks */,
+				92B7ED1F273BA19100054270 /* libopenal.1.dylib in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		92BAD8F527159084007F56E2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3814,6 +4373,10 @@
 		929A35452726A2FE003CB7B2 /* ios-input-hook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ios-input-hook.h"; path = "src/ios-input-hook.h"; sourceTree = "<group>"; };
 		929A354627292A25003CB7B2 /* brutalv21.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = brutalv21.pk3; sourceTree = "<group>"; };
 		929A354827292C74003CB7B2 /* hdoom.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = hdoom.pk3; sourceTree = "<group>"; };
+		92B7ED25273BA19100054270 /* zdoom_native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zdoom_native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		92B7ED26273BA19500054270 /* zdoom copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zdoom copy-Info.plist"; path = "/Users/yoshi/Code/personal/gzdoom/zdoom copy-Info.plist"; sourceTree = "<absolute>"; };
+		92B7ED29273BA26900054270 /* ios_main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_main.mm; path = src/ios/ios_main.mm; sourceTree = "<group>"; };
+		92B7ED2C274105D200054270 /* ios_system.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_system.mm; path = src/ios/ios_system.mm; sourceTree = "<group>"; };
 		92B9C283EB064DE2BA43B433 /* v_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = v_draw.cpp; path = src/common/2d/v_draw.cpp; sourceTree = SOURCE_ROOT; };
 		92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzmusic.1.dylib; sourceTree = "<group>"; };
 		92BAD8D527158FBE007F56E2 /* doom.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = doom.wad; sourceTree = "<group>"; };
@@ -5966,6 +6529,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92B7ED08273BA19100054270 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92B7ED09273BA19100054270 /* IOSurface.framework in Frameworks */,
+				92B7ED0A273BA19100054270 /* AVFoundation.framework in Frameworks */,
+				92B7ED0B273BA19100054270 /* libopenal.1.dylib in Frameworks */,
+				92B7ED0C273BA19100054270 /* UIKit.framework in Frameworks */,
+				92B7ED0D273BA19100054270 /* libSDL2.a in Frameworks */,
+				92B7ED0E273BA19100054270 /* AudioToolbox.framework in Frameworks */,
+				92B7ED0F273BA19100054270 /* QuartzCore.framework in Frameworks */,
+				92B7ED10273BA19100054270 /* libzmusic.1.dylib in Frameworks */,
+				92B7ED11273BA19100054270 /* CoreMotion.framework in Frameworks */,
+				92B7ED12273BA19100054270 /* CoreAudio.framework in Frameworks */,
+				92B7ED13273BA19100054270 /* OpenGLES.framework in Frameworks */,
+				92B7ED14273BA19100054270 /* CoreMIDI.framework in Frameworks */,
+				92B7ED15273BA19100054270 /* Foundation.framework in Frameworks */,
+				92B7ED16273BA19100054270 /* libMoltenVK.dylib in Frameworks */,
+				92B7ED17273BA19100054270 /* CoreGraphics.framework in Frameworks */,
+				92B7ED18273BA19100054270 /* CoreHaptics.framework in Frameworks */,
+				92B7ED19273BA19100054270 /* Metal.framework in Frameworks */,
+				92B7ED1A273BA19100054270 /* GameController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AC5CEE158660488194EEC6B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -6082,6 +6670,7 @@
 				CC8DBA7E7FE946539C3FE3D6 /* Products */,
 				BFE4312E42844C44968F621D /* Frameworks */,
 				92C2A3A827247AF700D1BCE2 /* zdoom-Bridging-Header.h */,
+				92B7ED26273BA19500054270 /* zdoom copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -7963,6 +8552,7 @@
 		5EF008604A3D4A95964D9829 /* Platforms */ = {
 			isa = PBXGroup;
 			children = (
+				92B7ED28273BA22200054270 /* iOS Files */,
 				9ACC642F1B3244FA87997F7C /* Cocoa Files */,
 				E10C276590DA4C2AB03AC68B /* SDL Files */,
 				96B3532ACFFD4F80B3A180B5 /* Win32 Files */,
@@ -9313,6 +9903,15 @@
 				86999AF29B074D7F9E83A42D /* i_steam.cpp */,
 			);
 			name = "Win32 Files";
+			sourceTree = "<group>";
+		};
+		92B7ED28273BA22200054270 /* iOS Files */ = {
+			isa = PBXGroup;
+			children = (
+				92B7ED29273BA26900054270 /* ios_main.mm */,
+				92B7ED2C274105D200054270 /* ios_system.mm */,
+			);
+			name = "iOS Files";
 			sourceTree = "<group>";
 		};
 		930C3CEE8B60461CA64AD8A1 /* Resources */ = {
@@ -10823,6 +11422,7 @@
 				218A74DCEB8A4A44BB260F26 /* liblzma.a */,
 				02563C7027364495B291795A /* libz.a */,
 				5E6EEF64C8414C3F837EF876 /* gzdoom.app */,
+				92B7ED25273BA19100054270 /* zdoom_native.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -13188,6 +13788,38 @@
 			productReference = 016A6D3A6A1446DA861E6E66 /* libOSDependent.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		92B7EB1F273BA19100054270 /* zdoom_native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92B7ED20273BA19100054270 /* Build configuration list for PBXNativeTarget "zdoom_native" */;
+			buildPhases = (
+				92B7EB34273BA19100054270 /* Generate src/sc_man_scanner.h */,
+				92B7EB35273BA19100054270 /* Generate src/xlat_parser.c */,
+				92B7EB36273BA19100054270 /* Generate src/zcc-parse.c */,
+				92B7EB37273BA19100054270 /* Resources */,
+				92B7EB3E273BA19100054270 /* Sources */,
+				92B7ED08273BA19100054270 /* Frameworks */,
+				92B7ED1B273BA19100054270 /* CMake PostBuild Rules */,
+				92B7ED1C273BA19100054270 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				92B7EB20273BA19100054270 /* PBXTargetDependency */,
+				92B7EB22273BA19100054270 /* PBXTargetDependency */,
+				92B7EB24273BA19100054270 /* PBXTargetDependency */,
+				92B7EB26273BA19100054270 /* PBXTargetDependency */,
+				92B7EB28273BA19100054270 /* PBXTargetDependency */,
+				92B7EB2A273BA19100054270 /* PBXTargetDependency */,
+				92B7EB2C273BA19100054270 /* PBXTargetDependency */,
+				92B7EB2E273BA19100054270 /* PBXTargetDependency */,
+				92B7EB30273BA19100054270 /* PBXTargetDependency */,
+				92B7EB32273BA19100054270 /* PBXTargetDependency */,
+			);
+			name = zdoom_native;
+			productName = zdoom;
+			productReference = 92B7ED25273BA19100054270 /* zdoom_native.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A0BE32555D394DACB3871D28 /* bz2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C56F04F7DB224CCAB40E83CD /* Build configuration list for PBXNativeTarget "bz2" */;
@@ -13347,11 +13979,25 @@
 				7BED56BC7CD04BC3A1CCC892 /* revision_check */,
 				D2739478EED4475793B31F0B /* z */,
 				EE004EA4906B4815B7F829A5 /* zdoom */,
+				92B7EB1F273BA19100054270 /* zdoom_native */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		92B7EB37273BA19100054270 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92B7EB38273BA19100054270 /* brutalv21.pk3 in Resources */,
+				92B7EB39273BA19100054270 /* Images.xcassets in Resources */,
+				92B7EB3A273BA19100054270 /* zdoom.icns in Resources */,
+				92B7EB3B273BA19100054270 /* Launch Screen.storyboard in Resources */,
+				92B7EB3C273BA19100054270 /* hdoom.pk3 in Resources */,
+				92B7EB3D273BA19100054270 /* doom.wad in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFBFA431425B4192AA6F384B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -13495,6 +14141,85 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7EB34273BA19100054270 /* Generate src/sc_man_scanner.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Debug/re2c",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/MinSizeRel/re2c",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/RelWithDebInfo/re2c",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Release/re2c",
+				/Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re,
+			);
+			name = "Generate src/sc_man_scanner.h";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Debug/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/Debug/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/MinSizeRel/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/re2c/RelWithDebInfo/re2c --no-generation-date -s -o /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/sc_man_scanner.h /Users/yoshi/Code/personal/gzdoom/src/common/engine/sc_man_scanner.re\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7EB35273BA19100054270 /* Generate src/xlat_parser.c */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Release/lemon",
+				/Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y,
+			);
+			name = "Generate src/xlat_parser.c";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/xlat_parser.c",
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/xlat_parser.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/gamedata/xlat/xlat_parser.y\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7EB36273BA19100054270 /* Generate src/zcc-parse.c */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Release/lemon",
+				"/Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon",
+			);
+			name = "Generate src/zcc-parse.c";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/zcc-parse.c",
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src/zcc-parse.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/Debug/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/MinSizeRel/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/lemon/RelWithDebInfo/lemon -C/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src /Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend/zcc-parse.lemon\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED1B273BA19100054270 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
@@ -13829,6 +14554,462 @@
 				BD274EA6FD684745AD1DCD14 /* PpTokens.cpp in Sources */,
 				0D09D2F0704A462995F50720 /* propagateNoContraction.cpp in Sources */,
 				DCBD218481B24B88B35A93F4 /* reflection.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92B7EB3E273BA19100054270 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92B7EB3F273BA19100054270 /* am_map.cpp in Sources */,
+				92B7EB40273BA19100054270 /* bbannouncer.cpp in Sources */,
+				92B7EB41273BA19100054270 /* v_2ddrawer.cpp in Sources */,
+				92B7EB42273BA19100054270 /* v_draw.cpp in Sources */,
+				92B7EB43273BA19100054270 /* v_drawtext.cpp in Sources */,
+				92B7EB44273BA19100054270 /* i_music.cpp in Sources */,
+				92B7EB45273BA19100054270 /* i_soundfont.cpp in Sources */,
+				92B7EB46273BA19100054270 /* music.cpp in Sources */,
+				92B7EB47273BA19100054270 /* music_config.cpp in Sources */,
+				92B7EB48273BA19100054270 /* music_midi_base.cpp in Sources */,
+				92B7EB49273BA19100054270 /* i_sound.cpp in Sources */,
+				92B7EB4A273BA19100054270 /* oalsound.cpp in Sources */,
+				92B7EB4B273BA19100054270 /* s_environment.cpp in Sources */,
+				92B7EB4C273BA19100054270 /* s_reverbedit.cpp in Sources */,
+				92B7EB4D273BA19100054270 /* s_sound.cpp in Sources */,
+				92B7EB4E273BA19100054270 /* c_bind.cpp in Sources */,
+				92B7EB4F273BA19100054270 /* c_buttons.cpp in Sources */,
+				92B7EB50273BA19100054270 /* c_commandbuffer.cpp in Sources */,
+				92B7EB51273BA19100054270 /* c_commandline.cpp in Sources */,
+				92B7EB52273BA19100054270 /* c_console.cpp in Sources */,
+				92B7EB53273BA19100054270 /* c_consolebuffer.cpp in Sources */,
+				92B7EB54273BA19100054270 /* c_cvars.cpp in Sources */,
+				92B7EB55273BA19100054270 /* c_dispatch.cpp in Sources */,
+				92B7EB56273BA19100054270 /* c_enginecmds.cpp in Sources */,
+				92B7EB57273BA19100054270 /* c_expr.cpp in Sources */,
+				92B7EB58273BA19100054270 /* c_notifybufferbase.cpp in Sources */,
+				92B7EB59273BA19100054270 /* c_tabcomplete.cpp in Sources */,
+				92B7EB5A273BA19100054270 /* cycler.cpp in Sources */,
+				92B7EB5B273BA19100054270 /* d_event.cpp in Sources */,
+				92B7EB5C273BA19100054270 /* date.cpp in Sources */,
+				92B7EB5D273BA19100054270 /* i_interface.cpp in Sources */,
+				92B7EB5E273BA19100054270 /* i_net.cpp in Sources */,
+				92B7EB5F273BA19100054270 /* m_joy.cpp in Sources */,
+				92B7EB60273BA19100054270 /* m_random.cpp in Sources */,
+				92B7EB61273BA19100054270 /* palettecontainer.cpp in Sources */,
+				92B7EB62273BA19100054270 /* renderstyle.cpp in Sources */,
+				92B7EB63273BA19100054270 /* sc_man.cpp in Sources */,
+				92B7EB64273BA19100054270 /* serializer.cpp in Sources */,
+				92B7EB65273BA19100054270 /* stats.cpp in Sources */,
+				92B7EB66273BA19100054270 /* stringtable.cpp in Sources */,
+				92B7EB67273BA19100054270 /* v_colortables.cpp in Sources */,
+				92B7EB68273BA19100054270 /* ancientzip.cpp in Sources */,
+				92B7EB69273BA19100054270 /* file_7z.cpp in Sources */,
+				92B7EB6A273BA19100054270 /* file_directory.cpp in Sources */,
+				92B7EB6B273BA19100054270 /* file_grp.cpp in Sources */,
+				92B7EB6C273BA19100054270 /* file_lump.cpp in Sources */,
+				92B7EB6D273BA19100054270 /* file_pak.cpp in Sources */,
+				92B7EB6E273BA19100054270 /* file_rff.cpp in Sources */,
+				92B7EB6F273BA19100054270 /* file_ssi.cpp in Sources */,
+				92B7EB70273BA19100054270 /* file_wad.cpp in Sources */,
+				92B7EB71273BA19100054270 /* file_whres.cpp in Sources */,
+				92B7EB72273BA19100054270 /* file_zip.cpp in Sources */,
+				92B7EB73273BA19100054270 /* filesystem.cpp in Sources */,
+				92B7EB74273BA19100054270 /* resourcefile.cpp in Sources */,
+				92B7EB75273BA19100054270 /* font.cpp in Sources */,
+				92B7EB76273BA19100054270 /* hexfont.cpp in Sources */,
+				92B7EB77273BA19100054270 /* singlelumpfont.cpp in Sources */,
+				92B7EB78273BA19100054270 /* singlepicfont.cpp in Sources */,
+				92B7EB79273BA19100054270 /* specialfont.cpp in Sources */,
+				92B7EB7A273BA19100054270 /* v_font.cpp in Sources */,
+				92B7EB7B273BA19100054270 /* v_text.cpp in Sources */,
+				92B7EB7C273BA19100054270 /* joystickmenu.cpp in Sources */,
+				92B7EB7D273BA19100054270 /* menu.cpp in Sources */,
+				92B7EB7E273BA19100054270 /* menudef.cpp in Sources */,
+				92B7EB7F273BA19100054270 /* messagebox.cpp in Sources */,
+				92B7EB80273BA19100054270 /* optionmenu.cpp in Sources */,
+				92B7EB81273BA19100054270 /* resolutionmenu.cpp in Sources */,
+				92B7EB82273BA19100054270 /* savegamemanager.cpp in Sources */,
+				92B7EB83273BA19100054270 /* model.cpp in Sources */,
+				92B7EB84273BA19100054270 /* models_md2.cpp in Sources */,
+				92B7EB85273BA19100054270 /* models_md3.cpp in Sources */,
+				92B7EB86273BA19100054270 /* models_obj.cpp in Sources */,
+				92B7EB87273BA19100054270 /* models_ue1.cpp in Sources */,
+				92B7EB88273BA19100054270 /* models_voxel.cpp in Sources */,
+				92B7EB89273BA19100054270 /* voxels.cpp in Sources */,
+				92B7EB8A273BA19100054270 /* autosegs.cpp in Sources */,
+				92B7EB8B273BA19100054270 /* dobject.cpp in Sources */,
+				92B7EB8C273BA19100054270 /* dobjgc.cpp in Sources */,
+				92B7EB8D273BA19100054270 /* dobjtype.cpp in Sources */,
+				92B7EB8E273BA19100054270 /* i_system_posix.cpp in Sources */,
+				92B7EB8F273BA19100054270 /* i_specialpaths.mm in Sources */,
+				92B7EB90273BA19100054270 /* iwadpicker_cocoa.mm in Sources */,
+				92B7EB9B273BA19100054270 /* gl_buffers.cpp in Sources */,
+				92B7EB9C273BA19100054270 /* gl_debug.cpp in Sources */,
+				92B7EB9D273BA19100054270 /* gl_framebuffer.cpp in Sources */,
+				92B7EB9E273BA19100054270 /* gl_hwtexture.cpp in Sources */,
+				92B7EB9F273BA19100054270 /* gl_postprocess.cpp in Sources */,
+				92B7EBA0273BA19100054270 /* gl_postprocessstate.cpp in Sources */,
+				92B7EBA1273BA19100054270 /* gl_renderbuffers.cpp in Sources */,
+				92B7EBA2273BA19100054270 /* gl_renderer.cpp in Sources */,
+				92B7EBA3273BA19100054270 /* gl_renderstate.cpp in Sources */,
+				92B7EBA4273BA19100054270 /* gl_samplers.cpp in Sources */,
+				92B7EBA5273BA19100054270 /* gl_shader.cpp in Sources */,
+				92B7EBA6273BA19100054270 /* gl_shaderprogram.cpp in Sources */,
+				92B7EBA7273BA19100054270 /* gl_stereo3d.cpp in Sources */,
+				92B7EBA8273BA19100054270 /* gl_interface.cpp in Sources */,
+				92B7EBA9273BA19100054270 /* gl_load.c in Sources */,
+				92B7EBAA273BA19100054270 /* flatvertices.cpp in Sources */,
+				92B7EBAB273BA19100054270 /* hw_aabbtree.cpp in Sources */,
+				92B7EBAC273BA19100054270 /* hw_clock.cpp in Sources */,
+				92B7EBAD273BA19100054270 /* hw_cvars.cpp in Sources */,
+				92B7EBAE273BA19100054270 /* hw_lightbuffer.cpp in Sources */,
+				92B7EBAF273BA19100054270 /* hw_modelvertexbuffer.cpp in Sources */,
+				92B7EBB0273BA19100054270 /* hw_shaderpatcher.cpp in Sources */,
+				92B7EBB1273BA19100054270 /* hw_shadowmap.cpp in Sources */,
+				92B7EBB2273BA19100054270 /* hw_skydome.cpp in Sources */,
+				92B7EBB3273BA19100054270 /* hw_viewpointbuffer.cpp in Sources */,
+				92B7EBB4273BA19100054270 /* hw_vrmodes.cpp in Sources */,
+				92B7EBB5273BA19100054270 /* hw_draw2d.cpp in Sources */,
+				92B7EBB6273BA19100054270 /* hw_postprocess.cpp in Sources */,
+				92B7EBB7273BA19100054270 /* hw_postprocess_cvars.cpp in Sources */,
+				92B7EBB8273BA19100054270 /* poly_buffers.cpp in Sources */,
+				92B7EBB9273BA19100054270 /* poly_framebuffer.cpp in Sources */,
+				92B7EBBA273BA19100054270 /* poly_hwtexture.cpp in Sources */,
+				92B7EBBB273BA19100054270 /* poly_renderstate.cpp in Sources */,
+				92B7EBBC273BA19100054270 /* poly_all.cpp in Sources */,
+				92B7EBBD273BA19100054270 /* r_thread.cpp in Sources */,
+				92B7EBBE273BA19100054270 /* r_videoscale.cpp in Sources */,
+				92B7EBBF273BA19100054270 /* v_framebuffer.cpp in Sources */,
+				92B7EBC0273BA19100054270 /* v_video.cpp in Sources */,
+				92B7EBC1273BA19100054270 /* vk_postprocess.cpp in Sources */,
+				92B7EBC2273BA19100054270 /* vk_renderbuffers.cpp in Sources */,
+				92B7EBC3273BA19100054270 /* vk_renderpass.cpp in Sources */,
+				92B7EBC4273BA19100054270 /* vk_renderstate.cpp in Sources */,
+				92B7EBC5273BA19100054270 /* vk_streambuffer.cpp in Sources */,
+				92B7EBC6273BA19100054270 /* vk_shader.cpp in Sources */,
+				92B7EBC7273BA19100054270 /* vk_buffers.cpp in Sources */,
+				92B7EBC8273BA19100054270 /* vk_builders.cpp in Sources */,
+				92B7EBC9273BA19100054270 /* vk_device.cpp in Sources */,
+				92B7EBCA273BA19100054270 /* vk_framebuffer.cpp in Sources */,
+				92B7EBCB273BA19100054270 /* vk_swapchain.cpp in Sources */,
+				92B7EBCC273BA19100054270 /* vk_hwtexture.cpp in Sources */,
+				92B7EBCD273BA19100054270 /* vk_imagetransition.cpp in Sources */,
+				92B7EBCE273BA19100054270 /* vk_samplers.cpp in Sources */,
+				92B7EBCF273BA19100054270 /* vk_mem_alloc.cpp in Sources */,
+				92B7EBD0273BA19100054270 /* volk.c in Sources */,
+				92B7EBD1273BA19100054270 /* codegen.cpp in Sources */,
+				92B7EBD2273BA19100054270 /* vmbuilder.cpp in Sources */,
+				92B7EBD3273BA19100054270 /* dictionary.cpp in Sources */,
+				92B7EBD4273BA19100054270 /* dynarrays.cpp in Sources */,
+				92B7EBD5273BA19100054270 /* imports.cpp in Sources */,
+				92B7EBD6273BA19100054270 /* scopebarrier.cpp in Sources */,
+				92B7EBD7273BA19100054270 /* symbols.cpp in Sources */,
+				92B7EBD8273BA19100054270 /* types.cpp in Sources */,
+				92B7EBD9273BA19100054270 /* vmdisasm.cpp in Sources */,
+				92B7EBDA273BA19100054270 /* ast.cpp in Sources */,
+				92B7EBDB273BA19100054270 /* zcc_compile.cpp in Sources */,
+				92B7EBDC273BA19100054270 /* zcc_parser.cpp in Sources */,
+				92B7EBDD273BA19100054270 /* stringformat.cpp in Sources */,
+				92B7EBDE273BA19100054270 /* vmnatives.cpp in Sources */,
+				92B7EBDF273BA19100054270 /* vmexec.cpp in Sources */,
+				92B7EBE0273BA19100054270 /* vmframe.cpp in Sources */,
+				92B7EBE1273BA19100054270 /* base_sbar.cpp in Sources */,
+				92B7EBE2273BA19100054270 /* animlib.cpp in Sources */,
+				92B7EBE3273BA19100054270 /* animtexture.cpp in Sources */,
+				92B7EBE4273BA19100054270 /* bitmap.cpp in Sources */,
+				92B7EBE5273BA19100054270 /* anmtexture.cpp in Sources */,
+				92B7EBE6273BA19100054270 /* automaptexture.cpp in Sources */,
+				92B7EBE7273BA19100054270 /* brightmaptexture.cpp in Sources */,
+				92B7EBE8273BA19100054270 /* buildtexture.cpp in Sources */,
+				92B7EBE9273BA19100054270 /* ddstexture.cpp in Sources */,
+				92B7EBEA273BA19100054270 /* emptytexture.cpp in Sources */,
+				92B7EBEB273BA19100054270 /* flattexture.cpp in Sources */,
+				92B7EBEC273BA19100054270 /* fontchars.cpp in Sources */,
+				92B7EBED273BA19100054270 /* imgztexture.cpp in Sources */,
+				92B7EBEE273BA19100054270 /* jpegtexture.cpp in Sources */,
+				92B7EBEF273BA19100054270 /* md5check.cpp in Sources */,
+				92B7EBF0273BA19100054270 /* multipatchtexture.cpp in Sources */,
+				92B7EBF1273BA19100054270 /* patchtexture.cpp in Sources */,
+				92B7EBF2273BA19100054270 /* pcxtexture.cpp in Sources */,
+				92B7EBF3273BA19100054270 /* pngtexture.cpp in Sources */,
+				92B7EBF4273BA19100054270 /* rawpagetexture.cpp in Sources */,
+				92B7EBF5273BA19100054270 /* shadertexture.cpp in Sources */,
+				92B7EBF6273BA19100054270 /* stbtexture.cpp in Sources */,
+				92B7EBF7273BA19100054270 /* tgatexture.cpp in Sources */,
+				92B7EBF8273BA19100054270 /* gametexture.cpp in Sources */,
+				92B7EBF9273BA19100054270 /* hq2x.cpp in Sources */,
+				92B7EBFA273BA19100054270 /* hq3x.cpp in Sources */,
+				92B7EBFB273BA19100054270 /* hq4x.cpp in Sources */,
+				92B7EBFC273BA19100054270 /* init.cpp in Sources */,
+				92B7EBFD273BA19100054270 /* hqresize.cpp in Sources */,
+				92B7EBFE273BA19100054270 /* xbrz.cpp in Sources */,
+				92B7EBFF273BA19100054270 /* xbrz_old.cpp in Sources */,
+				92B7EC00273BA19100054270 /* hw_ihwtexture.cpp in Sources */,
+				92B7EC01273BA19100054270 /* hw_material.cpp in Sources */,
+				92B7EC02273BA19100054270 /* image.cpp in Sources */,
+				92B7EC03273BA19100054270 /* imagetexture.cpp in Sources */,
+				92B7EC04273BA19100054270 /* m_png.cpp in Sources */,
+				92B7EC05273BA19100054270 /* IOSUtils+EmulatorKeyboard.swift in Sources */,
+				92B7EC06273BA19100054270 /* multipatchtexturebuilder.cpp in Sources */,
+				92B7ED2B273BA28300054270 /* ios_main.mm in Sources */,
+				92B7EC07273BA19100054270 /* skyboxtexture.cpp in Sources */,
+				92B7EC08273BA19100054270 /* texture.cpp in Sources */,
+				92B7EC09273BA19100054270 /* texturemanager.cpp in Sources */,
+				92B7EC0A273BA19100054270 /* v_collection.cpp in Sources */,
+				92B7EC0B273BA19100054270 /* base64.cpp in Sources */,
+				92B7EC0C273BA19100054270 /* gain_analysis.cpp in Sources */,
+				92B7EC0D273BA19100054270 /* asin.c in Sources */,
+				92B7EC0E273BA19100054270 /* atan.c in Sources */,
+				92B7EC0F273BA19100054270 /* const.c in Sources */,
+				92B7EC10273BA19100054270 /* cosh.c in Sources */,
+				92B7EC11273BA19100054270 /* exp.c in Sources */,
+				92B7EC12273BA19100054270 /* fastsin.cpp in Sources */,
+				92B7EC13273BA19100054270 /* isnan.c in Sources */,
+				92B7EC14273BA19100054270 /* log.c in Sources */,
+				92B7EC15273BA19100054270 /* log10.c in Sources */,
+				92B7EC16273BA19100054270 /* mtherr.c in Sources */,
+				92B7EC17273BA19100054270 /* polevl.c in Sources */,
+				92B7EC18273BA19100054270 /* pow.c in Sources */,
+				92B7EC19273BA19100054270 /* powi.c in Sources */,
+				92B7EC1A273BA19100054270 /* sin.c in Sources */,
+				92B7EC1B273BA19100054270 /* sinh.c in Sources */,
+				92B7EC1C273BA19100054270 /* sqrt.c in Sources */,
+				92B7EC1D273BA19100054270 /* tan.c in Sources */,
+				92B7EC1E273BA19100054270 /* tanh.c in Sources */,
+				92B7EC1F273BA19100054270 /* md5.cpp in Sources */,
+				92B7EC20273BA19100054270 /* SFMT.cpp in Sources */,
+				92B7EC21273BA19100054270 /* strnatcmp.c in Sources */,
+				92B7EC22273BA19100054270 /* superfasthash.cpp in Sources */,
+				92B7EC23273BA19100054270 /* cmdlib.cpp in Sources */,
+				92B7EC24273BA19100054270 /* configfile.cpp in Sources */,
+				92B7EC25273BA19100054270 /* engineerrors.cpp in Sources */,
+				92B7EC26273BA19100054270 /* files.cpp in Sources */,
+				92B7EC27273BA19100054270 /* files_decompress.cpp in Sources */,
+				92B7EC28273BA19100054270 /* findfile.cpp in Sources */,
+				92B7EC29273BA19100054270 /* i_module.cpp in Sources */,
+				92B7EC2A273BA19100054270 /* i_time.cpp in Sources */,
+				92B7EC2B273BA19100054270 /* m_alloc.cpp in Sources */,
+				92B7EC2C273BA19100054270 /* m_argv.cpp in Sources */,
+				92B7EC2D273BA19100054270 /* matrix.cpp in Sources */,
+				92B7EC2E273BA19100054270 /* memarena.cpp in Sources */,
+				92B7EC2F273BA19100054270 /* name.cpp in Sources */,
+				92B7EC30273BA19100054270 /* palette.cpp in Sources */,
+				92B7EC31273BA19100054270 /* r_memory.cpp in Sources */,
+				92B7EC32273BA19100054270 /* s_playlist.cpp in Sources */,
+				92B7EC33273BA19100054270 /* utf8.cpp in Sources */,
+				92B7EC34273BA19100054270 /* x86.cpp in Sources */,
+				92B7EC35273BA19100054270 /* zstrformat.cpp in Sources */,
+				92B7EC36273BA19100054270 /* zstring.cpp in Sources */,
+				92B7EC37273BA19100054270 /* c_cmds.cpp in Sources */,
+				92B7EC38273BA19100054270 /* c_functions.cpp in Sources */,
+				92B7EC39273BA19100054270 /* c_notifybuffer.cpp in Sources */,
+				92B7EC3A273BA19100054270 /* ct_chat.cpp in Sources */,
+				92B7EC3B273BA19100054270 /* d_anonstats.cpp in Sources */,
+				92B7EC3C273BA19100054270 /* d_defcvars.cpp in Sources */,
+				92B7EC3D273BA19100054270 /* d_iwad.cpp in Sources */,
+				92B7EC3E273BA19100054270 /* d_main.cpp in Sources */,
+				92B7EC3F273BA19100054270 /* d_net.cpp in Sources */,
+				92B7EC40273BA19100054270 /* d_netinfo.cpp in Sources */,
+				92B7EC41273BA19100054270 /* d_protocol.cpp in Sources */,
+				92B7EC42273BA19100054270 /* doomstat.cpp in Sources */,
+				92B7EC43273BA19100054270 /* events.cpp in Sources */,
+				92B7EC44273BA19100054270 /* g_cvars.cpp in Sources */,
+				92B7EC45273BA19100054270 /* g_dumpinfo.cpp in Sources */,
+				92B7EC46273BA19100054270 /* g_game.cpp in Sources */,
+				92B7EC47273BA19100054270 /* g_hub.cpp in Sources */,
+				92B7EC48273BA19100054270 /* g_level.cpp in Sources */,
+				92B7EC49273BA19100054270 /* hudmessages.cpp in Sources */,
+				92B7EC4A273BA19100054270 /* sbar_mugshot.cpp in Sources */,
+				92B7EC4B273BA19100054270 /* sbarinfo.cpp in Sources */,
+				92B7EC4C273BA19100054270 /* shared_hud.cpp in Sources */,
+				92B7EC4D273BA19100054270 /* shared_sbar.cpp in Sources */,
+				92B7EC4E273BA19100054270 /* gameconfigfile.cpp in Sources */,
+				92B7EC4F273BA19100054270 /* a_keys.cpp in Sources */,
+				92B7EC50273BA19100054270 /* a_weapons.cpp in Sources */,
+				92B7EC51273BA19100054270 /* d_dehacked.cpp in Sources */,
+				92B7EC52273BA19100054270 /* decallib.cpp in Sources */,
+				92B7EC53273BA19100054270 /* g_doomedmap.cpp in Sources */,
+				92B7EC54273BA19100054270 /* g_mapinfo.cpp in Sources */,
+				92B7EC55273BA19100054270 /* g_skill.cpp in Sources */,
+				92B7EC56273BA19100054270 /* gi.cpp in Sources */,
+				92B7EC57273BA19100054270 /* info.cpp in Sources */,
+				92B7EC58273BA19100054270 /* keysections.cpp in Sources */,
+				92B7EC59273BA19100054270 /* p_terrain.cpp in Sources */,
+				92B7EC5A273BA19100054270 /* p_xlat.cpp in Sources */,
+				92B7EC5B273BA19100054270 /* statistics.cpp in Sources */,
+				92B7EC5C273BA19100054270 /* teaminfo.cpp in Sources */,
+				92B7EC5D273BA19100054270 /* anim_switches.cpp in Sources */,
+				92B7EC5E273BA19100054270 /* animations.cpp in Sources */,
+				92B7EC5F273BA19100054270 /* buildloader.cpp in Sources */,
+				92B7EC60273BA19100054270 /* umapinfo.cpp in Sources */,
+				92B7EC61273BA19100054270 /* parse_xlat.cpp in Sources */,
+				92B7EC62273BA19100054270 /* parsecontext.cpp in Sources */,
+				92B7EC63273BA19100054270 /* gitinfo.cpp in Sources */,
+				92B7EC64273BA19100054270 /* hu_scores.cpp in Sources */,
+				92B7EC65273BA19100054270 /* intermission.cpp in Sources */,
+				92B7EC66273BA19100054270 /* intermission_parse.cpp in Sources */,
+				92B7EC67273BA19100054270 /* m_cheat.cpp in Sources */,
+				92B7EC68273BA19100054270 /* m_misc.cpp in Sources */,
+				92B7EC69273BA19100054270 /* compatibility.cpp in Sources */,
+				92B7EC6A273BA19100054270 /* edata.cpp in Sources */,
+				92B7EC6B273BA19100054270 /* glnodes.cpp in Sources */,
+				92B7EC6C273BA19100054270 /* maploader.cpp in Sources */,
+				92B7EC6D273BA19100054270 /* polyobjects.cpp in Sources */,
+				92B7EC6E273BA19100054270 /* postprocessor.cpp in Sources */,
+				92B7EC6F273BA19100054270 /* renderinfo.cpp in Sources */,
+				92B7EC70273BA19100054270 /* slopes.cpp in Sources */,
+				92B7EC71273BA19100054270 /* specials.cpp in Sources */,
+				92B7EC72273BA19100054270 /* strifedialogue.cpp in Sources */,
+				92B7EC73273BA19100054270 /* udmf.cpp in Sources */,
+				92B7EC74273BA19100054270 /* usdf.cpp in Sources */,
+				92B7EC75273BA19100054270 /* doommenu.cpp in Sources */,
+				92B7EC76273BA19100054270 /* loadsavemenu.cpp in Sources */,
+				92B7EC77273BA19100054270 /* playermenu.cpp in Sources */,
+				92B7EC78273BA19100054270 /* p_conversation.cpp in Sources */,
+				92B7EC79273BA19100054270 /* p_openmap.cpp in Sources */,
+				92B7EC7A273BA19100054270 /* p_saveg.cpp in Sources */,
+				92B7EC7B273BA19100054270 /* p_setup.cpp in Sources */,
+				92B7EC7C273BA19100054270 /* p_states.cpp in Sources */,
+				92B7EC7D273BA19100054270 /* p_tick.cpp in Sources */,
+				92B7EC7E273BA19100054270 /* a_action.cpp in Sources */,
+				92B7EC7F273BA19100054270 /* a_decals.cpp in Sources */,
+				92B7EC80273BA19100054270 /* a_dynlight.cpp in Sources */,
+				92B7EC81273BA19100054270 /* a_flashfader.cpp in Sources */,
+				92B7EC82273BA19100054270 /* a_morph.cpp in Sources */,
+				92B7EC83273BA19100054270 /* a_pickups.cpp in Sources */,
+				92B7EC84273BA19100054270 /* a_specialspot.cpp in Sources */,
+				92B7EC85273BA19100054270 /* actorptrselect.cpp in Sources */,
+				92B7EC86273BA19100054270 /* b_bot.cpp in Sources */,
+				92B7EC87273BA19100054270 /* b_func.cpp in Sources */,
+				92B7EC88273BA19100054270 /* b_game.cpp in Sources */,
+				92B7EC89273BA19100054270 /* b_move.cpp in Sources */,
+				92B7EC8A273BA19100054270 /* b_think.cpp in Sources */,
+				92B7EC8B273BA19100054270 /* dthinker.cpp in Sources */,
+				92B7EC8C273BA19100054270 /* t_cmd.cpp in Sources */,
+				92B7EC8D273BA19100054270 /* t_func.cpp in Sources */,
+				92B7EC8E273BA19100054270 /* t_load.cpp in Sources */,
+				92B7EC8F273BA19100054270 /* t_oper.cpp in Sources */,
+				92B7EC90273BA19100054270 /* t_parse.cpp in Sources */,
+				92B7EC91273BA19100054270 /* t_prepro.cpp in Sources */,
+				92B7EC92273BA19100054270 /* t_script.cpp in Sources */,
+				92B7EC93273BA19100054270 /* t_spec.cpp in Sources */,
+				92B7EC94273BA19100054270 /* t_variable.cpp in Sources */,
+				92B7EC95273BA19100054270 /* a_ceiling.cpp in Sources */,
+				92B7EC96273BA19100054270 /* a_decalfx.cpp in Sources */,
+				92B7EC97273BA19100054270 /* a_doors.cpp in Sources */,
+				92B7EC98273BA19100054270 /* a_floor.cpp in Sources */,
+				92B7EC99273BA19100054270 /* a_lightning.cpp in Sources */,
+				92B7EC9A273BA19100054270 /* a_lights.cpp in Sources */,
+				92B7EC9B273BA19100054270 /* a_lighttransfer.cpp in Sources */,
+				92B7EC9C273BA19100054270 /* a_pillar.cpp in Sources */,
+				92B7EC9D273BA19100054270 /* a_plats.cpp in Sources */,
+				92B7EC9E273BA19100054270 /* a_pusher.cpp in Sources */,
+				92B7EC9F273BA19100054270 /* a_quake.cpp in Sources */,
+				92B7ECA0273BA19100054270 /* a_scroll.cpp in Sources */,
+				92B7ECA1273BA19100054270 /* dsectoreffect.cpp in Sources */,
+				92B7ECA2273BA19100054270 /* p_3dfloors.cpp in Sources */,
+				92B7ECA3273BA19100054270 /* p_3dmidtex.cpp in Sources */,
+				92B7ECA4273BA19100054270 /* p_acs.cpp in Sources */,
+				92B7ECA5273BA19100054270 /* p_actionfunctions.cpp in Sources */,
+				92B7ECA6273BA19100054270 /* p_destructible.cpp in Sources */,
+				92B7ECA7273BA19100054270 /* p_effect.cpp in Sources */,
+				92B7ECA8273BA19100054270 /* p_enemy.cpp in Sources */,
+				92B7ECA9273BA19100054270 /* p_interaction.cpp in Sources */,
+				92B7ECAA273BA19100054270 /* p_linkedsectors.cpp in Sources */,
+				92B7ECAB273BA19100054270 /* EmulatorKeyboard.swift in Sources */,
+				92B7ECAC273BA19100054270 /* p_lnspec.cpp in Sources */,
+				92B7ECAD273BA19100054270 /* p_map.cpp in Sources */,
+				92B7ECAE273BA19100054270 /* p_maputl.cpp in Sources */,
+				92B7ECAF273BA19100054270 /* p_mobj.cpp in Sources */,
+				92B7ECB0273BA19100054270 /* p_pspr.cpp in Sources */,
+				92B7ECB1273BA19100054270 /* p_secnodes.cpp in Sources */,
+				92B7ECB2273BA19100054270 /* p_sectors.cpp in Sources */,
+				92B7ECB3273BA19100054270 /* p_sight.cpp in Sources */,
+				92B7ECB4273BA19100054270 /* p_spec.cpp in Sources */,
+				92B7ECB5273BA19100054270 /* p_switch.cpp in Sources */,
+				92B7ECB6273BA19100054270 /* p_tags.cpp in Sources */,
+				92B7ECB7273BA19100054270 /* p_teleport.cpp in Sources */,
+				92B7ED2D274105D200054270 /* ios_system.mm in Sources */,
+				92B7ECB8273BA19100054270 /* p_things.cpp in Sources */,
+				92B7ECB9273BA19100054270 /* p_trace.cpp in Sources */,
+				92B7ECBA273BA19100054270 /* p_user.cpp in Sources */,
+				92B7ECBB273BA19100054270 /* po_man.cpp in Sources */,
+				92B7ECBC273BA19100054270 /* portal.cpp in Sources */,
+				92B7ECBD273BA19100054270 /* i_steam.cpp in Sources */,
+				92B7ECBE273BA19100054270 /* a_dynlightdata.cpp in Sources */,
+				92B7ECBF273BA19100054270 /* colormaps.cpp in Sources */,
+				92B7ECC0273BA19100054270 /* gldefs.cpp in Sources */,
+				92B7ECC1273BA19100054270 /* models.cpp in Sources */,
+				92B7ECC2273BA19100054270 /* portalgroups.cpp in Sources */,
+				92B7ECC3273BA19100054270 /* r_canvastexture.cpp in Sources */,
+				92B7ECC4273BA19100054270 /* r_interpolate.cpp in Sources */,
+				92B7ECC5273BA19100054270 /* r_sections.cpp in Sources */,
+				92B7ECC6273BA19100054270 /* r_translate.cpp in Sources */,
+				92B7ECC7273BA19100054270 /* r_vanillatrans.cpp in Sources */,
+				92B7ECC8273BA19100054270 /* sprites.cpp in Sources */,
+				92B7ECC9273BA19100054270 /* v_palette.cpp in Sources */,
+				92B7ECCA273BA19100054270 /* voxeldef.cpp in Sources */,
+				92B7ECCB273BA19100054270 /* f_wipe.cpp in Sources */,
+				92B7ECCC273BA19100054270 /* v_blend.cpp in Sources */,
+				92B7ECCD273BA19100054270 /* doom_aabbtree.cpp in Sources */,
+				92B7ECCE273BA19100054270 /* hw_dynlightdata.cpp in Sources */,
+				92B7ECCF273BA19100054270 /* hw_entrypoint.cpp in Sources */,
+				92B7ECD0273BA19100054270 /* hw_models.cpp in Sources */,
+				92B7ECD1273BA19100054270 /* hw_postprocessshader.cpp in Sources */,
+				92B7ECD2273BA19100054270 /* hw_precache.cpp in Sources */,
+				92B7ECD3273BA19100054270 /* hw_vertexbuilder.cpp in Sources */,
+				92B7ECD4273BA19100054270 /* hw_bsp.cpp in Sources */,
+				92B7ECD5273BA19100054270 /* hw_clipper.cpp in Sources */,
+				92B7ECD6273BA19100054270 /* hw_decal.cpp in Sources */,
+				92B7ECD7273BA19100054270 /* hw_drawinfo.cpp in Sources */,
+				92B7ECD8273BA19100054270 /* hw_drawlist.cpp in Sources */,
+				92B7ECD9273BA19100054270 /* hw_drawlistadd.cpp in Sources */,
+				92B7ECDA273BA19100054270 /* hw_fakeflat.cpp in Sources */,
+				92B7ECDB273BA19100054270 /* hw_flats.cpp in Sources */,
+				92B7ECDC273BA19100054270 /* hw_lighting.cpp in Sources */,
+				92B7ECDD273BA19100054270 /* IOSUtils.mm in Sources */,
+				92B7ECDE273BA19100054270 /* hw_portal.cpp in Sources */,
+				92B7ECDF273BA19100054270 /* hw_renderhacks.cpp in Sources */,
+				92B7ECE0273BA19100054270 /* hw_setcolor.cpp in Sources */,
+				92B7ECE1273BA19100054270 /* hw_sky.cpp in Sources */,
+				92B7ECE2273BA19100054270 /* hw_skyportal.cpp in Sources */,
+				92B7ECE3273BA19100054270 /* hw_spritelight.cpp in Sources */,
+				92B7ECE4273BA19100054270 /* hw_sprites.cpp in Sources */,
+				92B7ECE5273BA19100054270 /* hw_walls.cpp in Sources */,
+				92B7ECE6273BA19100054270 /* hw_walls_vertex.cpp in Sources */,
+				92B7ECE7273BA19100054270 /* hw_weapon.cpp in Sources */,
+				92B7ECE8273BA19100054270 /* r_sky.cpp in Sources */,
+				92B7ECE9273BA19100054270 /* r_utility.cpp in Sources */,
+				92B7ECEA273BA19100054270 /* r_all.cpp in Sources */,
+				92B7ECEB273BA19100054270 /* r_swscene.cpp in Sources */,
+				92B7ECEC273BA19100054270 /* r_swtexture.cpp in Sources */,
+				92B7ECED273BA19100054270 /* swcanvastexture.cpp in Sources */,
+				92B7ECEE273BA19100054270 /* warptexture.cpp in Sources */,
+				92B7ECEF273BA19100054270 /* codegen_doom.cpp in Sources */,
+				92B7ECF0273BA19100054270 /* olddecorations.cpp in Sources */,
+				92B7ECF1273BA19100054270 /* thingdef_exp.cpp in Sources */,
+				92B7ECF2273BA19100054270 /* thingdef_parse.cpp in Sources */,
+				92B7ECF3273BA19100054270 /* thingdef_states.cpp in Sources */,
+				92B7ECF4273BA19100054270 /* thingdef.cpp in Sources */,
+				92B7ECF5273BA19100054270 /* thingdef_data.cpp in Sources */,
+				92B7ECF6273BA19100054270 /* thingdef_properties.cpp in Sources */,
+				92B7ECF7273BA19100054270 /* vmiterators.cpp in Sources */,
+				92B7ECF8273BA19100054270 /* vmthunks.cpp in Sources */,
+				92B7ECF9273BA19100054270 /* vmthunks_actors.cpp in Sources */,
+				92B7ECFA273BA19100054270 /* zcc_compile_doom.cpp in Sources */,
+				92B7ECFB273BA19100054270 /* scriptutil.cpp in Sources */,
+				92B7ECFC273BA19100054270 /* serializer_doom.cpp in Sources */,
+				92B7ECFD273BA19100054270 /* s_advsound.cpp in Sources */,
+				92B7ECFE273BA19100054270 /* s_doomsound.cpp in Sources */,
+				92B7ECFF273BA19100054270 /* s_sndseq.cpp in Sources */,
+				92B7ED00273BA19100054270 /* st_stuff.cpp in Sources */,
+				92B7ED01273BA19100054270 /* nodebuild.cpp in Sources */,
+				92B7ED02273BA19100054270 /* nodebuild_classify_nosse2.cpp in Sources */,
+				92B7ED03273BA19100054270 /* nodebuild_events.cpp in Sources */,
+				92B7ED04273BA19100054270 /* nodebuild_extract.cpp in Sources */,
+				92B7ED05273BA19100054270 /* nodebuild_gl.cpp in Sources */,
+				92B7ED06273BA19100054270 /* nodebuild_utility.cpp in Sources */,
+				92B7ED07273BA19100054270 /* wi_stuff.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14458,6 +15639,56 @@
 			isa = PBXTargetDependency;
 			target = EE835DA447DE4B4E85CDDE2F /* OGLCompiler */;
 			targetProxy = 9DF10106066F4A6D92CB5F0A /* PBXContainerItemProxy */;
+		};
+		92B7EB20273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6976B8161D9E4AD795D8C491 /* OSDependent */;
+			targetProxy = 92B7EB21273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB22273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7B47045E0E041EFA8C167D6 /* SPIRV */;
+			targetProxy = 92B7EB23273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB24273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 404F16B568B6479793DE133C /* glslang */;
+			targetProxy = 92B7EB25273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB26273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EE835DA447DE4B4E85CDDE2F /* OGLCompiler */;
+			targetProxy = 92B7EB27273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB28273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2739478EED4475793B31F0B /* z */;
+			targetProxy = 92B7EB29273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB2A273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 267D9FAA901B48C6BFD5DDDE /* jpeg */;
+			targetProxy = 92B7EB2B273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB2C273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0BE32555D394DACB3871D28 /* bz2 */;
+			targetProxy = 92B7EB2D273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB2E273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C60F79831AA14A058B9281DB /* lzma */;
+			targetProxy = 92B7EB2F273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB30273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 165AA24D2FE240FE8A05A3E5 /* gdtoa */;
+			targetProxy = 92B7EB31273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7EB32273BA19100054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7BED56BC7CD04BC3A1CCC892 /* revision_check */;
+			targetProxy = 92B7EB33273BA19100054270 /* PBXContainerItemProxy */;
 		};
 		B061BC1BF0B14EE783BD9256 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -15927,6 +17158,661 @@
 				WARNING_CFLAGS = "$(inherited)";
 			};
 			name = MinSizeRel;
+		};
+		92B7ED21273BA19100054270 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug";
+				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					__FP__,
+					__FIXMATH__,
+					NO_GTK,
+					"'HAVE_FILELENGTH=1'",
+					"'stricmp=strcasecmp'",
+					"'strnicmp=strncasecmp'",
+					"'__forceinline=inline'",
+					"'HAVE_DISPATCH_APPLY=1'",
+					"$(inherited)",
+					"'DYN_OPENAL=1'",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoshi/Code/personal/gzdoom/libraries/glslang,
+					/Users/yoshi/Code/personal/gzdoom/libraries/zlib,
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/sdl/include,
+					/Users/yoshi/Code/personal/gzdoom/libraries/bzip2,
+					/Users/yoshi/Code/personal/gzdoom/libraries/lzma/C,
+					/Users/yoshi/Code/personal/gzdoom/libraries/jpeg,
+					/Users/yoshi/Code/personal/gzdoom/bin/windows/zmusic/include,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src",
+					/Users/yoshi/Code/personal/gzdoom/src/.,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/music,
+					/Users/yoshi/Code/personal/gzdoom/src/common/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/common/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/formats,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/hires,
+					/Users/yoshi/Code/personal/gzdoom/src/common/models,
+					/Users/yoshi/Code/personal/gzdoom/src/common/filesystem,
+					/Users/yoshi/Code/personal/gzdoom/src/common/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/common/console,
+					/Users/yoshi/Code/personal/gzdoom/src/common/engine,
+					/Users/yoshi/Code/personal/gzdoom/src/common/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/common/statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/common/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/common/objects,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/hwrenderer/data,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl_load,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/glad/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/Mali_OpenGL_ES_Emulator/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/vulkan/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/drawers,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/vm,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/jit,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/core,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/interface,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/g_statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/console,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/bots,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/mapthinkers,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/hwrenderer,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/r_data,
+					/Users/yoshi/Code/personal/gzdoom/src/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/sound/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/xlat,
+					/Users/yoshi/Code/personal/gzdoom/src/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/utility/nodebuilder,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting/zscript,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/gdtoa,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/glslang/Public,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/spirv,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa",
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix,
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix/sdl,
+					"$(inherited)",
+					/Users/yoshi/Code/personal/gzdoom/moltenvk/include,
+				);
+				INFOPLIST_FILE = "zdoom copy-Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-D_DEBUG",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-Wno-inconsistent-missing-override",
+					"-std=c++17",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-D_DEBUG",
+					"'-std=c++17'",
+				);
+				OTHER_LDFLAGS = (
+					"-rpath",
+					"@executable_path/Frameworks",
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/Debug${EFFECTIVE_PLATFORM_NAME}/libz.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/jpeg/Debug${EFFECTIVE_PLATFORM_NAME}/libjpeg.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/bzip2/Debug${EFFECTIVE_PLATFORM_NAME}/libbz2.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/Debug${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/spirv/Debug${EFFECTIVE_PLATFORM_NAME}/libSPIRV.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/Debug${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa/Debug${EFFECTIVE_PLATFORM_NAME}/libgdtoa.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/lzma/Debug${EFFECTIVE_PLATFORM_NAME}/liblzma.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/Debug${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/Debug${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/OSDependent/Unix/Debug${EFFECTIVE_PLATFORM_NAME}/libOSDependent.a",
+					"$(inherited)",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "zdoom-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		92B7ED22273BA19100054270 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release";
+				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					__FP__,
+					__FIXMATH__,
+					NO_GTK,
+					"'HAVE_FILELENGTH=1'",
+					"'stricmp=strcasecmp'",
+					"'strnicmp=strncasecmp'",
+					"'__forceinline=inline'",
+					"'HAVE_DISPATCH_APPLY=1'",
+					"$(inherited)",
+					"'DYN_OPENAL=1'",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoshi/Code/personal/gzdoom/libraries/glslang,
+					/Users/yoshi/Code/personal/gzdoom/libraries/zlib,
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/sdl/include,
+					/Users/yoshi/Code/personal/gzdoom/libraries/bzip2,
+					/Users/yoshi/Code/personal/gzdoom/libraries/lzma/C,
+					/Users/yoshi/Code/personal/gzdoom/libraries/jpeg,
+					/Users/yoshi/Code/personal/gzdoom/bin/windows/zmusic/include,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src",
+					/Users/yoshi/Code/personal/gzdoom/src/.,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/music,
+					/Users/yoshi/Code/personal/gzdoom/src/common/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/common/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/formats,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/hires,
+					/Users/yoshi/Code/personal/gzdoom/src/common/models,
+					/Users/yoshi/Code/personal/gzdoom/src/common/filesystem,
+					/Users/yoshi/Code/personal/gzdoom/src/common/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/common/console,
+					/Users/yoshi/Code/personal/gzdoom/src/common/engine,
+					/Users/yoshi/Code/personal/gzdoom/src/common/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/common/statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/common/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/common/objects,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/hwrenderer/data,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl_load,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/glad/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/Mali_OpenGL_ES_Emulator/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/vulkan/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/drawers,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/vm,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/jit,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/core,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/interface,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/g_statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/console,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/bots,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/mapthinkers,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/hwrenderer,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/r_data,
+					/Users/yoshi/Code/personal/gzdoom/src/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/sound/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/xlat,
+					/Users/yoshi/Code/personal/gzdoom/src/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/utility/nodebuilder,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting/zscript,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/gdtoa,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/glslang/Public,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/spirv,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa",
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix,
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix/sdl,
+					"$(inherited)",
+					/Users/yoshi/Code/personal/gzdoom/moltenvk/include,
+				);
+				INFOPLIST_FILE = "zdoom copy-Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-DNDEBUG",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-Wno-inconsistent-missing-override",
+					"-std=c++17",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-DNDEBUG",
+					"'-std=c++17'",
+				);
+				OTHER_LDFLAGS = (
+					"-rpath",
+					"@executable_path/Frameworks",
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/Release${EFFECTIVE_PLATFORM_NAME}/libz.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/jpeg/Release${EFFECTIVE_PLATFORM_NAME}/libjpeg.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/bzip2/Release${EFFECTIVE_PLATFORM_NAME}/libbz2.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/Release${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/spirv/Release${EFFECTIVE_PLATFORM_NAME}/libSPIRV.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/Release${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa/Release${EFFECTIVE_PLATFORM_NAME}/libgdtoa.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/lzma/Release${EFFECTIVE_PLATFORM_NAME}/liblzma.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/Release${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/Release${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/OSDependent/Unix/Release${EFFECTIVE_PLATFORM_NAME}/libOSDependent.a",
+					"$(inherited)",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "zdoom-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		92B7ED23273BA19100054270 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel";
+				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					__FP__,
+					__FIXMATH__,
+					NO_GTK,
+					"'HAVE_FILELENGTH=1'",
+					"'stricmp=strcasecmp'",
+					"'strnicmp=strncasecmp'",
+					"'__forceinline=inline'",
+					"'HAVE_DISPATCH_APPLY=1'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "zdoom copy-Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-DNDEBUG",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-Wno-inconsistent-missing-override",
+					"-std=c++17",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-DNDEBUG",
+					"'-std=c++17'",
+				);
+				OTHER_LDFLAGS = (
+					"-rpath",
+					"@executable_path",
+					"-framework",
+					Cocoa,
+					"-framework",
+					IOKit,
+					"-framework",
+					OpenGL,
+					"-framework",
+					QuartzCore,
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/sdl/libSDL2.a,
+					"-lrt",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libz.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/jpeg/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libjpeg.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/bzip2/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libbz2.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/spirv/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libSPIRV.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libgdtoa.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/lzma/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/liblzma.a",
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/libzmusic.1.1.8.dylib,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/OSDependent/Unix/MinSizeRel${EFFECTIVE_PLATFORM_NAME}/libOSDependent.a",
+					"$(inherited)",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "zdoom-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		92B7ED24273BA19100054270 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo";
+				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					__FP__,
+					__FIXMATH__,
+					NO_GTK,
+					"'HAVE_FILELENGTH=1'",
+					"'stricmp=strcasecmp'",
+					"'strnicmp=strncasecmp'",
+					"'__forceinline=inline'",
+					"'HAVE_DISPATCH_APPLY=1'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoshi/Code/personal/gzdoom/libraries/glslang,
+					/Users/yoshi/Code/personal/gzdoom/libraries/zlib,
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/sdl/include,
+					/Users/yoshi/Code/personal/gzdoom/libraries/bzip2,
+					/Users/yoshi/Code/personal/gzdoom/libraries/lzma/C,
+					/Users/yoshi/Code/personal/gzdoom/libraries/jpeg,
+					/Users/yoshi/Code/personal/gzdoom/bin/windows/zmusic/include,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src",
+					/Users/yoshi/Code/personal/gzdoom/src/.,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/common/audio/music,
+					/Users/yoshi/Code/personal/gzdoom/src/common/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/common/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/formats,
+					/Users/yoshi/Code/personal/gzdoom/src/common/textures/hires,
+					/Users/yoshi/Code/personal/gzdoom/src/common/models,
+					/Users/yoshi/Code/personal/gzdoom/src/common/filesystem,
+					/Users/yoshi/Code/personal/gzdoom/src/common/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/common/console,
+					/Users/yoshi/Code/personal/gzdoom/src/common/engine,
+					/Users/yoshi/Code/personal/gzdoom/src/common/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/common/statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/common/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/common/objects,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/hwrenderer/data,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl_load,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gl,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/glad/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/gles/Mali_OpenGL_ES_Emulator/include,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/vulkan/thirdparty,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/rendering/polyrenderer/drawers,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/vm,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/jit,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/core,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/interface,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/frontend,
+					/Users/yoshi/Code/personal/gzdoom/src/common/scripting/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/g_statusbar,
+					/Users/yoshi/Code/personal/gzdoom/src/console,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/bots,
+					/Users/yoshi/Code/personal/gzdoom/src/playsim/mapthinkers,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/textures,
+					/Users/yoshi/Code/personal/gzdoom/src/gamedata/fonts,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/hwrenderer,
+					/Users/yoshi/Code/personal/gzdoom/src/rendering/2d,
+					/Users/yoshi/Code/personal/gzdoom/src/r_data,
+					/Users/yoshi/Code/personal/gzdoom/src/sound,
+					/Users/yoshi/Code/personal/gzdoom/src/menu,
+					/Users/yoshi/Code/personal/gzdoom/src/sound/backend,
+					/Users/yoshi/Code/personal/gzdoom/src/xlat,
+					/Users/yoshi/Code/personal/gzdoom/src/utility,
+					/Users/yoshi/Code/personal/gzdoom/src/utility/nodebuilder,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting,
+					/Users/yoshi/Code/personal/gzdoom/src/scripting/zscript,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/gdtoa,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/glslang/Public,
+					/Users/yoshi/Code/personal/gzdoom/src/../libraries/glslang/spirv,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa",
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix,
+					/Users/yoshi/Code/personal/gzdoom/src/common/platform/posix/sdl,
+					"$(inherited)",
+					/Users/yoshi/Code/personal/gzdoom/moltenvk/include,
+				);
+				INFOPLIST_FILE = "zdoom copy-Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-DNDEBUG",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNO_SSE",
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-ffp-contract=off",
+					"-Wno-inconsistent-missing-override",
+					"-std=c++17",
+					"-ffp-contract=off",
+					"-DHAVE_SOFTPOLY",
+					"-DHAVE_VULKAN",
+					"-DNDEBUG",
+					"'-std=c++17'",
+				);
+				OTHER_LDFLAGS = (
+					"-rpath",
+					"@executable_path",
+					"-framework",
+					Cocoa,
+					"-framework",
+					IOKit,
+					"-framework",
+					OpenGL,
+					"-framework",
+					QuartzCore,
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/sdl/libSDL2.a,
+					"-lrt",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/zlib/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libz.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/jpeg/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libjpeg.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/bzip2/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libbz2.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/spirv/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libSPIRV.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/gdtoa/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libgdtoa.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/lzma/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/liblzma.a",
+					/Users/yoshi/Downloads/GZDoom_iOS_dylibs/libzmusic.1.1.8.dylib,
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libglslang.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/OGLCompilersDLL/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libOGLCompiler.a",
+					"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/libraries/glslang/glslang/OSDependent/Unix/RelWithDebInfo${EFFECTIVE_PLATFORM_NAME}/libOSDependent.a",
+					"$(inherited)",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "zdoom-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
 		};
 		939D614EDE4442028AC8FF9E /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -17641,6 +19527,17 @@
 				0C444B2AF68942BEA425BAAC /* Release */,
 				5A5CED4E85C944FC95965CFA /* MinSizeRel */,
 				6C5E8B00B63346F5A06B2488 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92B7ED20273BA19100054270 /* Build configuration list for PBXNativeTarget "zdoom_native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92B7ED21273BA19100054270 /* Debug */,
+				92B7ED22273BA19100054270 /* Release */,
+				92B7ED23273BA19100054270 /* MinSizeRel */,
+				92B7ED24273BA19100054270 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
