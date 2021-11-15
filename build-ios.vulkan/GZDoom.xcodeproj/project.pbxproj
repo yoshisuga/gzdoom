@@ -944,6 +944,8 @@
 		92B7ED1F273BA19100054270 /* libopenal.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9275BC0827364164006C90BE /* libopenal.1.dylib */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		92B7ED2B273BA28300054270 /* ios_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED29273BA26900054270 /* ios_main.mm */; };
 		92B7ED2D274105D200054270 /* ios_system.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED2C274105D200054270 /* ios_system.mm */; };
+		92B7ED2F27412C0100054270 /* ios_start.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED2E27412C0100054270 /* ios_start.mm */; };
+		92B7ED3127422AED00054270 /* ios_input.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED3027422AED00054270 /* ios_input.mm */; };
 		92BAD8D627158FBE007F56E2 /* libzmusic.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */; platformFilter = ios; };
 		92BAD8D727158FBE007F56E2 /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92BAD8D527158FBE007F56E2 /* doom.wad */; };
 		92BAD8D927158FE3007F56E2 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D827158FE2007F56E2 /* libSDL2.a */; };
@@ -4377,6 +4379,8 @@
 		92B7ED26273BA19500054270 /* zdoom copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zdoom copy-Info.plist"; path = "/Users/yoshi/Code/personal/gzdoom/zdoom copy-Info.plist"; sourceTree = "<absolute>"; };
 		92B7ED29273BA26900054270 /* ios_main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_main.mm; path = src/ios/ios_main.mm; sourceTree = "<group>"; };
 		92B7ED2C274105D200054270 /* ios_system.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_system.mm; path = src/ios/ios_system.mm; sourceTree = "<group>"; };
+		92B7ED2E27412C0100054270 /* ios_start.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_start.mm; path = src/ios/ios_start.mm; sourceTree = "<group>"; };
+		92B7ED3027422AED00054270 /* ios_input.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_input.mm; path = src/ios/ios_input.mm; sourceTree = "<group>"; };
 		92B9C283EB064DE2BA43B433 /* v_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = v_draw.cpp; path = src/common/2d/v_draw.cpp; sourceTree = SOURCE_ROOT; };
 		92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzmusic.1.dylib; sourceTree = "<group>"; };
 		92BAD8D527158FBE007F56E2 /* doom.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = doom.wad; sourceTree = "<group>"; };
@@ -9910,6 +9914,8 @@
 			children = (
 				92B7ED29273BA26900054270 /* ios_main.mm */,
 				92B7ED2C274105D200054270 /* ios_system.mm */,
+				92B7ED2E27412C0100054270 /* ios_start.mm */,
+				92B7ED3027422AED00054270 /* ios_input.mm */,
 			);
 			name = "iOS Files";
 			sourceTree = "<group>";
@@ -14677,6 +14683,7 @@
 				92B7EBBA273BA19100054270 /* poly_hwtexture.cpp in Sources */,
 				92B7EBBB273BA19100054270 /* poly_renderstate.cpp in Sources */,
 				92B7EBBC273BA19100054270 /* poly_all.cpp in Sources */,
+				92B7ED3127422AED00054270 /* ios_input.mm in Sources */,
 				92B7EBBD273BA19100054270 /* r_thread.cpp in Sources */,
 				92B7EBBE273BA19100054270 /* r_videoscale.cpp in Sources */,
 				92B7EBBF273BA19100054270 /* v_framebuffer.cpp in Sources */,
@@ -14901,6 +14908,7 @@
 				92B7EC99273BA19100054270 /* a_lightning.cpp in Sources */,
 				92B7EC9A273BA19100054270 /* a_lights.cpp in Sources */,
 				92B7EC9B273BA19100054270 /* a_lighttransfer.cpp in Sources */,
+				92B7ED2F27412C0100054270 /* ios_start.mm in Sources */,
 				92B7EC9C273BA19100054270 /* a_pillar.cpp in Sources */,
 				92B7EC9D273BA19100054270 /* a_plats.cpp in Sources */,
 				92B7EC9E273BA19100054270 /* a_pusher.cpp in Sources */,
