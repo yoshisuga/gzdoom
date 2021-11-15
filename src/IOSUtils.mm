@@ -9,7 +9,7 @@
 #import "IOSUtils.h"
 #import <UIKit/UIKit.h>
 
-// #import "gzdoom-Swift.h"
+//#import "gzdoom-Swift.h"
 #import "zdoom_native-Swift.h"
 
 #include "ios-glue.h"

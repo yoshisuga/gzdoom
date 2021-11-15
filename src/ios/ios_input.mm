@@ -65,7 +65,24 @@ void I_ReleaseMouseCapture()
 {
 }
 
+void I_GetJoysticks(TArray<IJoystickConfig*>& sticks)
+{
+    // delegate to GameController stuff...?
+}
+
 void I_GetAxes(float axes[NUM_JOYAXIS])
 {
   // read mfi input from view controller and get the values here..maybe
 }
+
+void I_ShutdownInput()
+{
+    NSLog(@"Shutting down input...");
+}
+
+IJoystickConfig* I_UpdateDeviceList()
+{
+    // Does nothing, device list is always kept up-to-date
+    return NULL;
+}
+

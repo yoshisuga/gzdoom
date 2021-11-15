@@ -3,8 +3,13 @@
 #endif
 
 #ifdef __APPLE__
+#import "TargetConditionals.h"
+#if TARGET_OS_IOS
+#define VK_USE_PLATFORM_IOS_MVK
+#else
 #define VK_USE_PLATFORM_MACOS_MVK
 #define VK_USE_PLATFORM_METAL_EXT
+#endif
 #endif
 
 

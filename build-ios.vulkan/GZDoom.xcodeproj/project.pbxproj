@@ -946,6 +946,7 @@
 		92B7ED2D274105D200054270 /* ios_system.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED2C274105D200054270 /* ios_system.mm */; };
 		92B7ED2F27412C0100054270 /* ios_start.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED2E27412C0100054270 /* ios_start.mm */; };
 		92B7ED3127422AED00054270 /* ios_input.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED3027422AED00054270 /* ios_input.mm */; };
+		92B7ED332742373D00054270 /* ios_video.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED322742373D00054270 /* ios_video.mm */; };
 		92BAD8D627158FBE007F56E2 /* libzmusic.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */; platformFilter = ios; };
 		92BAD8D727158FBE007F56E2 /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92BAD8D527158FBE007F56E2 /* doom.wad */; };
 		92BAD8D927158FE3007F56E2 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D827158FE2007F56E2 /* libSDL2.a */; };
@@ -4381,6 +4382,7 @@
 		92B7ED2C274105D200054270 /* ios_system.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_system.mm; path = src/ios/ios_system.mm; sourceTree = "<group>"; };
 		92B7ED2E27412C0100054270 /* ios_start.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_start.mm; path = src/ios/ios_start.mm; sourceTree = "<group>"; };
 		92B7ED3027422AED00054270 /* ios_input.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_input.mm; path = src/ios/ios_input.mm; sourceTree = "<group>"; };
+		92B7ED322742373D00054270 /* ios_video.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_video.mm; path = src/ios/ios_video.mm; sourceTree = "<group>"; };
 		92B9C283EB064DE2BA43B433 /* v_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = v_draw.cpp; path = src/common/2d/v_draw.cpp; sourceTree = SOURCE_ROOT; };
 		92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzmusic.1.dylib; sourceTree = "<group>"; };
 		92BAD8D527158FBE007F56E2 /* doom.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = doom.wad; sourceTree = "<group>"; };
@@ -9916,6 +9918,7 @@
 				92B7ED2C274105D200054270 /* ios_system.mm */,
 				92B7ED2E27412C0100054270 /* ios_start.mm */,
 				92B7ED3027422AED00054270 /* ios_input.mm */,
+				92B7ED322742373D00054270 /* ios_video.mm */,
 			);
 			name = "iOS Files";
 			sourceTree = "<group>";
@@ -14938,6 +14941,7 @@
 				92B7ECB6273BA19100054270 /* p_tags.cpp in Sources */,
 				92B7ECB7273BA19100054270 /* p_teleport.cpp in Sources */,
 				92B7ED2D274105D200054270 /* ios_system.mm in Sources */,
+				92B7ED332742373D00054270 /* ios_video.mm in Sources */,
 				92B7ECB8273BA19100054270 /* p_things.cpp in Sources */,
 				92B7ECB9273BA19100054270 /* p_trace.cpp in Sources */,
 				92B7ECBA273BA19100054270 /* p_user.cpp in Sources */,
