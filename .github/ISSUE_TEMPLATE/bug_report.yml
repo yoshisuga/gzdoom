@@ -11,26 +11,17 @@ body:
         ## Please fill out forms as cleanly as possible.
         #### Make sure that you have
         * properly edited & filled in the title of this bug report
-  - type: dropdown
+  - type: input
     id: version
     attributes:
       label: GZDoom version
       description: |
         What version are you using?
-        Run `gzdoom --version`
+        Run `gzdoom --version` or check in the console in game.
         Make sure to update to latest [release](https://github.com/coelckers/gzdoom/releases) version and test again before continuing.
-      multiple: false
-      options:
-        - 4.6.1
-        - 4.6.0
-        - 4.5.0
-        - 4.4.2
-        - 4.4.1
-        - 4.4.0
-        - Git
-        - Other
+      placeholder: "ex: GZDoom 4.0.0, Git version, Branch, other"
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: gameid
     attributes:
@@ -64,11 +55,11 @@ body:
     validations:
       required: false
   - type: input
-    id: other
+    id: os_detail
     attributes:
-      label: If Other OS, please describe
+      label: Please describe your specific OS version
       description: Other details
-      placeholder: "Windows, Mac OSX version, Debian, Ubuntu, Arch, etc."
+      placeholder: "Windows 11 Home/Pro/Server/etc, Mac OSX version, Debian 10/11/etc, Ubuntu 18/20/etc, Arch, etc."
     validations:
       required: false
   - type: input
@@ -91,7 +82,7 @@ body:
     id: description
     attributes:
       label: A clear and concise description of what the bug is.
-      description: Describe what happens, what software were you running? _Include screenshot if possible_
+      description: Describe what happens, what software were you running? _Include a small mod demonstrating the bug, or a screenshot if possible_
       placeholder: "How & When does this occur?"
     validations:
       required: true

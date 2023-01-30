@@ -77,8 +77,9 @@ public:
 	void OnUnregister();
 
 	//
+	void OnEngineInitialize();
 	void WorldLoaded();
-	void WorldUnloaded();
+	void WorldUnloaded(const FString& nextmap);
 	void WorldThingSpawned(AActor* actor);
 	void WorldThingDied(AActor* actor, AActor* inflictor);
 	void WorldThingGround(AActor* actor, FState* st);
@@ -111,7 +112,7 @@ public:
 	void PostUiTick();
 	
 	// 
-	void ConsoleProcess(int player, FString name, int arg1, int arg2, int arg3, bool manual);
+	void ConsoleProcess(int player, FString name, int arg1, int arg2, int arg3, bool manual, bool ui);
 
 	//
 	void CheckReplacement(PClassActor* replacee, PClassActor** replacement, bool* final);
@@ -144,6 +145,7 @@ struct FWorldEvent
 	// for loaded/unloaded
 	bool IsSaveGame = false;
 	bool IsReopen = false;
+	FString NextMap;
 	// for thingspawned, thingdied, thingdestroyed
 	AActor* Thing = nullptr; // for thingdied
 	AActor* Inflictor = nullptr; // can be null - for damagemobj
@@ -229,10 +231,12 @@ struct EventManager
 	// shutdown handlers
 	void Shutdown();
 
+	// after the engine is done creating data
+	void OnEngineInitialize();
 	// called right after the map has loaded (approximately same time as OPEN ACS scripts)
 	void WorldLoaded();
 	// called when the map is about to unload (approximately same time as UNLOADING ACS scripts)
-	void WorldUnloaded();
+	void WorldUnloaded(const FString& nextmap);
 	// called around PostBeginPlay of each actor.
 	void WorldThingSpawned(AActor* actor);
 	// called after AActor::Die of each actor.
@@ -280,7 +284,7 @@ struct EventManager
 	// this executes on events.
 	bool Responder(const event_t* ev); // splits events into InputProcess and UiProcess
 	// this executes on console/net events.
-	void Console(int player, FString name, int arg1, int arg2, int arg3, bool manual);
+	void Console(int player, FString name, int arg1, int arg2, int arg3, bool manual, bool ui);
 
 	// called when looking up the replacement for an actor class
 	bool CheckReplacement(PClassActor* replacee, PClassActor** replacement);
