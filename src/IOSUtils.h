@@ -11,6 +11,7 @@
 
 @interface IOSUtils : NSObject
 
-+(id)shared;
++(instancetype)shared;
+-(void)doMain;
 
 @end

@@ -30,6 +30,7 @@
 #include "s_music.h"
 #include "engineerrors.h"
 
+#import "zdoom_native-Swift.h"
 // ---------------------------------------------------------------------------
 
 
@@ -41,6 +42,9 @@ EXTERN_CVAR(Bool, vid_vsync    )
 int GameMain();
 
 FArgs* Args; // command line arguments: unused for iOS? will we ever pass cmd line args?
+
+int _argc;
+char** _argv;
 
 // ---------------------------------------------------------------------------
 
@@ -98,22 +102,39 @@ void I_DetectOS()
         Printf("OS: %s\n", operatingSystem.GetChars());
 }
 
-@interface GZDoomAppDelegate: NSObject<UIApplicationDelegate>
+@interface GZDoomAppDelegate: UIResponder<UIApplicationDelegate>
+@property (nonatomic,strong) UIWindow *window;
 @end
 
 @implementation GZDoomAppDelegate
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey,id> *)launchOptions {
-    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [window makeKeyAndVisible];
-    
-    // TODO: set root view controller
-    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [[GZDoomViewController alloc] initWithNibName:nil bundle:nil];
+    [self.window makeKeyAndVisible];
+        
     // Run the main entry
-    int ret = GameMain();
-    if (ret) {
-        return false;
+    Args = new FArgs(_argc, _argv);
+    
+    // Should we even be doing anything with progdir on Unix systems? Yes, actually, this is needed
+    char program[PATH_MAX];
+    if (realpath (_argv[0], program) == NULL)
+        strcpy (program, _argv[0]);
+    char *slash = strrchr (program, '/');
+    if (slash != NULL)
+    {
+        *(slash + 1) = '\0';
+        progdir = program;
     }
+    else
+    {
+        progdir = "./";
+    }
+    
+//    int ret = GameMain();
+//    if (ret) {
+//        return false;
+//    }
     return true;
 }
 
@@ -122,6 +143,8 @@ void I_DetectOS()
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
+        _argc = argc;
+        _argv = argv;
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([GZDoomAppDelegate class]));
     }
 }

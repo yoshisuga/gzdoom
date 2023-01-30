@@ -8,15 +8,18 @@
 
 #import "IOSUtils.h"
 #import <UIKit/UIKit.h>
+#import <MetalKit/MetalKit.h>
 
-//#import "gzdoom-Swift.h"
-#import "zdoom_native-Swift.h"
+#import "gzdoom-Swift.h"
+//#import "zdoom_native-Swift.h"
 
 #include "ios-glue.h"
 #include "video-hook.h"
 #include "SDL_syswm.h"
 #include "d_eventbase.h"
 #include "ios-input-hook.h"
+
+int GameMain();
 
 void ios_get_base_path(char *path) {
     NSArray *paths;
@@ -64,6 +67,12 @@ void SDLWindowAfterCreate(SDL_Window *window) {
     [[keyboardController.view.bottomAnchor constraintEqualToAnchor:rootVC.view.bottomAnchor] setActive:YES];
 }
 
+void SDLWindowAfterSurfaceCreate(SDL_Window *window) {
+    UIViewController *rootVC = GetSDLViewController(window);
+    UIView *view = rootVC.view;
+    NSLog(@"view = %@",view);
+}
+
 bool guiCapture = false;
 void InputUpdateGUICapture(bool capt) {
     guiCapture = capt;
@@ -76,12 +85,11 @@ const UInt8 DIK_TO_ASCII[128] =
 };
 
 @interface IOSUtils()<EmulatorKeyboardKeyPressedDelegate>
-
 @end
 
 @implementation IOSUtils
 
-+(id)shared {
++(instancetype)shared {
     static IOSUtils *iosUtils = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -93,6 +101,10 @@ const UInt8 DIK_TO_ASCII[128] =
 -(id)init {
     self = [super init];
     return self;
+}
+
+-(void)doMain {
+    GameMain();
 }
 
 -(NSDictionary*)dikToAsciiMap {

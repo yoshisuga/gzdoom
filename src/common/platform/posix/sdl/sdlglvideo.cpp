@@ -247,7 +247,13 @@ bool I_CreateVulkanSurface(VkInstance instance, VkSurfaceKHR *surface)
 {
 	assert(Priv::vulkanEnabled);
 	assert(Priv::window != nullptr);
+#if TARGET_OS_IOS
+    bool createdSurface = SDL_Vulkan_CreateSurface(Priv::window, instance, surface) == SDL_TRUE;
+    SDLWindowAfterSurfaceCreate(Priv::window);
+    return createdSurface;
+#else
 	return SDL_Vulkan_CreateSurface(Priv::window, instance, surface) == SDL_TRUE;
+#endif
 }
 #endif
 

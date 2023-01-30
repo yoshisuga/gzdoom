@@ -121,6 +121,45 @@
 			name = revision_check;
 			productName = revision_check;
 		};
+		92B7ED3727433A7900054270 /* gzdoom_pk3 native */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 92B7ED3C27433A7900054270 /* Build configuration list for PBXAggregateTarget "gzdoom_pk3 native" */;
+			buildPhases = (
+				92B7ED3A27433A7900054270 /* Generate gzdoom.pk3 */,
+				92B7ED3B27433A7900054270 /* Generate wadsrc/CMakeFiles/gzdoom_pk3 */,
+			);
+			dependencies = (
+				92B7ED4227433A9300054270 /* PBXTargetDependency */,
+			);
+			name = "gzdoom_pk3 native";
+			productName = gzdoom_pk3;
+		};
+		92B7ED4327433ADC00054270 /* game_support_pk3 native */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 92B7ED4827433ADC00054270 /* Build configuration list for PBXAggregateTarget "game_support_pk3 native" */;
+			buildPhases = (
+				92B7ED4627433ADC00054270 /* Generate game_support.pk3 */,
+				92B7ED4727433ADC00054270 /* Generate wadsrc_extra/CMakeFiles/game_support_pk3 */,
+			);
+			dependencies = (
+				92B7ED4E27433AEA00054270 /* PBXTargetDependency */,
+			);
+			name = "game_support_pk3 native";
+			productName = game_support_pk3;
+		};
+		92B7ED4F27433B0B00054270 /* lights_pk3 native */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 92B7ED5427433B0B00054270 /* Build configuration list for PBXAggregateTarget "lights_pk3 native" */;
+			buildPhases = (
+				92B7ED5227433B0B00054270 /* Generate lights.pk3 */,
+				92B7ED5327433B0B00054270 /* Generate wadsrc_lights/CMakeFiles/lights_pk3 */,
+			);
+			dependencies = (
+				92B7ED5A27433B1600054270 /* PBXTargetDependency */,
+			);
+			name = "lights_pk3 native";
+			productName = lights_pk3;
+		};
 		A58A796F681240CA91157C83 /* gzdoom_pk3 */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 241BFF6CC28444A196E68224 /* Build configuration list for PBXAggregateTarget "gzdoom_pk3" */;
@@ -459,6 +498,8 @@
 		912A2BAD1AC64E439E48AF32 /* parsecontext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9204DA84B3646EEB92DD45D /* parsecontext.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
 		915EDBAAE75A4C5AA56E31C5 /* log10.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E662B385D114B34B0085673 /* log10.c */; };
 		91FB8D46A8834423BBF289E6 /* p_3dmidtex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E1AE701E54264707B4B42F69 /* p_3dmidtex.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92466A52274CF0AA002F406D /* libzmusiclite.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92466A51274CF0A9002F406D /* libzmusiclite.1.dylib */; platformFilter = ios; };
+		92466A53274CF0BB002F406D /* libzmusiclite.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92466A51274CF0A9002F406D /* libzmusiclite.1.dylib */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9275456C1E2F4B8D8CCEF992 /* maploader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E88E974668FF4FDFAE868F3D /* maploader.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
 		9275BC0927364164006C90BE /* libopenal.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9275BC0827364164006C90BE /* libopenal.1.dylib */; platformFilter = ios; };
 		9275BC0A2736416E006C90BE /* libopenal.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9275BC0827364164006C90BE /* libopenal.1.dylib */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -467,12 +508,10 @@
 		929A354127269C4F003CB7B2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929A354027269C4F003CB7B2 /* Images.xcassets */; };
 		929A354327269CEF003CB7B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929A354227269CEF003CB7B2 /* Launch Screen.storyboard */; };
 		929A354727292A26003CB7B2 /* brutalv21.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354627292A25003CB7B2 /* brutalv21.pk3 */; };
-		929A354927292C74003CB7B2 /* hdoom.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354827292C74003CB7B2 /* hdoom.pk3 */; };
 		92B7EB38273BA19100054270 /* brutalv21.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354627292A25003CB7B2 /* brutalv21.pk3 */; };
 		92B7EB39273BA19100054270 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929A354027269C4F003CB7B2 /* Images.xcassets */; };
 		92B7EB3A273BA19100054270 /* zdoom.icns in Resources */ = {isa = PBXBuildFile; fileRef = ACB9BD9858F948B585D928D6 /* zdoom.icns */; };
 		92B7EB3B273BA19100054270 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929A354227269CEF003CB7B2 /* Launch Screen.storyboard */; };
-		92B7EB3C273BA19100054270 /* hdoom.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 929A354827292C74003CB7B2 /* hdoom.pk3 */; };
 		92B7EB3D273BA19100054270 /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92BAD8D527158FBE007F56E2 /* doom.wad */; };
 		92B7EB3F273BA19100054270 /* am_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC74E44DC2B446B38D2ACBCD /* am_map.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
 		92B7EB40273BA19100054270 /* bbannouncer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4A787F09DC54FD09690333E /* bbannouncer.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
@@ -947,6 +986,7 @@
 		92B7ED2F27412C0100054270 /* ios_start.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED2E27412C0100054270 /* ios_start.mm */; };
 		92B7ED3127422AED00054270 /* ios_input.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED3027422AED00054270 /* ios_input.mm */; };
 		92B7ED332742373D00054270 /* ios_video.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED322742373D00054270 /* ios_video.mm */; };
+		92B7ED3627425D7D00054270 /* GZDoomVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B7ED3527425D7D00054270 /* GZDoomVIewController.swift */; };
 		92BAD8D627158FBE007F56E2 /* libzmusic.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */; platformFilter = ios; };
 		92BAD8D727158FBE007F56E2 /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92BAD8D527158FBE007F56E2 /* doom.wad */; };
 		92BAD8D927158FE3007F56E2 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BAD8D827158FE2007F56E2 /* libSDL2.a */; };
@@ -1459,6 +1499,27 @@
 			remoteGlobalIDString = 7BED56BC7CD04BC3A1CCC892;
 			remoteInfo = revision_check;
 		};
+		92B7ED4127433A9300054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92B7EB1F273BA19100054270;
+			remoteInfo = zdoom_native;
+		};
+		92B7ED4D27433AEA00054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92B7EB1F273BA19100054270;
+			remoteInfo = zdoom_native;
+		};
+		92B7ED5927433B1600054270 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92B7EB1F273BA19100054270;
+			remoteInfo = zdoom_native;
+		};
 		982364781CF14929923709A7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6ECF38D5014445779CAFCE86 /* Project object */;
@@ -1567,6 +1628,7 @@
 			files = (
 				92C2A3A52717483600D1BCE2 /* libMoltenVK.dylib in Embed Frameworks */,
 				92BAD8F8271591D4007F56E2 /* libzmusic.1.dylib in Embed Frameworks */,
+				92466A53274CF0BB002F406D /* libzmusiclite.1.dylib in Embed Frameworks */,
 				9275BC0A2736416E006C90BE /* libopenal.1.dylib in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -4362,6 +4424,7 @@
 		91ECC5FAAC6944C6A79D418A /* w_zip.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = w_zip.h; path = src/common/filesystem/w_zip.h; sourceTree = SOURCE_ROOT; };
 		92184B2F81A1452C8D0C52B0 /* 0023.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 0023.lmp; path = wadsrc_extra/static/filter/harmony/fonts/bigfont/0023.lmp; sourceTree = SOURCE_ROOT; };
 		924299AB0FA145869656339E /* spalhtic.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = spalhtic.lmp; path = wadsrc/static/spalhtic.lmp; sourceTree = SOURCE_ROOT; };
+		92466A51274CF0A9002F406D /* libzmusiclite.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzmusiclite.1.dylib; sourceTree = "<group>"; };
 		924BE91B547A482C89019491 /* 016C.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 016C.lmp; path = "wadsrc_extra/static/filter/game-chex/fonts/bigfont/016C.lmp"; sourceTree = SOURCE_ROOT; };
 		924EAC8534124B0DBCACD9A9 /* weaponstaff.zs */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = weaponstaff.zs; path = wadsrc/static/zscript/actors/heretic/weaponstaff.zs; sourceTree = SOURCE_ROOT; };
 		925BAEF025BA4AC1ABA83629 /* 021A.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 021A.lmp; path = "wadsrc_extra/static/filter/game-chex/fonts/bigfont/021A.lmp"; sourceTree = SOURCE_ROOT; };
@@ -4375,7 +4438,6 @@
 		929A354227269CEF003CB7B2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		929A35452726A2FE003CB7B2 /* ios-input-hook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ios-input-hook.h"; path = "src/ios-input-hook.h"; sourceTree = "<group>"; };
 		929A354627292A25003CB7B2 /* brutalv21.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = brutalv21.pk3; sourceTree = "<group>"; };
-		929A354827292C74003CB7B2 /* hdoom.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = hdoom.pk3; sourceTree = "<group>"; };
 		92B7ED25273BA19100054270 /* zdoom_native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zdoom_native.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B7ED26273BA19500054270 /* zdoom copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zdoom copy-Info.plist"; path = "/Users/yoshi/Code/personal/gzdoom/zdoom copy-Info.plist"; sourceTree = "<absolute>"; };
 		92B7ED29273BA26900054270 /* ios_main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_main.mm; path = src/ios/ios_main.mm; sourceTree = "<group>"; };
@@ -4383,6 +4445,7 @@
 		92B7ED2E27412C0100054270 /* ios_start.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_start.mm; path = src/ios/ios_start.mm; sourceTree = "<group>"; };
 		92B7ED3027422AED00054270 /* ios_input.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_input.mm; path = src/ios/ios_input.mm; sourceTree = "<group>"; };
 		92B7ED322742373D00054270 /* ios_video.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ios_video.mm; path = src/ios/ios_video.mm; sourceTree = "<group>"; };
+		92B7ED3527425D7D00054270 /* GZDoomVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GZDoomVIewController.swift; path = src/ios/GZDoomVIewController.swift; sourceTree = "<group>"; };
 		92B9C283EB064DE2BA43B433 /* v_draw.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = v_draw.cpp; path = src/common/2d/v_draw.cpp; sourceTree = SOURCE_ROOT; };
 		92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzmusic.1.dylib; sourceTree = "<group>"; };
 		92BAD8D527158FBE007F56E2 /* doom.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = doom.wad; sourceTree = "<group>"; };
@@ -6589,6 +6652,7 @@
 				92BAD8F027159065007F56E2 /* CoreMotion.framework in Frameworks */,
 				92BAD8E827159064007F56E2 /* CoreAudio.framework in Frameworks */,
 				92BAD8ED27159065007F56E2 /* OpenGLES.framework in Frameworks */,
+				92466A52274CF0AA002F406D /* libzmusiclite.1.dylib in Frameworks */,
 				92D0653927313A380007113A /* CoreMIDI.framework in Frameworks */,
 				92BAD8EA27159064007F56E2 /* Foundation.framework in Frameworks */,
 				92C2A3A42717482900D1BCE2 /* libMoltenVK.dylib in Frameworks */,
@@ -6642,7 +6706,6 @@
 			isa = PBXGroup;
 			children = (
 				9275BC0827364164006C90BE /* libopenal.1.dylib */,
-				929A354827292C74003CB7B2 /* hdoom.pk3 */,
 				929A354627292A25003CB7B2 /* brutalv21.pk3 */,
 				929A35452726A2FE003CB7B2 /* ios-input-hook.h */,
 				929A354227269CEF003CB7B2 /* Launch Screen.storyboard */,
@@ -6655,6 +6718,7 @@
 				92C2A39C2716E24600D1BCE2 /* IOSUtils.mm */,
 				92BAD8D527158FBE007F56E2 /* doom.wad */,
 				92BAD8D427158FBD007F56E2 /* libzmusic.1.dylib */,
+				92466A51274CF0A9002F406D /* libzmusiclite.1.dylib */,
 				92BAD8D827158FE2007F56E2 /* libSDL2.a */,
 				6FB6C597B2CF489FB35804A9 /* ALL_BUILD */,
 				80F14E40A71545AB848DC687 /* glslang */,
@@ -9919,6 +9983,7 @@
 				92B7ED2E27412C0100054270 /* ios_start.mm */,
 				92B7ED3027422AED00054270 /* ios_input.mm */,
 				92B7ED322742373D00054270 /* ios_video.mm */,
+				92B7ED3527425D7D00054270 /* GZDoomVIewController.swift */,
 			);
 			name = "iOS Files";
 			sourceTree = "<group>";
@@ -13989,6 +14054,9 @@
 				D2739478EED4475793B31F0B /* z */,
 				EE004EA4906B4815B7F829A5 /* zdoom */,
 				92B7EB1F273BA19100054270 /* zdoom_native */,
+				92B7ED3727433A7900054270 /* gzdoom_pk3 native */,
+				92B7ED4327433ADC00054270 /* game_support_pk3 native */,
+				92B7ED4F27433B0B00054270 /* lights_pk3 native */,
 			);
 		};
 /* End PBXProject section */
@@ -14002,7 +14070,6 @@
 				92B7EB39273BA19100054270 /* Images.xcassets in Resources */,
 				92B7EB3A273BA19100054270 /* zdoom.icns in Resources */,
 				92B7EB3B273BA19100054270 /* Launch Screen.storyboard in Resources */,
-				92B7EB3C273BA19100054270 /* hdoom.pk3 in Resources */,
 				92B7EB3D273BA19100054270 /* doom.wad in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14015,7 +14082,6 @@
 				929A354127269C4F003CB7B2 /* Images.xcassets in Resources */,
 				42E20AF419CB4B1FBD8D7551 /* zdoom.icns in Resources */,
 				929A354327269CEF003CB7B2 /* Launch Screen.storyboard in Resources */,
-				929A354927292C74003CB7B2 /* hdoom.pk3 in Resources */,
 				92BAD8D727158FBE007F56E2 /* doom.wad in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14040,7 +14106,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/gzdoom.pk3\nfi\n";
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/gzdoom.pk3\n\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/gzdoom.pk3\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		4842D6D102ABC725FB9BAEB8 /* CMake PostBuild Rules */ = {
@@ -14229,6 +14295,120 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/soundfont/gzdoom.sf2 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/soundfonts/gzdoom.sf2\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/GENMIDI.GS.wopl /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/fm_banks/GENMIDI.GS.wopl\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/fm_banks/gs-by-papiezak-and-sneakernets.wopn /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/fm_banks/gs-by-papiezak-and-sneakernets.wopn\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED3A27433A7900054270 /* Generate gzdoom.pk3 */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir",
+			);
+			name = "Generate gzdoom.pk3";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/zdoom_native.app/gzdoom.pk3\n\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/gzdoom.pk3\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED3B27433A7900054270 /* Generate wadsrc/CMakeFiles/gzdoom_pk3 */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/gzdoom.pk3",
+			);
+			name = "Generate wadsrc/CMakeFiles/gzdoom_pk3";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc/CMakeFiles/gzdoom_pk3",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED4627433ADC00054270 /* Generate game_support.pk3 */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir",
+			);
+			name = "Generate game_support.pk3";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/zdoom_native.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/game_support.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_extra/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/game_support.pk3\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED4727433ADC00054270 /* Generate wadsrc_extra/CMakeFiles/game_support_pk3 */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/game_support.pk3",
+			);
+			name = "Generate wadsrc_extra/CMakeFiles/game_support_pk3";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra/CMakeFiles/game_support_pk3",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED5227433B0B00054270 /* Generate lights.pk3 */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir",
+				"/Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir",
+			);
+			name = "Generate lights.pk3";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Debug/zdoom_native.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/Release/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/MinSizeRel/gzdoom.app/lights.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/wadsrc_lights/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3 /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/RelWithDebInfo/gzdoom.app/lights.pk3\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		92B7ED5327433B0B00054270 /* Generate wadsrc_lights/CMakeFiles/lights_pk3 */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/lights.pk3",
+			);
+			name = "Generate wadsrc_lights/CMakeFiles/lights_pk3";
+			outputPaths = (
+				"/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights/CMakeFiles/lights_pk3",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E touch /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
@@ -14855,6 +15035,7 @@
 				92B7EC61273BA19100054270 /* parse_xlat.cpp in Sources */,
 				92B7EC62273BA19100054270 /* parsecontext.cpp in Sources */,
 				92B7EC63273BA19100054270 /* gitinfo.cpp in Sources */,
+				92B7ED3627425D7D00054270 /* GZDoomVIewController.swift in Sources */,
 				92B7EC64273BA19100054270 /* hu_scores.cpp in Sources */,
 				92B7EC65273BA19100054270 /* intermission.cpp in Sources */,
 				92B7EC66273BA19100054270 /* intermission_parse.cpp in Sources */,
@@ -15701,6 +15882,21 @@
 			isa = PBXTargetDependency;
 			target = 7BED56BC7CD04BC3A1CCC892 /* revision_check */;
 			targetProxy = 92B7EB33273BA19100054270 /* PBXContainerItemProxy */;
+		};
+		92B7ED4227433A9300054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92B7EB1F273BA19100054270 /* zdoom_native */;
+			targetProxy = 92B7ED4127433A9300054270 /* PBXContainerItemProxy */;
+		};
+		92B7ED4E27433AEA00054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92B7EB1F273BA19100054270 /* zdoom_native */;
+			targetProxy = 92B7ED4D27433AEA00054270 /* PBXContainerItemProxy */;
+		};
+		92B7ED5A27433B1600054270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92B7EB1F273BA19100054270 /* zdoom_native */;
+			targetProxy = 92B7ED5927433B1600054270 /* PBXContainerItemProxy */;
 		};
 		B061BC1BF0B14EE783BD9256 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -16831,7 +17027,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -17334,7 +17530,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoomnative;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -17511,7 +17707,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoomnative;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -17627,7 +17823,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoomnative;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -17813,7 +18009,7 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom;
+				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoomnative;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -17821,6 +18017,282 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "zdoom-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/src";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		92B7ED3D27433A7900054270 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		92B7ED3E27433A7900054270 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		92B7ED3F27433A7900054270 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		92B7ED4027433A7900054270 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		92B7ED4927433ADC00054270 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		92B7ED4A27433ADC00054270 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		92B7ED4B27433ADC00054270 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		92B7ED4C27433ADC00054270 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_extra";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		92B7ED5527433B0B00054270 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		92B7ED5627433B0B00054270 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		92B7ED5727433B0B00054270 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		92B7ED5827433B0B00054270 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/wadsrc_lights";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
 			};
@@ -18346,7 +18818,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -18558,7 +19030,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -18907,6 +19379,7 @@
 					"-DHAVE_VULKAN",
 					"-D_DEBUG",
 					"$(inherited)",
+					"-DZMUSIC_LITE",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DNO_SSE",
@@ -19313,7 +19786,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom/build-ios.vulkan/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -19550,6 +20023,39 @@
 				92B7ED22273BA19100054270 /* Release */,
 				92B7ED23273BA19100054270 /* MinSizeRel */,
 				92B7ED24273BA19100054270 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92B7ED3C27433A7900054270 /* Build configuration list for PBXAggregateTarget "gzdoom_pk3 native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92B7ED3D27433A7900054270 /* Debug */,
+				92B7ED3E27433A7900054270 /* Release */,
+				92B7ED3F27433A7900054270 /* MinSizeRel */,
+				92B7ED4027433A7900054270 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92B7ED4827433ADC00054270 /* Build configuration list for PBXAggregateTarget "game_support_pk3 native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92B7ED4927433ADC00054270 /* Debug */,
+				92B7ED4A27433ADC00054270 /* Release */,
+				92B7ED4B27433ADC00054270 /* MinSizeRel */,
+				92B7ED4C27433ADC00054270 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92B7ED5427433B0B00054270 /* Build configuration list for PBXAggregateTarget "lights_pk3 native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92B7ED5527433B0B00054270 /* Debug */,
+				92B7ED5627433B0B00054270 /* Release */,
+				92B7ED5727433B0B00054270 /* MinSizeRel */,
+				92B7ED5827433B0B00054270 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -27,6 +27,8 @@
 #include "vulkan/system/vk_framebuffer.h"
 
 #include "ios-glue.h"
+#import "IOSUtils.h"
+#import "zdoom_native-Swift.h"
 
 EXTERN_CVAR (Int, vid_defwidth)
 EXTERN_CVAR (Int, vid_defheight)
@@ -59,7 +61,9 @@ public:
         int width, height;
         ios_get_screen_width_height(&width, &height);
         
-        VulkanView *view = [[VulkanView alloc] initWithFrame:CGRectMake(0, 0, CGFloat(width), CGFloat(height))];
+//        VulkanView *view = [[VulkanView alloc] initWithFrame:CGRectMake(0, 0, CGFloat(width), CGFloat(height))];
+//        vulkanView = [[IOSUtils shared] getView];
+//        assert(vulkanView != nil);
         setenv("MVK_CONFIG_LOG_LEVEL", "1", 0);
         // The following settings improve performance like suggested at
         // https://github.com/KhronosGroup/MoltenVK/issues/581#issuecomment-487293665
@@ -72,16 +76,18 @@ public:
         return fb;
     }
     
-    static VulkanView* GetView()
-    {
-        return vulkanView;
-    }
+//    static GZDoomView* GetView()
+//    {
+//        return vulkanView;
+//    }
 private:
     VulkanDevice *m_vulkanDevice = nullptr;
-    static VulkanView *vulkanView;
+//    static VulkanView *vulkanView;
+//    static GZDoomView *vulkanView;
 };
 
-VulkanView* IOSVideo::vulkanView;
+//GZDoomView* IOSVideo::vulkanView;
+//VulkanView* IOSVideo::vulkanView;
 
 static SystemBaseFrameBuffer* frameBuffer;
 
@@ -187,14 +193,14 @@ void I_SetWindowTitle(const char* title)
 
 void I_GetVulkanDrawableSize(int *width, int *height)
 {
-    VulkanView *view = IOSVideo::GetView();
-    if (!view) {
+//    GZDoomView *view = [[IOSUtils shared] getView];
+//    if (!view) {
         ios_get_screen_width_height(width, height);
-        return;
-    }
-    CAMetalLayer *layer = (CAMetalLayer*)view.layer;
-    *width = layer.drawableSize.width;
-    *height = layer.drawableSize.height;
+//        return;
+//    }
+//    CAMetalLayer *layer = (CAMetalLayer*)view.layer;
+//    *width = layer.drawableSize.width;
+//    *height = layer.drawableSize.height;
 }
 
 bool I_GetVulkanPlatformExtensions(unsigned int *count, const char **names)
@@ -212,6 +218,7 @@ bool I_GetVulkanPlatformExtensions(unsigned int *count, const char **names)
         static const char* const EXTENSION_NAMES[] =
         {
             VK_KHR_SURFACE_EXTENSION_NAME,        // KHR_surface, required
+            VK_MVK_IOS_SURFACE_EXTENSION_NAME
 //            VK_EXT_METAL_SURFACE_EXTENSION_NAME,  // EXT_metal_surface, optional, preferred
 //            VK_MVK_MACOS_SURFACE_EXTENSION_NAME,  // MVK_macos_surface, optional, deprecated
         };
@@ -256,7 +263,7 @@ bool I_GetVulkanPlatformExtensions(unsigned int *count, const char **names)
 
 bool I_CreateVulkanSurface(VkInstance instance, VkSurfaceKHR *surface)
 {
-    VulkanView *view = IOSVideo::GetView();
+    GZDoomView *view = [[IOSUtils shared] getView];
     CALayer *layer = view.layer;
     // Set magnification filter for swapchain image when it's copied to a physical display surface
     // This is needed for gfx-portability because MoltenVK uses preferred nearest sampling by default

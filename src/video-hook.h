@@ -10,5 +10,6 @@
 #include "SDL_syswm.h"
 
 void SDLWindowAfterCreate(SDL_Window *sdlWindow);
+void SDLWindowAfterSurfaceCreate(SDL_Window *sdlWindow);
 
 #endif /* video_hook_h */
