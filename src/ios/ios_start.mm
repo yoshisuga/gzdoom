@@ -12,7 +12,7 @@
 #include "printf.h"
 #include "engineerrors.h"
 
-FStartupScreen *StartScreen;
+// FStartupScreen *StartScreen;
 
 FBasicStartupScreen::FBasicStartupScreen(int maxProgress, bool showBar)
 : FStartupScreen(maxProgress)
@@ -84,16 +84,16 @@ bool FBasicStartupScreen::NetLoop(bool (*timerCallback)(void*), void* const user
 // ---------------------------------------------------------------------------
 
 
-FStartupScreen *FStartupScreen::CreateInstance(const int maxProgress)
-{
-    return new FBasicStartupScreen(maxProgress, true);
-}
+//FStartupScreen *FStartupScreen::CreateInstance(const int maxProgress, bool showprogress)
+//{
+//    return new FBasicStartupScreen(maxProgress, showprogress);
+//}
 
 
 // ---------------------------------------------------------------------------
 
 
-void ST_Endoom()
-{
-    throw CExitEvent(0);
-}
+//void ST_Endoom()
+//{
+//    throw CExitEvent(0);
+//}

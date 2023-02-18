@@ -372,7 +372,7 @@ if( VPX_FOUND )
 	include_directories( "${VPX_INCLUDE_DIR}" )
 	set( PROJECT_LIBRARIES ${PROJECT_LIBRARIES} ${VPX_LIBRARIES} )
 else()
-	message( SEND_ERROR "Could not find libvpx" )
+	# message( SEND_ERROR "Could not find libvpx" )
 endif()
 
 include_directories( "${ZLIB_INCLUDE_DIR}" "${BZIP2_INCLUDE_DIR}" "${LZMA_INCLUDE_DIR}" "${JPEG_INCLUDE_DIR}" "${ZMUSIC_INCLUDE_DIR}" "${DRPC_INCLUDE_DIR}")

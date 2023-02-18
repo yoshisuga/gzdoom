@@ -47,7 +47,7 @@
 #include "i_interface.h"
 
 #if TARGET_OS_IOS
-#include "ios-input-hook.h"
+#include "ios/ios-input-hook.h"
 #endif
 
 

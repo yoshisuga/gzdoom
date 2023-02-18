@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #define VK_USE_PLATFORM_IOS_MVK
-#include "volk/volk.h"
+#include "zvulkan/volk/volk.h"
 
 #include "v_video.h"
 #include "bitmap.h"
@@ -24,7 +24,7 @@
 #include "gl_framebuffer.h"
 #include "gles_framebuffer.h"
 
-#include "vulkan/system/vk_framebuffer.h"
+#include "vulkan/textures/vk_framebuffer.h"
 
 #include "ios-glue.h"
 #import "IOSUtils.h"

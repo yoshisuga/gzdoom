@@ -1,9 +1,31 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
+#import "TargetConditionals.h"
+#if TARGET_OS_IOS
+#import <UIKit/UIKit.h>
+#else
 #import <AppKit/AppKit.h>
+#endif
 
 #include "discord_register.h"
+
+#if TARGET_OS_IOS
+static void RegisterCommand(const char* applicationId, const char* command)
+{
+}
+
+static void RegisterURL(const char* applicationId)
+{
+}
+
+void Discord_Register(const char* applicationId, const char* command) {}
+
+void Discord_RegisterSteamGame(const char* applicationId, const char* steamId)
+{
+}
+
+#else
 
 static void RegisterCommand(const char* applicationId, const char* command)
 {
@@ -78,3 +100,4 @@ void Discord_RegisterSteamGame(const char* applicationId, const char* steamId)
     snprintf(command, 256, "steam://rungameid/%s", steamId);
     Discord_Register(applicationId, command);
 }
+#endif

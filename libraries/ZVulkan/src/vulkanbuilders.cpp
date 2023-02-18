@@ -6,6 +6,10 @@
 #include "glslang/glslang/Public/ShaderLang.h"
 #include "glslang/spirv/GlslangToSpv.h"
 
+#if defined(__APPLE__)
+#import "TargetConditionals.h"
+#endif
+
 static const TBuiltInResource DefaultTBuiltInResource = {
 	/* .MaxLights = */ 32,
 	/* .MaxClipPlanes = */ 6,
@@ -1691,10 +1695,12 @@ std::vector<VulkanCompatibleDevice> VulkanDeviceBuilder::FindDevices(const std::
 		if (!requiredExtensionSearch.empty())
 			continue;
 
+#if !defined(TARGET_OS_IOS)
 		// Check if all required features are there
 		if (info.Features.Features.samplerAnisotropy != VK_TRUE ||
 			info.Features.Features.fragmentStoresAndAtomics != VK_TRUE)
 			continue;
+#endif
 
 		VulkanCompatibleDevice dev;
 		dev.Device = &instance->PhysicalDevices[idx];

@@ -31,6 +31,10 @@
 **
 */
 
+#if defined(__APPLE__)
+#import "TargetConditionals.h"
+#endif
+
 #include "types.h"
 #include "screenjob.h"
 #include "i_time.h"
@@ -42,8 +46,13 @@
 #include "gamestate.h"
 #include "SmackerDecoder.h"
 #include "playmve.h"
+#if TARGET_OS_IOS
+#include <VPX/vpx/vpx_decoder.h>
+#include <VPX/vpx/vp8dx.h>
+#else
 #include <vpx/vpx_decoder.h>
 #include <vpx/vp8dx.h>
+#endif
 #include "filesystem.h"
 #include "vm.h"
 #include "printf.h"

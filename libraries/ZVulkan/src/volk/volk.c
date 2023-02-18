@@ -12,7 +12,6 @@
 #else
 #define VK_USE_PLATFORM_XLIB_KHR
 #endif
-#endif
 
 /* This file is part of volk library; see volk.h for version/license details */
 /* clang-format off */

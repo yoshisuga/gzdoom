@@ -69,7 +69,7 @@
 #endif // HAVE_VULKAN
 
 #if TARGET_OS_IOS
-#include "ios-glue.h"
+#include "ios/ios-glue.h"
 #include "video-hook.h"
 #endif
 

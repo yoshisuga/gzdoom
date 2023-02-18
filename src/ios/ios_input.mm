@@ -23,66 +23,66 @@
 
 #include "ios-input-hook.h"
 
-bool GUICapture;
+//bool GUICapture;
 
-void CheckGUICapture()
-{
-    bool wantCapt = sysCallbacks.WantGuiCapture && sysCallbacks.WantGuiCapture();
+//void CheckGUICapture()
+//{
+//    bool wantCapt = sysCallbacks.WantGuiCapture && sysCallbacks.WantGuiCapture();
+//
+//    if (wantCapt != GUICapture)
+//    {
+//        GUICapture = wantCapt;
+//        InputUpdateGUICapture(GUICapture);
+//        if (wantCapt)
+//        {
+//            buttonMap.ResetButtonStates();
+//        }
+//    }
+//}
 
-    if (wantCapt != GUICapture)
-    {
-        GUICapture = wantCapt;
-        InputUpdateGUICapture(GUICapture);
-        if (wantCapt)
-        {
-            buttonMap.ResetButtonStates();
-        }
-    }
-}
+//void I_GetEvent ()
+//{
+//    // i guess this does a run loop but maybe we can set some input vars from the view controller
+//    [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
+//}
 
-void I_GetEvent ()
-{
-    // i guess this does a run loop but maybe we can set some input vars from the view controller
-    [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
-}
+//void I_StartTic()
+//{
+//    CheckGUICapture();
+//    I_GetEvent();
+//}
 
-void I_StartTic()
-{
-    CheckGUICapture();
-    I_GetEvent();
-}
-
-void I_StartFrame()
-{
-}
+//void I_StartFrame()
+//{
+//}
 
 
-void I_SetMouseCapture()
-{
-}
+//void I_SetMouseCapture()
+//{
+//}
+//
+//void I_ReleaseMouseCapture()
+//{
+//}
 
-void I_ReleaseMouseCapture()
-{
-}
+//void I_GetJoysticks(TArray<IJoystickConfig*>& sticks)
+//{
+//    // delegate to GameController stuff...?
+//}
+//
+//void I_GetAxes(float axes[NUM_JOYAXIS])
+//{
+//  // read mfi input from view controller and get the values here..maybe
+//}
 
-void I_GetJoysticks(TArray<IJoystickConfig*>& sticks)
-{
-    // delegate to GameController stuff...?
-}
+//void I_ShutdownInput()
+//{
+//    NSLog(@"Shutting down input...");
+//}
 
-void I_GetAxes(float axes[NUM_JOYAXIS])
-{
-  // read mfi input from view controller and get the values here..maybe
-}
-
-void I_ShutdownInput()
-{
-    NSLog(@"Shutting down input...");
-}
-
-IJoystickConfig* I_UpdateDeviceList()
-{
-    // Does nothing, device list is always kept up-to-date
-    return NULL;
-}
+//IJoystickConfig* I_UpdateDeviceList()
+//{
+//    // Does nothing, device list is always kept up-to-date
+//    return NULL;
+//}
 

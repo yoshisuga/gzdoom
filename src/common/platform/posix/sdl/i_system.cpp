@@ -66,6 +66,9 @@
 #include "palutil.h"
 #include "st_start.h"
 
+#if defined(__APPLE__)
+#import "TargetConditionals.h"
+#endif
 
 #ifndef NO_GTK
 bool I_GtkAvailable ();
@@ -408,13 +411,21 @@ FString I_GetFromClipboard (bool use_primary_selection)
 
 FString I_GetCWD()
 {
+#if TARGET_OS_IOS
+  char curdir[256];
+  getcwd(curdir, 256);
+#else
 	char* curdir = get_current_dir_name();
+#endif
 	if (!curdir) 
 	{
 		return "";
 	}
 	FString ret(curdir);
+#if TARGET_OS_IOS
+#else
 	free(curdir);
+#endif
 	return ret;
 }
 
@@ -447,18 +458,34 @@ unsigned int I_MakeRNGSeed()
 
 void I_OpenShellFolder(const char* infolder)
 {
-	char* curdir = get_current_dir_name();
+#if TARGET_OS_IOS
+  char curdir[256];
+  getcwd(curdir, 256);
+#else
+  char* curdir = get_current_dir_name();
+#endif
 
 	if (!chdir(infolder))
 	{
+#if TARGET_OS_IOS
+    printf("Opening folder: %s\n", infolder);
+#else
 		Printf("Opening folder: %s\n", infolder);
 		std::system("xdg-open .");
+#endif
 		chdir(curdir);
 	}
 	else
 	{
+#if TARGET_OS_IOS
+    printf("Unable to open directory '%s\n", infolder);
+#else
 		Printf("Unable to open directory '%s\n", infolder);
+#endif
 	}
+#if TARGET_OS_IOS
+#else
 	free(curdir);
+#endif
 }
 
