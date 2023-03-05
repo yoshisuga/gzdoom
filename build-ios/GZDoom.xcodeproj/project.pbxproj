@@ -475,6 +475,13 @@
 		90CD2A452E2A4C2ABC8A22BF /* hqresize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 73BA3D60F91049AA9D556053 /* hqresize.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
 		91BA25BE8F2A42EAA1DD2F05 /* r_swtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17B7A7BA1014459D86A97B72 /* r_swtexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
 		929F6EAC4A3B4CF18CB4B0CF /* ddstexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AF6C989B40042FA924DC57B /* ddstexture.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
+		92A07FC829B09EBD00AF3A34 /* TextFieldAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A07FC729B09EBD00AF3A34 /* TextFieldAlert.swift */; };
+		92B3FDEC29A20F1A0030224B /* ios_launch.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B3FDEB29A20F1A0030224B /* ios_launch.m */; };
+		92B3FDF029A37AB20030224B /* LauncherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B3FDEF29A37AB20030224B /* LauncherView.swift */; };
+		92B3FDF329A534F80030224B /* perfectdos437.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92B3FDF229A534F80030224B /* perfectdos437.ttf */; };
+		92B3FDF529A588700030224B /* freedoom1.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92B3FDF429A588700030224B /* freedoom1.wad */; };
+		92B3FDF729AA18B10030224B /* GameControllerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B3FDF629AA18B00030224B /* GameControllerHandler.swift */; };
+		92B3FDF929ADEE7F0030224B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92B3FDF829ADEE7F0030224B /* Assets.xcassets */; };
 		92C0E7D6298A3EE800BD5B0F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D5298A3EE800BD5B0F /* AudioToolbox.framework */; };
 		92C0E7D8298A3EF000BD5B0F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D7298A3EF000BD5B0F /* AVFoundation.framework */; };
 		92C0E7DA298A3EF700BD5B0F /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D9298A3EF600BD5B0F /* CoreAudio.framework */; };
@@ -490,17 +497,11 @@
 		92C0E7F1298A3FA300BD5B0F /* libzmusic.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7F0298A3FA300BD5B0F /* libzmusic.1.dylib */; };
 		92C0E7F2298A3FA400BD5B0F /* libzmusic.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7F0298A3FA300BD5B0F /* libzmusic.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		92C0E7F3298A423600BD5B0F /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7EF298A3F8900BD5B0F /* libSDL2.a */; };
-		92C0E7F5298A813500BD5B0F /* doom.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E7F4298A813400BD5B0F /* doom.wad */; };
 		92C0E7F7298AD39B00BD5B0F /* libopenal.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7F6298AD39B00BD5B0F /* libopenal.1.dylib */; };
 		92C0E7F8298AD39B00BD5B0F /* libopenal.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7F6298AD39B00BD5B0F /* libopenal.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		92C0E7FC298AEC2E00BD5B0F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E7FB298AEC2E00BD5B0F /* Launch Screen.storyboard */; };
-		92C0E7FE298AEDB100BD5B0F /* brutalv21.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E7FD298AEDB100BD5B0F /* brutalv21.pk3 */; };
 		92C0E800298AEF5300BD5B0F /* libzmusiclite.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7FF298AEF5300BD5B0F /* libzmusiclite.1.dylib */; };
 		92C0E801298AEF5400BD5B0F /* libzmusiclite.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7FF298AEF5300BD5B0F /* libzmusiclite.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		92C0E803298C9A7B00BD5B0F /* hdoom.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E802298C9A7B00BD5B0F /* hdoom.pk3 */; };
-		92C0E805298C9DB800BD5B0F /* m12-hdoom_techdemo9.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E804298C9DB800BD5B0F /* m12-hdoom_techdemo9.pk3 */; };
-		92C0E807298CF50400BD5B0F /* LegendOfDoom-1.1.0.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E806298CF50400BD5B0F /* LegendOfDoom-1.1.0.pk3 */; };
-		92C0E809298DF40C00BD5B0F /* project brutality 2.02.pk3 in Resources */ = {isa = PBXBuildFile; fileRef = 92C0E808298DF40B00BD5B0F /* project brutality 2.02.pk3 */; };
 		92D251BAB6514DAD935FBA74 /* r_sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A75A0725DA48D79370C370 /* r_sky.cpp */; settings = {COMPILER_FLAGS = "-include g_pch.h"; }; };
 		92D82F6B298A353000FAE872 /* VPX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D82F6A298A353000FAE872 /* VPX.framework */; };
 		92D82F7A298A370B00FAE872 /* EmulatorKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D82F6E298A370A00FAE872 /* EmulatorKeyboard.swift */; };
@@ -4344,9 +4345,18 @@
 		927AA0599699486987A1C4EB /* 00DB.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 00DB.lmp; path = "wadsrc_extra/static/filter/game-strife/fonts/defsmallfont/00DB.lmp"; sourceTree = SOURCE_ROOT; };
 		928BB1AB908D4BA8A9B25B9B /* decaldef.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; name = decaldef.txt; path = wadsrc_extra/static/filter/harmony/decaldef.txt; sourceTree = SOURCE_ROOT; };
 		929E035050474621B8D27A7F /* 00C5.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 00C5.lmp; path = "wadsrc_extra/static/filter/game-hexen/fonts/defbigfont/00C5.lmp"; sourceTree = SOURCE_ROOT; };
+		92A07FC729B09EBD00AF3A34 /* TextFieldAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlert.swift; sourceTree = "<group>"; };
 		92A1764212B5429988269059 /* 040E.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 040E.lmp; path = "wadsrc_extra/static/filter/game-hexen/fonts/defbigfont/040E.lmp"; sourceTree = SOURCE_ROOT; };
 		92A4E37CCEF44C848AAE4BFA /* 041A.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 041A.lmp; path = "wadsrc_extra/static/filter/game-strife/fonts/bigfont/041A.lmp"; sourceTree = SOURCE_ROOT; };
 		92AC7920CC5446F288B451C0 /* m_back_x.png */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = image; name = m_back_x.png; path = wadsrc/static/graphics/m_back_x.png; sourceTree = SOURCE_ROOT; };
+		92B3FDEB29A20F1A0030224B /* ios_launch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ios_launch.m; sourceTree = "<group>"; };
+		92B3FDED29A20FC40030224B /* ios_launch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ios_launch.h; sourceTree = "<group>"; };
+		92B3FDEF29A37AB20030224B /* LauncherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherView.swift; sourceTree = "<group>"; };
+		92B3FDF129A38C150030224B /* zdoom-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "zdoom-Bridging-Header.h"; sourceTree = "<group>"; };
+		92B3FDF229A534F80030224B /* perfectdos437.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = perfectdos437.ttf; sourceTree = "<group>"; };
+		92B3FDF429A588700030224B /* freedoom1.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = freedoom1.wad; sourceTree = "<group>"; };
+		92B3FDF629AA18B00030224B /* GameControllerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerHandler.swift; sourceTree = "<group>"; };
+		92B3FDF829ADEE7F0030224B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		92B8C6CB4A9845ACA21F79B1 /* origbinds.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; name = origbinds.txt; path = wadsrc/static/engine/origbinds.txt; sourceTree = SOURCE_ROOT; };
 		92BE64AA0D964B19AAE52B44 /* r_portalsegment.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = r_portalsegment.cpp; path = src/rendering/swrenderer/segments/r_portalsegment.cpp; sourceTree = SOURCE_ROOT; };
 		92BEF00FCC754DD883EB9484 /* c_functions.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = c_functions.cpp; path = src/console/c_functions.cpp; sourceTree = SOURCE_ROOT; };
@@ -4364,15 +4374,9 @@
 		92C0E7EC298A3F6A00BD5B0F /* libopenal.1.21.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopenal.1.21.1.dylib; path = bin/iOS/libopenal.1.21.1.dylib; sourceTree = "<group>"; };
 		92C0E7EF298A3F8900BD5B0F /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = bin/iOS/sdl/libSDL2.a; sourceTree = "<group>"; };
 		92C0E7F0298A3FA300BD5B0F /* libzmusic.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzmusic.1.dylib; path = bin/iOS/libzmusic.1.dylib; sourceTree = "<group>"; };
-		92C0E7F4298A813400BD5B0F /* doom.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = doom.wad; sourceTree = "<group>"; };
 		92C0E7F6298AD39B00BD5B0F /* libopenal.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopenal.1.dylib; path = bin/iOS/libopenal.1.dylib; sourceTree = "<group>"; };
 		92C0E7FB298AEC2E00BD5B0F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		92C0E7FD298AEDB100BD5B0F /* brutalv21.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = brutalv21.pk3; sourceTree = "<group>"; };
 		92C0E7FF298AEF5300BD5B0F /* libzmusiclite.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzmusiclite.1.dylib; path = bin/iOS/libzmusiclite.1.dylib; sourceTree = "<group>"; };
-		92C0E802298C9A7B00BD5B0F /* hdoom.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = hdoom.pk3; sourceTree = "<group>"; };
-		92C0E804298C9DB800BD5B0F /* m12-hdoom_techdemo9.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "m12-hdoom_techdemo9.pk3"; sourceTree = "<group>"; };
-		92C0E806298CF50400BD5B0F /* LegendOfDoom-1.1.0.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LegendOfDoom-1.1.0.pk3"; sourceTree = "<group>"; };
-		92C0E808298DF40B00BD5B0F /* project brutality 2.02.pk3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "project brutality 2.02.pk3"; sourceTree = "<group>"; };
 		92C67905165A42329DEBB687 /* DOGSH4.png */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = image; name = DOGSH4.png; path = wadsrc/static/sprites/dogs/DOGSH4.png; sourceTree = SOURCE_ROOT; };
 		92D75EF5099D41F895E7E39C /* 0425.lmp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = 0425.lmp; path = "wadsrc_extra/static/filter/game-strife/fonts/defsmallfont2/0425.lmp"; sourceTree = SOURCE_ROOT; };
 		92D82F6A298A353000FAE872 /* VPX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VPX.framework; path = bin/iOS/VPX.framework; sourceTree = "<group>"; };
@@ -13163,16 +13167,24 @@
 		92D82F6D298A370A00FAE872 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				92D82F6E298A370A00FAE872 /* EmulatorKeyboard.swift */,
+				92B3FDED29A20FC40030224B /* ios_launch.h */,
+				92B3FDEB29A20F1A0030224B /* ios_launch.m */,
 				92D82F79298A370A00FAE872 /* IOSUtils.h */,
 				92D82F6F298A370A00FAE872 /* IOSUtils.mm */,
 				92D82F70298A370A00FAE872 /* ios_start.mm */,
+				92D82F6E298A370A00FAE872 /* EmulatorKeyboard.swift */,
+				92D82F76298A370A00FAE872 /* IOSUtils+EmulatorKeyboard.swift */,
+				92B3FDEF29A37AB20030224B /* LauncherView.swift */,
+				92A07FC729B09EBD00AF3A34 /* TextFieldAlert.swift */,
+				92B3FDF629AA18B00030224B /* GameControllerHandler.swift */,
 				92D82F71298A370A00FAE872 /* GZDoomVIewController.swift */,
 				92D82F72298A370A00FAE872 /* ios-input-hook.h */,
-				92D82F76298A370A00FAE872 /* IOSUtils+EmulatorKeyboard.swift */,
 				92D82F77298A370A00FAE872 /* ios-glue.h */,
 				92D82F78298A370A00FAE872 /* ios_input.mm */,
 				92C0E7FB298AEC2E00BD5B0F /* Launch Screen.storyboard */,
+				92B3FDF129A38C150030224B /* zdoom-Bridging-Header.h */,
+				92B3FDF229A534F80030224B /* perfectdos437.ttf */,
+				92B3FDF829ADEE7F0030224B /* Assets.xcassets */,
 			);
 			name = ios;
 			path = src/ios;
@@ -13415,12 +13427,7 @@
 		9F053E3641EE492CB5786097 = {
 			isa = PBXGroup;
 			children = (
-				92C0E7F4298A813400BD5B0F /* doom.wad */,
-				92C0E7FD298AEDB100BD5B0F /* brutalv21.pk3 */,
-				92C0E802298C9A7B00BD5B0F /* hdoom.pk3 */,
-				92C0E804298C9DB800BD5B0F /* m12-hdoom_techdemo9.pk3 */,
-				92C0E806298CF50400BD5B0F /* LegendOfDoom-1.1.0.pk3 */,
-				92C0E808298DF40B00BD5B0F /* project brutality 2.02.pk3 */,
+				92B3FDF429A588700030224B /* freedoom1.wad */,
 				92D82F6D298A370A00FAE872 /* ios */,
 				0D62CCB30A554A18AF7B2254 /* ALL_BUILD */,
 				774E1EBEBABD4F21B5E4FC20 /* zvulkan */,
@@ -15554,14 +15561,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92C0E807298CF50400BD5B0F /* LegendOfDoom-1.1.0.pk3 in Resources */,
-				92C0E7FE298AEDB100BD5B0F /* brutalv21.pk3 in Resources */,
+				92B3FDF329A534F80030224B /* perfectdos437.ttf in Resources */,
+				92B3FDF529A588700030224B /* freedoom1.wad in Resources */,
 				92C0E7FC298AEC2E00BD5B0F /* Launch Screen.storyboard in Resources */,
-				92C0E805298C9DB800BD5B0F /* m12-hdoom_techdemo9.pk3 in Resources */,
-				92C0E803298C9A7B00BD5B0F /* hdoom.pk3 in Resources */,
 				F89D78803C3444028ADBE456 /* zdoom.icns in Resources */,
-				92C0E7F5298A813500BD5B0F /* doom.wad in Resources */,
-				92C0E809298DF40C00BD5B0F /* project brutality 2.02.pk3 in Resources */,
+				92B3FDF929ADEE7F0030224B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15953,6 +15957,7 @@
 				DF5F165323CF49369244116A /* cycler.cpp in Sources */,
 				12FEE0AFF6684E7B8C9B3DE7 /* d_event.cpp in Sources */,
 				4DA170EB9B684B258F52FAD6 /* date.cpp in Sources */,
+				92A07FC829B09EBD00AF3A34 /* TextFieldAlert.swift in Sources */,
 				9F28970405824E7DA2EE0453 /* i_interface.cpp in Sources */,
 				AE2EC394C3C342E2A744B524 /* i_net.cpp in Sources */,
 				AEA456DAD07D42019C92137C /* m_joy.cpp in Sources */,
@@ -16069,6 +16074,7 @@
 				34D1A200062E4E76984F85EE /* vk_framebuffer.cpp in Sources */,
 				9F1CAEF01EC24A70BF360E6F /* vk_hwtexture.cpp in Sources */,
 				3753D52590B74C5994A37935 /* vk_imagetransition.cpp in Sources */,
+				92B3FDEC29A20F1A0030224B /* ios_launch.m in Sources */,
 				92D82F82298A370F00FAE872 /* ios_input.mm in Sources */,
 				79E25CE8445040B3AEBBC17C /* vk_pptexture.cpp in Sources */,
 				3C3DC711E8FA4EBFB1F32EB8 /* vk_renderbuffers.cpp in Sources */,
@@ -16199,6 +16205,7 @@
 				E2406890C3444A9684C3FF57 /* d_anonstats.cpp in Sources */,
 				04F41E62DE1C4952866A380A /* d_defcvars.cpp in Sources */,
 				7B2BF0143452499B909ABCCF /* d_iwad.cpp in Sources */,
+				92B3FDF729AA18B10030224B /* GameControllerHandler.swift in Sources */,
 				74E7B05BA4D045509770F435 /* d_main.cpp in Sources */,
 				60D0E4E446A64C028BAA3C54 /* d_net.cpp in Sources */,
 				2DAC0837BFEF4C84B7136596 /* d_netinfo.cpp in Sources */,
@@ -16248,6 +16255,7 @@
 				E9BC46E2F7944E4CA8CCB4DD /* polyobjects.cpp in Sources */,
 				71F94FB6DBA148AC9306BAEA /* postprocessor.cpp in Sources */,
 				CF6EDBC2E5864D0A923B1D31 /* renderinfo.cpp in Sources */,
+				92B3FDF029A37AB20030224B /* LauncherView.swift in Sources */,
 				C86750B72A114A8FB62DDB26 /* slopes.cpp in Sources */,
 				4879CBF4B5794B8F9EC7F520 /* specials.cpp in Sources */,
 				DDD63B74601542419C7F3838 /* strifedialogue.cpp in Sources */,
@@ -17024,6 +17032,7 @@
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
 				INSTALL_PATH = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin/iOS",
@@ -17288,6 +17297,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug";
 				DEVELOPMENT_TEAM = R72X3BF4KE;
+				ENABLE_NS_ASSERTIONS = NO;
 				EXECUTABLE_PREFIX = "";
 				EXECUTABLE_SUFFIX = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -17383,6 +17393,7 @@
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
 				INSTALL_PATH = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin/iOS",
@@ -17443,6 +17454,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "src/ios/zdoom-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -19018,6 +19030,7 @@
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
 				INSTALL_PATH = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin/iOS",
@@ -19156,6 +19169,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release";
 				DEVELOPMENT_TEAM = R72X3BF4KE;
+				ENABLE_NS_ASSERTIONS = NO;
 				EXECUTABLE_PREFIX = "";
 				EXECUTABLE_SUFFIX = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19172,7 +19186,6 @@
 					__FP__,
 					__FIXMATH__,
 					NO_GTK,
-					"'NO_OPENAL=1'",
 					"'stricmp=strcasecmp'",
 					"'strnicmp=strncasecmp'",
 					"'__forceinline=inline'",
@@ -19251,6 +19264,7 @@
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
 				INSTALL_PATH = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin/iOS",
@@ -19288,18 +19302,10 @@
 				OTHER_LDFLAGS = (
 					"-rpath",
 					"@executable_path",
-					"-framework",
-					Cocoa,
-					"-framework",
-					IOKit,
-					"-framework",
-					OpenGL,
-					"-framework",
-					QuartzCore,
+					"-rpath",
+					"@executable_path/Frameworks",
 					"-Wl,-search_paths_first",
 					"-Wl,-headerpad_max_install_names",
-					"-l../bin/iOS/sdl/libSDL2.a",
-					"-lrt",
 					"/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/zlib/Release${EFFECTIVE_PLATFORM_NAME}/libz.a",
 					"/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/jpeg/Release${EFFECTIVE_PLATFORM_NAME}/libjpeg.a",
 					"/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/bzip2/Release${EFFECTIVE_PLATFORM_NAME}/libbz2.a",
@@ -19308,10 +19314,6 @@
 					"/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/gdtoa/Release${EFFECTIVE_PLATFORM_NAME}/libgdtoa.a",
 					"/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/lzma/Release${EFFECTIVE_PLATFORM_NAME}/liblzma.a",
 					"/Users/yoshi/Code/personal/gzdoom-setup-test/bin/iOS/libzmusic.1.dylib",
-					"-lpthread",
-					"-framework",
-					AppKit,
-					"-ldl",
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";

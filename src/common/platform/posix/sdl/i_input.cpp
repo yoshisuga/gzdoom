@@ -502,4 +502,5 @@ void I_ProcessJoysticks ();
 void I_StartFrame ()
 {
 	I_ProcessJoysticks();
+  IOS_HandleInput();
 }

@@ -2018,19 +2018,6 @@ static void AddAutoloadFiles(const char *autoname, TArray<FString>& allwads)
 			if (wswad)
 				D_AddFile (allwads, wswad, true, -1, GameConfig);
 		}
-#if TARGET_OS_IOS
-        printf("Yoshi wants to load Brutal DOOM!!\n");
-//        const char *brutal = BaseFileSearch("brutalv21.pk3", NULL, true, GameConfig);
-//        if (brutal)
-//            D_AddFile(allwads, brutal, true, -1, GameConfig);
-//    const char *hd = BaseFileSearch("m12-hdoom_techdemo9.pk3", NULL, true, GameConfig);
-//    if (hd)
-//      D_AddFile(allwads, hd, true, -1, GameConfig);
-    const char *hd = BaseFileSearch("project brutality 2.02.pk3", NULL, true, GameConfig);
-    if (hd)
-      D_AddFile(allwads, hd, true, -1, GameConfig);
-
-#endif
 	}
 
 	if (!(gameinfo.flags & GI_SHAREWARE) && !Args->CheckParm("-noautoload") && !disableautoload)
