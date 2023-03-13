@@ -482,6 +482,17 @@
 		92B3FDF529A588700030224B /* freedoom1.wad in Resources */ = {isa = PBXBuildFile; fileRef = 92B3FDF429A588700030224B /* freedoom1.wad */; };
 		92B3FDF729AA18B10030224B /* GameControllerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B3FDF629AA18B00030224B /* GameControllerHandler.swift */; };
 		92B3FDF929ADEE7F0030224B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92B3FDF829ADEE7F0030224B /* Assets.xcassets */; };
+		92B5AD7029B423C6007C044A /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD6D29B423C6007C044A /* BlurView.swift */; };
+		92B5AD7129B423C6007C044A /* AlertToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD6E29B423C6007C044A /* AlertToast.swift */; };
+		92B5AD7229B423C6007C044A /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD6F29B423C6007C044A /* ActivityIndicator.swift */; };
+		92B5AD7429BC30D6007C044A /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7329BC30D6007C044A /* HelpView.swift */; };
+		92B5AD7629BC7920007C044A /* ios-help.md in Resources */ = {isa = PBXBuildFile; fileRef = 92B5AD7529BC7920007C044A /* ios-help.md */; };
+		92B5AD7929BF78C6007C044A /* LauncherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7829BF78C6007C044A /* LauncherModels.swift */; };
+		92B5AD7B29BF791F007C044A /* LauncherSelectIWADViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7A29BF791F007C044A /* LauncherSelectIWADViews.swift */; };
+		92B5AD7D29BF7951007C044A /* LauncherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7C29BF7951007C044A /* LauncherViewModel.swift */; };
+		92B5AD7F29BF79AB007C044A /* LauncherConfigViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7E29BF79AB007C044A /* LauncherConfigViews.swift */; };
+		92B5AD8129BF7A2F007C044A /* MultiSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD8029BF7A2F007C044A /* MultiSelection.swift */; };
+		92B5AD8329BF7A5C007C044A /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD8229BF7A5C007C044A /* Font+Extensions.swift */; };
 		92C0E7D6298A3EE800BD5B0F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D5298A3EE800BD5B0F /* AudioToolbox.framework */; };
 		92C0E7D8298A3EF000BD5B0F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D7298A3EF000BD5B0F /* AVFoundation.framework */; };
 		92C0E7DA298A3EF700BD5B0F /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D9298A3EF600BD5B0F /* CoreAudio.framework */; };
@@ -4357,6 +4368,17 @@
 		92B3FDF429A588700030224B /* freedoom1.wad */ = {isa = PBXFileReference; lastKnownFileType = file; path = freedoom1.wad; sourceTree = "<group>"; };
 		92B3FDF629AA18B00030224B /* GameControllerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerHandler.swift; sourceTree = "<group>"; };
 		92B3FDF829ADEE7F0030224B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		92B5AD6D29B423C6007C044A /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		92B5AD6E29B423C6007C044A /* AlertToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertToast.swift; sourceTree = "<group>"; };
+		92B5AD6F29B423C6007C044A /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		92B5AD7329BC30D6007C044A /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		92B5AD7529BC7920007C044A /* ios-help.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "ios-help.md"; sourceTree = "<group>"; };
+		92B5AD7829BF78C6007C044A /* LauncherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherModels.swift; sourceTree = "<group>"; };
+		92B5AD7A29BF791F007C044A /* LauncherSelectIWADViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherSelectIWADViews.swift; sourceTree = "<group>"; };
+		92B5AD7C29BF7951007C044A /* LauncherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherViewModel.swift; sourceTree = "<group>"; };
+		92B5AD7E29BF79AB007C044A /* LauncherConfigViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherConfigViews.swift; sourceTree = "<group>"; };
+		92B5AD8029BF7A2F007C044A /* MultiSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelection.swift; sourceTree = "<group>"; };
+		92B5AD8229BF7A5C007C044A /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		92B8C6CB4A9845ACA21F79B1 /* origbinds.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; name = origbinds.txt; path = wadsrc/static/engine/origbinds.txt; sourceTree = SOURCE_ROOT; };
 		92BE64AA0D964B19AAE52B44 /* r_portalsegment.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = r_portalsegment.cpp; path = src/rendering/swrenderer/segments/r_portalsegment.cpp; sourceTree = SOURCE_ROOT; };
 		92BEF00FCC754DD883EB9484 /* c_functions.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = c_functions.cpp; path = src/console/c_functions.cpp; sourceTree = SOURCE_ROOT; };
@@ -13141,6 +13163,31 @@
 			name = engine;
 			sourceTree = "<group>";
 		};
+		92B5AD6C29B423C6007C044A /* AlertToast */ = {
+			isa = PBXGroup;
+			children = (
+				92B5AD6D29B423C6007C044A /* BlurView.swift */,
+				92B5AD6E29B423C6007C044A /* AlertToast.swift */,
+				92B5AD6F29B423C6007C044A /* ActivityIndicator.swift */,
+			);
+			path = AlertToast;
+			sourceTree = "<group>";
+		};
+		92B5AD7729BF7885007C044A /* Launcher */ = {
+			isa = PBXGroup;
+			children = (
+				92B5AD7829BF78C6007C044A /* LauncherModels.swift */,
+				92B5AD7E29BF79AB007C044A /* LauncherConfigViews.swift */,
+				92B5AD7A29BF791F007C044A /* LauncherSelectIWADViews.swift */,
+				92B5AD7C29BF7951007C044A /* LauncherViewModel.swift */,
+				92B3FDEF29A37AB20030224B /* LauncherView.swift */,
+				92A07FC729B09EBD00AF3A34 /* TextFieldAlert.swift */,
+				92B5AD8029BF7A2F007C044A /* MultiSelection.swift */,
+				92B5AD8229BF7A5C007C044A /* Font+Extensions.swift */,
+			);
+			path = Launcher;
+			sourceTree = "<group>";
+		};
 		92C8B6FA52414DA68EA774CE /* OGLCompilersDLL */ = {
 			isa = PBXGroup;
 			children = (
@@ -13167,6 +13214,7 @@
 		92D82F6D298A370A00FAE872 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				92B5AD6C29B423C6007C044A /* AlertToast */,
 				92B3FDED29A20FC40030224B /* ios_launch.h */,
 				92B3FDEB29A20F1A0030224B /* ios_launch.m */,
 				92D82F79298A370A00FAE872 /* IOSUtils.h */,
@@ -13174,8 +13222,7 @@
 				92D82F70298A370A00FAE872 /* ios_start.mm */,
 				92D82F6E298A370A00FAE872 /* EmulatorKeyboard.swift */,
 				92D82F76298A370A00FAE872 /* IOSUtils+EmulatorKeyboard.swift */,
-				92B3FDEF29A37AB20030224B /* LauncherView.swift */,
-				92A07FC729B09EBD00AF3A34 /* TextFieldAlert.swift */,
+				92B5AD7729BF7885007C044A /* Launcher */,
 				92B3FDF629AA18B00030224B /* GameControllerHandler.swift */,
 				92D82F71298A370A00FAE872 /* GZDoomVIewController.swift */,
 				92D82F72298A370A00FAE872 /* ios-input-hook.h */,
@@ -13185,6 +13232,8 @@
 				92B3FDF129A38C150030224B /* zdoom-Bridging-Header.h */,
 				92B3FDF229A534F80030224B /* perfectdos437.ttf */,
 				92B3FDF829ADEE7F0030224B /* Assets.xcassets */,
+				92B5AD7329BC30D6007C044A /* HelpView.swift */,
+				92B5AD7529BC7920007C044A /* ios-help.md */,
 			);
 			name = ios;
 			path = src/ios;
@@ -15566,6 +15615,7 @@
 				92C0E7FC298AEC2E00BD5B0F /* Launch Screen.storyboard in Resources */,
 				F89D78803C3444028ADBE456 /* zdoom.icns in Resources */,
 				92B3FDF929ADEE7F0030224B /* Assets.xcassets in Resources */,
+				92B5AD7629BC7920007C044A /* ios-help.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16010,6 +16060,7 @@
 				9C8F9535187F43B4B72E8412 /* dobjtype.cpp in Sources */,
 				1D814B79599046AFB06907FE /* i_system_posix.cpp in Sources */,
 				2B684E383DB44C839F4F8833 /* i_specialpaths.mm in Sources */,
+				92B5AD7929BF78C6007C044A /* LauncherModels.swift in Sources */,
 				F22C5FEDE380409EB484FA3B /* iwadpicker_cocoa.mm in Sources */,
 				A9BF03EEB2174C64AF318133 /* crashcatcher.c in Sources */,
 				14C8909E2EE1420C80CFDBFB /* hardware.cpp in Sources */,
@@ -16059,6 +16110,7 @@
 				A478D903E13C4127BEC5DC78 /* v_framebuffer.cpp in Sources */,
 				0A2E926FF9264BDA9B19D361 /* v_video.cpp in Sources */,
 				9ED18FE431FF43BFA0597333 /* vk_descriptorset.cpp in Sources */,
+				92B5AD7B29BF791F007C044A /* LauncherSelectIWADViews.swift in Sources */,
 				531EE1177AF64889ABA7D865 /* vk_postprocess.cpp in Sources */,
 				64A23855D4D54DA4B924E2A6 /* vk_pprenderstate.cpp in Sources */,
 				8F691C9578D54E6B9291A408 /* vk_raytrace.cpp in Sources */,
@@ -16136,6 +16188,7 @@
 				90CD2A452E2A4C2ABC8A22BF /* hqresize.cpp in Sources */,
 				B297985B211E42088DFB0260 /* xbrz.cpp in Sources */,
 				A144FBAC5CD2494B9FA8344A /* xbrz_old.cpp in Sources */,
+				92B5AD7429BC30D6007C044A /* HelpView.swift in Sources */,
 				A612A03E91C44E45A4CE7350 /* hw_ihwtexture.cpp in Sources */,
 				19EA325026DF46F091CAC6F7 /* hw_material.cpp in Sources */,
 				24504EE5A9A2407E9ACD0D05 /* image.cpp in Sources */,
@@ -16197,6 +16250,7 @@
 				056307EE64DD4809BE53084C /* x86.cpp in Sources */,
 				9D979A63E1CD4EB3B2930D3B /* zstrformat.cpp in Sources */,
 				659C1E41C9E24E7C8BC13FCD /* zstring.cpp in Sources */,
+				92B5AD7D29BF7951007C044A /* LauncherViewModel.swift in Sources */,
 				ABD539A730D544D1B4732088 /* c_cmds.cpp in Sources */,
 				1D2D8416A81E4D169A88D41A /* c_functions.cpp in Sources */,
 				7F9B43731DEF4DA8A9326529 /* c_notifybuffer.cpp in Sources */,
@@ -16303,7 +16357,9 @@
 				92D82F7B298A370B00FAE872 /* IOSUtils.mm in Sources */,
 				A7442E78DA344B0BAB948FBF /* a_lighttransfer.cpp in Sources */,
 				61BDBFB967EC42468C3BEE26 /* a_pillar.cpp in Sources */,
+				92B5AD8129BF7A2F007C044A /* MultiSelection.swift in Sources */,
 				6479FB09250D4D449BBAC1CC /* a_plats.cpp in Sources */,
+				92B5AD8329BF7A5C007C044A /* Font+Extensions.swift in Sources */,
 				8DFB139823DF413F832578A0 /* a_pusher.cpp in Sources */,
 				FEB834073EFD482F9071CD8F /* a_quake.cpp in Sources */,
 				C9622035D0574546967760E0 /* a_scroll.cpp in Sources */,
@@ -16345,9 +16401,11 @@
 				6E9EE955D1A347219B662769 /* r_interpolate.cpp in Sources */,
 				F4DE6EFAF805414D8B3304C6 /* r_sections.cpp in Sources */,
 				0F7023CBF39446E2A2CF7918 /* r_translate.cpp in Sources */,
+				92B5AD7029B423C6007C044A /* BlurView.swift in Sources */,
 				9BBAA0C861EE49BABF800355 /* r_vanillatrans.cpp in Sources */,
 				3BB8FCA0E9D2402BBF98390E /* sprites.cpp in Sources */,
 				6EA60963428E4846A056CD20 /* v_palette.cpp in Sources */,
+				92B5AD7F29BF79AB007C044A /* LauncherConfigViews.swift in Sources */,
 				550031A6C5F74BF6B797310A /* voxeldef.cpp in Sources */,
 				92D82F7D298A370C00FAE872 /* GZDoomVIewController.swift in Sources */,
 				1D0C920E3B054DBA8D954356 /* v_blend.cpp in Sources */,
@@ -16384,6 +16442,7 @@
 				91BA25BE8F2A42EAA1DD2F05 /* r_swtexture.cpp in Sources */,
 				DB878488F1B34454B4BAF27D /* swcanvastexture.cpp in Sources */,
 				1E8EDAE88832410185047B65 /* warptexture.cpp in Sources */,
+				92B5AD7129B423C6007C044A /* AlertToast.swift in Sources */,
 				9C0FB6425DF7440C95401EE4 /* codegen_doom.cpp in Sources */,
 				05A0B618C4774B23AD801646 /* olddecorations.cpp in Sources */,
 				265B756011BA4A0E842802A4 /* thingdef_exp.cpp in Sources */,
@@ -16393,6 +16452,7 @@
 				22CF48FCA62D4265880F8766 /* thingdef_data.cpp in Sources */,
 				497240551C2A4E4AA9091935 /* thingdef_properties.cpp in Sources */,
 				8E8408A94CA94BFCAC3F1991 /* vmiterators.cpp in Sources */,
+				92B5AD7229B423C6007C044A /* ActivityIndicator.swift in Sources */,
 				07B66ADBC0D84749AA52242D /* vmthunks.cpp in Sources */,
 				9A0A15CE0F58450D999AC4DD /* vmthunks_actors.cpp in Sources */,
 				C06B754C2DB548F3B5B25DCA /* zcc_compile_doom.cpp in Sources */,
