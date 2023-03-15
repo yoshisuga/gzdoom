@@ -53,6 +53,5 @@ enum MultiplayerConfig: Hashable, Codable, Equatable {
       args.append(joinIpAddress)
     }
     return args
-  }
+  }  
 }
-

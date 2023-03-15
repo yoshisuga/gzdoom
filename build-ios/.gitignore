@@ -1,0 +1,17 @@
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+build
+Debug
+Release
+tools
+wadsrc
+wadsrc_bm
+wadsrc_extra
+wadsrc_lights
+wadsrc_widepix
+GZDoom.xcodeproj/project.xcworkspace
+src/GZDoom.build
+libraries
+src/SharedPrecompiledHeaders

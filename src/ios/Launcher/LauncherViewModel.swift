@@ -46,6 +46,8 @@ class LauncherViewModel: ObservableObject {
     if let multiplayerConfig {
       args.append(contentsOf: multiplayerConfig.arguments)
     }
+    args.append("use_joystick")
+    args.append("1")
     return args
   }
   

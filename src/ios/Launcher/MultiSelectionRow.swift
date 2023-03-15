@@ -1,5 +1,5 @@
 //
-//  MultiSelection.swift
+//  MultiSelectionRow.swift
 //  zdoom
 //
 //  Created by Yoshi Sugawara on 3/13/23.
@@ -21,14 +21,6 @@ struct MultipleSelectionRow: View {
           Image(systemName: "checkmark").foregroundColor(.red)
         }
       }
-    }
-  }
-}
-
-struct MultiplayerSheetView: View {
-  var body: some View {
-    VStack {
-      Text("Multiplayer Config")
     }
   }
 }

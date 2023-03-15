@@ -43,6 +43,10 @@
 #include "c_cvars.h"
 #include "engineerrors.h"
 
+#if defined(__APPLE__)
+#import "TargetConditionals.h"
+#endif
+
 // MACROS ------------------------------------------------------------------
 
 // TYPES -------------------------------------------------------------------
@@ -281,6 +285,17 @@ bool FTTYStartupScreen::NetLoop(bool (*timer_callback)(void *), void *userdata)
 				return true;
 			}
 		}
+#if TARGET_OS_IOS
+    else if (retval == 1)
+    {
+      // yoshi: not sure why this is needed for iOS to respond to callbacks for hosts/joiners
+      if (timer_callback (userdata))
+      {
+        fputc ('\n', stderr);
+        return true;
+      }
+    }
+#endif
 		else if (read (STDIN_FILENO, &k, 1) == 1)
 		{
 			// Check input on stdin

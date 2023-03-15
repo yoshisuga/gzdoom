@@ -21,7 +21,7 @@ extension Font {
   }
   
   public static var actionButton: Font {
-    Font.custom("PerfectDOSVGA437", size: 32)
+    Font.custom("PerfectDOSVGA437", size: 28)
   }
   
   public static var small: Font {

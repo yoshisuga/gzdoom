@@ -491,8 +491,9 @@
 		92B5AD7B29BF791F007C044A /* LauncherSelectIWADViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7A29BF791F007C044A /* LauncherSelectIWADViews.swift */; };
 		92B5AD7D29BF7951007C044A /* LauncherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7C29BF7951007C044A /* LauncherViewModel.swift */; };
 		92B5AD7F29BF79AB007C044A /* LauncherConfigViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD7E29BF79AB007C044A /* LauncherConfigViews.swift */; };
-		92B5AD8129BF7A2F007C044A /* MultiSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD8029BF7A2F007C044A /* MultiSelection.swift */; };
+		92B5AD8129BF7A2F007C044A /* MultiSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD8029BF7A2F007C044A /* MultiSelectionRow.swift */; };
 		92B5AD8329BF7A5C007C044A /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD8229BF7A5C007C044A /* Font+Extensions.swift */; };
+		92B5AD8529BF7B56007C044A /* LauncherMultiplayerSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B5AD8429BF7B56007C044A /* LauncherMultiplayerSheetView.swift */; };
 		92C0E7D6298A3EE800BD5B0F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D5298A3EE800BD5B0F /* AudioToolbox.framework */; };
 		92C0E7D8298A3EF000BD5B0F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D7298A3EF000BD5B0F /* AVFoundation.framework */; };
 		92C0E7DA298A3EF700BD5B0F /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C0E7D9298A3EF600BD5B0F /* CoreAudio.framework */; };
@@ -4377,8 +4378,9 @@
 		92B5AD7A29BF791F007C044A /* LauncherSelectIWADViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherSelectIWADViews.swift; sourceTree = "<group>"; };
 		92B5AD7C29BF7951007C044A /* LauncherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherViewModel.swift; sourceTree = "<group>"; };
 		92B5AD7E29BF79AB007C044A /* LauncherConfigViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherConfigViews.swift; sourceTree = "<group>"; };
-		92B5AD8029BF7A2F007C044A /* MultiSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelection.swift; sourceTree = "<group>"; };
+		92B5AD8029BF7A2F007C044A /* MultiSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectionRow.swift; sourceTree = "<group>"; };
 		92B5AD8229BF7A5C007C044A /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
+		92B5AD8429BF7B56007C044A /* LauncherMultiplayerSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherMultiplayerSheetView.swift; sourceTree = "<group>"; };
 		92B8C6CB4A9845ACA21F79B1 /* origbinds.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; name = origbinds.txt; path = wadsrc/static/engine/origbinds.txt; sourceTree = SOURCE_ROOT; };
 		92BE64AA0D964B19AAE52B44 /* r_portalsegment.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = r_portalsegment.cpp; path = src/rendering/swrenderer/segments/r_portalsegment.cpp; sourceTree = SOURCE_ROOT; };
 		92BEF00FCC754DD883EB9484 /* c_functions.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = c_functions.cpp; path = src/console/c_functions.cpp; sourceTree = SOURCE_ROOT; };
@@ -13178,11 +13180,12 @@
 			children = (
 				92B5AD7829BF78C6007C044A /* LauncherModels.swift */,
 				92B5AD7E29BF79AB007C044A /* LauncherConfigViews.swift */,
+				92B5AD8429BF7B56007C044A /* LauncherMultiplayerSheetView.swift */,
 				92B5AD7A29BF791F007C044A /* LauncherSelectIWADViews.swift */,
 				92B5AD7C29BF7951007C044A /* LauncherViewModel.swift */,
 				92B3FDEF29A37AB20030224B /* LauncherView.swift */,
 				92A07FC729B09EBD00AF3A34 /* TextFieldAlert.swift */,
-				92B5AD8029BF7A2F007C044A /* MultiSelection.swift */,
+				92B5AD8029BF7A2F007C044A /* MultiSelectionRow.swift */,
 				92B5AD8229BF7A5C007C044A /* Font+Extensions.swift */,
 			);
 			path = Launcher;
@@ -16323,6 +16326,7 @@
 				227F5DFAC32A4BCEB1CBFC99 /* p_saveg.cpp in Sources */,
 				69B742DEF72E4188BC21553A /* p_setup.cpp in Sources */,
 				C9DFA9C50B124267889ED13D /* p_states.cpp in Sources */,
+				92B5AD8529BF7B56007C044A /* LauncherMultiplayerSheetView.swift in Sources */,
 				47AC3BD9D56847F3B234108A /* p_tick.cpp in Sources */,
 				3E34CD716E9347C683BAEEDA /* a_action.cpp in Sources */,
 				05AD49E0A24145D383D42E2B /* a_corona.cpp in Sources */,
@@ -16357,7 +16361,7 @@
 				92D82F7B298A370B00FAE872 /* IOSUtils.mm in Sources */,
 				A7442E78DA344B0BAB948FBF /* a_lighttransfer.cpp in Sources */,
 				61BDBFB967EC42468C3BEE26 /* a_pillar.cpp in Sources */,
-				92B5AD8129BF7A2F007C044A /* MultiSelection.swift in Sources */,
+				92B5AD8129BF7A2F007C044A /* MultiSelectionRow.swift in Sources */,
 				6479FB09250D4D449BBAC1CC /* a_plats.cpp in Sources */,
 				92B5AD8329BF7A5C007C044A /* Font+Extensions.swift in Sources */,
 				8DFB139823DF413F832578A0 /* a_pusher.cpp in Sources */,
