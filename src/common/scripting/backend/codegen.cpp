@@ -2568,7 +2568,15 @@ ExpEmit FxAssign::Emit(VMFunctionBuilder *build)
 	}
 
 	pointer.Free(build);
-	return result;
+
+	if(intconst)
+	{	//fix int constant return for assignment
+		return Right->Emit(build);
+	}
+	else
+	{
+		return result;
+	}
 }
 
 //==========================================================================
@@ -8505,6 +8513,11 @@ FxExpression *FxMemberFunctionCall::Resolve(FCompileContext& ctx)
 		}
 		else
 		{
+			if (PFunction **Override; ctx.Version >= MakeVersion(4, 11, 0) && (Override = static_cast<PDynArray*>(Self->ValueType)->FnOverrides.CheckKey(MethodName)))
+			{
+				afd_override = *Override;
+			}
+
 			auto elementType = static_cast<PDynArray*>(Self->ValueType)->ElementType;
 			Self->ValueType = static_cast<PDynArray*>(Self->ValueType)->BackingType;
 			bool isDynArrayObj = elementType->isObjectPointer();

@@ -53,6 +53,37 @@
 #include "s_soundinternal.h"
 #include "i_time.h"
 
+#include "maps.h"
+
+static ZSMap<FName, DObject*> AllServices;
+
+static void MarkServices() {
+
+	ZSMap<FName, DObject*>::Iterator it(AllServices);
+	ZSMap<FName, DObject*>::Pair* pair;
+	while (it.NextPair(pair))
+	{
+		GC::Mark<DObject>(pair->Value);
+	}
+}
+
+void InitServices()
+{
+	PClass* cls = PClass::FindClass("Service");
+	for (PClass* clss : PClass::AllClasses)
+	{
+		if (clss != cls && cls->IsAncestorOf(clss))
+		{
+			DObject* obj = clss->CreateNew();
+			obj->ObjectFlags |= OF_Transient;
+			AllServices.Insert(clss->TypeName, obj);
+		}
+	}
+	GC::AddMarkerFunc(&MarkServices);
+}
+
+
+
 //==========================================================================
 //
 // status bar exports
@@ -852,7 +883,22 @@ DEFINE_ACTION_FUNCTION(_CVar, SetInt)
 	PARAM_INT(val);
 	UCVarValue v;
 	v.Int = val;
-	self->SetGenericRep(v, CVAR_Int);
+
+	if(self->GetFlags() & CVAR_ZS_CUSTOM_CLONE)
+	{
+		auto realCVar = (FBaseCVar*)(self->GetExtraDataPointer());
+		assert(realCVar->GetFlags() & CVAR_ZS_CUSTOM);
+		
+		v = realCVar->GenericZSCVarCallback(v, CVAR_Int);
+		self->SetGenericRep(v, realCVar->GetRealType());
+
+		if(realCVar->GetRealType() == CVAR_String) delete[] v.String;
+	}
+	else
+	{
+		self->SetGenericRep(v, CVAR_Int);
+	}
+
 	return 0;
 }
 
@@ -870,7 +916,22 @@ DEFINE_ACTION_FUNCTION(_CVar, SetFloat)
 	PARAM_FLOAT(val);
 	UCVarValue v;
 	v.Float = (float)val;
-	self->SetGenericRep(v, CVAR_Float);
+
+	if(self->GetFlags() & CVAR_ZS_CUSTOM_CLONE)
+	{
+		auto realCVar = (FBaseCVar*)(self->GetExtraDataPointer());
+		assert(realCVar->GetFlags() & CVAR_ZS_CUSTOM);
+
+		v = realCVar->GenericZSCVarCallback(v, CVAR_Float);
+		self->SetGenericRep(v, realCVar->GetRealType());
+
+		if(realCVar->GetRealType() == CVAR_String) delete[] v.String;
+	}
+	else
+	{
+		self->SetGenericRep(v, CVAR_Float);
+	}
+
 	return 0;
 }
 
@@ -889,7 +950,22 @@ DEFINE_ACTION_FUNCTION(_CVar, SetString)
 	PARAM_STRING(val);
 	UCVarValue v;
 	v.String = val.GetChars();
-	self->SetGenericRep(v, CVAR_String);
+
+	if(self->GetFlags() & CVAR_ZS_CUSTOM_CLONE)
+	{
+		auto realCVar = (FBaseCVar*)(self->GetExtraDataPointer());
+		assert(realCVar->GetFlags() & CVAR_ZS_CUSTOM);
+
+		v = realCVar->GenericZSCVarCallback(v, CVAR_String);
+		self->SetGenericRep(v, realCVar->GetRealType());
+
+		if(realCVar->GetRealType() == CVAR_String) delete[] v.String;
+	}
+	else
+	{
+		self->SetGenericRep(v, CVAR_String);
+	}
+
 	return 0;
 }
 
@@ -1115,6 +1191,9 @@ DEFINE_FIELD_X(MusPlayingInfo, MusPlayingInfo, loop);
 DEFINE_FIELD_X(MusPlayingInfo, MusPlayingInfo, handle);
 
 DEFINE_GLOBAL_NAMED(PClass::AllClasses, AllClasses)
+
+DEFINE_GLOBAL(AllServices)
+
 DEFINE_GLOBAL(Bindings)
 DEFINE_GLOBAL(AutomapBindings)
 DEFINE_GLOBAL(generic_ui)

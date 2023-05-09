@@ -120,7 +120,7 @@ FFont::FFont (const char *name, const char *nametemplate, const char *filetempla
 						sc.MustGetValue(false);
 						GlobalKerning = sc.Number;
 					}
-					if (sc.Compare("Altfont"))
+					else if (sc.Compare("Altfont"))
 					{
 						sc.MustGetString();
 						AltFontName = sc.String;
@@ -179,6 +179,11 @@ FFont::FFont (const char *name, const char *nametemplate, const char *filetempla
 							sc.ScriptError("Unknown translation type %s", sc.String);
 						}
 					}
+					else if (sc.Compare("lowercaselatinonly"))
+					{
+						lowercaselatinonly = true;
+					}
+					
 				}
 			}
 		}
@@ -747,7 +752,23 @@ int FFont::GetCharCode(int code, bool needpic) const
 		// regular chars turn negative when the 8th bit is set.
 		code &= 255;
 	}
-	if (code >= FirstChar && code <= LastChar && (!needpic || Chars[code - FirstChar].OriginalPic != nullptr))
+	if (special_i && needpic)
+	{
+		// We need one special case for Turkish: If we have a lowercase-only font (like Raven's) and want to print the capital I, it must map to the dotless ı, because its own glyph will be the dotted i.
+		// This checks if the font has no small i, but does define the small dotless ı.
+		if (!MixedCase && code == 'I' && LastChar >= 0x131 && Chars['i' - FirstChar].OriginalPic == nullptr && Chars[0x131 - FirstChar].OriginalPic != nullptr)
+		{
+			return 0x131;
+		}
+		// a similar check is needed for the small i in allcaps fonts. Here we cannot simply remap to an existing character, so the small dotted i must be placed at code point 0080.
+		if (code == 'i' && LastChar >= 0x80 && Chars[0x80 - FirstChar].OriginalPic != nullptr)
+		{
+			return 0x80;
+		}
+	}
+		
+		
+	if (code >= FirstChar && code <= LastChar && Chars[code - FirstChar].OriginalPic != nullptr)
 	{
 		return code;
 	}
@@ -755,13 +776,13 @@ int FFont::GetCharCode(int code, bool needpic) const
 	// Use different substitution logic based on the fonts content:
 	// In a font which has both upper and lower case, prefer unaccented small characters over capital ones.
 	// In a pure upper-case font, do not check for lower case replacements.
-	if (!MixedCase)
+	if (!MixedCase || (lowercaselatinonly && code >= 0x380 && code < 0x500))
 	{
 		// Try converting lowercase characters to uppercase.
 		if (myislower(code))
 		{
 			code = upperforlower[code];
-			if (code >= FirstChar && code <= LastChar && (!needpic || Chars[code - FirstChar].OriginalPic != nullptr))
+			if (code >= FirstChar && code <= LastChar && Chars[code - FirstChar].OriginalPic != nullptr)
 			{
 				return code;
 			}
@@ -770,7 +791,7 @@ int FFont::GetCharCode(int code, bool needpic) const
 		while ((newcode = stripaccent(code)) != code)
 		{
 			code = newcode;
-			if (code >= FirstChar && code <= LastChar && (!needpic || Chars[code - FirstChar].OriginalPic != nullptr))
+			if (code >= FirstChar && code <= LastChar && Chars[code - FirstChar].OriginalPic != nullptr)
 			{
 				return code;
 			}
@@ -784,7 +805,7 @@ int FFont::GetCharCode(int code, bool needpic) const
 		while ((newcode = stripaccent(code)) != code)
 		{
 			code = newcode;
-			if (code >= FirstChar && code <= LastChar && (!needpic || Chars[code - FirstChar].OriginalPic != nullptr))
+			if (code >= FirstChar && code <= LastChar && Chars[code - FirstChar].OriginalPic != nullptr)
 			{
 				return code;
 			}
@@ -795,14 +816,14 @@ int FFont::GetCharCode(int code, bool needpic) const
 		{
 			int upper = upperforlower[code];
 			// Stripping accents did not help - now try uppercase for lowercase
-			if (upper != code) return GetCharCode(upper, needpic);
+			if (upper != code) return GetCharCode(upper, true);
 		}
 
 		// Same for the uppercase character. Since we restart at the accented version this must go through the entire thing again.
 		while ((newcode = stripaccent(code)) != code)
 		{
 			code = newcode;
-			if (code >= FirstChar && code <= LastChar && (!needpic || Chars[code - FirstChar].OriginalPic != nullptr))
+			if (code >= FirstChar && code <= LastChar && Chars[code - FirstChar].OriginalPic != nullptr)
 			{
 				return code;
 			}
@@ -902,7 +923,7 @@ bool FFont::CanPrint(const uint8_t *string) const
 		}
 		else if (chr != '\n')
 		{
-			int cc = GetCharCode(chr, true);
+			int cc = GetCharCode(chr, false);
 			if (chr != cc && myiswalpha(chr) && cc != getAlternative(chr))
 			{
 				return false;
