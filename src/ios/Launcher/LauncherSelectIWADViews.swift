@@ -37,22 +37,20 @@ struct IWADSelectedView: View {
     VStack {
       Text(selected.displayName).foregroundColor(.yellow).font(.selected)
       Text("Selected").foregroundColor(.green)
+      Button("Save Launch Config") {
+        activeSheet = .save
+      }.padding().foregroundColor(.green).border(.gray, width: 2)
+      Button("Back") {
+        viewModel.selectedIWAD = nil
+        viewModel.externalFiles.append(selected)
+      }.padding().border(.gray, width: 2)
+      Spacer()
+      Button("Launch without saving") {
+        viewModel.launchActionClosure?(viewModel.arguments)
+      }.foregroundColor(.red).padding().border(.gray, width: 2)
       Button("Multiplayer Options") {
         activeSheet = .multiplayer
-      }.padding().foregroundColor(.cyan).border(.gray, width: 2)
-      HStack {
-        Button("Save config") {
-          activeSheet = .save
-        }.padding().foregroundColor(.green).border(.gray, width: 2)
-        Button("Back") {
-          viewModel.selectedIWAD = nil
-          viewModel.externalFiles.append(selected)
-        }.padding().border(.gray, width: 2)
-      }
-      Button("Launch GZDoom") {
-        print("GZDoom Launch!")
-        viewModel.launchActionClosure?(viewModel.arguments)
-      }.font(.actionButton).foregroundColor(.red).padding().border(.gray, width: 2)
+      }.padding().foregroundColor(.cyan).border(.gray, width: 2).font(.small)
     }.sheet(item: $activeSheet) { item in
       switch item {
       case .save:

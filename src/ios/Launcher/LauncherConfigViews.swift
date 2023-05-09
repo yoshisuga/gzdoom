@@ -71,15 +71,14 @@ struct LauncherConfigsView: View {
   @State private var showSaveConfigSheet = false
   @State private var selectedConfig: LauncherConfig?
   
-  @Binding var launcherMode: LauncherMode
   @Binding var showToast: Bool
-  @Binding var sortMode: SavedConfigSortMode
+  @Binding var sortMode: LaunchConfigSortOrder
   
   var sortedConfigs: [LauncherConfig] {
     switch sortMode {
-    case .name:
+    case .alphabetical:
       return configs.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
-    case .lastRanAt:
+    case .recent:
       return configs.sorted(by: { a, b in
         if a.lastRanAt == nil && b.lastRanAt != nil {
           return false
@@ -98,39 +97,40 @@ struct LauncherConfigsView: View {
     VStack {
       if configs.isEmpty {
         Spacer()
-        Text("No saved configurations. Create one in the '\(LauncherMode.launcher.rawValue)' tab!").foregroundColor(.gray)
+        Text("No saved configurations. Tap the + button above to create one now!").foregroundColor(.gray)
         Spacer()
       } else {
         List {
-          ForEach(sortedConfigs) { config in
-            Button(config.name) {
-              viewModel.currentConfig = config
-              viewModel.launchActionClosure?(viewModel.arguments)
-              viewModel.saveLauncherConfig(name: config.name, iwad: config.baseIWAD, arguments: config.arguments, ranAt: Date())
-            }.foregroundColor(.red).swipeActions {
-              Button(role: .destructive) {
-                viewModel.deleteLauncherConfigs([config])
-              } label: {
-                Image(systemName: "trash")
-              }
-              Button {
-                selectedConfig = config
+          Section(header: Text("Launcher Configurations").foregroundColor(.yellow)) {
+            ForEach(sortedConfigs) { config in
+              Button(config.name) {
                 viewModel.currentConfig = config
-                launcherMode = .launcher
-                showToast = true
-//                showSaveConfigSheet.toggle()
-              } label: {
-                Image(systemName: "pencil")
+                viewModel.launchActionClosure?(viewModel.arguments)
+                viewModel.saveLauncherConfig(name: config.name, iwad: config.baseIWAD, arguments: config.arguments, ranAt: Date())
+              }.foregroundColor(.red).swipeActions {
+                Button(role: .destructive) {
+                  viewModel.deleteLauncherConfigs([config])
+                } label: {
+                  Image(systemName: "trash")
+                }
+                Button {
+                  selectedConfig = config
+                  viewModel.currentConfig = config
+                  showToast = true
+                  //                showSaveConfigSheet.toggle()
+                } label: {
+                  Image(systemName: "pencil")
+                }
               }
+            }.onDelete { indexSet in
+              let configsToDelete = indexSet.map{ configs[$0] }
+              viewModel.deleteLauncherConfigs(configsToDelete)
             }
-          }.onDelete { indexSet in
-            let configsToDelete = indexSet.map{ configs[$0] }
-            viewModel.deleteLauncherConfigs(configsToDelete)
           }
         }.listStyle(PlainListStyle())
       }
     }.sheet(item: $selectedConfig) { config in
-      LauncherConfigSheetView(viewModel: viewModel)
+      CreateLaunchConfigView(viewModel: viewModel, isEditing: true)
     }.onAppear {
       configs = viewModel.getSavedLauncherConfigs()
     }

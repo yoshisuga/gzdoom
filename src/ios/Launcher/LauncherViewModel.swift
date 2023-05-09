@@ -80,7 +80,7 @@ class LauncherViewModel: ObservableObject {
         let file = GZDoomFile(displayName: displayName, fullPath: "\(documentsPath)/\(item)")
         if pathExt.lowercased() == "wad" || pathExt.lowercased() == "iwad" || pathExt.lowercased() == "ipk3" {
           iwads.append(file)
-          if pathExt.lowercased() == "wad" {
+          if pathExt.lowercased() == "wad" || pathExt.lowercased() == "ipk3" {
             mods.append(file)
           }
         } else if ["pk3", "ipk3", "ipk7", "zip"].contains(pathExt.lowercased()) {

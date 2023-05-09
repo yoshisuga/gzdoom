@@ -17384,6 +17384,7 @@
 					"'HAVE_DISPATCH_APPLY=1'",
 					"$(inherited)",
 					"'DYN_OPENAL=1'",
+					"NS_BLOCK_ASSERTIONS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -17600,7 +17601,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -17842,7 +17843,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -17883,7 +17884,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
@@ -18677,7 +18678,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk;
+				SDKROOT = iphoneos;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/build";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
