@@ -25,6 +25,8 @@ class LauncherViewModel: ObservableObject {
     }
   }
   
+  @Published var savedConfigs = [LauncherConfig]()
+  
   private let userDefaultsKey = "configs"
   
   let excludedFiles = [
@@ -107,6 +109,20 @@ class LauncherViewModel: ObservableObject {
     } catch {
       print("Could not read docs dir: \(error)")
     }
+    refreshSavedConfigs()
+  }
+  
+  var defaultLauncherConfig: LauncherConfig {
+    let freedoom = "\(Bundle.main.bundlePath)/freedoom1.wad"
+    return LauncherConfig(
+      name: "Freedoom",
+      baseIWAD: GZDoomFile(displayName: "freedoom1.wad", fullPath: freedoom),
+      arguments: [GZDoomFile]()
+    )
+  }
+  
+  func refreshSavedConfigs() {
+    savedConfigs = getSavedLauncherConfigs()
   }
   
   func saveLauncherConfig(name: String, iwad: GZDoomFile, arguments: [GZDoomFile], ranAt: Date? = nil) {
@@ -125,15 +141,16 @@ class LauncherViewModel: ObservableObject {
     if let saveData = try? PropertyListEncoder().encode(existingConfigs) {
       UserDefaults.standard.set(saveData, forKey: userDefaultsKey)
     }
+    refreshSavedConfigs()
   }
   
   func getSavedLauncherConfigs() -> [LauncherConfig] {
     guard let data = UserDefaults.standard.data(forKey: userDefaultsKey) else {
-      return [LauncherConfig]()
+      return [defaultLauncherConfig]
     }
     guard var savedConfigs = try? PropertyListDecoder().decode([LauncherConfig].self, from: data) else {
       UserDefaults.standard.removeObject(forKey: userDefaultsKey)
-      return [LauncherConfig]()
+      return [defaultLauncherConfig]
     }
     savedConfigs.sort(by: {$0.name.lowercased() < $1.name.lowercased()})
     return savedConfigs
@@ -148,5 +165,6 @@ class LauncherViewModel: ObservableObject {
       return
     }
     UserDefaults.standard.set(saveData, forKey: userDefaultsKey)
+    refreshSavedConfigs()
   }
 }

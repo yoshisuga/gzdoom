@@ -54,7 +54,7 @@ struct LauncherConfigSheetView: View {
       guard let selectedIWAD = viewModel.selectedIWAD else {
         return
       }
-      viewModel.saveLauncherConfig(name: configName, iwad: selectedIWAD, arguments: orderedArgs)
+      viewModel.saveLauncherConfig(name: configName, iwad: selectedIWAD, arguments: orderedArgs, ranAt: Date())
       dismiss()
     }.padding(.bottom)
   }
@@ -66,7 +66,6 @@ struct LauncherConfigSheetView: View {
 
 struct LauncherConfigsView: View {
   @ObservedObject var viewModel: LauncherViewModel
-  @State private var configs = [LauncherConfig]()
   
   @State private var showSaveConfigSheet = false
   @State private var selectedConfig: LauncherConfig?
@@ -77,9 +76,9 @@ struct LauncherConfigsView: View {
   var sortedConfigs: [LauncherConfig] {
     switch sortMode {
     case .alphabetical:
-      return configs.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
+      return viewModel.savedConfigs.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
     case .recent:
-      return configs.sorted(by: { a, b in
+      return viewModel.savedConfigs.sorted(by: { a, b in
         if a.lastRanAt == nil && b.lastRanAt != nil {
           return false
         } else if a.lastRanAt != nil && b.lastRanAt == nil {
@@ -95,7 +94,7 @@ struct LauncherConfigsView: View {
   
   var body: some View {
     VStack {
-      if configs.isEmpty {
+      if viewModel.savedConfigs.isEmpty {
         Spacer()
         Text("No saved configurations. Tap the + button above to create one now!").foregroundColor(.gray)
         Spacer()
@@ -117,13 +116,12 @@ struct LauncherConfigsView: View {
                   selectedConfig = config
                   viewModel.currentConfig = config
                   showToast = true
-                  //                showSaveConfigSheet.toggle()
                 } label: {
                   Image(systemName: "pencil")
                 }
               }
             }.onDelete { indexSet in
-              let configsToDelete = indexSet.map{ configs[$0] }
+              let configsToDelete = indexSet.map{ viewModel.savedConfigs[$0] }
               viewModel.deleteLauncherConfigs(configsToDelete)
             }
           }
@@ -131,8 +129,6 @@ struct LauncherConfigsView: View {
       }
     }.sheet(item: $selectedConfig) { config in
       CreateLaunchConfigView(viewModel: viewModel, isEditing: true)
-    }.onAppear {
-      configs = viewModel.getSavedLauncherConfigs()
     }
   }
 }

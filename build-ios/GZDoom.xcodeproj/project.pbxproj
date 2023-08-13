@@ -113,7 +113,7 @@
 				5802F0CD18E1825856BBF509 /* Generate wadsrc_bm/CMakeFiles/brightmaps_pk3 */,
 			);
 			dependencies = (
-				BCB958C6F1B343C7B3CAEC97 /* PBXTargetDependency */,
+				925D8D912A894CB0009B5068 /* PBXTargetDependency */,
 			);
 			name = brightmaps_pk3;
 			productName = brightmaps_pk3;
@@ -795,13 +795,6 @@
 			remoteGlobalIDString = 5F7456A2A6E04B21914366BA;
 			remoteInfo = ALL_BUILD;
 		};
-		0631EFF938224B1886ACAF78 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2D0CC5D8560342449F337A6B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 165EA72F3D7D4D70930A843D;
-			remoteInfo = zdoom;
-		};
 		166032239A6C4B29B95C4A6B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2D0CC5D8560342449F337A6B /* Project object */;
@@ -899,6 +892,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = DE58270149484DBBA5972D8B;
 			remoteInfo = game_widescreen_gfx_pk3;
+		};
+		925D8D902A894CB0009B5068 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D0CC5D8560342449F337A6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 165EA72F3D7D4D70930A843D;
+			remoteInfo = zdoom;
 		};
 		932EA34A00CF4E39BB37EE58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -15452,6 +15452,7 @@
 				2E55B03714C34C7FA5C65935 /* Sources */,
 				0ADDA802891E412EAEDEE938 /* Frameworks */,
 				4842D6D102ABC725FB9BAEB8 /* CMake PostBuild Rules */,
+				925D8D922A8952C5009B5068 /* ShellScript */,
 				92D82F5A2987BD8500FAE872 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -15774,6 +15775,23 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Debug/zipdir -udf /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/Release/zipdir -udf /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/MinSizeRel/zipdir -udf /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/MinSizeRel/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc\n  /Users/yoshi/Code/personal/gzdoom/build-macos/tools/zipdir/RelWithDebInfo/zipdir -udf /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/wadsrc/static\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/RelWithDebInfo/gzdoom.app/gzdoom.pk3\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		925D8D922A8952C5009B5068 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug/gzdoom.app/brightmaps.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/game_support.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug/gzdoom.app/game_support.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/game_widescreen_gfx.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug/gzdoom.app/game_widescreen_gfx.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/lights.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug/gzdoom.app/lights.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Debug/gzdoom.app/gzdoom.pk3\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/brightmaps.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release/gzdoom.app/brightmaps.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/game_support.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release/gzdoom.app/game_support.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/game_widescreen_gfx.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release/gzdoom.app/game_widescreen_gfx.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/lights.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release/gzdoom.app/lights.pk3\n  /usr/local/Cellar/cmake/3.21.3/bin/cmake -E copy_if_different /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/gzdoom.pk3 /Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/Release/gzdoom.app/gzdoom.pk3  \nfi\n\n\n";
 		};
 		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -16741,6 +16759,11 @@
 			target = DE3C91FDB6E045AF93E18C44 /* brightmaps_pk3 */;
 			targetProxy = 94036EC69E2742A1AFE50730 /* PBXContainerItemProxy */;
 		};
+		925D8D912A894CB0009B5068 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 165EA72F3D7D4D70930A843D /* zdoom */;
+			targetProxy = 925D8D902A894CB0009B5068 /* PBXContainerItemProxy */;
+		};
 		9C8DEB997B544527BC2C6308 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B8ABFBCC4C274D1192482096 /* lzma */;
@@ -16755,11 +16778,6 @@
 			isa = PBXTargetDependency;
 			target = 3D335B9AECCB4CFDBB564D2F /* bz2 */;
 			targetProxy = 293A2507C0CC4F79A47AB35F /* PBXContainerItemProxy */;
-		};
-		BCB958C6F1B343C7B3CAEC97 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 165EA72F3D7D4D70930A843D /* zdoom */;
-			targetProxy = 0631EFF938224B1886ACAF78 /* PBXContainerItemProxy */;
 		};
 		E5FFE8CBD73A49088F861E90 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -16826,6 +16844,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gdtoa;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/gdtoa";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -16849,6 +16868,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gzdoom_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -16883,6 +16903,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = z;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/zlib";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -16906,6 +16927,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lights_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_lights";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -16929,6 +16951,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = install;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -16963,6 +16986,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = z;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/zlib";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -16986,6 +17010,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gzdoom_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17095,7 +17120,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
-				INSTALL_PATH = "";
+				INSTALL_PATH = /Applications;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17161,10 +17186,11 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom33hzpb;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -17205,6 +17231,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = z;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/zlib";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17228,6 +17255,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lights_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_lights";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17251,6 +17279,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_widescreen_gfx_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_widepix";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17300,6 +17329,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = zvulkan;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/ZVulkan";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17323,6 +17353,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = install;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17346,6 +17377,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ZERO_CHECK;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17457,7 +17489,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
-				INSTALL_PATH = "";
+				INSTALL_PATH = /Applications;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17511,10 +17543,11 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom33hzpb;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -17545,6 +17578,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ZERO_CHECK;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17583,6 +17617,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = jpeg;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/jpeg";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17636,6 +17671,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = bz2;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/bzip2";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17659,6 +17695,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_widescreen_gfx_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_widepix";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17701,6 +17738,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gdtoa;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/gdtoa";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17736,6 +17774,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = bz2;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/bzip2";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17759,6 +17798,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lights_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_lights";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17782,6 +17822,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ZERO_CHECK;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17825,6 +17866,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gdtoa;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/gdtoa";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17866,6 +17908,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ALL_BUILD;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17907,6 +17950,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = brightmaps_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_bm";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17956,6 +18000,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = zvulkan;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/ZVulkan";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -17979,6 +18024,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_support_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_extra";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18014,6 +18060,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lzma;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/lzma";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18048,6 +18095,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = z;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/zlib";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18083,6 +18131,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lzma;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/lzma";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18106,6 +18155,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = brightmaps_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_bm";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18129,6 +18179,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_support_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_extra";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18152,6 +18203,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ALL_BUILD;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18224,6 +18276,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = "discord-rpc";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/discordrpc/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18247,6 +18300,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = revision_check;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18270,6 +18324,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = revision_check;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18293,6 +18348,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_support_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_extra";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18365,6 +18421,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = "discord-rpc";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/discordrpc/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18388,6 +18445,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = install;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18411,6 +18469,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gzdoom_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18434,6 +18493,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gzdoom_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18506,6 +18566,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = "discord-rpc";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/discordrpc/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18544,6 +18605,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = jpeg;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/jpeg";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18579,6 +18641,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lzma;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/lzma";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18602,6 +18665,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = revision_check;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18637,6 +18701,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = bz2;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/bzip2";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18660,6 +18725,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ALL_BUILD;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18701,6 +18767,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = revision_check;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18724,6 +18791,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = brightmaps_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_bm";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18759,6 +18827,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lzma;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/lzma";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18782,6 +18851,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ZERO_CHECK;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18805,6 +18875,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = install;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18828,6 +18899,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_widescreen_gfx_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_widepix";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18851,6 +18923,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_support_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_extra";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18874,6 +18947,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = lights_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_lights";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18897,6 +18971,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = game_widescreen_gfx_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_widepix";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18939,6 +19014,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = gdtoa;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/gdtoa";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18962,6 +19038,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = brightmaps_pk3;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/wadsrc_bm";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -18985,6 +19062,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = ALL_BUILD;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -19094,7 +19172,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
-				INSTALL_PATH = "";
+				INSTALL_PATH = /Applications;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -19160,10 +19238,11 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom33hzpb;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -19219,6 +19298,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = zvulkan;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/ZVulkan";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -19256,6 +19336,7 @@
 					"'__forceinline=inline'",
 					"'HAVE_DISPATCH_APPLY=1'",
 					"$(inherited)",
+					"'DYN_OPENAL=1'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -19328,7 +19409,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src/CMakeFiles/zdoom.dir/Info.plist";
-				INSTALL_PATH = "";
+				INSTALL_PATH = /Applications;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -19382,10 +19463,11 @@
 					"$(inherited)",
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = org.drdteam.gzdoom33hzpb;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.gzdoom;
 				PRODUCT_NAME = gzdoom;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -19394,6 +19476,7 @@
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/src";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USE_HEADERMAP = NO;
+				VALIDATE_PRODUCT = YES;
 				WARNING_CFLAGS = "$(inherited)";
 			};
 			name = Release;
@@ -19430,6 +19513,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = jpeg;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/jpeg";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -19502,6 +19586,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = "discord-rpc";
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/discordrpc/src";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -19551,6 +19636,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = zvulkan;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/ZVulkan";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -19589,6 +19675,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = jpeg;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/jpeg";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";
@@ -19624,6 +19711,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = bz2;
 				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
 				SYMROOT = "/Users/yoshi/Code/personal/gzdoom-setup-test/build-ios/libraries/bzip2";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = "$(inherited)";

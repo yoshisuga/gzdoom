@@ -78,6 +78,15 @@ Game controllers are supported (mFi, PS4, PS5, Xbox One, etc)!
 
 ^[°°±±²²ÛÛ In-Game Operation ÛÛ²²±±°°](colored: 'cyan')
 
+After launching a game, you will be shown a ^[virtual keyboard](colored: 'yellow') by default. On the upper left side of the screen, you will see ^[buttons](colored: 'white') to toggle the ^[virtual keyboard](colored: 'yellow') as well as a ^[virtual controller](colored: 'yellow').
+
+Use the virtual keyboard to select menu options using the arrow keys (accessible via the "Fn" button) and use the "Return" key to select an option. You can also use a gamepad to do the menu selections as well.
+
+Remapping the controls involve going to the game's option menu and customizing the controls.
+
+The virtual controller currently only has the following controls: Left Analog Stick, LS, RS, LT, RT on the left side; Right Analog Stick, X, Y, B, A on the right side.
+
+
 ^[°°±±²²ÛÛ Troubleshooting/Issues ÛÛ²²±±°°](colored: 'cyan')
 
 - Quitting a game and returning to the main launcher is not currently working. You need to force quit the app and relaunch if you want to launch a different game.
@@ -86,4 +95,4 @@ Game controllers are supported (mFi, PS4, PS5, Xbox One, etc)!
 
 - Game controllers may not be detected on launch if they are already connected and may need a disconnect/reconnect while running GZDoom.
 
-
+- Selecting menu options using the virtual game controller is very difficult due to a lack of a directional pad; Use the virtual keyboard instead or a physical gamepad using the directional pad.

@@ -163,7 +163,8 @@ const UInt8 DIK_TO_ASCII[128] =
         @(DIK_M) : [NSNumber numberWithUnsignedChar:'m'],
         @(DIK_COMMA) : [NSNumber numberWithUnsignedChar:','],
         @(DIK_PERIOD) : [NSNumber numberWithUnsignedChar:'.'],
-        @(DIK_SLASH) : [NSNumber numberWithUnsignedChar:'/']
+        @(DIK_SLASH) : [NSNumber numberWithUnsignedChar:'/'],
+        @(DIK_SPACE) : [NSNumber numberWithUnsignedChar:' ']
     };
 }
 
@@ -221,6 +222,9 @@ const UInt8 DIK_TO_ASCII[128] =
             D_PostEvent(&event);
             // need to set this to output to console gui - looks like it needs to be the system character (utf-16?)
             unichar realchar = [key.keyLabel characterAtIndex:0];
+          if (key.keyCode == DIK_SPACE) {
+            realchar = ' ';
+          }
             event.subtype = EV_GUI_Char;
             event.data1   = realchar;
             event.data2   = 0;

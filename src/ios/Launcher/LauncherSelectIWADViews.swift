@@ -45,7 +45,7 @@ struct IWADSelectedView: View {
         viewModel.externalFiles.append(selected)
       }.padding().border(.gray, width: 2)
       Spacer()
-      Button("Launch without saving") {
+      Button("Launch Now") {
         viewModel.launchActionClosure?(viewModel.arguments)
       }.foregroundColor(.red).padding().border(.gray, width: 2)
       Button("Multiplayer Options") {

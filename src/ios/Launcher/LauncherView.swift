@@ -109,7 +109,7 @@ struct LauncherView: View {
         }
       }
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder).padding(.bottom)
-      ColoredText("Ported to ^[iOS](colored: 'green') by ^[Yoshi Sugawara](colored: 'purple'), 2023. Powered by ^[SwiftUI](colored: 'indigo')").font(.small).foregroundColor(.gray)
+      ColoredText("Ported to ^[iOS](colored: 'green') by ^[@yoshisuga](colored: 'purple'), 2023. Powered by ^[SwiftUI](colored: 'indigo')").font(.small).foregroundColor(.gray)
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
     }.padding([.bottom], 4)
