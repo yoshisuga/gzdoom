@@ -128,7 +128,8 @@ namespace Priv
 
 	void CreateWindow(uint32_t extraFlags)
 	{
-		assert(Priv::window == nullptr);
+    // Yoshi: remove assert
+//		assert(Priv::window == nullptr);
 
 		// Set default size
 		SDL_Rect bounds;
@@ -150,11 +151,11 @@ namespace Priv
         SDL_Vulkan_LoadLibrary("libMoltenVK.dylib");
         const char *errorv = SDL_GetError();
         printf("SDL_CreateWindow error = %s",errorv);
-        Priv::window = SDL_CreateWindow(caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
+        Priv::window = SDL_CreateWindow(caption.GetChars(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
         const char *error = SDL_GetError();
         printf("SDL_CreateWindow error = %s",error);
 #else
-		Priv::window = SDL_CreateWindow(caption,
+		Priv::window = SDL_CreateWindow(caption.GetChars(),
 			(win_x <= 0) ? SDL_WINDOWPOS_CENTERED_DISPLAY(vid_adapter) : win_x,
 			(win_y <= 0) ? SDL_WINDOWPOS_CENTERED_DISPLAY(vid_adapter) : win_y,
 			win_w, win_h, windowFlags);
@@ -343,7 +344,7 @@ DFrameBuffer *SDLVideo::CreateFrameBuffer ()
 	if (fb == nullptr)
 	{
 #ifdef HAVE_GLES2
-		if (V_GetBackend() == 2)
+		if (V_GetBackend() != 0)
 			fb = new OpenGLESRenderer::OpenGLFrameBuffer(0, vid_fullscreen);
 		else
 #endif
@@ -617,7 +618,7 @@ void I_SetWindowTitle(const char* caption)
 	{
 		FString default_caption;
 		default_caption.Format(GAMENAME " %s (%s)", GetVersionString(), GetGitTime());
-		SDL_SetWindowTitle(Priv::window, default_caption);
+		SDL_SetWindowTitle(Priv::window, default_caption.GetChars());
 	}
 }
 

@@ -16,6 +16,11 @@ enum SavedConfigSortMode {
   case name, lastRanAt
 }
 
+enum LaunchConfigAction {
+  case created, none
+}
+
+
 struct CreateLaunchConfigView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: LauncherViewModel
@@ -89,7 +94,7 @@ struct LauncherView: View {
         ZStack {
           HStack {
             Spacer()
-            Text("GZDoom").font(.largeTitle).foregroundColor(.red)
+            Text("GenZD").font(.largeTitle).foregroundColor(.red)
             Spacer()
           }
           HStack {
@@ -109,7 +114,7 @@ struct LauncherView: View {
         }
       }
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder).padding(.bottom)
-      ColoredText("Ported to ^[iOS](colored: 'green') by ^[@yoshisuga](colored: 'purple'), 2023. Powered by ^[SwiftUI](colored: 'indigo')").font(.small).foregroundColor(.gray)
+//      ColoredText("Ported to ^[iOS](colored: 'green') by ^[@yoshisuga](colored: 'purple'), 2024.").font(.small).foregroundColor(.gray)
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
     }.padding([.bottom], 4)
@@ -157,13 +162,13 @@ struct LauncherView_Previews: PreviewProvider {
   init(viewModel: LauncherViewModel) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
-    print("PRINT FONTS")
-    for family in UIFont.familyNames {
-         print(family)
-         for names in UIFont.fontNames(forFamilyName: family){
-         print("== \(names)")
-         }
-    }
+//    print("PRINT FONTS")
+//    for family in UIFont.familyNames {
+//         print(family)
+//         for names in UIFont.fontNames(forFamilyName: family){
+//         print("== \(names)")
+//         }
+//    }
   }
   
   required init?(coder: NSCoder) {

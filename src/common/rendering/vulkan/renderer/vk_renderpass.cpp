@@ -35,11 +35,12 @@
 #include "hw_viewpointuniforms.h"
 #include "v_2ddrawer.h"
 #include "i_specialpaths.h"
+#include "cmdlib.h"
 
 VkRenderPassManager::VkRenderPassManager(VulkanRenderDevice* fb) : fb(fb)
 {
 	FString path = M_GetCachePath(true);
-	CreatePath(path);
+	CreatePath(path.GetChars());
 	CacheFilename = path + "/pipelinecache.zdpc";
 
 	PipelineCacheBuilder builder;
@@ -48,7 +49,7 @@ VkRenderPassManager::VkRenderPassManager(VulkanRenderDevice* fb) : fb(fb)
 	try
 	{
 		FileReader fr;
-		if (fr.OpenFile(CacheFilename))
+		if (fr.OpenFile(CacheFilename.GetChars()))
 		{
 			std::vector<uint8_t> data;
 			data.resize(fr.GetLength());
@@ -70,7 +71,7 @@ VkRenderPassManager::~VkRenderPassManager()
 	try
 	{
 		auto data = PipelineCache->GetCacheData();
-		std::unique_ptr<FileWriter> fw(FileWriter::Open(CacheFilename));
+		std::unique_ptr<FileWriter> fw(FileWriter::Open(CacheFilename.GetChars()));
 		if (fw)
 			fw->Write(data.data(), data.size());
 	}

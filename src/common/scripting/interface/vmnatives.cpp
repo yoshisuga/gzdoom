@@ -54,11 +54,12 @@
 #include "i_time.h"
 
 #include "maps.h"
+#include "types.h"
 
 static ZSMap<FName, DObject*> AllServices;
 
-static void MarkServices() {
-
+static void MarkServices()
+{
 	ZSMap<FName, DObject*>::Iterator it(AllServices);
 	ZSMap<FName, DObject*>::Pair* pair;
 	while (it.NextPair(pair))
@@ -80,6 +81,11 @@ void InitServices()
 		}
 	}
 	GC::AddMarkerFunc(&MarkServices);
+}
+
+void ClearServices()
+{
+	AllServices.Clear();
 }
 
 
@@ -143,7 +149,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(DStatusBarCore, DrawTexture, SBar_DrawTexture)
 void SBar_DrawImage(DStatusBarCore* self, const FString& texid, double x, double y, int flags, double alpha, double w, double h, double scaleX, double scaleY, int style, int color, int translation, double clipwidth)
 {
 	if (!twod->HasBegun2D()) ThrowAbortException(X_OTHER, "Attempt to draw to screen outside a draw function");
-	self->DrawGraphic(TexMan.CheckForTexture(texid, ETextureType::Any), x, y, flags, alpha, w, h, scaleX, scaleY, ERenderStyle(style), color, translation, clipwidth);
+	self->DrawGraphic(TexMan.CheckForTexture(texid.GetChars(), ETextureType::Any), x, y, flags, alpha, w, h, scaleX, scaleY, ERenderStyle(style), color, translation, clipwidth);
 }
 
 DEFINE_ACTION_FUNCTION_NATIVE(DStatusBarCore, DrawImage, SBar_DrawImage)
@@ -169,7 +175,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(DStatusBarCore, DrawImage, SBar_DrawImage)
 void SBar_DrawImageRotated(DStatusBarCore* self, const FString& texid, double x, double y, int flags, double angle, double alpha, double scaleX, double scaleY, int style, int color, int translation)
 {
 	if (!twod->HasBegun2D()) ThrowAbortException(X_OTHER, "Attempt to draw to screen outside a draw function");
-	self->DrawRotated(TexMan.CheckForTexture(texid, ETextureType::Any), x, y, flags, angle, alpha, scaleX, scaleY, color, translation, (ERenderStyle)style);
+	self->DrawRotated(TexMan.CheckForTexture(texid.GetChars(), ETextureType::Any), x, y, flags, angle, alpha, scaleX, scaleY, color, translation, (ERenderStyle)style);
 }
 
 DEFINE_ACTION_FUNCTION_NATIVE(DStatusBarCore, DrawImageRotated, SBar_DrawImageRotated)
@@ -419,7 +425,7 @@ DEFINE_ACTION_FUNCTION(_TexMan, GetName)
 		{
 			// Textures for full path names do not have their own name, they merely link to the source lump.
 			auto lump = tex->GetSourceLump();
-			if (fileSystem.GetLinkedTexture(lump) == tex)
+			if (TexMan.GetLinkedTexture(lump) == tex)
 				retval = fileSystem.GetFileFullName(lump);
 		}
 	}
@@ -428,7 +434,7 @@ DEFINE_ACTION_FUNCTION(_TexMan, GetName)
 
 static int CheckForTexture(const FString& name, int type, int flags)
 {
-	return TexMan.CheckForTexture(name, static_cast<ETextureType>(type), flags).GetIndex();
+	return TexMan.CheckForTexture(name.GetChars(), static_cast<ETextureType>(type), flags).GetIndex();
 }
 
 DEFINE_ACTION_FUNCTION_NATIVE(_TexMan, CheckForTexture, CheckForTexture)
@@ -555,7 +561,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(_TexMan, CheckRealHeight, CheckRealHeight)
 
 static int OkForLocalization_(int index, const FString& substitute)
 {
-	return sysCallbacks.OkForLocalization? sysCallbacks.OkForLocalization(FSetTextureID(index), substitute) : false;
+	return sysCallbacks.OkForLocalization? sysCallbacks.OkForLocalization(FSetTextureID(index), substitute.GetChars()) : false;
 }
 
 DEFINE_ACTION_FUNCTION_NATIVE(_TexMan, OkForLocalization, OkForLocalization_)
@@ -662,9 +668,9 @@ DEFINE_ACTION_FUNCTION_NATIVE(FFont, GetBottomAlignOffset, GetBottomAlignOffset)
 	ACTION_RETURN_FLOAT(GetBottomAlignOffset(self, code));
 }
 
-static int StringWidth(FFont *font, const FString &str)
+static int StringWidth(FFont *font, const FString &str, int localize)
 {
-	const char *txt = str[0] == '$' ? GStrings(&str[1]) : str.GetChars();
+	const char *txt = (localize && str[0] == '$') ? GStrings(&str[1]) : str.GetChars();
 	return font->StringWidth(txt);
 }
 
@@ -672,12 +678,13 @@ DEFINE_ACTION_FUNCTION_NATIVE(FFont, StringWidth, StringWidth)
 {
 	PARAM_SELF_STRUCT_PROLOGUE(FFont);
 	PARAM_STRING(str);
-	ACTION_RETURN_INT(StringWidth(self, str));
+	PARAM_BOOL(localize);
+	ACTION_RETURN_INT(StringWidth(self, str, localize));
 }
 
-static int GetMaxAscender(FFont* font, const FString& str)
+static int GetMaxAscender(FFont* font, const FString& str, int localize)
 {
-	const char* txt = str[0] == '$' ? GStrings(&str[1]) : str.GetChars();
+	const char* txt = (localize && str[0] == '$') ? GStrings(&str[1]) : str.GetChars();
 	return font->GetMaxAscender(txt);
 }
 
@@ -685,12 +692,13 @@ DEFINE_ACTION_FUNCTION_NATIVE(FFont, GetMaxAscender, GetMaxAscender)
 {
 	PARAM_SELF_STRUCT_PROLOGUE(FFont);
 	PARAM_STRING(str);
-	ACTION_RETURN_INT(GetMaxAscender(self, str));
+	PARAM_BOOL(localize);
+	ACTION_RETURN_INT(GetMaxAscender(self, str, localize));
 }
 
-static int CanPrint(FFont *font, const FString &str)
+static int CanPrint(FFont *font, const FString &str, int localize)
 {
-	const char *txt = str[0] == '$' ? GStrings(&str[1]) : str.GetChars();
+	const char *txt = (localize && str[0] == '$') ? GStrings(&str[1]) : str.GetChars();
 	return font->CanPrint(txt);
 }
 
@@ -698,7 +706,8 @@ DEFINE_ACTION_FUNCTION_NATIVE(FFont, CanPrint, CanPrint)
 {
 	PARAM_SELF_STRUCT_PROLOGUE(FFont);
 	PARAM_STRING(str);
-	ACTION_RETURN_INT(CanPrint(self, str));
+	PARAM_BOOL(localize);
+	ACTION_RETURN_INT(CanPrint(self, str, localize));
 }
 
 static int FindFontColor(int name)
@@ -780,14 +789,14 @@ DEFINE_ACTION_FUNCTION(_Wads, CheckNumForName)
 	PARAM_INT(ns);
 	PARAM_INT(wadnum);
 	PARAM_BOOL(exact);
-	ACTION_RETURN_INT(fileSystem.CheckNumForName(name, ns, wadnum, exact));
+	ACTION_RETURN_INT(fileSystem.CheckNumForName(name.GetChars(), ns, wadnum, exact));
 }
 
 DEFINE_ACTION_FUNCTION(_Wads, CheckNumForFullName)
 {
 	PARAM_PROLOGUE;
 	PARAM_STRING(name);
-	ACTION_RETURN_INT(fileSystem.CheckNumForFullName(name));
+	ACTION_RETURN_INT(fileSystem.CheckNumForFullName(name.GetChars()));
 }
 
 DEFINE_ACTION_FUNCTION(_Wads, FindLump)
@@ -797,7 +806,7 @@ DEFINE_ACTION_FUNCTION(_Wads, FindLump)
 	PARAM_INT(startlump);
 	PARAM_INT(ns);
 	const bool isLumpValid = startlump >= 0 && startlump < fileSystem.GetNumEntries();
-	ACTION_RETURN_INT(isLumpValid ? fileSystem.FindLump(name, &startlump, 0 != ns) : -1);
+	ACTION_RETURN_INT(isLumpValid ? fileSystem.FindLump(name.GetChars(), &startlump, 0 != ns) : -1);
 }
 
 DEFINE_ACTION_FUNCTION(_Wads, FindLumpFullName)
@@ -807,16 +816,14 @@ DEFINE_ACTION_FUNCTION(_Wads, FindLumpFullName)
 	PARAM_INT(startlump);
 	PARAM_BOOL(noext);
 	const bool isLumpValid = startlump >= 0 && startlump < fileSystem.GetNumEntries();
-	ACTION_RETURN_INT(isLumpValid ? fileSystem.FindLumpFullName(name, &startlump, noext) : -1);
+	ACTION_RETURN_INT(isLumpValid ? fileSystem.FindLumpFullName(name.GetChars(), &startlump, noext) : -1);
 }
 
 DEFINE_ACTION_FUNCTION(_Wads, GetLumpName)
 {
 	PARAM_PROLOGUE;
 	PARAM_INT(lump);
-	FString lumpname;
-	fileSystem.GetFileShortName(lumpname, lump);
-	ACTION_RETURN_STRING(lumpname);
+	ACTION_RETURN_STRING(fileSystem.GetFileShortName(lump));
 }
 
 DEFINE_ACTION_FUNCTION(_Wads, GetLumpFullName)
@@ -838,7 +845,14 @@ DEFINE_ACTION_FUNCTION(_Wads, ReadLump)
 	PARAM_PROLOGUE;
 	PARAM_INT(lump);
 	const bool isLumpValid = lump >= 0 && lump < fileSystem.GetNumEntries();
-	ACTION_RETURN_STRING(isLumpValid ? fileSystem.ReadFile(lump).GetString() : FString());
+	ACTION_RETURN_STRING(isLumpValid ? GetStringFromLump(lump, false) : FString());
+}
+
+DEFINE_ACTION_FUNCTION(_Wads, GetLumpLength)
+{
+	PARAM_PROLOGUE;
+	PARAM_INT(lump);
+	ACTION_RETURN_INT(fileSystem.FileLength(lump));
 }
 
 //==========================================================================
@@ -1017,7 +1031,7 @@ DEFINE_ACTION_FUNCTION(FKeyBindings, SetBind)
 	}
 
 
-	self->SetBind(k, cmd);
+	self->SetBind(k, cmd.GetChars());
 	return 0;
 }
 
@@ -1035,7 +1049,8 @@ DEFINE_ACTION_FUNCTION(FKeyBindings, NameAllKeys)
 {
 	PARAM_PROLOGUE;
 	PARAM_POINTER(array, TArray<int>);
-	auto buffer = C_NameKeys(array->Data(), array->Size(), true);
+	PARAM_BOOL(color);
+	auto buffer = C_NameKeys(array->Data(), array->Size(), color);
 	ACTION_RETURN_STRING(buffer);
 }
 
@@ -1055,7 +1070,7 @@ DEFINE_ACTION_FUNCTION(FKeyBindings, GetAllKeysForCommand)
 	PARAM_SELF_STRUCT_PROLOGUE(FKeyBindings);
 	PARAM_POINTER(array, TArray<int>);
 	PARAM_STRING(cmd);
-	*array = self->GetKeysForCommand(cmd);
+	*array = self->GetKeysForCommand(cmd.GetChars());
 	return 0;
 }
 
@@ -1077,7 +1092,7 @@ DEFINE_ACTION_FUNCTION(FKeyBindings, UnbindACommand)
 		I_FatalError("Attempt to unbind key bindings for '%s' outside of menu code", cmd.GetChars());
 	}
 
-	self->UnbindACommand(cmd);
+	self->UnbindACommand(cmd.GetChars());
 	return 0;
 }
 
@@ -1095,7 +1110,7 @@ DEFINE_ACTION_FUNCTION(DOptionMenuItemCommand, DoCommand)
 	}
 
 	UnsafeExecutionScope scope(unsafe);
-	AddCommandString(cmd);
+	AddCommandString(cmd.GetChars());
 	return 0;
 }
 
@@ -1140,7 +1155,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(_System, StopAllSounds, StopAllSounds)
 
 static int PlayMusic(const FString& musname, int order, int looped)
 {
-	return S_ChangeMusic(musname, order, !!looped, true);
+	return S_ChangeMusic(musname.GetChars(), order, !!looped, true);
 }
 
 DEFINE_ACTION_FUNCTION_NATIVE(_System, PlayMusic, PlayMusic)
@@ -1341,3 +1356,54 @@ DEFINE_ACTION_FUNCTION_NATIVE(_QuatStruct, Inverse, QuatInverse)
 	QuatInverse(self->X, self->Y, self->Z, self->W, &quat);
 	ACTION_RETURN_QUAT(quat);
 }
+
+PFunction * FindFunctionPointer(PClass * cls, int fn_name)
+{
+	auto fn = dyn_cast<PFunction>(cls->FindSymbol(ENamedName(fn_name), true));
+	return (fn && (fn->Variants[0].Flags & (VARF_Action | VARF_Virtual)) == 0 ) ? fn : nullptr;
+}
+
+DEFINE_ACTION_FUNCTION_NATIVE(DObject, FindFunction, FindFunctionPointer)
+{
+	PARAM_PROLOGUE;
+	PARAM_CLASS(cls, DObject);
+	PARAM_NAME(fn);
+
+	ACTION_RETURN_POINTER(FindFunctionPointer(cls, fn.GetIndex()));
+}
+
+FTranslationID R_FindCustomTranslation(FName name);
+
+static int ZFindTranslation(int intname)
+{
+	return R_FindCustomTranslation(ENamedName(intname)).index();
+}
+
+static int MakeTransID(int g, int s)
+{
+	return TRANSLATION(g, s).index();
+}
+
+DEFINE_ACTION_FUNCTION_NATIVE(_Translation, GetID, ZFindTranslation)
+{
+	PARAM_PROLOGUE;
+	PARAM_INT(t);
+	ACTION_RETURN_INT(ZFindTranslation(t));
+}
+
+// same as above for the compiler which needs a class to look this up.
+DEFINE_ACTION_FUNCTION_NATIVE(DObject, BuiltinFindTranslation, ZFindTranslation)
+{
+	PARAM_PROLOGUE;
+	PARAM_INT(t);
+	ACTION_RETURN_INT(ZFindTranslation(t));
+}
+
+DEFINE_ACTION_FUNCTION_NATIVE(_Translation, MakeID, MakeTransID)
+{
+	PARAM_PROLOGUE;
+	PARAM_INT(g);
+	PARAM_INT(t);
+	ACTION_RETURN_INT(MakeTransID(g, t));
+}
+

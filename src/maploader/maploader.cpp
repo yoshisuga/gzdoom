@@ -84,6 +84,7 @@
 #include "texturemanager.h"
 #include "hw_vertexbuilder.h"
 #include "version.h"
+#include "fs_decompress.h"
 
 enum
 {
@@ -426,7 +427,7 @@ void MapLoader::LoadVertexes(MapData * map)
 
 	if (numvertexes == 0)
 	{
-		I_Error("Map has no vertices.\n");
+		I_Error("Map has no vertices.");
 	}
 
 	// Allocate memory for buffer.
@@ -497,6 +498,11 @@ void MapLoader::LoadGLZSegs (FileReader &data, int type)
 			uint32_t partner = data.ReadUInt32();
 			uint32_t line;
 
+			if (partner != 0xffffffffu && partner >= Level->segs.Size())
+			{
+				I_Error("partner seg index out of range for subsector %d, seg %d", i, j);
+			}
+
 			if (type >= 2)
 			{
 				line = data.ReadUInt32();
@@ -563,7 +569,7 @@ void MapLoader::LoadZNodes(FileReader &data, int glnodes)
 	if (orgVerts > Level->vertexes.Size())
 	{ // These nodes are based on a map with more vertex data than we have.
 	  // We can't use them.
-		throw CRecoverableError("Incorrect number of vertexes in nodes.\n");
+		I_Error("Incorrect number of vertexes in nodes.");
 	}
 	auto oldvertexes = &Level->vertexes[0];
 	if (orgVerts + newVerts != Level->vertexes.Size())
@@ -606,7 +612,7 @@ void MapLoader::LoadZNodes(FileReader &data, int glnodes)
 	// segs used by subsectors.
 	if (numSegs != currSeg)
 	{
-		throw CRecoverableError("Incorrect number of segs in nodes.\n");
+		I_Error("Incorrect number of segs in nodes.");
 	}
 
 	Level->segs.Alloc(numSegs);
@@ -733,45 +739,37 @@ bool MapLoader::LoadExtendedNodes (FileReader &dalump, uint32_t id)
 		if (compressed)
 		{
 			FileReader zip;
-			try
+			if (OpenDecompressor(zip, dalump, -1, FileSys::METHOD_ZLIB, FileSys::DCF_EXCEPTIONS))
 			{
-				if (zip.OpenDecompressor(dalump, -1, METHOD_ZLIB, false, [](const char* err) { I_Error("%s", err); }))
-				{
-					LoadZNodes(zip, type);
-				}
-				else
-				{
-					Printf("Error loading nodes: Corrupt data.\n");
-					return false;
-				}
+				LoadZNodes(zip, type);
+				return true;
 			}
-			catch (const CRecoverableError& err)
+			else
 			{
-				Printf("Error loading nodes: %s.\n", err.what());
-
-				ForceNodeBuild = true;
-				Level->subsectors.Clear();
-				Level->segs.Clear();
-				Level->nodes.Clear();
-				return false;
+				Printf("Error loading nodes: Corrupt data.\n");
 			}
 		}
 		else
 		{
 			LoadZNodes(dalump, type);
+			return true;
 		}
-		return true;
 	}
 	catch (CRecoverableError &error)
 	{
 		Printf("Error loading nodes: %s\n", error.GetMessage());
-
-		ForceNodeBuild = true;
-		Level->subsectors.Clear();
-		Level->segs.Clear();
-		Level->nodes.Clear();
-		return false;
 	}
+	catch (FileSys::FileSystemException& error)
+	{
+		Printf("Error loading nodes: %s\n", error.what());
+	}
+	// clean up.
+	Printf("The BSP will be rebuilt\n");
+	ForceNodeBuild = true;
+	Level->subsectors.Clear();
+	Level->segs.Clear();
+	Level->nodes.Clear();
+	return false;
 
 }
 
@@ -1166,7 +1164,7 @@ void MapLoader::LoadSectors (MapData *map, FMissingTextureTracker &missingtex)
 template<class nodetype, class subsectortype>
 bool MapLoader::LoadNodes (MapData * map)
 {
-	FileData	data;
+	FileSys::FileData	data;
 	int 		j;
 	int 		k;
 	nodetype	*mn;
@@ -1663,7 +1661,7 @@ void MapLoader::FinishLoadingLineDefs ()
 	}
 	else
 	{
-		I_Error ("%d sidedefs is not enough\n", sidecount);
+		I_Error ("%d sidedefs is not enough", sidecount);
 	}
 }
 
@@ -2061,9 +2059,9 @@ void MapLoader::ProcessSideTextures(bool checktranmap, side_t *sd, sector_t *sec
 		  //	  instead of figuring something out from the colormap.
 		if (sec != nullptr)
 		{
-			SetTexture (sd, side_t::bottom, &sec->bottommap, msd->bottomtexture);
-			SetTexture (sd, side_t::mid, &sec->midmap, msd->midtexture);
-			SetTexture (sd, side_t::top, &sec->topmap, msd->toptexture);
+			SetTexture (sd, side_t::bottom, &sec->bottommap, msd->bottomtexture.GetChars());
+			SetTexture (sd, side_t::mid, &sec->midmap, msd->midtexture.GetChars());
+			SetTexture (sd, side_t::top, &sec->topmap, msd->toptexture.GetChars());
 		}
 		break;
 
@@ -2075,9 +2073,9 @@ void MapLoader::ProcessSideTextures(bool checktranmap, side_t *sd, sector_t *sec
 			uint32_t color = MAKERGB(255,255,255), fog = 0;
 			bool colorgood, foggood;
 
-			SetTextureNoErr (sd, side_t::bottom, &fog, msd->bottomtexture, &foggood, true);
-			SetTextureNoErr (sd, side_t::top, &color, msd->toptexture, &colorgood, false);
-			SetTexture(sd, side_t::mid, msd->midtexture, missingtex);
+			SetTextureNoErr (sd, side_t::bottom, &fog, msd->bottomtexture.GetChars(), &foggood, true);
+			SetTextureNoErr (sd, side_t::top, &color, msd->toptexture.GetChars(), &colorgood, false);
+			SetTexture(sd, side_t::mid, msd->midtexture.GetChars(), missingtex);
 
 			if (colorgood | foggood)
 			{
@@ -2117,12 +2115,12 @@ void MapLoader::ProcessSideTextures(bool checktranmap, side_t *sd, sector_t *sec
 		{
 			int lumpnum;
 
-			if (strnicmp ("TRANMAP", msd->midtexture, 8) == 0)
+			if (strnicmp ("TRANMAP", msd->midtexture.GetChars(), 8) == 0)
 			{
 				// The translator set the alpha argument already; no reason to do it again.
 				sd->SetTexture(side_t::mid, FNullTextureID());
 			}
-			else if ((lumpnum = fileSystem.CheckNumForName (msd->midtexture)) > 0 &&
+			else if ((lumpnum = fileSystem.CheckNumForName (msd->midtexture.GetChars())) > 0 &&
 				fileSystem.FileLength (lumpnum) == 65536)
 			{
 				auto fr = fileSystem.OpenFileReader(lumpnum);
@@ -2130,9 +2128,7 @@ void MapLoader::ProcessSideTextures(bool checktranmap, side_t *sd, sector_t *sec
 
 				if (developer >= DMSG_NOTIFY)
 				{
-					char lumpname[9];
-					lumpname[8] = 0;
-					fileSystem.GetFileShortName(lumpname, lumpnum);
+					const char *lumpname = fileSystem.GetFileShortName(lumpnum);
 					if (*alpha < 0) Printf("%s appears to be additive translucency %d (%d%%)\n", lumpname, -*alpha, -*alpha * 100 / 255);
 					else Printf("%s appears to be translucency %d (%d%%)\n", lumpname, *alpha, *alpha * 100 / 255);
 				}
@@ -2706,7 +2702,7 @@ void MapLoader::GroupLines (bool buildmap)
 	}
 	if (flaggedNoFronts)
 	{
-		I_Error ("You need to fix these lines to play this map.\n");
+		I_Error ("You need to fix these lines to play this map.");
 	}
 
 	// build line tables for each sector
@@ -3097,8 +3093,8 @@ void MapLoader::LoadLevel(MapData *map, const char *lumpname, int position)
 			}
 		}
 
-		// If loading the regular nodes failed try GL nodes before considering a rebuild
-		if (!NodesLoaded)
+		// If loading the regular nodes failed try GL nodes before considering a rebuild (unless a rebuild was already asked for)
+		if (!NodesLoaded && !ForceNodeBuild)
 		{
 			if (LoadGLNodes(map))
 				reloop = true;
@@ -3349,8 +3345,9 @@ void MapLoader::LoadLightmap(MapData *map)
 		return;
 
 	FileReader fr;
-	if (!fr.OpenDecompressor(map->Reader(ML_LIGHTMAP), -1, METHOD_ZLIB, false, [](const char* err) { I_Error("%s", err); }))
+	if (!OpenDecompressor(fr, map->Reader(ML_LIGHTMAP), -1, FileSys::METHOD_ZLIB))
 		return;
+
 
 	int version = fr.ReadInt32();
 	if (version != 0)

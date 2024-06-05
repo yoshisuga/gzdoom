@@ -37,7 +37,6 @@ import GameController
     if GCController.controllers().isEmpty {
       let config = GCVirtualController.Configuration()
       config.elements = [
-        GCInputDirectionPad,
         GCInputLeftThumbstick,
         GCInputRightThumbstick,
         GCInputButtonA,
@@ -47,9 +46,7 @@ import GameController
         GCInputLeftTrigger,
         GCInputRightTrigger,
         GCInputLeftShoulder,
-        GCInputRightShoulder,
-        GCInputButtonOptions,
-        GCInputButtonMenu
+        GCInputRightShoulder
       ]
       virtualController = GCVirtualController(configuration: config)
       virtualController?.connect()
@@ -60,6 +57,11 @@ import GameController
     reconnectVirtual = false
     virtualController?.disconnect()
     virtualController = nil
+  }
+  
+  @objc func enableVirtual() {
+    reconnectVirtual = true
+    setupVirtualIfNeeded()
   }
   
   @objc func gameControllerConnected(_ sender: Notification) {

@@ -219,7 +219,7 @@ void ClientObituary (AActor *self, AActor *inflictor, AActor *attacker, int dmgf
 	}
 
 	FString obit = DamageTypeDefinition::GetObituary(mod);
-	if (attacker == nullptr && obit.IsNotEmpty()) messagename = obit;
+	if (attacker == nullptr && obit.IsNotEmpty()) messagename = obit.GetChars();
 	else
 	{
 		switch (mod.GetIndex())
@@ -249,11 +249,11 @@ void ClientObituary (AActor *self, AActor *inflictor, AActor *attacker, int dmgf
 		else
 		{
 			lookup.Format("$Obituary_%s_%s", attacker->GetClass()->TypeName.GetChars(), mod.GetChars());
-			if (GStrings[lookup.GetChars() + 1]) message = lookup;
+			if (GStrings[lookup.GetChars() + 1]) message = lookup.GetChars();
 			else
 			{
 				lookup.Format("$Obituary_%s", attacker->GetClass()->TypeName.GetChars());
-				if (GStrings[lookup.GetChars() + 1]) message = lookup;
+				if (GStrings[lookup.GetChars() + 1]) message = lookup.GetChars();
 				else
 				{
 					IFVIRTUALPTR(attacker, AActor, GetObituary)
@@ -261,7 +261,7 @@ void ClientObituary (AActor *self, AActor *inflictor, AActor *attacker, int dmgf
 						VMValue params[] = { attacker, self, inflictor, mod.GetIndex(), !!(dmgflags & DMG_PLAYERATTACK) };
 						VMReturn rett(&ret);
 						VMCall(func, params, countof(params), &rett, 1);
-						if (ret.IsNotEmpty()) message = ret;
+						if (ret.IsNotEmpty()) message = ret.GetChars();
 					}
 				}
 			}
@@ -283,12 +283,12 @@ void ClientObituary (AActor *self, AActor *inflictor, AActor *attacker, int dmgf
 		if (mod == NAME_Melee)
 		{
 			FStringf ob("DEFHITOB_%s", cls);
-			message = GStrings.GetString(ob, nullptr, self->player->userinfo.GetGender());
+			message = GStrings.GetString(ob.GetChars(), nullptr, self->player->userinfo.GetGender());
 		}
 		if (message == nullptr)
 		{
 			FStringf ob("DEFOB_%s", cls);
-			message = GStrings.GetString(ob, nullptr, self->player->userinfo.GetGender());
+			message = GStrings.GetString(ob.GetChars(), nullptr, self->player->userinfo.GetGender());
 		}
 		if (message == nullptr)
 		{
@@ -1335,13 +1335,24 @@ static int DamageMobj (AActor *target, AActor *inflictor, AActor *source, int da
 			}
 		}
 
+		bool compat_voodoo_zombie = target->Level->i_compatflags2 & COMPATF2_VOODOO_ZOMBIES;
+
 		player->health -= damage;		// mirror mobj health here for Dave
-		// [RH] Make voodoo dolls and real players record the same health
-		target->health = player->mo->health -= damage;
+		if(compat_voodoo_zombie)
+		{ // [RL0] To allow voodoo zombies, don't set the voodoo doll to the player mobj's health and don't change the player mobj's health on damage
+			target->health -= damage;
+		}
+		else
+		{ // [RH] Make voodoo dolls and real players record the same health
+			target->health = player->mo->health -= damage;
+		}
 		if (player->health < 50 && !deathmatch && !(flags & DMG_FORCED))
 		{
 			P_AutoUseStrifeHealth (player);
-			player->mo->health = player->health;
+			if(!compat_voodoo_zombie)
+			{ // [RL0] To match vanilla behavior, don't set the player mo's health to 0 if voodoo zombies compat is enabled
+				player->mo->health = player->health;
+			}
 		}
 		if (player->health <= 0)
 		{
@@ -1603,6 +1614,9 @@ DEFINE_ACTION_FUNCTION(AActor, PoisonMobj)
 
 bool AActor::OkayToSwitchTarget(AActor *other)
 {
+	if (other == nullptr)
+		return false;
+
 	if (other == this)
 		return false;		// [RH] Don't hate self (can happen when shooting barrels)
 

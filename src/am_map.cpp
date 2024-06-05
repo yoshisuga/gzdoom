@@ -792,9 +792,9 @@ void FMapInfoParser::ParseAMColors(bool overlay)
 				{
 					sc.MustGetToken(TK_StringConst);
 					FString color = sc.String;
-					FString colorName = V_GetColorStringByName(color);
+					FString colorName = V_GetColorStringByName(color.GetChars());
 					if(!colorName.IsEmpty()) color = colorName;
-					int colorval = V_GetColorFromString(color);
+					int colorval = V_GetColorFromString(color.GetChars());
 					cset.c[i].FromRGB(RPART(colorval), GPART(colorval), BPART(colorval)); 
 					colorset = true;
 					break;
@@ -872,10 +872,10 @@ void AM_StaticInit()
 	CheatKey.Clear();
 	EasyKey.Clear();
 
-	if (gameinfo.mMapArrow.IsNotEmpty()) AM_ParseArrow(MapArrow, gameinfo.mMapArrow);
-	if (gameinfo.mCheatMapArrow.IsNotEmpty()) AM_ParseArrow(CheatMapArrow, gameinfo.mCheatMapArrow);
-	AM_ParseArrow(CheatKey, gameinfo.mCheatKey);
-	AM_ParseArrow(EasyKey, gameinfo.mEasyKey);
+	if (gameinfo.mMapArrow.IsNotEmpty()) AM_ParseArrow(MapArrow, gameinfo.mMapArrow.GetChars());
+	if (gameinfo.mCheatMapArrow.IsNotEmpty()) AM_ParseArrow(CheatMapArrow, gameinfo.mCheatMapArrow.GetChars());
+	AM_ParseArrow(CheatKey, gameinfo.mCheatKey.GetChars());
+	AM_ParseArrow(EasyKey, gameinfo.mEasyKey.GetChars());
 	if (MapArrow.Size() == 0) I_FatalError("No automap arrow defined");
 
 	char namebuf[9];
@@ -996,7 +996,7 @@ class DAutomap :public DAutomapBase
 	void calcMinMaxMtoF();
 
 	void DrawMarker(FGameTexture *tex, double x, double y, int yadjust,
-		INTBOOL flip, double xscale, double yscale, int translation, double alpha, uint32_t fillcolor, FRenderStyle renderstyle);
+		INTBOOL flip, double xscale, double yscale, FTranslationID translation, double alpha, uint32_t fillcolor, FRenderStyle renderstyle);
 
 	void rotatePoint(double *x, double *y);
 	void rotate(double *x, double *y, DAngle an);
@@ -1360,7 +1360,7 @@ void DAutomap::LevelInit ()
 	}
 	else
 	{
-		mapback = TexMan.CheckForTexture(Level->info->MapBackground, ETextureType::MiscPatch);
+		mapback = TexMan.CheckForTexture(Level->info->MapBackground.GetChars(), ETextureType::MiscPatch);
 	}
 
 	clearMarks();
@@ -2012,6 +2012,9 @@ void DAutomap::drawSubsectors()
 	PalEntry flatcolor;
 	mpoint_t originpt;
 
+	auto lm = getRealLightmode(Level, false);
+	bool softlightramp = !V_IsHardwareRenderer() || lm == ELightMode::Doom || lm == ELightMode::DoomDark;
+
 	auto &subsectors = Level->subsectors;
 	for (unsigned i = 0; i < subsectors.Size(); ++i)
 	{
@@ -2186,15 +2189,14 @@ void DAutomap::drawSubsectors()
 			// Why the +12? I wish I knew, but experimentation indicates it
 			// is necessary in order to best reproduce Doom's original lighting.
 			double fadelevel;
-
-			if (!V_IsHardwareRenderer() || primaryLevel->lightMode == ELightMode::DoomDark || primaryLevel->lightMode == ELightMode::Doom || primaryLevel->lightMode == ELightMode::ZDoomSoftware || primaryLevel->lightMode == ELightMode::DoomSoftware)
+			if (softlightramp)
 			{
 				double map = (NUMCOLORMAPS * 2.) - ((floorlight + 12) * (NUMCOLORMAPS / 128.));
 				fadelevel = clamp((map - 12) / NUMCOLORMAPS, 0.0, 1.0);
 			}
 			else
 			{
-				// The hardware renderer's light modes 0, 1 and 4 use a linear light scale which must be used here as well. Otherwise the automap gets too dark.
+				// for the hardware renderer's light modes that use a linear light scale this must do the same. Otherwise the automap gets too dark.
 				fadelevel = 1. - clamp(floorlight, 0, 255) / 255.f;
 			}
 
@@ -2806,7 +2808,7 @@ void DAutomap::drawPlayers ()
 		int numarrowlines;
 
 		double vh = players[consoleplayer].viewheight;
-		DVector2 pos = players[consoleplayer].camera->InterpolatedPosition(r_viewpoint.TicFrac);
+		DVector2 pos = players[consoleplayer].camera->InterpolatedPosition(r_viewpoint.TicFrac).XY();
 		pt.x = pos.X;
 		pt.y = pos.Y;
 		if (am_rotate == 1 || (am_rotate == 2 && viewactive))
@@ -3072,7 +3074,7 @@ void DAutomap::drawThings ()
 //=============================================================================
 
 void DAutomap::DrawMarker (FGameTexture *tex, double x, double y, int yadjust,
-	INTBOOL flip, double xscale, double yscale, int translation, double alpha, uint32_t fillcolor, FRenderStyle renderstyle)
+	INTBOOL flip, double xscale, double yscale, FTranslationID translation, double alpha, uint32_t fillcolor, FRenderStyle renderstyle)
 {
 	if (tex == nullptr || !tex->isValid())
 	{
@@ -3095,7 +3097,7 @@ void DAutomap::DrawMarker (FGameTexture *tex, double x, double y, int yadjust,
 		DTA_ClipLeft, f_x,
 		DTA_ClipRight, f_x + f_w,
 		DTA_FlipX, flip,
-		DTA_TranslationIndex, translation,
+		DTA_TranslationIndex, translation.index(),
 		DTA_Alpha, alpha,
 		DTA_FillColor, fillcolor,
 		DTA_RenderStyle, renderstyle.AsDWORD,
@@ -3126,7 +3128,7 @@ void DAutomap::drawMarks ()
 			if (font == nullptr)
 			{
 				DrawMarker(TexMan.GetGameTexture(marknums[i], true), markpoints[i].x, markpoints[i].y, -3, 0,
-					1, 1, 0, 1, 0, LegacyRenderStyles[STYLE_Normal]);
+					1, 1, NO_TRANSLATION, 1, 0, LegacyRenderStyles[STYLE_Normal]);
 			}
 			else
 			{

@@ -141,6 +141,7 @@ enum EChaseFlags
 	CHF_NOPOSTATTACKTURN =				128,
 	CHF_STOPIFBLOCKED =					256,
 	CHF_DONTIDLE =						512,
+	CHF_DONTLOOKALLAROUND =				1024,
 
 	CHF_DONTTURN = CHF_NORANDOMTURN | CHF_NOPOSTATTACKTURN | CHF_STOPIFBLOCKED
 };
@@ -261,7 +262,9 @@ enum EExplodeFlags
 	XF_EXPLICITDAMAGETYPE = 8,
 	XF_NOSPLASH = 16,
 	XF_THRUSTZ = 32,
-
+	XF_THRUSTLESS = 64,
+	XF_NOALLIES = 128,
+	XF_CIRCULAR = 256,
 };
 
 // Flags for A_RadiusThrust
@@ -363,6 +366,13 @@ enum ERadiusGiveFlags
 	RGF_EXFILTER	=	1 << 15,
 	RGF_EXSPECIES	=	1 << 16,
 	RGF_EITHER		=	1 << 17,
+};
+
+// SetAnimation flags
+enum ESetAnimationFlags
+{
+	SAF_INSTANT = 1 << 0,
+	SAF_LOOP = 1 << 1,
 };
 
 // Change model flags
@@ -653,6 +663,7 @@ enum EQuakeFlags
 	QF_GROUNDONLY =		1 << 7,
 	QF_AFFECTACTORS =	1 << 8,
 	QF_SHAKEONLY =		1 << 9,
+	QF_DAMAGEFALLOFF =	1 << 10,
 };
 
 // A_CheckProximity flags
@@ -1227,7 +1238,10 @@ enum RadiusDamageFlags
 	RADF_SOURCEISSPOT = 4,
 	RADF_NODAMAGE = 8,
 	RADF_THRUSTZ = 16,
-	RADF_OLDRADIUSDAMAGE = 32
+	RADF_OLDRADIUSDAMAGE = 32,
+	RADF_THRUSTLESS = 64,
+	RADF_NOALLIES = 128,
+	RADF_CIRCULAR = 256
 };
 
 enum IntermissionSequenceType
@@ -1429,6 +1443,11 @@ enum ECompatFlags
 	COMPATF2_EXPLODE1		= 1 << 8,	// No vertical explosion thrust
 	COMPATF2_EXPLODE2		= 1 << 9,	// Use original explosion code throughout.
 	COMPATF2_RAILING		= 1 << 10,	// Bugged Strife railings.
+	COMPATF2_SCRIPTWAIT		= 1 << 11,	// Use old scriptwait implementation where it doesn't wait on a non-running script.
+	COMPATF2_AVOID_HAZARDS	= 1 << 12,	// another MBF thing.
+	COMPATF2_STAYONLIFT		= 1 << 13,	// yet another MBF thing.
+	COMPATF2_NOMBF21		= 1 << 14,	// disable MBF21 features that may clash with certain maps
+	COMPATF2_VOODOO_ZOMBIES = 1 << 15,  // allow playerinfo, playerpawn, and voodoo health to all be different, and allow monster targetting of 'dead' players that have positive health
 };
 
 const M_E        = 2.7182818284590452354;  // e
@@ -1444,3 +1463,9 @@ const M_2_PI     = 0.63661977236758134308; // 2/pi
 const M_2_SQRTPI = 1.12837916709551257390; // 2/sqrt(pi)
 const M_SQRT2    = 1.41421356237309504880; // sqrt(2)
 const M_SQRT1_2  = 0.70710678118654752440; // 1/sqrt(2)
+
+// Used by Actor.FallAndSink
+const WATER_SINK_FACTOR         = 0.125;
+const WATER_SINK_SMALL_FACTOR   = 0.25;
+const WATER_SINK_SPEED          = 0.5;
+const WATER_JUMP_SPEED          = 3.5;

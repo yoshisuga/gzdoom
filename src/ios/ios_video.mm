@@ -28,7 +28,7 @@
 
 #include "ios-glue.h"
 #import "IOSUtils.h"
-#import "zdoom_native-Swift.h"
+#import "gzdoom-Swift.h"
 
 EXTERN_CVAR (Int, vid_defwidth)
 EXTERN_CVAR (Int, vid_defheight)

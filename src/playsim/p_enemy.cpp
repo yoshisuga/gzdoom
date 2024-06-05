@@ -50,6 +50,7 @@
 #include "vm.h"
 #include "actorinlines.h"
 #include "a_ceiling.h"
+#include "shadowinlines.h"
 
 #include "gi.h"
 
@@ -61,8 +62,8 @@ static FRandom pr_lookformonsters ("LookForMonsters");
 static FRandom pr_lookforplayers ("LookForPlayers");
 static FRandom pr_scaredycat ("Anubis");
 	   FRandom pr_chase ("Chase");
-static FRandom pr_facetarget ("FaceTarget");
-static FRandom pr_railface ("RailFace");
+	   FRandom pr_facetarget ("FaceTarget");
+	   FRandom pr_railface ("RailFace");
 static FRandom pr_look2 ("LookyLooky");
 static FRandom pr_look3 ("IGotHooky");
 static FRandom pr_slook ("SlooK");
@@ -603,7 +604,7 @@ static int P_Move (AActor *actor)
 				move = move.Rotated(anglediff);
 				oldangle = actor->Angles.Yaw;
 			}
-			start = actor->Pos() - move * i / steps;
+			start = actor->Pos().XY() - move * i / steps;
 		}
 	}
 
@@ -627,9 +628,14 @@ static int P_Move (AActor *actor)
 	// actually walking down a step.
 	if (try_ok &&
 		!((actor->flags & MF_NOGRAVITY) || CanJump(actor))
-			&& actor->Z() > actor->floorz && !(actor->flags2 & MF2_ONMOBJ))
+			&& !(actor->flags2 & MF2_ONMOBJ))
+
 	{
-		if (actor->Z() <= actor->floorz + actor->MaxStepHeight)
+		// account for imprecisions with slopes. A walking actor should never be below its own floorz.
+		if (actor->Z() < actor->floorz)
+			actor->SetZ(actor->floorz);
+
+		else if (actor->Z() <= actor->floorz + actor->MaxStepHeight)
 		{
 			double savedz = actor->Z();
 			actor->SetZ(actor->floorz);
@@ -754,6 +760,10 @@ int P_SmartMove(AActor* actor)
 		)
 		actor->movedir = DI_NODIR;    // avoid the area (most of the time anyway)
 
+	if (actor->flags2 & MF2_FLOORCLIP)
+	{
+		actor->AdjustFloorClip();
+	}
 	return true;
 }
 
@@ -2206,6 +2216,7 @@ enum ChaseFlags
 	CHF_NOPOSTATTACKTURN = 128,
 	CHF_STOPIFBLOCKED = 256,
 	CHF_DONTIDLE = 512,
+	CHF_DONTLOOKALLAROUND = 1024,
 };
 
 void A_Wander(AActor *self, int flags)
@@ -2440,7 +2451,7 @@ void A_DoChase (AActor *actor, bool fastchase, FState *meleestate, FState *missi
 			// hurt our old one temporarily.
 			actor->threshold = 0;
 		}
-		if (P_LookForPlayers (actor, true, NULL) && actor->target != actor->goal)
+		if (P_LookForPlayers (actor, !(flags & CHF_DONTLOOKALLAROUND), NULL) && actor->target != actor->goal)
 		{ // got a new target
 			actor->flags7 &= ~MF7_INCHASE;
 			return;
@@ -2615,7 +2626,7 @@ void A_DoChase (AActor *actor, bool fastchase, FState *meleestate, FState *missi
 			lookForBetter = true;
 		}
 		AActor * oldtarget = actor->target;
-		gotNew = P_LookForPlayers (actor, true, NULL);
+		gotNew = P_LookForPlayers (actor, !(flags & CHF_DONTLOOKALLAROUND), NULL);
 		if (lookForBetter)
 		{
 			actor->flags3 |= MF3_NOSIGHTCHECK;
@@ -2638,7 +2649,7 @@ void A_DoChase (AActor *actor, bool fastchase, FState *meleestate, FState *missi
 	if ((!fastchase || !actor->FastChaseStrafeCount) && !dontmove)
 	{
 		// CANTLEAVEFLOORPIC handling was completely missing in the non-serpent functions.
-		DVector2 old = actor->Pos();
+		DVector2 old = actor->Pos().XY();
 		int oldgroup = actor->PrevPortalGroup;
 		FTextureID oldFloor = actor->floorpic;
 
@@ -2800,7 +2811,7 @@ bool P_CheckForResurrection(AActor* self, bool usevilestates, FState* state = nu
 
 				corpsehit->flags |= MF_SOLID;
 				corpsehit->Height = corpsehit->GetDefault()->Height;
-				bool check = P_CheckPosition(corpsehit, corpsehit->Pos());
+				bool check = P_CheckPosition(corpsehit, corpsehit->Pos().XY());
 				corpsehit->flags = oldflags;
 				corpsehit->radius = oldradius;
 				corpsehit->Height = oldheight;
@@ -3018,15 +3029,11 @@ void A_Face(AActor *self, AActor *other, DAngle max_turn, DAngle max_pitch, DAng
 			self->Angles.Pitch = other_pitch;
 		}
 		self->Angles.Pitch += pitch_offset;
+		A_Face_ShadowHandling(self, other, max_pitch, other_pitch, true);
 	}
 	
 
-
-	// This will never work well if the turn angle is limited.
-	if (max_turn == nullAngle && (self->Angles.Yaw == other_angle) && other->flags & MF_SHADOW && !(self->flags6 & MF6_SEEINVISIBLE) )
-    {
-		self->Angles.Yaw += DAngle::fromDeg(pr_facetarget.Random2() * (45 / 256.));
-    }
+	A_Face_ShadowHandling(self,other,max_turn,other_angle,false);
 }
 
 void A_FaceTarget(AActor *self)
@@ -3073,10 +3080,7 @@ DEFINE_ACTION_FUNCTION(AActor, A_MonsterRail)
 	// Let the aim trail behind the player
 	self->Angles.Yaw = self->AngleTo(self->target, -self->target->Vel.X * 3, -self->target->Vel.Y * 3);
 
-	if (self->target->flags & MF_SHADOW && !(self->flags6 & MF6_SEEINVISIBLE))
-	{
-		self->Angles.Yaw += DAngle::fromDeg(pr_railface.Random2() * 45./256);
-	}
+	A_MonsterRail_ShadowHandling(self);
 
 	FRailParams p;
 

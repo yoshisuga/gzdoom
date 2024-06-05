@@ -30,7 +30,7 @@
 #include "s_music.h"
 #include "engineerrors.h"
 
-#import "zdoom_native-Swift.h"
+#import "gzdoom-Swift.h"
 // ---------------------------------------------------------------------------
 
 

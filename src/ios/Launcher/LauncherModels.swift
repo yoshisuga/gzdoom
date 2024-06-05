@@ -5,6 +5,8 @@
 //  Created by Yoshi Sugawara on 3/13/23.
 //
 
+import Foundation
+
 struct GZDoomFile: Identifiable, Hashable, Codable {
   let displayName: String
   let fullPath: String

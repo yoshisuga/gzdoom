@@ -231,6 +231,8 @@ void PClass::StaticInit ()
 //
 //==========================================================================
 
+void ClearServices();
+
 void PClass::StaticShutdown ()
 {
 	if (WP_NOCHANGE != nullptr)
@@ -238,6 +240,7 @@ void PClass::StaticShutdown ()
 		delete WP_NOCHANGE;
 	}
 
+	ClearServices();
 	// delete all variables containing pointers to script functions.
 	for (auto p : FunctionPtrList)
 	{
@@ -437,6 +440,10 @@ DObject *PClass::CreateNew()
 		I_Error("Attempt to instantiate abstract class %s.", TypeName.GetChars());
 	}
 	ConstructNative (mem);
+
+	if (Defaults != nullptr)
+		((DObject *)mem)->ObjectFlags |= ((DObject *)Defaults)->ObjectFlags & OF_Transient;
+
 	((DObject *)mem)->SetClass (const_cast<PClass *>(this));
 	InitializeSpecials(mem, Defaults, &PClass::SpecialInits);
 	return (DObject *)mem;

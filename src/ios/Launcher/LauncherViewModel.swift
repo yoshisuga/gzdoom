@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 class LauncherViewModel: ObservableObject {
   @Published var iWadFiles = [GZDoomFile]()
