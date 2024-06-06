@@ -25,6 +25,7 @@ struct SelectIWADView: View {
 struct IWADSelectedView: View {
   @ObservedObject var viewModel: LauncherViewModel
   @State private var activeSheet: ActiveSheet?
+  @State private var configAction: LaunchConfigAction = .none
 
   let selected: GZDoomFile
   

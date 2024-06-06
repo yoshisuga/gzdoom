@@ -148,7 +148,8 @@ namespace Priv
 #if TARGET_OS_IOS
         int width, height;
         ios_get_screen_width_height(&width, &height);
-        SDL_Vulkan_LoadLibrary("libMoltenVK.dylib");
+//        SDL_Vulkan_LoadLibrary("libMoltenVK.dylib");
+        SDL_Vulkan_LoadLibrary(NULL);
         const char *errorv = SDL_GetError();
         printf("SDL_CreateWindow error = %s",errorv);
         Priv::window = SDL_CreateWindow(caption.GetChars(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
