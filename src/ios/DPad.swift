@@ -60,7 +60,7 @@ class DPadView: UIView {
     ]
     NSLayoutConstraint.activate(constraints)
     imageView.image = UIImage(named: "dPad-None")
-    imageView.tintColor = .white
+    imageView.tintColor = .gray
   }
   
   required init?(coder: NSCoder) {

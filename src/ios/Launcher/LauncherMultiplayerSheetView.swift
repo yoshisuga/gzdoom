@@ -39,7 +39,7 @@ struct MultiplayerSheetView: View {
       }
       Form {
         Section(header: Text("Important Note")) {
-          Text("This is still a work-in-progress. Joining an existing game seems to work but hosting currently does not.")
+          Text("This feature is currently experimental. Joining an existing game seems to work but hosting may have issues.")
             .foregroundColor(.orange)
         }
         Section(header: Text("Hosting")) {

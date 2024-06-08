@@ -46,9 +46,9 @@ class GamepadButtonView: UIView {
     imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
     imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     imageView.image = UIImage(named: "button")
-    imageView.tintColor = .white
+    imageView.tintColor = .gray
     buttonLabel.text = buttonName
-    buttonLabel.textColor = .white
+    buttonLabel.textColor = .gray
     buttonLabel.font = UIFont.systemFont(ofSize: 9.0, weight: .bold)
     buttonLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(buttonLabel)

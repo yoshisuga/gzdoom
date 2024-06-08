@@ -15,6 +15,8 @@ struct LauncherConfigSheetView: View {
   @State var saveAlertDisplayed = false
   @State var launcherConfigSaveName = ""
   
+  @Environment(\.presentations) private var presentations
+  
   var body: some View {
     VStack {
       Text("Base Game: \(viewModel.selectedIWAD?.displayName ?? "None")").foregroundColor(.yellow)
@@ -55,7 +57,10 @@ struct LauncherConfigSheetView: View {
         return
       }
       viewModel.saveLauncherConfig(name: configName, iwad: selectedIWAD, arguments: orderedArgs, ranAt: Date())
-      dismiss()
+//      dismiss()
+      presentations.forEach {
+        $0.wrappedValue = nil
+      }
     }.padding(.bottom)
   }
   
@@ -119,7 +124,7 @@ struct LauncherConfigsView: View {
                 } label: {
                   Image(systemName: "pencil")
                 }
-              }
+              }.listRowBackground(Color.black.opacity(0.1))
             }.onDelete { indexSet in
               let configsToDelete = indexSet.map{ viewModel.savedConfigs[$0] }
               viewModel.deleteLauncherConfigs(configsToDelete)

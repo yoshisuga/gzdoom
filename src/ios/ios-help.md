@@ -2,11 +2,11 @@
 
 ^[GenZD](colored: 'white') is a port of ^[GZDoom](colored: 'white'), a ^[source port](colored: 'orange') of what's known as the ^[idTech 1](colored: 'white') game engine. The most notable game from this being, of course, ^[Doom](colored: 'red'). ^[GZDoom](colored: 'white') is the work of the ^[ZDoom, GZDoom teams and many community contributors](colored: 'orange').
 
-^[DOOM](colored: 'white') is a registered trademark of id Software and its parents: Bethesda Softworks, Zenimax Media, and Microsoft. ^[GenZD does not contain any copyrighted assets or data from DOOM or any of its trademark owners.](colored: 'white').
+^[DOOM](colored: 'white') is a registered trademark of id Software and its parents: Bethesda Softworks, Zenimax Media, and Microsoft. ^[GenZD does not contain any copyrighted assets or data from DOOM or any of its trademark owners](colored: 'white').
 
-A source port is able to read the original game files and ^[render the game using modern technology](colored: 'white'). The game engine can be rendered in ^[full 3D](colored: 'white') using the latest 3D graphics hardware and drivers. ^[GZDoom](colored: 'white') for iOS is using ^[Metal](colored: 'blue') to render its graphics through moltenVK and the Vulkan API.
+A source port is able to read the original game files and ^[render the game using modern technology](colored: 'white'). The game engine can be rendered in ^[full 3D](colored: 'white') using the latest 3D graphics hardware and drivers. ^[GenZD](colored: 'white')  uses ^[Metal](colored: 'blue') to render its graphics through MoltenVK and the Vulkan API.
 
-^[GenZD](colored: 'white') also supports ^[mods](colored: 'orange'), which further extends capabilities beyond the original game engine, like adding ^[graphical and sound enhancements](colored: 'white') as well as custom behavior through scripting. 
+^[GenZD](colored: 'white') also supports "^[MODS](colored: 'orange')", which further extends capabilities beyond the original game engine, like adding ^[graphical and sound enhancements](colored: 'white') as well as ^[new gameplay elements and behaviors](colored: 'white'). 
 
 ^[°°±±²²ÛÛ  Quick Start ÛÛ²²±±°°](colored: 'cyan')
 
@@ -14,7 +14,7 @@ To start a game, you need to create a ^[Launch Configuration](colored: 'white').
 
 A ^[Launch Configuration](colored: 'white') requires that you select a ^[base game file](colored: 'white') and optionally add any other files (^[mods](colored: 'white')) you wish to load. You can save this configuration to use for later.
 
-For example, you can play John Romero's most recent WAD pack, ^[SIGIL](colored: 'white'), by adding the retail ^[DOOM.wad](colored: 'white') as the base game, and then selecting the ^[SIGIL.wad](colored: 'white') file as an additional external file, and save this configuration to play later. Note that you must supply the DOOM.wad file yourself, either through your previously owned copy, or by buying them services such as Steam or GOG.
+For example, you can play John Romero's most recent WAD pack, ^[SIGIL](colored: 'white'), by adding the retail ^[DOOM.wad](colored: 'white') as the base game, and then selecting the ^[SIGIL.wad](colored: 'white') file as an additional external file, and save this configuration to play later. Note that you must supply the DOOM.wad file yourself, either through your previously owned copy, or by buying them through services such as Steam or GOG.
 
 To create a ^[new launch configuration](colored: 'white'):
 
@@ -62,7 +62,7 @@ Here are the other options you can choose after selecting an IWAD on this pane:
 
 - ^[Back](colored: 'yellow'): Go back to selecting the base game again.
 
-- ^[Multiplayer Options](colored: 'yellow'): This is still largely experimental so use at your own risk.
+- ^[Multiplayer Options](colored: 'yellow'): This is still largely experimental; feel free to try it out!
 
 - ^[Launch without saving](colored: 'yellow'): Launch GenZD with the configuration right away without saving. Might be useful if you're just testing things out.
  
@@ -78,12 +78,22 @@ You can reorder the loading order by dragging the mod files with your finger on 
 
 Game controllers are supported: mFi, PS4, PS5, Xbox One, Nintendo Switch.
 
+Connecting a game controller will disable the virtual on-screen gamepad.
+
 ^[°°±±²²ÛÛ In-Game Operation ÛÛ²²±±°°](colored: 'cyan')
 
-After launching a game, you will be shown a ^[virtual keyboard](colored: 'yellow') by default. On the upper left side of the screen, you will see ^[buttons](colored: 'white') to toggle the ^[virtual keyboard](colored: 'yellow') as well as a ^[virtual controller](colored: 'yellow').
+After launching a game, you will be shown a ^[virtual gamepad](colored: 'yellow') by default. On the upper left side of the screen, you will see ^[buttons](colored: 'white') to toggle the ^[virtual keyboard](colored: 'yellow') as well as a ^[virtual controller](colored: 'yellow').
 
-Use the virtual keyboard to select menu options using the arrow keys (accessible via the "Fn" button) and use the "Return" key to select an option. You can also use a gamepad to do the menu selections as well.
+^[Basic Controls](colored: 'white'):
 
-Remapping the controls involve going to the game's option menu and customizing the controls.
+- ^[DPad](colored: 'white') (above the left analog control): Use to move selection in the in-game menu
+- ^[A](colored: 'white'): ^[Use/Confirm/Enter/](colored: 'yellow')
+- ^[B](colored: 'white'): ^[Run/Cancel](colored: 'yellow')
+- ^[Y](colored: 'white'): ^[Jump](colored: 'yellow')
+- ^[RT](colored: 'white') (upper right corner of left analog): ^[Fire](colored: 'yellow')
+- ^[LT](colored: 'white') (upper left corner of left analog): ^[Alt Fire](colored: 'yellow')
+- ^[R](colored: 'white') (lower right corner of left analog): ^[Change weapon (+)](colored: 'yellow')
+- ^[L](colored: 'white') (lower left corner of left analog): ^[Change weapon (-)](colored: 'yellow')
 
-The virtual controller currently only has the following controls: Left Analog Stick, LS, RS, LT, RT on the left side; Right Analog Stick, X, Y, B, A on the right side.
+- ^[Menu](colored: 'white') (on-screen only): ^[Show in game menu/Esc](colored: 'yellow')
+

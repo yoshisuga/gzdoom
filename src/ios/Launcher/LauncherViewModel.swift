@@ -94,6 +94,28 @@ class LauncherViewModel: ObservableObject {
         let itemNS = item as NSString
         let pathExt = itemNS.pathExtension
         let displayName = itemNS.lastPathComponent
+        
+        if itemNS == "gzdoom.ini" {
+          if !fm.fileExists(atPath: "\(documentsPath)/Preferences/gzdoom.ini") {
+            let sourceUrl = Bundle.main.bundleURL.appendingPathComponent(itemNS as String)
+            var destUrl = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("Preferences")
+            if !fm.fileExists(atPath: destUrl.path) {
+              do {
+                try fm.createDirectory(at: destUrl, withIntermediateDirectories: true)
+              } catch {
+                print("gzdoom.ini create pref dir failed: \(error)")
+              }
+            }
+            destUrl = destUrl.appendingPathComponent("gzdoom.ini")
+            do {
+              try fm.copyItem(at: sourceUrl, to: destUrl)
+            } catch {
+              print("gzdoom.ini file copy error: \(error)")
+            }
+          }
+          continue
+        }
+        
         let file = GZDoomFile(displayName: displayName, fullPath: item)
         if pathExt.lowercased() == "wad" || pathExt.lowercased() == "iwad" {
           iwads.append(file)

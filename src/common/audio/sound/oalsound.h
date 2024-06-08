@@ -17,8 +17,10 @@
 #include "thirdparty/al.h"
 #include "thirdparty/alc.h"
 #else
-#include "al.h"
-#include "alc.h"
+//#include "al.h"
+//#include "alc.h"
+#include "thirdparty/al.h"
+#include "thirdparty/alc.h"
 #endif
 
 #include "thirdparty/alext.h"

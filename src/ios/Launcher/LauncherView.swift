@@ -20,6 +20,22 @@ enum LaunchConfigAction {
   case created, none
 }
 
+enum ActiveSheet: Identifiable {
+  case addLauncherConfig, showHelp, saveLaunchConfig, multiplayer
+  var id: Int { hashValue }
+}
+  
+
+struct PresentationKey: EnvironmentKey {
+    static let defaultValue: [Binding<ActiveSheet?>] = []
+}
+
+extension EnvironmentValues {
+    var presentations: [Binding<ActiveSheet?>] {
+        get { return self[PresentationKey] }
+        set { self[PresentationKey] = newValue }
+    }
+}
 
 struct CreateLaunchConfigView: View {
   @Environment(\.dismiss) var dismiss
@@ -81,13 +97,11 @@ struct LauncherView: View {
   
   @State private var showToast = false
   
+  @Environment(\.presentations) private var presentations
   @State private var activeSheet: ActiveSheet?
   
-  enum ActiveSheet: Identifiable {
-    case addLauncherConfig, showHelp
-    var id: Int { hashValue }
-  }
-    
+  @State private var animateGradient: Bool = false
+  
   var body: some View {
     VStack {
       HStack {
@@ -115,19 +129,33 @@ struct LauncherView: View {
       }
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder).padding(.bottom)
 //      ColoredText("Ported to ^[iOS](colored: 'green') by ^[@yoshisuga](colored: 'purple'), 2024.").font(.small).foregroundColor(.gray)
+      ColoredText("^[Tap](colored: 'green') a launch configuration name to ^[start game](colored: 'orange').").font(.small).foregroundColor(.gray)
+      ColoredText("^[Tap](colored: 'green') ^[[+]](colored: 'orange') to ^[add a launch configuration](colored: 'orange').").font(.small).foregroundColor(.gray)
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
     }.padding([.bottom], 4)
       .sheet(item: $activeSheet) { item in
         switch item {
         case .addLauncherConfig:
-          CreateLaunchConfigView(viewModel: viewModel)
+          CreateLaunchConfigView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
         case .showHelp:
           HelpSheetView()
+        default:
+          EmptyView()
         }
     }.onAppear {
       viewModel.setup()
     }.font(.body)
+      .background {
+        LinearGradient(colors: [.red.opacity(0.2), .orange.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
+          .edgesIgnoringSafeArea(.all)
+          .hueRotation(.degrees(animateGradient ? 45 : 0))
+          .onAppear {
+            withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+              animateGradient.toggle()
+            }
+          }
+      }
   }
   
   init(viewModel: LauncherViewModel, selections: [GZDoomFile] = [GZDoomFile]()) {

@@ -24,29 +24,27 @@ struct SelectIWADView: View {
 
 struct IWADSelectedView: View {
   @ObservedObject var viewModel: LauncherViewModel
+
+  @Environment(\.presentations) private var presentations
   @State private var activeSheet: ActiveSheet?
+
   @State private var configAction: LaunchConfigAction = .none
 
   let selected: GZDoomFile
-  
-  enum ActiveSheet: Identifiable {
-    case save, multiplayer
-    var id: Int { hashValue }
-  }
   
   var body: some View {
     VStack {
       Text(selected.displayName).foregroundColor(.yellow).font(.selected)
       Text("Selected").foregroundColor(.green)
       Button("Save Launch Config") {
-        activeSheet = .save
+        activeSheet = .saveLaunchConfig
       }.padding().foregroundColor(.green).border(.gray, width: 2)
       Button("Back") {
         viewModel.selectedIWAD = nil
         viewModel.externalFiles.append(selected)
       }.padding().border(.gray, width: 2)
       Spacer()
-      Button("Launch Now") {
+      Button("Launch Now without saving") {
         viewModel.launchActionClosure?(viewModel.arguments)
       }.foregroundColor(.red).padding().border(.gray, width: 2)
       Button("Multiplayer Options") {
@@ -54,12 +52,14 @@ struct IWADSelectedView: View {
       }.padding().foregroundColor(.cyan).border(.gray, width: 2).font(.small)
     }.sheet(item: $activeSheet) { item in
       switch item {
-      case .save:
-        LauncherConfigSheetView(viewModel: viewModel)
+      case .saveLaunchConfig:
+        LauncherConfigSheetView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
       case .multiplayer:
         MultiplayerSheetView { config in
           viewModel.multiplayerConfig = config
         }
+      default:
+        EmptyView()
       }
     }
   }
