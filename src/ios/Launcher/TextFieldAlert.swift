@@ -19,7 +19,7 @@ struct TextFieldAlert: ViewModifier {
                 .disabled(isPresented)
             if isPresented {
                 VStack {
-                    Text(title).font(.headline).padding()
+                    Text(title).font(.body).padding()
                     TextField(placeholder, text: $text).textFieldStyle(.roundedBorder).padding()
                     Divider()
                     HStack{

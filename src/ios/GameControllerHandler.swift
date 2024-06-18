@@ -37,7 +37,7 @@ import GameController
     if GCController.controllers().isEmpty {
       let config = GCVirtualController.Configuration()
       config.elements = [
-        GCInputLeftThumbstick,
+        GCInputDirectionPad,
         GCInputRightThumbstick,
         GCInputButtonA,
         GCInputButtonB,

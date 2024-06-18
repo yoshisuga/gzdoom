@@ -40,11 +40,11 @@ struct LauncherConfigSheetView: View {
           withAnimation {
             saveAlertDisplayed = true
           }
-        }.padding().border(.gray, width: 2)
+        }.padding().border(.gray, width: 2).foregroundColor(.green)
         Spacer()
         Button("Cancel") {
           dismiss()
-        }.padding().border(.gray, width: 2)
+        }.padding().border(.gray, width: 2).foregroundColor(.red)
         Spacer()
       }
     }.onAppear {
@@ -77,6 +77,9 @@ struct LauncherConfigsView: View {
   
   @Binding var showToast: Bool
   @Binding var sortMode: LaunchConfigSortOrder
+  @Binding var activeSheet: ActiveSheet?
+  
+  @State private var showMissingAlert = false
   
   var sortedConfigs: [LauncherConfig] {
     switch sortMode {
@@ -99,16 +102,20 @@ struct LauncherConfigsView: View {
   
   var body: some View {
     VStack {
-      if viewModel.savedConfigs.isEmpty {
-        Spacer()
-        Text("No saved configurations. Tap the + button above to create one now!").foregroundColor(.gray)
-        Spacer()
-      } else {
+//      if viewModel.savedConfigs.isEmpty {
+//        Spacer()
+//        Text("No saved configurations. Tap the + button above to create one now!").foregroundColor(.gray)
+//        Spacer()
+//      } else {
         List {
           Section(header: Text("Launcher Configurations").foregroundColor(.yellow)) {
             ForEach(sortedConfigs) { config in
               Button(config.name) {
                 viewModel.currentConfig = config
+                if !viewModel.validateFiles() {
+                  showMissingAlert = true
+                  return
+                }
                 viewModel.launchActionClosure?(viewModel.arguments)
                 viewModel.saveLauncherConfig(name: config.name, iwad: config.baseIWAD, arguments: config.arguments, ranAt: Date())
               }.foregroundColor(.red).swipeActions {
@@ -130,10 +137,21 @@ struct LauncherConfigsView: View {
               viewModel.deleteLauncherConfigs(configsToDelete)
             }
           }
-        }.listStyle(PlainListStyle())
-      }
+        }.listStyle(PlainListStyle()).overlay(Group {
+          if sortedConfigs.isEmpty {
+            VStack {
+              Text("No saved configurations.")
+              Button("Add a Launch Configuration") {
+                activeSheet = .addLauncherConfig
+              }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
+            }
+          }
+      })
+//      }
     }.sheet(item: $selectedConfig) { config in
       CreateLaunchConfigView(viewModel: viewModel, isEditing: true)
+    }.alert("Cannot launch: Missing file(s) in Launch Configuration", isPresented: $showMissingAlert) {
+      Button("OK", role: .cancel) { }
     }
   }
 }

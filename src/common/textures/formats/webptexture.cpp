@@ -33,7 +33,7 @@
 **
 */
 #include "webp/decode.h"
-#include "webp/mux.h"
+#include "webpmux/mux.h"
 
 #include "files.h"
 #include "filesystem.h"

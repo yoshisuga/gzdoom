@@ -136,10 +136,10 @@ class LauncherViewModel: ObservableObject {
   }
   
   var defaultLauncherConfig: LauncherConfig {
-    let freedoom = "\(Bundle.main.bundlePath)/freedoom1.wad"
+    let demo = "\(Bundle.main.bundlePath)/GenZDDemo.ipk3"
     return LauncherConfig(
-      name: "Freedoom",
-      baseIWAD: GZDoomFile(displayName: "freedoom1.wad", fullPath: freedoom),
+      name: "GenZD Tutorial and Showcase",
+      baseIWAD: GZDoomFile(displayName: "GenZDDemo.ipk3", fullPath: demo),
       arguments: [GZDoomFile]()
     )
   }
@@ -169,11 +169,11 @@ class LauncherViewModel: ObservableObject {
   
   func getSavedLauncherConfigs() -> [LauncherConfig] {
     guard let data = UserDefaults.standard.data(forKey: userDefaultsKey) else {
-      return [defaultLauncherConfig]
+      return []
     }
     guard var savedConfigs = try? PropertyListDecoder().decode([LauncherConfig].self, from: data) else {
       UserDefaults.standard.removeObject(forKey: userDefaultsKey)
-      return [defaultLauncherConfig]
+      return []
     }
     savedConfigs.sort(by: {$0.name.lowercased() < $1.name.lowercased()})
     return savedConfigs
@@ -189,5 +189,19 @@ class LauncherViewModel: ObservableObject {
     }
     UserDefaults.standard.set(saveData, forKey: userDefaultsKey)
     refreshSavedConfigs()
+  }
+  
+  func validateFiles() -> Bool {
+    guard let selectedIWAD else { return false }
+    let fm = FileManager.default
+    if !fm.fileExists(atPath: selectedIWAD.fullPath) {
+      return false
+    }
+    for externalFile in externalFiles {
+      if !fm.fileExists(atPath: externalFile.fullPath) {
+        return false
+      }
+    }
+    return true
   }
 }

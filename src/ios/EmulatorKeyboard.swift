@@ -580,21 +580,21 @@ struct KeyPosition {
       NSLayoutConstraint.activate(keyboardConstraints)
       
       view.addSubview(toggleButton)
-      toggleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+      toggleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
       toggleButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
       toggleButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       view.addSubview(toggleVirtualControllerButton)
       toggleVirtualControllerButton.topAnchor.constraint(equalTo: toggleButton.bottomAnchor, constant: 20).isActive = true
-      toggleVirtualControllerButton.leadingAnchor.constraint(equalTo: toggleButton.leadingAnchor).isActive = true
+      toggleVirtualControllerButton.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
       toggleVirtualControllerButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
-      view.addSubview(dPadView)
-      dPadView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: 40).isActive = true
-      dPadView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -350).isActive = true
-      dPadView.delegate = self
+//      view.addSubview(dPadView)
+//      dPadView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: 40).isActive = true
+//      dPadView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -350).isActive = true
+//      dPadView.delegate = self
       
       view.addSubview(escButtonView)
-      escButtonView.leadingAnchor.constraint(equalTo: dPadView.leadingAnchor).isActive = true
+      escButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
       escButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
       escButtonView.delegate = self
       

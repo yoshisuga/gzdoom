@@ -3,6 +3,7 @@
 #define VK_USE_PLATFORM_WIN32_KHR
 #elif defined(__APPLE__)
 #import "TargetConditionals.h"
+#import <os/log.h>
 #if TARGET_OS_IOS
 #define VK_USE_PLATFORM_IOS_MVK
 #else
@@ -72,15 +73,17 @@ VkResult volkInitialize(void)
 	vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)(void(*)(void))GetProcAddress(module, "vkGetInstanceProcAddr");
 #elif defined(__APPLE__)
   
-	void* module = dlopen("libvulkan.dylib", RTLD_NOW | RTLD_LOCAL);
-	if (!module)
-		module = dlopen("libvulkan.1.dylib", RTLD_NOW | RTLD_LOCAL);
-	if (!module)
-		module = dlopen("libMoltenVK.dylib", RTLD_NOW | RTLD_LOCAL);
-  if (!module)
-    module = dlopen("Frameworks/MoltenVK.framework/moltenVK", RTLD_NOW | RTLD_LOCAL);
-	if (!module)
-		return VK_ERROR_INITIALIZATION_FAILED;
+//	void* module = dlopen("libvulkan.dylib", RTLD_NOW | RTLD_LOCAL);
+//	if (!module)
+//		module = dlopen("libvulkan.1.dylib", RTLD_NOW | RTLD_LOCAL);
+//	if (!module)
+//		module = dlopen("libMoltenVK.dylib", RTLD_NOW | RTLD_LOCAL);
+//  if (!module)
+  void* module = dlopen("moltenVK", RTLD_NOW | RTLD_LOCAL);
+  if (!module) {
+    os_log(OS_LOG_DEFAULT, "GenZD Molten VK init failed, error: %{public}s", dlerror());
+    return VK_ERROR_INITIALIZATION_FAILED;
+  }
 
 	vkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)dlsym(module, "vkGetInstanceProcAddr");
 #else

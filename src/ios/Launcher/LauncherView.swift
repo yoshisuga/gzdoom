@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 enum LauncherMode: String {
   case launcher = "Launcher", savedConfigs = "Saved Configurations"
@@ -41,6 +42,9 @@ struct CreateLaunchConfigView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: LauncherViewModel
   @State var isEditing = false
+  @State private var showDocumentPicker = false
+  
+  let zdFileType = UTType(exportedAs: "com.yoshisuga.genzd.data", conformingTo: .data)
   
   var body: some View {
     VStack {
@@ -53,34 +57,75 @@ struct CreateLaunchConfigView: View {
         HStack {
           Button("Cancel") {
             dismiss()
-          }
+          }.buttonStyle(.bordered).foregroundColor(.red).font(.body)
           Spacer()
+          Button("Import Files") {
+            showDocumentPicker = true
+          }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
         }.padding()
       }
-      HStack {
-        VStack {
-          if let selectedIWAD = viewModel.selectedIWAD {
-            IWADSelectedView(viewModel: viewModel, selected: selectedIWAD)
-          } else {
-            SelectIWADView(viewModel: viewModel)
-          }
-        }.frame(maxWidth: .infinity)
-        VStack {
-          Text("External Files/Mods").foregroundColor(.cyan)
-          List {
-            ForEach(viewModel.externalFiles.sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
-              MultipleSelectionRow(file: file, isSelected: viewModel.selectedExternalFiles.contains(file)) {
-                if viewModel.selectedExternalFiles.contains(file) {
-                  viewModel.selectedExternalFiles.removeAll(where: { $0 == file })
-                }
-                else {
-                  viewModel.selectedExternalFiles.append(file)
+      if viewModel.iWadFiles.isEmpty {
+        VStack(spacing: 24) {
+          Spacer()
+          Text("You do not have any valid base game files available.")
+          Button("Import Files") {
+            showDocumentPicker = true
+          }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
+          .fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
+            switch result {
+            case .success(let files):
+              let fm = FileManager.default
+              let documentsURL = fm.urls(for: .documentDirectory, in: .userDomainMask)[0]
+              for file in files {
+                let access = file.startAccessingSecurityScopedResource()
+                if access {
+                  do {
+                    let filename = file.lastPathComponent
+                    let destURL = documentsURL.appendingPathComponent(filename)
+                    try fm.copyItem(at: file, to: destURL)
+                  } catch {
+                    print("file import copy error: \(error)")
+                  }
+                  file.stopAccessingSecurityScopedResource()
+                } else {
+                  print("Could not access file: \(file)")
                 }
               }
+              self.viewModel.setup()
+            case .failure(let error):
+              print("failure in import file: \(error)")
             }
-          }.frame(maxHeight: .infinity).listStyle(PlainListStyle())
+          }
+          Spacer()
+        }
+      } else {
+        HStack {
+          VStack {
+            if let selectedIWAD = viewModel.selectedIWAD {
+              IWADSelectedView(viewModel: viewModel, selected: selectedIWAD)
+            } else {
+              SelectIWADView(viewModel: viewModel)
+            }
+          }.frame(maxWidth: .infinity)
+          VStack {
+            Text("External Files/Mods").foregroundColor(.cyan)
+            List {
+              ForEach(viewModel.externalFiles.sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
+                MultipleSelectionRow(file: file, isSelected: viewModel.selectedExternalFiles.contains(file)) {
+                  if viewModel.selectedExternalFiles.contains(file) {
+                    viewModel.selectedExternalFiles.removeAll(where: { $0 == file })
+                  }
+                  else {
+                    viewModel.selectedExternalFiles.append(file)
+                  }
+                }
+              }
+            }.frame(maxHeight: .infinity).listStyle(PlainListStyle())
+          }
         }
       }
+    }.onAppear {
+      viewModel.setup()
     }
   }
 }
@@ -127,7 +172,7 @@ struct LauncherView: View {
           }
         }
       }
-      LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder).padding(.bottom)
+      LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder, activeSheet: $activeSheet).padding(.bottom)
 //      ColoredText("Ported to ^[iOS](colored: 'green') by ^[@yoshisuga](colored: 'purple'), 2024.").font(.small).foregroundColor(.gray)
       ColoredText("^[Tap](colored: 'green') a launch configuration name to ^[start game](colored: 'orange').").font(.small).foregroundColor(.gray)
       ColoredText("^[Tap](colored: 'green') ^[[+]](colored: 'orange') to ^[add a launch configuration](colored: 'orange').").font(.small).foregroundColor(.gray)

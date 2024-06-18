@@ -1,12 +1,12 @@
 ^[°°±±²²ÛÛ Welcome to](colored: 'cyan') ^[GenZD](colored: 'red')! ^[ÛÛ²²±±°°](colored: 'cyan')
 
-^[GenZD](colored: 'white') is a port of ^[GZDoom](colored: 'white'), a ^[source port](colored: 'orange') of what's known as the ^[idTech 1](colored: 'white') game engine. The most notable game from this being, of course, ^[Doom](colored: 'red'). ^[GZDoom](colored: 'white') is the work of the ^[ZDoom, GZDoom teams and many community contributors](colored: 'orange').
-
-^[DOOM](colored: 'white') is a registered trademark of id Software and its parents: Bethesda Softworks, Zenimax Media, and Microsoft. ^[GenZD does not contain any copyrighted assets or data from DOOM or any of its trademark owners](colored: 'white').
+^[GenZD](colored: 'white') is an implementation of the ^[open-source](colored: 'orange') ^[idTech 1](colored: 'white') game engine. 
 
 A source port is able to read the original game files and ^[render the game using modern technology](colored: 'white'). The game engine can be rendered in ^[full 3D](colored: 'white') using the latest 3D graphics hardware and drivers. ^[GenZD](colored: 'white')  uses ^[Metal](colored: 'blue') to render its graphics through MoltenVK and the Vulkan API.
 
 ^[GenZD](colored: 'white') also supports "^[MODS](colored: 'orange')", which further extends capabilities beyond the original game engine, like adding ^[graphical and sound enhancements](colored: 'white') as well as ^[new gameplay elements and behaviors](colored: 'white'). 
+
+Note that ^[GenZD](colored: 'white') does NOT contain any game files and you must provide the necessary files by placing them in the ^[GenZD folder](colored: 'yellow') using the Files app.
 
 ^[°°±±²²ÛÛ  Quick Start ÛÛ²²±±°°](colored: 'cyan')
 
@@ -14,15 +14,11 @@ To start a game, you need to create a ^[Launch Configuration](colored: 'white').
 
 A ^[Launch Configuration](colored: 'white') requires that you select a ^[base game file](colored: 'white') and optionally add any other files (^[mods](colored: 'white')) you wish to load. You can save this configuration to use for later.
 
-For example, you can play John Romero's most recent WAD pack, ^[SIGIL](colored: 'white'), by adding the retail ^[DOOM.wad](colored: 'white') as the base game, and then selecting the ^[SIGIL.wad](colored: 'white') file as an additional external file, and save this configuration to play later. Note that you must supply the DOOM.wad file yourself, either through your previously owned copy, or by buying them through services such as Steam or GOG.
-
 To create a ^[new launch configuration](colored: 'white'):
 
 * Tap on the + button in the upper left corner to add a new launch configuration
 
 * ^[Tap on a file](colored: 'white') on the left column under ^[Select the base game file](colored: 'yellow') to select it.
-
-  A free community-developed game called ^[Freedoom](colored: 'white) is included with ^[GenZD](colored: 'red'), named ^[freedoom.wad](colored: 'yellow')
 
 * You can optionally select other files to load such as mods on the right column, under ^[External Files/Mods](colored: 'yellow'). See the ^[Adding WAD files and mods](colored: 'cyan') section below on how to do this.
 
@@ -44,13 +40,9 @@ In the ^[Files](colored: 'yellow') app on your iOS device, under ^[On my iPhone]
 
 ^[°°±±²²ÛÛ More on Launch Configurations ÛÛ²²±±°°](colored: 'cyan')
 
-GenZD requires a base game, or "^[IWAD](colored: 'white')", at the bare minimum to start a game. This is usually the main game WAD such as "^[doom.wad](colored: 'white')" or "^[doom2.wad](colored: 'white')". Most mods require the ^[full-version](colored: 'white') of the WAD (not the free shareware version). You can purchase these on [Steam](https://steampowered.com) or [GOG](https://gog.com), or if you had the original retail versions on floppy disk or CD-ROM.
+GenZD requires a base game, or "^[IWAD](colored: 'white')", at the bare minimum to start a game. This is usually the main game WAD, and these can be purchased on popular game stores online.
 
-Most Doom mods use doom2.wad as the base game.
-
-You can also use IWADs from other compatible games, such as Hexen and Heretic. [View the wiki for a more complete list](https://zdoom.org/wiki/IWAD) of supported games.
-
-Some IWADs are ^[total conversions](colored: 'white'), or TCs that function as standalone games as well.
+Some IWADs are ^[total conversions](colored: 'white'), or TCs that function as standalone games as well. The tutorial included with GenZD is an example of this.
 
 When creating a new ^[Launch Configuration](colored: 'white'), the left column shows a list of files that are possible IWADs. Note that it only looks for file types matching .iwad, .ipk3, and .wad so some files here might not be IWADs.
 
