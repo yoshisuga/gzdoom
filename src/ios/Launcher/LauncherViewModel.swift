@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import ZIPFoundation
 
 class LauncherViewModel: ObservableObject {
   @Published var iWadFiles = [GZDoomFile]()
@@ -199,6 +200,28 @@ class LauncherViewModel: ObservableObject {
     }
     for externalFile in externalFiles {
       if !fm.fileExists(atPath: externalFile.fullPath) {
+        return false
+      }
+    }
+    let baseGameFullPath = selectedIWAD.fullPath as NSString
+    let ext = baseGameFullPath.pathExtension.lowercased()
+    if ext == "zip" || ext == "ipk3" {
+      var containsIwadinfoLump = false
+      do {
+        
+        let archive = try Archive(url: URL(filePath: selectedIWAD.fullPath), accessMode: .read)
+        for entry in archive {
+          let filename = entry.path.lowercased() as NSString
+          if filename.lastPathComponent.starts(with: "iwadinfo") {
+            containsIwadinfoLump = true
+            break
+          }
+        }
+      } catch {
+        print("validate: archive create error: \(error)")
+      }
+      print("validate: is zip or ipk3 and found iwadinfo: \(containsIwadinfoLump)")
+      if !containsIwadinfoLump {
         return false
       }
     }

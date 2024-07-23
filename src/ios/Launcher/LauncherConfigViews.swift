@@ -150,7 +150,7 @@ struct LauncherConfigsView: View {
 //      }
     }.sheet(item: $selectedConfig) { config in
       CreateLaunchConfigView(viewModel: viewModel, isEditing: true)
-    }.alert("Cannot launch: Missing file(s) in Launch Configuration", isPresented: $showMissingAlert) {
+    }.alert("Cannot launch: Missing or Invalid Files in Launch Configuration", isPresented: $showMissingAlert) {
       Button("OK", role: .cancel) { }
     }
   }

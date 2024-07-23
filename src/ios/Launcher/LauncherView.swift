@@ -59,7 +59,7 @@ struct CreateLaunchConfigView: View {
             dismiss()
           }.buttonStyle(.bordered).foregroundColor(.red).font(.body)
           Spacer()
-          Button("Import Files") {
+          Button("Import") {
             showDocumentPicker = true
           }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
         }.padding()
@@ -71,31 +71,6 @@ struct CreateLaunchConfigView: View {
           Button("Import Files") {
             showDocumentPicker = true
           }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
-          .fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
-            switch result {
-            case .success(let files):
-              let fm = FileManager.default
-              let documentsURL = fm.urls(for: .documentDirectory, in: .userDomainMask)[0]
-              for file in files {
-                let access = file.startAccessingSecurityScopedResource()
-                if access {
-                  do {
-                    let filename = file.lastPathComponent
-                    let destURL = documentsURL.appendingPathComponent(filename)
-                    try fm.copyItem(at: file, to: destURL)
-                  } catch {
-                    print("file import copy error: \(error)")
-                  }
-                  file.stopAccessingSecurityScopedResource()
-                } else {
-                  print("Could not access file: \(file)")
-                }
-              }
-              self.viewModel.setup()
-            case .failure(let error):
-              print("failure in import file: \(error)")
-            }
-          }
           Spacer()
         }
       } else {
@@ -126,6 +101,30 @@ struct CreateLaunchConfigView: View {
       }
     }.onAppear {
       viewModel.setup()
+    }.fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
+      switch result {
+      case .success(let files):
+        let fm = FileManager.default
+        let documentsURL = fm.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        for file in files {
+          let access = file.startAccessingSecurityScopedResource()
+          if access {
+            do {
+              let filename = file.lastPathComponent
+              let destURL = documentsURL.appendingPathComponent(filename)
+              try fm.copyItem(at: file, to: destURL)
+            } catch {
+              print("file import copy error: \(error)")
+            }
+            file.stopAccessingSecurityScopedResource()
+          } else {
+            print("Could not access file: \(file)")
+          }
+        }
+        self.viewModel.setup()
+      case .failure(let error):
+        print("failure in import file: \(error)")
+      }
     }
   }
 }

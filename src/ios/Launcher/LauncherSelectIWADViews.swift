@@ -29,6 +29,8 @@ struct IWADSelectedView: View {
   @State private var activeSheet: ActiveSheet?
 
   @State private var configAction: LaunchConfigAction = .none
+  
+  @State private var showMissingAlert = false
 
   let selected: GZDoomFile
   
@@ -45,6 +47,10 @@ struct IWADSelectedView: View {
       }.padding().border(.gray, width: 2)
       Spacer()
       Button("Launch Now without saving") {
+        if !viewModel.validateFiles() {
+          showMissingAlert = true
+          return
+        }
         viewModel.launchActionClosure?(viewModel.arguments)
       }.foregroundColor(.red).padding().border(.gray, width: 2)
       Button("Multiplayer Options") {
@@ -61,6 +67,8 @@ struct IWADSelectedView: View {
       default:
         EmptyView()
       }
+    }.alert("Cannot launch: Missing or Invalid Files in Launch Configuration", isPresented: $showMissingAlert) {
+      Button("OK", role: .cancel) { }
     }
   }
 }
