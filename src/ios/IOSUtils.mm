@@ -22,6 +22,7 @@
 int GameMain();
 FArgs *args;
 
+int mouseMoveX, mouseMoveY;
 
 void ios_get_base_path(char *path) {
     NSArray *paths;

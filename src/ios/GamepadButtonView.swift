@@ -14,7 +14,7 @@ protocol GamepadButtonDelegate: AnyObject {
 }
 
 class GamepadButtonView: UIView {
-  private let imageView: UIImageView
+  let imageView: UIImageView
   private let buttonLabel: UILabel
   
   let buttonName: String

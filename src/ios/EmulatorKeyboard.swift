@@ -518,6 +518,18 @@ struct KeyPosition {
     button.alpha = 0.4
     return button
   }()
+
+  let toggleVirtualControllerButton2: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(systemName: "gamecontroller.fill"), for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+    button.tintColor = .red
+    button.alpha = 0.4
+    return button
+  }()
+
   
   let dPadView: DPadView = {
     let view = DPadView()
@@ -531,6 +543,8 @@ struct KeyPosition {
     let view = GamepadButtonView(buttonName: escButtonName)
     return view
   }()
+  
+  var touchControlsView = UIView()
         
    @objc init(leftKeyboardModel: EmulatorKeyboardViewModel, rightKeyboardModel: EmulatorKeyboardViewModel) {
       self.leftKeyboardModel = leftKeyboardModel
@@ -578,6 +592,19 @@ struct KeyPosition {
       rightKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
       rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
       NSLayoutConstraint.activate(keyboardConstraints)
+
+      let touchControlsVC = GameControlViewController()
+      addChild(touchControlsVC)
+      touchControlsView = touchControlsVC.view
+      touchControlsView.translatesAutoresizingMaskIntoConstraints = false
+      view.addSubview(touchControlsView)
+      touchControlsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+      touchControlsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+      touchControlsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+      touchControlsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+      touchControlsView.isHidden = true
+      touchControlsVC.didMove(toParent: self)
+
       
       view.addSubview(toggleButton)
       toggleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
@@ -587,6 +614,12 @@ struct KeyPosition {
       toggleVirtualControllerButton.topAnchor.constraint(equalTo: toggleButton.bottomAnchor, constant: 20).isActive = true
       toggleVirtualControllerButton.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
       toggleVirtualControllerButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+      
+      view.addSubview(toggleVirtualControllerButton2)
+      toggleVirtualControllerButton2.topAnchor.constraint(equalTo: toggleVirtualControllerButton.bottomAnchor, constant: 20).isActive = true
+      toggleVirtualControllerButton2.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
+      toggleVirtualControllerButton2.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+
       
 //      view.addSubview(dPadView)
 //      dPadView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: 40).isActive = true
@@ -602,6 +635,7 @@ struct KeyPosition {
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
       GameControllerHandler.shared.enableVirtual()
+      
     }
   
   @objc func changeInputMode(_ sender: UIButton) {
@@ -611,12 +645,20 @@ struct KeyPosition {
       GameControllerHandler.shared.disableVirtual()
       dPadView.isHidden = true
       escButtonView.isHidden = true
+      touchControlsView.isHidden = true
     } else if sender == toggleVirtualControllerButton {
       GameControllerHandler.shared.enableVirtual()
       dPadView.isHidden = false
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
+      touchControlsView.isHidden = true
+    } else if sender == toggleVirtualControllerButton2 {
+      GameControllerHandler.shared.disableVirtual()
+      escButtonView.isHidden = false
+      leftKeyboardView.isHidden = true
+      rightKeyboardView.isHidden = true
+      touchControlsView.isHidden = false
     }
   }
   
