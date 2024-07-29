@@ -72,12 +72,12 @@ class JoystickView: UIView {
     
     if isTouching {
       // Draw the joystick base
-      context.setFillColor(UIColor.red.withAlphaComponent(0.5).cgColor)
+      context.setFillColor(UIColor.black.withAlphaComponent(0.5).cgColor)
       context.addArc(center: joystickCenter, radius: 50, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
       context.fillPath()
       
       // Draw the knob
-      context.setFillColor(UIColor.blue.cgColor)
+      context.setFillColor(UIColor.gray.cgColor)
       context.addArc(center: knobCenter, radius: 20, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
       context.fillPath()
     }

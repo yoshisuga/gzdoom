@@ -7,6 +7,12 @@
 
 import UIKit
 
+@objcMembers class MouseInputHolder: NSObject {
+  static let shared = MouseInputHolder()
+  var deltaX: Int = 0
+  var deltaY: Int = 0
+}
+
 protocol AimControlsDelegate {
   func aimDidSingleTap()
   func aimDidDoubleTap()
@@ -36,29 +42,27 @@ class AimControlsView: UIView {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      guard let touch = touches.first else {
-          return
+    guard let touch = touches.first else {
+      return
+    }
+    startTouchPoint = touch.location(in: self)
+    if touch.tapCount == 1 {
+      DispatchQueue.main.asyncAfter(deadline: .now() + timeToWaitAsecondTap) {
+        self.singleTapAction()    // always execute
       }
-      startTouchPoint = touch.location(in: self)
-      if touch.tapCount == 1 {
-          DispatchQueue.main.asyncAfter(deadline: .now() + timeToWaitAsecondTap) {
-              self.singleTapAction()    // always execute
-            if !self.isMoving {
-              self.isDoubleTap = false
-            }
-          }
-      } else if touch.tapCount == 2 {
-          isDoubleTap = true  // not-always execute
-          doubleTapAction()   // not-always execute
-      }
+    } else if touch.tapCount == 2 {
+      isDoubleTap = true  // not-always execute
+      doubleTapAction()   // not-always execute
+    }
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else { return }
     isMoving = true
     let location = touch.location(in: self)
-    let dx = location.x - startTouchPoint.x
-    let dy = location.y - startTouchPoint.y
+    let prev = touch.previousLocation(in: self)
+    let dx = location.x - prev.x
+    let dy = location.y - prev.y
     delegate?.aimDidMove(dx: Float(dx), dy: Float(dy), isDoubleTap: isDoubleTap)
     print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
   }
@@ -66,12 +70,14 @@ class AimControlsView: UIView {
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard touches.first != nil else { return }
     isMoving = false
+    isDoubleTap = false
     delegate?.aimEnded()
   }
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard touches.first != nil else { return }
     isMoving = false
+    isDoubleTap = false
     delegate?.aimEnded()
   }
 }

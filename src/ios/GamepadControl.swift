@@ -7,13 +7,7 @@
 
 import Foundation
 
-enum GamepadControl: Int, Codable {
-  case A, B, X, Y
-  case L, R, LT, RT
-  case LS, RS
-  case select, start
-  case dpad
-  
+extension GamepadControl: Codable {
   var name: String {
     switch self {
     case .A: return "A"
@@ -26,12 +20,39 @@ enum GamepadControl: Int, Codable {
     case .RT: return "RT"
     case .LS: return "LS"
     case .RS: return "RS"
-    case .select: return "Select"
-    case .start: return "Start"
+    case .select: return "SL"
+    case .start: return "ST"
     case .dpad: return "D-Pad"
+    default: return "unk"
     }
   }
 }
+
+//@objc enum GamepadControl: Int, Codable {
+//  case A, B, X, Y
+//  case L, R, LT, RT
+//  case LS, RS
+//  case select, start
+//  case dpad
+//  
+//  var name: String {
+//    switch self {
+//    case .A: return "A"
+//    case .B: return "B"
+//    case .X: return "X"
+//    case .Y: return "Y"
+//    case .L: return "L"
+//    case .R: return "R"
+//    case .LT: return "LT"
+//    case .RT: return "RT"
+//    case .LS: return "LS"
+//    case .RS: return "RS"
+//    case .select: return "Select"
+//    case .start: return "Start"
+//    case .dpad: return "D-Pad"
+//    }
+//  }
+//}
 
 extension GamepadControl {
   var view: UIView {
@@ -46,6 +67,8 @@ extension GamepadControl {
       view.translatesAutoresizingMaskIntoConstraints = false
       view.tag = rawValue
       return view
+    default:
+      return UIView()
     }
   }
 }

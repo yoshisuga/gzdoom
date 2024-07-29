@@ -198,6 +198,8 @@ void I_ReleaseMouseCapture()
 static void MouseRead ()
 {
 	int x, y;
+  
+  int iosX, iosY;
 
 	if (NativeMouse)
 	{
@@ -205,7 +207,13 @@ static void MouseRead ()
 	}
 
 	SDL_GetRelativeMouseState (&x, &y);
-	PostMouseMove (x, y);
+//  printf("yoshi debug mouse: SDL relative x = %i, y = %i\n",x,y);
+  
+  IOS_GetMouseDeltas(&iosX, &iosY);
+//  printf("yoshi debug mouse: MouseInputHolder x = %i, y = %i\n",yoshi_x,yoshi_y);
+  
+  
+	PostMouseMove (iosX, iosY);
 }
 
 static void I_CheckNativeMouse ()

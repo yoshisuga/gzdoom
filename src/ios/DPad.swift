@@ -29,6 +29,8 @@ extension DPadDirection  {
       return UIImage(named: "dPad-Down")!
     case .downRight:
       return UIImage(named: "dPad-DownRight")!
+    default:
+      return UIImage(named: "dPad-None")!
     }
   }
 }
@@ -43,6 +45,8 @@ class DPadView: UIView {
   var currentDirection: DPadDirection = .none
   
   weak var delegate: DPadDelegate?
+  
+  var isAnimated = true
   
   init() {
     imageView = UIImageView(frame: .zero)
@@ -88,7 +92,9 @@ class DPadView: UIView {
     if direction != currentDirection {
       currentDirection = direction
       delegate?.dPad(self, didPress: currentDirection)
-      imageView.image = currentDirection.image
+      if isAnimated {
+        imageView.image = currentDirection.image
+      }
     }
   }
 
@@ -101,13 +107,17 @@ class DPadView: UIView {
     if direction != currentDirection {
       currentDirection = direction
       delegate?.dPad(self, didPress: currentDirection)
-      imageView.image = currentDirection.image
+      if isAnimated {
+        imageView.image = currentDirection.image
+      }
     }
   }
 
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     currentDirection = .none
     delegate?.dPadDidRelease(self)
-    imageView.image = currentDirection.image
+    if isAnimated {
+      imageView.image = currentDirection.image
+    }
   }
 }

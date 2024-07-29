@@ -8,14 +8,6 @@
 import UIKit
 
 class GameControlViewController: UIViewController {
-  let showArrangeButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("Arrange Controls", for: .normal)
-    button.setTitleColor(.gray, for: .normal)
-    return button
-  }()
-
   override func viewDidLoad() {
     super.viewDidLoad()
     let joystick = JoystickView()
@@ -37,11 +29,6 @@ class GameControlViewController: UIViewController {
     aim.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     aim.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
     aim.delegate = self
-
-    view.addSubview(showArrangeButton)
-    showArrangeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    showArrangeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
-    showArrangeButton.addTarget(self, action: #selector(arrangeButtonTapped(_:)), for: .touchUpInside)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -63,9 +50,14 @@ class GameControlViewController: UIViewController {
       let controlView = controlPos.button.view
       controlView.translatesAutoresizingMaskIntoConstraints = true
       controlView.tag = controlPos.button.rawValue
-      let size: CGFloat = controlPos.button == .dpad ? 150 : 50
+      let size: CGFloat = controlPos.button == .dpad ? 150 : 80
       controlView.frame = CGRect(x: CGFloat(controlPos.originX), y: CGFloat(controlPos.originY), width: size, height: size)
       view.addSubview(controlView)
+      if let gamepadButton = controlView as? GamepadButtonView {
+        gamepadButton.delegate = self
+      } else if let dpad = controlView as? DPadView {
+        dpad.delegate = self
+      }
     }
   }
   
@@ -121,25 +113,61 @@ extension GameControlViewController: JoystickDelegate {
 
 extension GameControlViewController: AimControlsDelegate {
   func aimEnded() {
-    guard let utils = IOSUtils.shared() else {
-      return
-    }
-    utils.mouseMoveWith(x: 0, y: 0)
+    MouseInputHolder.shared.deltaX = 0
+    MouseInputHolder.shared.deltaY = 0
+    guard let utils = IOSUtils.shared() else { return }
+    utils.handleLeftMouseButton(withPressed: false)
   }
   
   func aimDidSingleTap() {
   }
   
   func aimDidDoubleTap() {
-    
+    guard let utils = IOSUtils.shared() else { return }
+    utils.handleLeftMouseButton(withPressed: true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+      utils.handleLeftMouseButton(withPressed: false)
+    }
   }
   
   func aimDidMove(dx: Float, dy: Float, isDoubleTap: Bool) {
-    guard let utils = IOSUtils.shared() else {
-      return
-    }
     let mouseMoveX: Int = Int(dx)
     let mouseMoveY: Int = Int(dy)
-    utils.mouseMoveWith(x: mouseMoveX, y: mouseMoveY)
+    MouseInputHolder.shared.deltaX = mouseMoveX
+    MouseInputHolder.shared.deltaY = mouseMoveY
+    if isDoubleTap {
+      guard let utils = IOSUtils.shared() else { return }
+      utils.handleLeftMouseButton(withPressed: true)
+    }
+  }
+}
+
+extension GameControlViewController: GamepadButtonDelegate {
+  func gamepadButton(pressed button: GamepadButtonView) {
+    guard let utils = IOSUtils.shared(),
+          let gamepadControl = GamepadControl(rawValue: button.tag) else {
+      return
+    }
+    utils.handleGameControl(gamepadControl, isPressed: true)
+  }
+  
+  func gamepadButton(released button: GamepadButtonView) {
+    guard let utils = IOSUtils.shared(),
+          let gamepadControl = GamepadControl(rawValue: button.tag) else {
+      return
+    }
+    utils.handleGameControl(gamepadControl, isPressed: false)
+  }
+}
+
+extension GameControlViewController: DPadDelegate {
+  func dPad(_ dPadView: DPadView, didPress: DPadDirection) {
+    guard let utils = IOSUtils.shared() else { return }
+    utils.handleOverlayDPad(with: dPadView.currentDirection)
+  }
+  
+  func dPadDidRelease(_ dPadView: DPadView) {
+    guard let utils = IOSUtils.shared() else { return }
+    utils.handleOverlayDPad(with: .none)
   }
 }

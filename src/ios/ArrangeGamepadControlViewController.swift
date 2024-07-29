@@ -25,17 +25,28 @@ class ArrangeGamepadControlViewController: UIViewController {
   var currentControlViews = [UIView]()
   
   let addControlButton: UIButton = {
-    let button = UIButton(type: .custom)
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+    configuration.baseForegroundColor = .white
+    configuration.baseBackgroundColor = .darkGray
+    var container = AttributeContainer()
+    container.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    configuration.attributedTitle = AttributedString("+", attributes: container)
+    let button = UIButton(configuration: configuration)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("Add Control", for: .normal)
     return button
   }()
   
   let cancelButton: UIButton = {
-    let button = UIButton(type: .custom)
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+    configuration.baseForegroundColor = .red
+    configuration.baseBackgroundColor = .darkGray
+    var container = AttributeContainer()
+    container.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    configuration.attributedTitle = AttributedString("Cancel", attributes: container)
+    let button = UIButton(configuration: configuration)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("Cancel", for: .normal)
-    button.setTitleColor(.red, for: .normal)
     return button
   }()
   
@@ -46,10 +57,15 @@ class ArrangeGamepadControlViewController: UIViewController {
   }()
   
   let saveButton: UIButton = {
-    let button = UIButton(type: .custom)
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24)
+    configuration.baseForegroundColor = .green
+    configuration.baseBackgroundColor = .darkGray
+    var container = AttributeContainer()
+    container.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    configuration.attributedTitle = AttributedString("Save", attributes: container)
+    let button = UIButton(configuration: configuration)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("Save", for: .normal)
-    button.setTitleColor(.green, for: .normal)
     return button
   }()
   
@@ -68,6 +84,17 @@ class ArrangeGamepadControlViewController: UIViewController {
     return view
   }()
   
+  private let instructionsLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 2
+    label.text = "Tap and drag to move controls.\nDrag to the trash icon to remove."
+    label.font = UIFont(name: "PerfectDOSVGA437", size: 18)
+    label.alpha = 0.5
+    label.textAlignment = .center
+    return label
+  }()
+  
   var onSaveClosure: (() -> Void)?
   
   override func viewDidLoad() {
@@ -77,20 +104,23 @@ class ArrangeGamepadControlViewController: UIViewController {
     addControlButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     addControlButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
     addControlButton.addTarget(self, action: #selector(addControlButtonPressed(_:)), for: .touchUpInside)
-    
-    
+        
     view.addSubview(cancelButton)
     cancelButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
     cancelButton.topAnchor.constraint(equalTo: addControlButton.topAnchor).isActive = true
     cancelButton.addTarget(self, action: #selector(cancelButtonPressed(_:)), for: .touchUpInside)
     
-    trashIcon.frame = CGRect(x: (view.bounds.width - 50) / 2, y: 16, width: 40, height: 40)
+    trashIcon.frame = CGRect(x: (view.bounds.width - 50) / 2, y: 48, width: 30, height: 30)
     view.addSubview(trashIcon)
     
     view.addSubview(saveButton)
-    saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+    saveButton.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -8).isActive = true
+    saveButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
     saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchUpInside)
+    
+    view.addSubview(instructionsLabel)
+    instructionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    instructionsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     
     view.addSubview(overlayView)
     overlayView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -111,8 +141,8 @@ class ArrangeGamepadControlViewController: UIViewController {
     addControlView?.translatesAutoresizingMaskIntoConstraints = false
     addControlView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     addControlView?.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    addControlView?.widthAnchor.constraint(equalToConstant: 500).isActive = true
-    addControlView?.heightAnchor.constraint(equalToConstant: 300).isActive = true
+    addControlView?.widthAnchor.constraint(equalToConstant: 640).isActive = true
+    addControlView?.heightAnchor.constraint(equalToConstant: 345).isActive = true
     addControlView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
     addControlView?.isHidden = true
     addControlView?.layer.cornerRadius = 15
@@ -120,6 +150,10 @@ class ArrangeGamepadControlViewController: UIViewController {
     
     addControlVC.didSelectControlClosure = { control in
       self.addControl(control)
+      self.viewMode = .arrange
+    }
+    
+    addControlVC.didCloseClosure = {
       self.viewMode = .arrange
     }
 
@@ -189,8 +223,13 @@ class ArrangeGamepadControlViewController: UIViewController {
     controlView.tag = control.rawValue
     let xPosn: CGFloat = CGFloat(xPos ?? Float((self.view.frame.width - 50) / 2))
     let yPosn: CGFloat = CGFloat(yPos ?? Float((self.view.frame.height - 50) / 2))
-    let size: CGFloat = controlView is DPadView ? 150 : 50
+    let size: CGFloat = controlView is DPadView ? 150 : 80
     controlView.frame = CGRect(x: xPosn, y: yPosn, width: size, height: size)
+    if let buttonView = controlView as? GamepadButtonView {
+      buttonView.isAnimated = false
+    } else if let dpad = controlView as? DPadView {
+      dpad.isAnimated = false
+    }
     view.addSubview(controlView)
     view.bringSubviewToFront(overlayView)
     

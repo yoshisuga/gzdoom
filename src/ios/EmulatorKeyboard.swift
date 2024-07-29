@@ -544,7 +544,19 @@ struct KeyPosition {
     return view
   }()
   
+  let customizeControlsButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"), for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+    button.tintColor = .white
+    button.alpha = 0.4
+    return button
+  }()
+  
   var touchControlsView = UIView()
+  var touchControlsVC: GameControlViewController?
         
    @objc init(leftKeyboardModel: EmulatorKeyboardViewModel, rightKeyboardModel: EmulatorKeyboardViewModel) {
       self.leftKeyboardModel = leftKeyboardModel
@@ -593,9 +605,9 @@ struct KeyPosition {
       rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
       NSLayoutConstraint.activate(keyboardConstraints)
 
-      let touchControlsVC = GameControlViewController()
-      addChild(touchControlsVC)
-      touchControlsView = touchControlsVC.view
+      let touchControlsViewController = GameControlViewController()
+      addChild(touchControlsViewController)
+      touchControlsView = touchControlsViewController.view
       touchControlsView.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview(touchControlsView)
       touchControlsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -603,23 +615,23 @@ struct KeyPosition {
       touchControlsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
       touchControlsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
       touchControlsView.isHidden = true
-      touchControlsVC.didMove(toParent: self)
-
+      touchControlsViewController.didMove(toParent: self)
+      touchControlsVC = touchControlsViewController
       
       view.addSubview(toggleButton)
       toggleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
       toggleButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
       toggleButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+      
       view.addSubview(toggleVirtualControllerButton)
       toggleVirtualControllerButton.topAnchor.constraint(equalTo: toggleButton.bottomAnchor, constant: 20).isActive = true
       toggleVirtualControllerButton.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
       toggleVirtualControllerButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
-      view.addSubview(toggleVirtualControllerButton2)
-      toggleVirtualControllerButton2.topAnchor.constraint(equalTo: toggleVirtualControllerButton.bottomAnchor, constant: 20).isActive = true
-      toggleVirtualControllerButton2.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
-      toggleVirtualControllerButton2.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
-
+      view.addSubview(customizeControlsButton)
+      customizeControlsButton.topAnchor.constraint(equalTo: toggleVirtualControllerButton.bottomAnchor, constant: 20).isActive = true
+      customizeControlsButton.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
+      customizeControlsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
 //      view.addSubview(dPadView)
 //      dPadView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: 40).isActive = true
@@ -634,8 +646,10 @@ struct KeyPosition {
       // setup initial state: show gamepad
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
-      GameControllerHandler.shared.enableVirtual()
-      
+      touchControlsView.isHidden = false
+      customizeControlsButton.isHidden = false
+
+      //      GameControllerHandler.shared.enableVirtual()
     }
   
   @objc func changeInputMode(_ sender: UIButton) {
@@ -646,19 +660,24 @@ struct KeyPosition {
       dPadView.isHidden = true
       escButtonView.isHidden = true
       touchControlsView.isHidden = true
-    } else if sender == toggleVirtualControllerButton {
+      customizeControlsButton.isHidden = true
+    } else if sender == toggleVirtualControllerButton2 {
       GameControllerHandler.shared.enableVirtual()
       dPadView.isHidden = false
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
       touchControlsView.isHidden = true
-    } else if sender == toggleVirtualControllerButton2 {
+      customizeControlsButton.isHidden = true
+    } else if sender == toggleVirtualControllerButton {
       GameControllerHandler.shared.disableVirtual()
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
       touchControlsView.isHidden = false
+      customizeControlsButton.isHidden = false
+    } else if sender == customizeControlsButton {
+      touchControlsVC?.arrangeButtonTapped(customizeControlsButton)
     }
   }
   

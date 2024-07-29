@@ -10,6 +10,30 @@ import UIKit
 
 class AddGamepadControlViewController: UIViewController {
   var didSelectControlClosure: ((GamepadControl) -> Void)?
+  var didCloseClosure: (() -> Void)?
+  
+  let instructionsLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 2
+    label.text = "Tap a button or D-Pad\nto add it to your touch controls."
+    label.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    label.textAlignment = .center
+    return label
+  }()
+  
+  let closeButton: UIButton = {
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24)
+    configuration.baseForegroundColor = .white
+    configuration.baseBackgroundColor = .darkGray
+    var container = AttributeContainer()
+    container.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    configuration.attributedTitle = AttributedString("Close", attributes: container)
+    let button = UIButton(configuration: configuration)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
   
   override func viewDidLoad() {
     let dpad = GamepadControl.dpad.view
@@ -19,18 +43,18 @@ class AddGamepadControlViewController: UIViewController {
     let buttonA = GamepadControl.A.view
     view.addSubview(buttonA)
     buttonA.centerYAnchor.constraint(equalTo: dpad.centerYAnchor).isActive = true
-    buttonA.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24).isActive = true
+    buttonA.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30).isActive = true
     let buttonB = GamepadControl.B.view
     view.addSubview(buttonB)
-    buttonB.trailingAnchor.constraint(equalTo: buttonA.leadingAnchor, constant: 0).isActive = true
-    buttonB.topAnchor.constraint(equalTo: buttonA.bottomAnchor, constant: 0).isActive = true
+    buttonB.trailingAnchor.constraint(equalTo: buttonA.leadingAnchor, constant: 24).isActive = true
+    buttonB.topAnchor.constraint(equalTo: buttonA.bottomAnchor, constant: -24).isActive = true
     let buttonX = GamepadControl.X.view
     view.addSubview(buttonX)
     buttonX.centerXAnchor.constraint(equalTo: buttonB.centerXAnchor).isActive = true
-    buttonX.bottomAnchor.constraint(equalTo: buttonA.topAnchor, constant: 0).isActive = true
+    buttonX.bottomAnchor.constraint(equalTo: buttonA.topAnchor, constant: 24).isActive = true
     let buttonY = GamepadControl.Y.view
     view.addSubview(buttonY)
-    buttonY.trailingAnchor.constraint(equalTo: buttonX.leadingAnchor, constant: 0).isActive = true
+    buttonY.trailingAnchor.constraint(equalTo: buttonX.leadingAnchor, constant: 24).isActive = true
     buttonY.centerYAnchor.constraint(equalTo: dpad.centerYAnchor).isActive = true
     let buttonL = GamepadControl.L.view
     view.addSubview(buttonL)
@@ -51,10 +75,10 @@ class AddGamepadControlViewController: UIViewController {
     let buttonSelect = GamepadControl.select.view
     view.addSubview(buttonSelect)
     buttonSelect.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
-    buttonSelect.centerXAnchor.constraint(equalTo: dpad.centerXAnchor, constant: 48).isActive = true
+    buttonSelect.leadingAnchor.constraint(equalTo: dpad.trailingAnchor, constant: 48).isActive = true
     let buttonStart = GamepadControl.start.view
     view.addSubview(buttonStart)
-    buttonStart.centerXAnchor.constraint(equalTo: buttonB.centerXAnchor, constant: -48).isActive = true
+    buttonStart.trailingAnchor.constraint(equalTo: buttonB.leadingAnchor, constant: -48).isActive = true
     buttonStart.bottomAnchor.constraint(equalTo: buttonSelect.bottomAnchor).isActive = true
     
     (buttonA as? GamepadButtonView)?.delegate = self
@@ -66,6 +90,19 @@ class AddGamepadControlViewController: UIViewController {
     (buttonR as? GamepadButtonView)?.delegate = self
     (buttonRT as? GamepadButtonView)?.delegate = self
     (dpad as? DPadView)?.delegate = self
+    
+    view.addSubview(instructionsLabel)
+    instructionsLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 36).isActive = true
+    instructionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    view.addSubview(closeButton)
+    closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    closeButton.topAnchor.constraint(equalTo: instructionsLabel.bottomAnchor, constant: 32).isActive = true
+    closeButton.addTarget(self, action: #selector(closeButtonPressed(_:)), for: .touchUpInside)
+  }
+  
+  @objc func closeButtonPressed(_ sender: UIButton) {
+    didCloseClosure?()
   }
 }
 

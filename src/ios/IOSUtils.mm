@@ -22,8 +22,6 @@
 int GameMain();
 FArgs *args;
 
-int mouseMoveX, mouseMoveY;
-
 void ios_get_base_path(char *path) {
     NSArray *paths;
     NSString *DocumentsDirPath;
@@ -87,6 +85,15 @@ void IOS_HandleInput() {
   [gcHandler handleInput];
 }
 
+void IOS_GetMouseDeltas(int *x, int *y) {
+  MouseInputHolder *mouse = [MouseInputHolder shared];
+  if (x) {
+    *x = (int) mouse.deltaX;
+  }
+  if (y) {
+    *y = (int) mouse.deltaY;
+  }
+}
 
 const UInt8 DIK_TO_ASCII[128] =
 {
@@ -328,6 +335,40 @@ const UInt8 DIK_TO_ASCII[128] =
   D_PostEvent(&event);
 }
 
+-(void)handleGameControl:(GamepadControl)gamepadControl isPressed:(BOOL)isPressed {
+  event_t event = {};
+  int16_t data1 = 0;
+  if (gamepadControl == GamepadControlA) {
+    data1 = KEY_PAD_A;
+  } else if (gamepadControl == GamepadControlB) {
+    data1 = KEY_PAD_B;
+  } else if (gamepadControl == GamepadControlX) {
+    data1 = KEY_PAD_X;
+  } else if (gamepadControl == GamepadControlY) {
+    data1 = KEY_PAD_Y;
+  } else if (gamepadControl == GamepadControlL) {
+    data1 = KEY_PAD_LSHOULDER;
+  } else if (gamepadControl == GamepadControlR) {
+    data1 = KEY_PAD_RSHOULDER;
+  } else if (gamepadControl == GamepadControlRT) {
+    data1 = KEY_PAD_RTRIGGER;
+  } else if (gamepadControl == GamepadControlLT) {
+    data1 = KEY_PAD_LTRIGGER;
+  } else if (gamepadControl == GamepadControlSelect) {
+    data1 = KEY_PAD_BACK;
+  } else if (gamepadControl == GamepadControlStart) {
+    data1 = KEY_PAD_START;
+  } else if (gamepadControl == GamepadControlLS) {
+    data1 = KEY_PAD_LTHUMB;
+  } else if (gamepadControl == GamepadControlRS) {
+    data1 = KEY_PAD_RTHUMB;
+  }
+  if (data1 == 0) { return; }
+  event.type = isPressed ? EV_KeyDown : EV_KeyUp;
+  event.data1 = data1;
+  D_PostEvent(&event);
+}
+
 -(void)handleGameControllerInputForGamepad:(GCExtendedGamepad*)gamepad button:(GCControllerButtonInput*)button isPressed:(BOOL)isPressed {
   event_t event = {};
   int16_t data1 = 0;
@@ -425,6 +466,13 @@ const UInt8 DIK_TO_ASCII[128] =
   } else {
     [self keyUpInternal:keyCode];
   }
+}
+
+-(void)handleLeftMouseButtonWithPressed:(BOOL)isPressed {
+  event_t event = {};
+  event.type = isPressed ? EV_KeyDown : EV_KeyUp;
+  event.data1 = KEY_MOUSE1;
+  D_PostEvent(&event);
 }
 
 @end

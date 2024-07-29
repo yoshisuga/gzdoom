@@ -21,6 +21,8 @@ class GamepadButtonView: UIView {
   
   weak var delegate: GamepadButtonDelegate?
   
+  var isAnimated = true
+  
   init(buttonName: String) {
     self.buttonName = buttonName
     imageView = UIImageView(frame: .zero)
@@ -37,7 +39,7 @@ class GamepadButtonView: UIView {
     translatesAutoresizingMaskIntoConstraints = false
     clipsToBounds = false
     isUserInteractionEnabled = true
-    widthAnchor.constraint(equalToConstant: 50.0).isActive = true
+    widthAnchor.constraint(equalToConstant: 80.0).isActive = true
     heightAnchor.constraint(equalTo: widthAnchor).isActive = true
     imageView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(imageView)
@@ -49,7 +51,7 @@ class GamepadButtonView: UIView {
     imageView.tintColor = .gray
     buttonLabel.text = buttonName
     buttonLabel.textColor = .gray
-    buttonLabel.font = UIFont.systemFont(ofSize: 9.0, weight: .bold)
+    buttonLabel.font = UIFont(name: "PerfectDOSVGA437", size: 24)
     buttonLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(buttonLabel)
     buttonLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -58,16 +60,22 @@ class GamepadButtonView: UIView {
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     delegate?.gamepadButton(pressed: self)
-    imageView.image = UIImage(named: "button-pressed")
+    if isAnimated {
+      imageView.image = UIImage(named: "button-pressed")
+    }
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     delegate?.gamepadButton(pressed: self)
-    imageView.image = UIImage(named: "button-pressed")
+    if isAnimated {
+      imageView.image = UIImage(named: "button-pressed")
+    }
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     delegate?.gamepadButton(released: self)
-    imageView.image = UIImage(named: "button")
+    if isAnimated {
+      imageView.image = UIImage(named: "button")
+    }
   }
 }
