@@ -42,7 +42,9 @@ typedef NS_ENUM(NSInteger, GamepadControl) {
   GamepadControlRS,
   GamepadControlSelect,
   GamepadControlStart,
-  GamepadControlDpad
+  GamepadControlDpad,
+  GamepadControlLeftMouseClick,
+  GamepadControlRightMouseClick
 };
 
 @interface IOSUtils : NSObject

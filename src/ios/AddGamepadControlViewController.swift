@@ -75,11 +75,21 @@ class AddGamepadControlViewController: UIViewController {
     let buttonSelect = GamepadControl.select.view
     view.addSubview(buttonSelect)
     buttonSelect.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
-    buttonSelect.leadingAnchor.constraint(equalTo: dpad.trailingAnchor, constant: 48).isActive = true
+    buttonSelect.leadingAnchor.constraint(equalTo: dpad.trailingAnchor, constant: 36).isActive = true
     let buttonStart = GamepadControl.start.view
     view.addSubview(buttonStart)
     buttonStart.trailingAnchor.constraint(equalTo: buttonB.leadingAnchor, constant: -48).isActive = true
     buttonStart.bottomAnchor.constraint(equalTo: buttonSelect.bottomAnchor).isActive = true
+    
+    let leftClick = GamepadControl.leftMouseClick.view
+    view.addSubview(leftClick)
+    leftClick.centerXAnchor.constraint(equalTo: buttonSelect.centerXAnchor).isActive = true
+    leftClick.bottomAnchor.constraint(equalTo: buttonSelect.topAnchor, constant: -8).isActive = true
+    
+    let rightClick = GamepadControl.rightMouseClick.view
+    view.addSubview(rightClick)
+    rightClick.centerXAnchor.constraint(equalTo: buttonStart.centerXAnchor).isActive = true
+    rightClick.bottomAnchor.constraint(equalTo: buttonStart.topAnchor, constant: -8).isActive = true
     
     (buttonA as? GamepadButtonView)?.delegate = self
     (buttonB as? GamepadButtonView)?.delegate = self
@@ -89,6 +99,8 @@ class AddGamepadControlViewController: UIViewController {
     (buttonLT as? GamepadButtonView)?.delegate = self
     (buttonR as? GamepadButtonView)?.delegate = self
     (buttonRT as? GamepadButtonView)?.delegate = self
+    (leftClick as? GamepadButtonView)?.delegate = self
+    (rightClick as? GamepadButtonView)?.delegate = self
     (dpad as? DPadView)?.delegate = self
     
     view.addSubview(instructionsLabel)
@@ -111,25 +123,21 @@ extension AddGamepadControlViewController: GamepadButtonDelegate {
     guard let pressedControl = GamepadControl(rawValue: button.tag) else {
       return
     }
-    print("Pressed control = \(pressedControl)")
   }
   
   func gamepadButton(released button: GamepadButtonView) {
     guard let releasedControl = GamepadControl(rawValue: button.tag) else {
       return
     }
-    print("Released control = \(releasedControl)")
     didSelectControlClosure?(releasedControl)
   }
 }
 
 extension AddGamepadControlViewController: DPadDelegate {
   func dPad(_ dPadView: DPadView, didPress: DPadDirection) {
-    print("pressed dpad")
   }
   
   func dPadDidRelease(_ dPadView: DPadView) {
-    print("released dpad")
     didSelectControlClosure?(.dpad)
   }
 }

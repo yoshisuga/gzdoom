@@ -8,6 +8,7 @@
 // pan gesture to outer edges of keyboard view for better dragging
 
 import Foundation
+import SwiftUI
 import UIKit
 
 class KeyboardButton: UIButton {
@@ -497,6 +498,17 @@ struct KeyPosition {
   }()
   var keyboardConstraints = [NSLayoutConstraint]()
   
+  let controlOptionsButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(systemName: "gear"), for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+    button.tintColor = .white
+    button.alpha = 0.4
+    return button
+  }()
+  
   let toggleButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "keyboard.fill"), for: .normal)
@@ -556,7 +568,7 @@ struct KeyPosition {
   }()
   
   var touchControlsView = UIView()
-  var touchControlsVC: GameControlViewController?
+  var touchControlsVC: TouchControlViewController?
         
    @objc init(leftKeyboardModel: EmulatorKeyboardViewModel, rightKeyboardModel: EmulatorKeyboardViewModel) {
       self.leftKeyboardModel = leftKeyboardModel
@@ -605,7 +617,7 @@ struct KeyPosition {
       rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
       NSLayoutConstraint.activate(keyboardConstraints)
 
-      let touchControlsViewController = GameControlViewController()
+      let touchControlsViewController = TouchControlViewController()
       addChild(touchControlsViewController)
       touchControlsView = touchControlsViewController.view
       touchControlsView.translatesAutoresizingMaskIntoConstraints = false
@@ -618,9 +630,14 @@ struct KeyPosition {
       touchControlsViewController.didMove(toParent: self)
       touchControlsVC = touchControlsViewController
       
+      view.addSubview(controlOptionsButton)
+      controlOptionsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+      controlOptionsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+      controlOptionsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+      
       view.addSubview(toggleButton)
       toggleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-      toggleButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+      toggleButton.topAnchor.constraint(equalTo: controlOptionsButton.bottomAnchor, constant: 20).isActive = true
       toggleButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
       view.addSubview(toggleVirtualControllerButton)
@@ -653,7 +670,14 @@ struct KeyPosition {
     }
   
   @objc func changeInputMode(_ sender: UIButton) {
-    if sender == toggleButton {
+    if sender == controlOptionsButton {
+      var optionsView = ControlOptionsView()
+      optionsView.dismissClosure = {
+        self.dismiss(animated: true)
+      }
+      let hostingController = UIHostingController(rootView: optionsView)
+      present(hostingController, animated: true)
+    } else if sender == toggleButton {
       leftKeyboardView.isHidden = false
       rightKeyboardView.isHidden = false
       GameControllerHandler.shared.disableVirtual()

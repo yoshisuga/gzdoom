@@ -7,7 +7,9 @@
 
 import UIKit
 
-class GameControlViewController: UIViewController {
+class TouchControlViewController: UIViewController {
+  var needsSavingOfDefaultControls = false
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     let joystick = JoystickView()
@@ -36,9 +38,36 @@ class GameControlViewController: UIViewController {
     loadSavedControls()
   }
   
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if needsSavingOfDefaultControls {
+      var controlPositions = [GamepadButtonPosition]()
+      for controlView in view.subviews {
+        if controlView is DPadView || controlView is GamepadButtonView {
+          if let control = GamepadControl(rawValue: controlView.tag) {
+            let pos = GamepadButtonPosition(button: control, originX: Float(controlView.frame.origin.x), originY: Float(controlView.frame.origin.y))
+            controlPositions.append(pos)
+          }
+        }
+      }
+      if !controlPositions.isEmpty {
+        if let saveData = try? PropertyListEncoder().encode(controlPositions) {
+          UserDefaults.standard.set(saveData, forKey: GamepadButtonPosition.userDefaultsKey)
+          print("Saved default controls....")
+        }
+      }
+      needsSavingOfDefaultControls = false
+    }
+  }
+  
   private func loadSavedControls() {
     guard let saveData = UserDefaults.standard.data(forKey: GamepadButtonPosition.userDefaultsKey),
-          let controlPositions = try? PropertyListDecoder().decode([GamepadButtonPosition].self, from: saveData) else { return }
+          let controlPositions = try? PropertyListDecoder().decode([GamepadButtonPosition].self, from: saveData) else {
+      needsSavingOfDefaultControls = true
+      GamepadControl.createDefaultPositions(to: view, buttonDelegate: self, dpadDelegate: self)
+      return
+    }
     
     for controlView in view.subviews {
       if controlView is DPadView || controlView is GamepadButtonView {
@@ -70,7 +99,7 @@ class GameControlViewController: UIViewController {
   }
 }
 
-extension GameControlViewController: JoystickDelegate {
+extension TouchControlViewController: JoystickDelegate {
   func joystickEnded() {
     guard let utils = IOSUtils.shared() else {
       return
@@ -111,7 +140,7 @@ extension GameControlViewController: JoystickDelegate {
   }
 }
 
-extension GameControlViewController: AimControlsDelegate {
+extension TouchControlViewController: AimControlsDelegate {
   func aimEnded() {
     MouseInputHolder.shared.deltaX = 0
     MouseInputHolder.shared.deltaY = 0
@@ -142,7 +171,7 @@ extension GameControlViewController: AimControlsDelegate {
   }
 }
 
-extension GameControlViewController: GamepadButtonDelegate {
+extension TouchControlViewController: GamepadButtonDelegate {
   func gamepadButton(pressed button: GamepadButtonView) {
     guard let utils = IOSUtils.shared(),
           let gamepadControl = GamepadControl(rawValue: button.tag) else {
@@ -160,7 +189,7 @@ extension GameControlViewController: GamepadButtonDelegate {
   }
 }
 
-extension GameControlViewController: DPadDelegate {
+extension TouchControlViewController: DPadDelegate {
   func dPad(_ dPadView: DPadView, didPress: DPadDirection) {
     guard let utils = IOSUtils.shared() else { return }
     utils.handleOverlayDPad(with: dPadView.currentDirection)

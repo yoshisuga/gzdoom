@@ -362,6 +362,10 @@ const UInt8 DIK_TO_ASCII[128] =
     data1 = KEY_PAD_LTHUMB;
   } else if (gamepadControl == GamepadControlRS) {
     data1 = KEY_PAD_RTHUMB;
+  } else if (gamepadControl == GamepadControlLeftMouseClick) {
+    data1 = KEY_MOUSE1;
+  } else if (gamepadControl == GamepadControlRightMouseClick) {
+    data1 = KEY_MOUSE2;
   }
   if (data1 == 0) { return; }
   event.type = isPressed ? EV_KeyDown : EV_KeyUp;

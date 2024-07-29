@@ -283,7 +283,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     // Check if the view is over the trash icon
     if trashIcon.frame.contains(viewToMove.center) {
       UIView.animate(withDuration: 0.2) {
-        self.trashIcon.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        self.trashIcon.transform = CGAffineTransform(scaleX: 2, y: 2)
       }
     } else {
       UIView.animate(withDuration: 0.2) {
