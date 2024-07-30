@@ -11,13 +11,14 @@ class ControlOptionsViewModel: ObservableObject, Codable {
   @Published var touchControlsOpacity: Float = 0.8
   @Published var aimSensitivity: Float = 1.0
   @Published var doubleTapControl: OptionsDoubleTapControl = .none
-  @Published var doubleTapHoldToContinuallyPress = false
   @Published var touchControlHapticFeedback = true
+  @Published var controllerInvertYAxis = false
   
   let userDefaultsKey = "controlOptions"
   
   enum CodingKeys: CodingKey {
-    case touchControlsOpacity, aimSensitivity, doubleTapControl, doubleTapHoldToContinuallyPress, touchControlHapticFeedback
+    case touchControlsOpacity, aimSensitivity, doubleTapControl, touchControlHapticFeedback,
+         controllerInvertYAxis
   }
   
   func encode(to encoder: Encoder) throws {
@@ -25,8 +26,8 @@ class ControlOptionsViewModel: ObservableObject, Codable {
     try container.encode(touchControlsOpacity, forKey: .touchControlsOpacity)
     try container.encode(aimSensitivity, forKey: .aimSensitivity)
     try container.encode(doubleTapControl.rawValue, forKey: .doubleTapControl)
-    try container.encode(doubleTapHoldToContinuallyPress, forKey: .doubleTapHoldToContinuallyPress)
     try container.encode(touchControlHapticFeedback, forKey: .touchControlHapticFeedback)
+    try container.encode(controllerInvertYAxis, forKey: .controllerInvertYAxis)
   }
   
   private init() {
@@ -40,8 +41,8 @@ class ControlOptionsViewModel: ObservableObject, Codable {
     touchControlsOpacity = try container.decode(Float.self, forKey: .touchControlsOpacity)
     aimSensitivity = try container.decode(Float.self, forKey: .aimSensitivity)
     doubleTapControl = try container.decode(OptionsDoubleTapControl.self, forKey: .doubleTapControl)
-    doubleTapHoldToContinuallyPress = try container.decode(Bool.self, forKey: .doubleTapHoldToContinuallyPress)
     touchControlHapticFeedback = try container.decode(Bool.self, forKey: .touchControlHapticFeedback)
+    controllerInvertYAxis = try container.decode(Bool.self, forKey: .controllerInvertYAxis)
   }
   
   func loadFromUserDefaults() {
@@ -52,7 +53,6 @@ class ControlOptionsViewModel: ObservableObject, Codable {
     touchControlsOpacity = saved.touchControlsOpacity
     aimSensitivity = saved.aimSensitivity
     doubleTapControl = saved.doubleTapControl
-    doubleTapHoldToContinuallyPress = saved.doubleTapHoldToContinuallyPress
     touchControlHapticFeedback = saved.touchControlHapticFeedback
   }
   
@@ -91,8 +91,8 @@ struct OptionsSliderRow: View {
   
   var body: some View {
     VStack {
-      Text(label).font(.body).frame(maxWidth: .infinity, alignment: .leading).padding()
-      Slider(value: $sliderValue, in: min...max).padding()
+      Text(label).font(.body).frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+      Slider(value: $sliderValue, in: min...max).padding().tint(.red)
     }
   }
 }
@@ -125,7 +125,10 @@ struct OptionsDoubleTapPickerRow: View {
         }
       }
     } label: {
-      Text("Double Tap will press:").font(.body).padding()
+      VStack {
+        Text("Double tap and hold on aiming will continually press:").font(.body).frame(maxWidth: .infinity, alignment: .leading).padding()
+        Text("Allows easier firing while moving and circle strafing.").font(.small).frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+      }
     }
   }
 }
@@ -139,6 +142,7 @@ struct ControlOptionsView: View {
     let model = ControlOptionsViewModel.shared
     model.loadFromUserDefaults()
     _viewModel = StateObject(wrappedValue: model)
+    UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "PerfectDOSVGA437", size: 20)!]
   }
   
   var body: some View {
@@ -151,27 +155,43 @@ struct ControlOptionsView: View {
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
             OptionsDoubleTapPickerRow(selectedControl: $viewModel.doubleTapControl)
-            OptionsSwitchRow(
-              isOn: $viewModel.doubleTapHoldToContinuallyPress,
-              label: "Double Tap and Hold for Continuous Button Press",
-              subtitle: "Allows easier firing while moving and circle strafing."
-            )
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
           }
+          Section(header: Text("Game Controller").font(.small)) {
+            OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
+          }
         }
-        Button(action: {
-          viewModel.saveToUserDefaults()
-          dismissClosure?()
-        }, label: {
-          Text("Save")
-        }).buttonStyle(.bordered).foregroundColor(.green).font(.actionButton)
-      }.navigationTitle("Control Settings")
+      }.navigationTitle("Control Settings").navigationBarTitleDisplayMode(.inline)
         .toolbar {
-        Button(action: {
-          dismissClosure?()
-        }, label: {
-          Text("Cancel")
-        }).buttonStyle(.bordered).foregroundColor(.red).font(.actionButton)
+          ToolbarItem(placement: .topBarLeading) {
+            Button(action: {
+              viewModel.aimSensitivity = 1.0
+              viewModel.touchControlsOpacity = 0.8
+              viewModel.doubleTapControl = .none
+              viewModel.touchControlHapticFeedback = true
+              viewModel.saveToUserDefaults()
+              dismissClosure?()
+            }, label: {
+              Text("Reset")
+            }).buttonStyle(.bordered).foregroundColor(.white).font(.actionButton)
+          }
+
+          ToolbarItem(placement: .topBarTrailing) {
+            Button(action: {
+              viewModel.saveToUserDefaults()
+              dismissClosure?()
+            }, label: {
+              Text("Save")
+            }).buttonStyle(.bordered).foregroundColor(.green).font(.actionButton)
+          }
+
+          ToolbarItem(placement: .topBarTrailing) {
+            Button(action: {
+              dismissClosure?()
+            }, label: {
+              Text("Cancel")
+            }).buttonStyle(.bordered).foregroundColor(.red).font(.actionButton)
+          }
       }
     }
   }

@@ -8,13 +8,19 @@
 import Foundation
 import GameController
 
+protocol GameControllerHandlerDelegate: AnyObject {
+  func gameControllerDidConnect()
+  func gameControllerDidDisconnect()
+}
+
 @objc class GameControllerHandler: NSObject {
   @objc static let shared = GameControllerHandler()
   
   var controller: GCController?
+  weak var delegate: GameControllerHandlerDelegate?
   
   private var virtualController: GCVirtualController?
-  private var reconnectVirtual = true
+  private var reconnectVirtual = false
   
   override init() {
     super.init()
@@ -25,32 +31,32 @@ import GameController
   @objc var virtualConnected: Bool { virtualController != nil }
   
   @objc func toggleVirtual() {
-    if virtualConnected {
-      disableVirtual()
-    } else {
-      reconnectVirtual = true
-      setupVirtualIfNeeded()
-    }
+//    if virtualConnected {
+//      disableVirtual()
+//    } else {
+//      reconnectVirtual = true
+//      setupVirtualIfNeeded()
+//    }
   }
   
   @objc func setupVirtualIfNeeded() {
-    if GCController.controllers().isEmpty {
-      let config = GCVirtualController.Configuration()
-      config.elements = [
-        GCInputDirectionPad,
-        GCInputRightThumbstick,
-        GCInputButtonA,
-        GCInputButtonB,
-        GCInputButtonX,
-        GCInputButtonY,
-        GCInputLeftTrigger,
-        GCInputRightTrigger,
-        GCInputLeftShoulder,
-        GCInputRightShoulder
-      ]
-      virtualController = GCVirtualController(configuration: config)
-      virtualController?.connect()
-    }
+//    if GCController.controllers().isEmpty {
+//      let config = GCVirtualController.Configuration()
+//      config.elements = [
+//        GCInputDirectionPad,
+//        GCInputRightThumbstick,
+//        GCInputButtonA,
+//        GCInputButtonB,
+//        GCInputButtonX,
+//        GCInputButtonY,
+//        GCInputLeftTrigger,
+//        GCInputRightTrigger,
+//        GCInputLeftShoulder,
+//        GCInputRightShoulder
+//      ]
+//      virtualController = GCVirtualController(configuration: config)
+//      virtualController?.connect()
+//    }
   }
   
   @objc func disableVirtual() {
@@ -60,8 +66,8 @@ import GameController
   }
   
   @objc func enableVirtual() {
-    reconnectVirtual = true
-    setupVirtualIfNeeded()
+//    reconnectVirtual = true
+//    setupVirtualIfNeeded()
   }
   
   @objc func gameControllerConnected(_ sender: Notification) {
@@ -78,12 +84,14 @@ import GameController
       disableVirtual()
     }
     setupController(connectedController)
+    delegate?.gameControllerDidConnect()
   }
   
   @objc func gameControllerDisconnected(_ sender: Notification) {
-    if reconnectVirtual {
-      setupVirtualIfNeeded()
-    }
+//    if reconnectVirtual {
+//      setupVirtualIfNeeded()
+//    }
+    delegate?.gameControllerDidDisconnect()
   }
   
   func setupController(_ controllerToSetup: GCController) {
@@ -117,6 +125,17 @@ import GameController
         utils.handleLeftThumbstickDirectionalInput(.up, isPressed: false)
         utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
       }
+    }
+    
+    gamepad.rightThumbstick.valueChangedHandler = { _, dx, dy in
+      let aimSensitivity = ControlOptionsViewModel.shared.aimSensitivity
+      let invertYAxisModifier = ControlOptionsViewModel.shared.controllerInvertYAxis ? 1 : -1
+      let updatedDX = dx * aimSensitivity * 3
+      let updatedDY = dy * aimSensitivity * 3
+      let mouseMoveX: Int = Int(updatedDX)
+      let mouseMoveY: Int = Int(updatedDY) * invertYAxisModifier
+      MouseInputHolder.shared.deltaX = mouseMoveX
+      MouseInputHolder.shared.deltaY = mouseMoveY
     }
 
     gamepad.buttonA.valueChangedHandler = { button, _, pressed in
@@ -173,9 +192,9 @@ import GameController
   
   @objc func handleInput() {
     // Hook into the GZDoom polling handler every frame by polling our game controller for thumbstick values to mimic mouse movement
-    guard let utils = IOSUtils.shared(), let controller, let extendedGamepad = controller.extendedGamepad else { return }
-    let mouseMoveX: Int = Int(extendedGamepad.rightThumbstick.xAxis.value * 20)
-    let mouseMoveY: Int = Int(extendedGamepad.rightThumbstick.yAxis.value * 20) * -1
-    utils.mouseMoveWith(x: mouseMoveX, y: mouseMoveY)
+//    guard let utils = IOSUtils.shared(), let controller, let extendedGamepad = controller.extendedGamepad else { return }
+//    let mouseMoveX: Int = Int(extendedGamepad.rightThumbstick.xAxis.value * 20)
+//    let mouseMoveY: Int = Int(extendedGamepad.rightThumbstick.yAxis.value * 20) * -1
+//    utils.mouseMoveWith(x: mouseMoveX, y: mouseMoveY)
   }
 }

@@ -543,13 +543,6 @@ struct KeyPosition {
   }()
 
   
-  let dPadView: DPadView = {
-    let view = DPadView()
-    view.heightAnchor.constraint(equalToConstant: 150).isActive = true
-    view.widthAnchor.constraint(equalToConstant: 150).isActive = true
-    return view
-  }()
-  
   @objc static let escButtonName = "MENU"
   let escButtonView: GamepadButtonView = {
     let view = GamepadButtonView(buttonName: escButtonName)
@@ -596,15 +589,17 @@ struct KeyPosition {
    }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-        
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
-        leftKeyboardView.dragMeView.isUserInteractionEnabled = true
-        leftKeyboardView.dragMeView.addGestureRecognizer(panGesture)
-        let panGestureRightKeyboard = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
-        rightKeyboardView.dragMeView.isUserInteractionEnabled = true
-        rightKeyboardView.dragMeView.addGestureRecognizer(panGestureRightKeyboard)
+      super.viewDidLoad()
+      setupView()
+      
+      let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
+      leftKeyboardView.dragMeView.isUserInteractionEnabled = true
+      leftKeyboardView.dragMeView.addGestureRecognizer(panGesture)
+      let panGestureRightKeyboard = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
+      rightKeyboardView.dragMeView.isUserInteractionEnabled = true
+      rightKeyboardView.dragMeView.addGestureRecognizer(panGestureRightKeyboard)
+      
+      GameControllerHandler.shared.delegate = self
     }
     
     func setupView() {
@@ -688,13 +683,11 @@ struct KeyPosition {
       leftKeyboardView.isHidden = false
       rightKeyboardView.isHidden = false
       GameControllerHandler.shared.disableVirtual()
-      dPadView.isHidden = true
       escButtonView.isHidden = true
       touchControlsView.isHidden = true
       customizeControlsButton.isHidden = true
     } else if sender == toggleVirtualControllerButton2 {
       GameControllerHandler.shared.enableVirtual()
-      dPadView.isHidden = false
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
@@ -709,6 +702,15 @@ struct KeyPosition {
       customizeControlsButton.isHidden = false
     } else if sender == customizeControlsButton {
       touchControlsVC?.arrangeButtonTapped(customizeControlsButton)
+    }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    if GameControllerHandler.shared.controller != nil {
+      gameControllerDidConnect()
+    } else {
+      gameControllerDidDisconnect()
     }
   }
   
@@ -819,5 +821,15 @@ extension EmulatorKeyboardController: GamepadButtonDelegate {
       return
     }
     utils.handleOverlayButtonName(button.buttonName, isPressed: false)
+  }
+}
+
+extension EmulatorKeyboardController: GameControllerHandlerDelegate {
+  func gameControllerDidConnect() {
+    touchControlsView.isHidden = true
+  }
+  
+  func gameControllerDidDisconnect() {
+    touchControlsView.isHidden = false
   }
 }

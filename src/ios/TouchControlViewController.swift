@@ -154,8 +154,9 @@ extension TouchControlViewController: AimControlsDelegate {
   func aimEnded() {
     MouseInputHolder.shared.deltaX = 0
     MouseInputHolder.shared.deltaY = 0
-    guard let utils = IOSUtils.shared() else { return }
-    utils.handleLeftMouseButton(withPressed: false)
+    guard let utils = IOSUtils.shared(),
+          let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
+    utils.handleGameControl(control, isPressed: false)
   }
   
   func aimDidSingleTap() {
@@ -163,9 +164,11 @@ extension TouchControlViewController: AimControlsDelegate {
   
   func aimDidDoubleTap() {
     guard let utils = IOSUtils.shared() else { return }
-    utils.handleLeftMouseButton(withPressed: true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-      utils.handleLeftMouseButton(withPressed: false)
+    if let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl {
+      utils.handleGameControl(control, isPressed: true)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        utils.handleGameControl(control, isPressed: false)
+      }
     }
   }
   
@@ -180,8 +183,9 @@ extension TouchControlViewController: AimControlsDelegate {
     MouseInputHolder.shared.deltaX = mouseMoveX
     MouseInputHolder.shared.deltaY = mouseMoveY
     if isDoubleTap {
-      guard let utils = IOSUtils.shared() else { return }
-      utils.handleLeftMouseButton(withPressed: true)
+      guard let utils = IOSUtils.shared(),
+            let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
+      utils.handleGameControl(control, isPressed: true)
     }
   }
 }
