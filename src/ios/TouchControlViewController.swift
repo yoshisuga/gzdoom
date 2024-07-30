@@ -9,6 +9,7 @@ import UIKit
 
 class TouchControlViewController: UIViewController {
   var needsSavingOfDefaultControls = false
+  let generator = UIImpactFeedbackGenerator(style: .light)
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -36,6 +37,7 @@ class TouchControlViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     loadSavedControls()
+    updateOpacity()
   }
   
   override func viewDidLayoutSubviews() {
@@ -94,8 +96,16 @@ class TouchControlViewController: UIViewController {
     let controller = ArrangeGamepadControlViewController()
     controller.onSaveClosure = {
       self.loadSavedControls()
+      self.updateOpacity()
     }
     present(controller, animated: true)
+  }
+  
+  func updateOpacity() {
+    let optionsModel = ControlOptionsViewModel.shared
+    view.subviews.filter { $0 is GamepadButtonView || $0 is DPadView }.forEach { controlView in
+      controlView.alpha = CGFloat(optionsModel.touchControlsOpacity)
+    }
   }
 }
 
@@ -160,8 +170,13 @@ extension TouchControlViewController: AimControlsDelegate {
   }
   
   func aimDidMove(dx: Float, dy: Float, isDoubleTap: Bool) {
-    let mouseMoveX: Int = Int(dx)
-    let mouseMoveY: Int = Int(dy)
+    let aimSensitivity = ControlOptionsViewModel.shared.aimSensitivity
+    let updatedDX = dx * aimSensitivity
+    let updatedDY = dy * aimSensitivity
+    
+    let mouseMoveX: Int = Int(updatedDX)
+    let mouseMoveY: Int = Int(updatedDY)
+    
     MouseInputHolder.shared.deltaX = mouseMoveX
     MouseInputHolder.shared.deltaY = mouseMoveY
     if isDoubleTap {
@@ -172,12 +187,15 @@ extension TouchControlViewController: AimControlsDelegate {
 }
 
 extension TouchControlViewController: GamepadButtonDelegate {
-  func gamepadButton(pressed button: GamepadButtonView) {
+  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool) {
     guard let utils = IOSUtils.shared(),
           let gamepadControl = GamepadControl(rawValue: button.tag) else {
       return
     }
     utils.handleGameControl(gamepadControl, isPressed: true)
+    if ControlOptionsViewModel.shared.touchControlHapticFeedback && !isMove {
+      generator.impactOccurred()
+    }
   }
   
   func gamepadButton(released button: GamepadButtonView) {
@@ -193,6 +211,9 @@ extension TouchControlViewController: DPadDelegate {
   func dPad(_ dPadView: DPadView, didPress: DPadDirection) {
     guard let utils = IOSUtils.shared() else { return }
     utils.handleOverlayDPad(with: dPadView.currentDirection)
+    if ControlOptionsViewModel.shared.touchControlHapticFeedback {
+      generator.impactOccurred()
+    }
   }
   
   func dPadDidRelease(_ dPadView: DPadView) {

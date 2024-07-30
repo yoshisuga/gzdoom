@@ -502,7 +502,7 @@ struct KeyPosition {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "gear"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
     button.tintColor = .white
     button.alpha = 0.4
@@ -513,7 +513,7 @@ struct KeyPosition {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "keyboard.fill"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
     button.tintColor = .white
     button.alpha = 0.4
@@ -524,7 +524,7 @@ struct KeyPosition {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "gamecontroller.fill"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
     button.tintColor = .white
     button.alpha = 0.4
@@ -535,7 +535,7 @@ struct KeyPosition {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "gamecontroller.fill"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
     button.tintColor = .red
     button.alpha = 0.4
@@ -556,11 +556,22 @@ struct KeyPosition {
     return view
   }()
   
+  let escButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(systemName: "escape"), for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+    button.tintColor = .white
+    button.alpha = 0.4
+    return button
+  }()
+  
   let customizeControlsButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
     button.tintColor = .white
     button.alpha = 0.4
@@ -569,7 +580,7 @@ struct KeyPosition {
   
   var touchControlsView = UIView()
   var touchControlsVC: TouchControlViewController?
-        
+  
    @objc init(leftKeyboardModel: EmulatorKeyboardViewModel, rightKeyboardModel: EmulatorKeyboardViewModel) {
       self.leftKeyboardModel = leftKeyboardModel
       self.rightKeyboardModel = rightKeyboardModel
@@ -630,35 +641,30 @@ struct KeyPosition {
       touchControlsViewController.didMove(toParent: self)
       touchControlsVC = touchControlsViewController
       
-      view.addSubview(controlOptionsButton)
-      controlOptionsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-      controlOptionsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
       controlOptionsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
-      view.addSubview(toggleButton)
-      toggleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-      toggleButton.topAnchor.constraint(equalTo: controlOptionsButton.bottomAnchor, constant: 20).isActive = true
       toggleButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
-      view.addSubview(toggleVirtualControllerButton)
-      toggleVirtualControllerButton.topAnchor.constraint(equalTo: toggleButton.bottomAnchor, constant: 20).isActive = true
-      toggleVirtualControllerButton.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
       toggleVirtualControllerButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
-      view.addSubview(customizeControlsButton)
-      customizeControlsButton.topAnchor.constraint(equalTo: toggleVirtualControllerButton.bottomAnchor, constant: 20).isActive = true
-      customizeControlsButton.trailingAnchor.constraint(equalTo: toggleButton.trailingAnchor).isActive = true
       customizeControlsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
       
-//      view.addSubview(dPadView)
-//      dPadView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: 40).isActive = true
-//      dPadView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -350).isActive = true
-//      dPadView.delegate = self
+//      view.addSubview(escButtonView)
+//      escButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+//      escButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+//      escButtonView.delegate = self
+
+      escButton.addTarget(self, action: #selector(escButtonPressed(_:)), for: .touchUpInside)
       
-      view.addSubview(escButtonView)
-      escButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-      escButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-      escButtonView.delegate = self
+      let optionsStack = UIStackView(arrangedSubviews: [
+        escButton, controlOptionsButton, toggleButton, toggleVirtualControllerButton, customizeControlsButton
+      ])
+      optionsStack.axis = .horizontal
+      optionsStack.spacing = 8
+      optionsStack.translatesAutoresizingMaskIntoConstraints = false
+      view.addSubview(optionsStack)
+      optionsStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+      optionsStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 4).isActive = true
       
       // setup initial state: show gamepad
       leftKeyboardView.isHidden = true
@@ -672,8 +678,9 @@ struct KeyPosition {
   @objc func changeInputMode(_ sender: UIButton) {
     if sender == controlOptionsButton {
       var optionsView = ControlOptionsView()
-      optionsView.dismissClosure = {
-        self.dismiss(animated: true)
+      optionsView.dismissClosure = { [weak self] in
+        self?.dismiss(animated: true)
+        self?.touchControlsVC?.updateOpacity()
       }
       let hostingController = UIHostingController(rootView: optionsView)
       present(hostingController, animated: true)
@@ -702,6 +709,16 @@ struct KeyPosition {
       customizeControlsButton.isHidden = false
     } else if sender == customizeControlsButton {
       touchControlsVC?.arrangeButtonTapped(customizeControlsButton)
+    }
+  }
+  
+  @objc func escButtonPressed(_ sender: UIButton) {
+    guard let utils = IOSUtils.shared() else {
+      return
+    }
+    utils.handleOverlayButtonName(Self.escButtonName, isPressed: true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+      utils.handleOverlayButtonName(Self.escButtonName, isPressed: false)
     }
   }
   
@@ -790,7 +807,7 @@ extension EmulatorKeyboardController: DPadDelegate {
 }
 
 extension EmulatorKeyboardController: GamepadButtonDelegate {
-  func gamepadButton(pressed button: GamepadButtonView) {
+  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool) {
     guard let utils = IOSUtils.shared() else {
       return
     }

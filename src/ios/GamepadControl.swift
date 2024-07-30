@@ -74,7 +74,7 @@ extension GamepadControl {
     }
   }
   
-  static func createDefaultPositions(to view: UIView, buttonDelegate: GamepadButtonDelegate, dpadDelegate: DPadDelegate) {
+  static func createDefaultPositions(to view: UIView, buttonDelegate: GamepadButtonDelegate? = nil, dpadDelegate: DPadDelegate? = nil) {
     print("Creating default control positions...")
     let buttonA = GamepadControl.A.view
     buttonA.tag = GamepadControl.A.rawValue

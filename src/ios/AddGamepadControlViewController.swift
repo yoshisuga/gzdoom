@@ -119,7 +119,7 @@ class AddGamepadControlViewController: UIViewController {
 }
 
 extension AddGamepadControlViewController: GamepadButtonDelegate {
-  func gamepadButton(pressed button: GamepadButtonView) {
+  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool) {
     guard let pressedControl = GamepadControl(rawValue: button.tag) else {
       return
     }

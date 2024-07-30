@@ -37,9 +37,26 @@ class ArrangeGamepadControlViewController: UIViewController {
     return button
   }()
   
+  let opacitySlider: UISlider = {
+    let slider = UISlider()
+    slider.tintColor = .red
+    slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
+    slider.minimumValue = 0.1
+    slider.maximumValue = 1.0
+    return slider
+  }()
+  
+  let opacityIcon: UIImageView = {
+    let imageView = UIImageView(image: UIImage(systemName: "circle.righthalf.filled"))
+    imageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+    imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+    imageView.tintColor = .red
+    return imageView
+  }()
+  
   let cancelButton: UIButton = {
     var configuration = UIButton.Configuration.filled()
-    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
     configuration.baseForegroundColor = .red
     configuration.baseBackgroundColor = .darkGray
     var container = AttributeContainer()
@@ -56,9 +73,22 @@ class ArrangeGamepadControlViewController: UIViewController {
     return trashIcon
   }()
   
+  let resetButton: UIButton = {
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 24, bottom: 4, trailing: 24)
+    configuration.baseForegroundColor = .white
+    configuration.baseBackgroundColor = .darkGray
+    var container = AttributeContainer()
+    container.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    configuration.attributedTitle = AttributedString("Reset", attributes: container)
+    let button = UIButton(configuration: configuration)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
   let saveButton: UIButton = {
     var configuration = UIButton.Configuration.filled()
-    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24)
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 24, bottom: 4, trailing: 24)
     configuration.baseForegroundColor = .green
     configuration.baseBackgroundColor = .darkGray
     var container = AttributeContainer()
@@ -97,6 +127,10 @@ class ArrangeGamepadControlViewController: UIViewController {
   
   var onSaveClosure: (() -> Void)?
   
+  var touchControlsOpacitySetValue: Float?
+  
+  var needsSavingOfDefaultControls = false
+  
   override func viewDidLoad() {
     view.backgroundColor = .black
     
@@ -104,20 +138,36 @@ class ArrangeGamepadControlViewController: UIViewController {
     addControlButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     addControlButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
     addControlButton.addTarget(self, action: #selector(addControlButtonPressed(_:)), for: .touchUpInside)
+    
+    let sliderStack = UIStackView(arrangedSubviews: [
+      opacityIcon, opacitySlider
+    ])
+    sliderStack.spacing = 4
+    sliderStack.axis = .horizontal
+    sliderStack.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(sliderStack)
+    sliderStack.leadingAnchor.constraint(equalTo: addControlButton.trailingAnchor, constant: 16).isActive = true
+    sliderStack.centerYAnchor.constraint(equalTo: addControlButton.centerYAnchor).isActive = true
+    opacitySlider.addTarget(self, action: #selector(opacitySliderChanged(_:)), for: .valueChanged)
         
     view.addSubview(cancelButton)
     cancelButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
     cancelButton.topAnchor.constraint(equalTo: addControlButton.topAnchor).isActive = true
     cancelButton.addTarget(self, action: #selector(cancelButtonPressed(_:)), for: .touchUpInside)
     
-    trashIcon.frame = CGRect(x: (view.bounds.width - 50) / 2, y: 48, width: 30, height: 30)
+    trashIcon.frame = CGRect(x: (view.bounds.width - 50) / 2, y: 54, width: 30, height: 30)
     view.addSubview(trashIcon)
     
     view.addSubview(saveButton)
     saveButton.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -8).isActive = true
     saveButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
     saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchUpInside)
-    
+
+    view.addSubview(resetButton)
+    resetButton.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -8).isActive = true
+    resetButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
+    resetButton.addTarget(self, action: #selector(resetButtonPressed(_:)), for: .touchUpInside)
+
     view.addSubview(instructionsLabel)
     instructionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     instructionsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -164,6 +214,20 @@ class ArrangeGamepadControlViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     loadSavedControls()
+    let optionsModel = ControlOptionsViewModel.shared
+    opacitySlider.value = optionsModel.touchControlsOpacity
+    updateOpacity(to: optionsModel.touchControlsOpacity)
+  }
+
+  private func updateOpacity(to opacity: Float) {
+    view.subviews.filter { $0 is GamepadButtonView || $0 is DPadView }.forEach { controlView in
+      controlView.alpha = CGFloat(opacity)
+    }
+  }
+  
+  @objc func opacitySliderChanged(_ sender: UISlider) {
+    touchControlsOpacitySetValue = sender.value
+    updateOpacity(to: sender.value)
   }
   
   @objc func addControlButtonPressed(_ sender: UIButton) {
@@ -171,7 +235,45 @@ class ArrangeGamepadControlViewController: UIViewController {
   }
   
   @objc func cancelButtonPressed(_ sender: UIButton) {
+    self.onSaveClosure?()
     dismiss(animated: true)
+  }
+  
+  @objc func resetButtonPressed(_ sender: UIButton) {
+    for controlView in view.subviews {
+      if controlView is DPadView || controlView is GamepadButtonView {
+        controlView.removeFromSuperview()
+      }
+    }
+    GamepadControl.createDefaultPositions(to: view)
+
+    view.setNeedsLayout()
+    view.layoutIfNeeded()
+    var controlPositions = [GamepadButtonPosition]()
+    for controlView in view.subviews {
+      if controlView is DPadView || controlView is GamepadButtonView {
+        if let control = GamepadControl(rawValue: controlView.tag) {
+          let pos = GamepadButtonPosition(button: control, originX: Float(controlView.frame.origin.x), originY: Float(controlView.frame.origin.y))
+          controlPositions.append(pos)
+        }
+      }
+    }
+    if !controlPositions.isEmpty {
+      if let saveData = try? PropertyListEncoder().encode(controlPositions) {
+        UserDefaults.standard.set(saveData, forKey: GamepadButtonPosition.userDefaultsKey)
+        print("Reset with default controls....")
+      }
+      for controlView in view.subviews {
+        if controlView is DPadView || controlView is GamepadButtonView {
+          controlView.removeFromSuperview()
+        }
+      }
+      loadSavedControls()
+    }
+
+    view.bringSubviewToFront(overlayView)
+    
+    updateOpacity(to: ControlOptionsViewModel.shared.touchControlsOpacity)
   }
   
   @objc func saveButtonPressed(_ sender: UIButton) {
@@ -190,6 +292,14 @@ class ArrangeGamepadControlViewController: UIViewController {
       UserDefaults.standard.set(saveData, forKey: GamepadButtonPosition.userDefaultsKey)
     }
     print("Saved buttonPositions: \(buttonPositions)")
+    
+    // save opacity setting
+    if let touchControlsOpacitySetValue {
+      let optionsModel = ControlOptionsViewModel.shared
+      optionsModel.touchControlsOpacity = touchControlsOpacitySetValue
+      optionsModel.saveToUserDefaults()
+    }
+    
     dismiss(animated: true) {
       self.onSaveClosure?()
     }
@@ -245,11 +355,6 @@ class ArrangeGamepadControlViewController: UIViewController {
         controlView.removeFromSuperview()
       }
     }
-    for controlView in view.subviews {
-      if controlView is DPadView || controlView is GamepadButtonView {
-        controlView.removeFromSuperview()
-      }
-    }
     controlPositions.forEach { self.addControl($0.button, xPos: $0.originX, yPos: $0.originY) }
     view.bringSubviewToFront(overlayView)
   }
@@ -283,7 +388,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     // Check if the view is over the trash icon
     if trashIcon.frame.contains(viewToMove.center) {
       UIView.animate(withDuration: 0.2) {
-        self.trashIcon.transform = CGAffineTransform(scaleX: 2, y: 2)
+        self.trashIcon.transform = CGAffineTransform(scaleX: 2.5, y: 2.5)
       }
     } else {
       UIView.animate(withDuration: 0.2) {
