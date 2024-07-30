@@ -22,9 +22,6 @@ struct HelpSheetView: View {
           Spacer()
         }
         HStack {
-//          Button("Donate!") {
-//            openURL(URL(string: "https://www.paypal.com/donate/?business=SCF4KDUF5H79A&no_recurring=0&item_name=Support+retro+gaming+on+iOS%21&currency_code=USD")!)
-//          }.buttonStyle(.bordered).foregroundColor(.yellow)
           Spacer()
           Button("Done") {
             dismiss()

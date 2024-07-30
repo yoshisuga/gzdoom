@@ -70,15 +70,20 @@ You can reorder the loading order by dragging the mod files with your finger on 
 
 Game controllers are supported: mFi, PS4, PS5, Xbox One, Nintendo Switch.
 
-Connecting a game controller will disable the virtual on-screen gamepad.
+Connecting a game controller will disable the touch screen controls.
 
 ^[°°±±²²ÛÛ In-Game Operation ÛÛ²²±±°°](colored: 'cyan')
 
-After launching a game, you will be shown a ^[virtual gamepad](colored: 'yellow') by default. On the upper left side of the screen, you will see ^[buttons](colored: 'white') to toggle the ^[virtual keyboard](colored: 'yellow') as well as a ^[virtual controller](colored: 'yellow').
+After launching a game, you will be shown a ^[virtual gamepad](colored: 'yellow') by default. On the top center of the screen, you will see ^[buttons](colored: 'white') to ^[show the in-game menu](colored: 'yellow'), adjust ^[control settings](colored: 'yellow'), toggle the ^[virtual keyboard](colored: 'yellow'), ^[touchscreen controller](colored: 'yellow'), and ^[arranging touchscreen controls](colored: 'yellow')
 
 ^[Basic Controls](colored: 'white'):
 
-- ^[DPad](colored: 'white') (above the left analog control): Use to move selection in the in-game menu
+Touch Screen:
+- ^[Movement](colored: 'white'): Touch and drag on the left side of the screen.
+- ^[Aiming](colored: 'white'): Touch and drag on the right side of the screen.
+
+Buttons:
+- ^[DPad](colored: 'white'): Use to move selection in the in-game menu
 - ^[A](colored: 'white'): ^[Use/Confirm/Enter/](colored: 'yellow')
 - ^[B](colored: 'white'): ^[Run/Cancel](colored: 'yellow')
 - ^[Y](colored: 'white'): ^[Jump](colored: 'yellow')
@@ -86,6 +91,4 @@ After launching a game, you will be shown a ^[virtual gamepad](colored: 'yellow'
 - ^[LT](colored: 'white') (upper left corner of left analog): ^[Alt Fire](colored: 'yellow')
 - ^[R](colored: 'white') (lower right corner of left analog): ^[Change weapon (+)](colored: 'yellow')
 - ^[L](colored: 'white') (lower left corner of left analog): ^[Change weapon (-)](colored: 'yellow')
-
-- ^[Menu](colored: 'white') (on-screen only): ^[Show in game menu/Esc](colored: 'yellow')
 

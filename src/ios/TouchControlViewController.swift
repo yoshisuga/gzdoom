@@ -11,8 +11,26 @@ class TouchControlViewController: UIViewController {
   var needsSavingOfDefaultControls = false
   let generator = UIImpactFeedbackGenerator(style: .light)
   
+  var lastTouchTime: TimeInterval? {
+    didSet {
+      guideOverlayView.isHidden = true
+    }
+  }
+  private let guideOverlayTimeIntervalThreshold: TimeInterval = 4
+  let guideOverlayView = TouchControlGuideOverlayView()
+  var guideTimer: Timer?
+  var guideNumberOfTimesShown = 0
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    guideOverlayView.isHidden = true
+    view.addSubview(guideOverlayView)
+    guideOverlayView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    guideOverlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    guideOverlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+    guideOverlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    
     let joystick = JoystickView()
     joystick.translatesAutoresizingMaskIntoConstraints = false
     joystick.backgroundColor = .clear
@@ -32,12 +50,24 @@ class TouchControlViewController: UIViewController {
     aim.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     aim.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
     aim.delegate = self
+    
+    guideTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(guideTimerFired), userInfo: nil, repeats: true)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     loadSavedControls()
     updateOpacity()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    lastTouchTime = Date().timeIntervalSince1970
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    guideTimer?.invalidate()
   }
   
   override func viewDidLayoutSubviews() {
@@ -60,6 +90,24 @@ class TouchControlViewController: UIViewController {
         }
       }
       needsSavingOfDefaultControls = false
+    }
+  }
+  
+  @objc func guideTimerFired() {
+    print("guideTimerFired!")
+    if guideOverlayView.isHidden,
+       guideNumberOfTimesShown < 2,
+        let lastTouchTime,
+       Date().timeIntervalSince1970 - lastTouchTime > guideOverlayTimeIntervalThreshold {
+      guideOverlayView.alpha = 0
+      guideOverlayView.isHidden = false
+      UIView.animate(withDuration: 0.5) { [weak self] in
+        self?.guideOverlayView.alpha = 1
+      }
+      guideNumberOfTimesShown += 1
+    }
+    if guideNumberOfTimesShown >= 2 {
+      guideTimer?.invalidate()
     }
   }
   
@@ -118,6 +166,7 @@ extension TouchControlViewController: JoystickDelegate {
     utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
     utils.handleLeftThumbstickDirectionalInput(.right, isPressed: false)
     utils.handleLeftThumbstickDirectionalInput(.left, isPressed: false)
+    lastTouchTime = Date().timeIntervalSince1970
   }
   
   func joystickMoved(dx: Float, dy: Float) {
@@ -147,6 +196,7 @@ extension TouchControlViewController: JoystickDelegate {
       utils.handleLeftThumbstickDirectionalInput(.up, isPressed: false)
       utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
     }
+    lastTouchTime = Date().timeIntervalSince1970
   }
 }
 
@@ -157,6 +207,7 @@ extension TouchControlViewController: AimControlsDelegate {
     guard let utils = IOSUtils.shared(),
           let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
     utils.handleGameControl(control, isPressed: false)
+    lastTouchTime = Date().timeIntervalSince1970
   }
   
   func aimDidSingleTap() {
@@ -187,6 +238,7 @@ extension TouchControlViewController: AimControlsDelegate {
             let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
       utils.handleGameControl(control, isPressed: true)
     }
+    lastTouchTime = Date().timeIntervalSince1970
   }
 }
 
@@ -200,6 +252,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
     if ControlOptionsViewModel.shared.touchControlHapticFeedback && !isMove {
       generator.impactOccurred()
     }
+    lastTouchTime = Date().timeIntervalSince1970
   }
   
   func gamepadButton(released button: GamepadButtonView) {
@@ -208,6 +261,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
       return
     }
     utils.handleGameControl(gamepadControl, isPressed: false)
+    lastTouchTime = Date().timeIntervalSince1970
   }
 }
 
@@ -218,10 +272,73 @@ extension TouchControlViewController: DPadDelegate {
     if ControlOptionsViewModel.shared.touchControlHapticFeedback {
       generator.impactOccurred()
     }
+    lastTouchTime = Date().timeIntervalSince1970
   }
   
   func dPadDidRelease(_ dPadView: DPadView) {
     guard let utils = IOSUtils.shared() else { return }
     utils.handleOverlayDPad(with: .none)
+    lastTouchTime = Date().timeIntervalSince1970
+  }
+}
+
+class TouchControlGuideOverlayView: UIView {
+  let moveOverlay: UIView = {
+    let view = UIView()
+    view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+    view.layer.borderColor = UIColor.black.cgColor
+    view.layer.borderWidth = 1
+    let label = UILabel()
+    label.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    label.text = "MOVE"
+    label.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(label)
+    label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  let aimOverlay: UIView = {
+    let view = UIView()
+    view.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.4)
+    view.layer.borderColor = UIColor.black.cgColor
+    view.layer.borderWidth = 2
+    let label = UILabel()
+    label.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    label.text = "AIM"
+    label.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(label)
+    label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  
+  convenience init() {
+    self.init(frame: .zero)
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setup()
+  }
+
+  required init(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func setup() {
+    addSubview(moveOverlay)
+    moveOverlay.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2).isActive = true
+    moveOverlay.topAnchor.constraint(equalTo: topAnchor, constant: 2).isActive = true
+    moveOverlay.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
+    moveOverlay.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -4).isActive = true
+    addSubview(aimOverlay)
+    aimOverlay.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 4).isActive = true
+    aimOverlay.topAnchor.constraint(equalTo: topAnchor, constant: 2).isActive = true
+    aimOverlay.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
+    aimOverlay.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2).isActive = true
+    translatesAutoresizingMaskIntoConstraints = false
   }
 }

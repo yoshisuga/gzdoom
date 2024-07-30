@@ -146,6 +146,8 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
+  static let currentVersion = "2024.8.1"
+  
   var body: some View {
     VStack {
       HStack {
@@ -187,8 +189,12 @@ struct LauncherView: View {
         default:
           EmptyView()
         }
-    }.onAppear {
-      viewModel.setup()
+      }.onAppear {
+        viewModel.setup()
+        let whatsNewVersionSeen = UserDefaults.standard.string(forKey: WhatsNewView.userDefaultsKey)        
+        whatsNewAvailable =
+        (whatsNewVersionSeen == nil || (whatsNewVersionSeen != nil && whatsNewVersionSeen! != Self.currentVersion )) &&
+        Bundle.main.url(forResource: "whats-new", withExtension: "md") != nil
     }.font(.body)
       .background {
         LinearGradient(colors: [.red.opacity(0.2), .orange.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -199,8 +205,18 @@ struct LauncherView: View {
               animateGradient.toggle()
             }
           }
+      }.overlay {
+        if whatsNewAvailable {
+          ZStack {
+            WhatsNewView(closeClosure: {
+              whatsNewAvailable = false
+            }).frame(width: 600, height: 330)
+          }
+        }
       }
   }
+  
+  @State private var whatsNewAvailable = false
   
   init(viewModel: LauncherViewModel, selections: [GZDoomFile] = [GZDoomFile]()) {
     self.viewModel = viewModel
