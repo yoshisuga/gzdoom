@@ -13,12 +13,15 @@ class ControlOptionsViewModel: ObservableObject, Codable {
   @Published var doubleTapControl: OptionsDoubleTapControl = .none
   @Published var touchControlHapticFeedback = true
   @Published var controllerInvertYAxis = false
+  @Published var gyroEnabled: Bool = true
+  @Published var gyroSensitivity: Float = 5.0
   
   let userDefaultsKey = "controlOptions"
   
   enum CodingKeys: CodingKey {
     case touchControlsOpacity, aimSensitivity, doubleTapControl, touchControlHapticFeedback,
          controllerInvertYAxis
+    case gyroEnabled, gyroSensitivity
   }
   
   func encode(to encoder: Encoder) throws {
@@ -28,6 +31,8 @@ class ControlOptionsViewModel: ObservableObject, Codable {
     try container.encode(doubleTapControl.rawValue, forKey: .doubleTapControl)
     try container.encode(touchControlHapticFeedback, forKey: .touchControlHapticFeedback)
     try container.encode(controllerInvertYAxis, forKey: .controllerInvertYAxis)
+    try container.encode(gyroEnabled, forKey: .gyroEnabled)
+    try container.encode(gyroSensitivity, forKey: .gyroSensitivity)
   }
   
   private init() {
@@ -43,6 +48,8 @@ class ControlOptionsViewModel: ObservableObject, Codable {
     doubleTapControl = try container.decode(OptionsDoubleTapControl.self, forKey: .doubleTapControl)
     touchControlHapticFeedback = try container.decode(Bool.self, forKey: .touchControlHapticFeedback)
     controllerInvertYAxis = try container.decode(Bool.self, forKey: .controllerInvertYAxis)
+    gyroEnabled = try container.decode(Bool?.self, forKey: .gyroEnabled) ?? false
+    gyroSensitivity = try container.decode(Float?.self, forKey: .gyroSensitivity) ?? 1.0
   }
   
   func loadFromUserDefaults() {
@@ -54,6 +61,9 @@ class ControlOptionsViewModel: ObservableObject, Codable {
     aimSensitivity = saved.aimSensitivity
     doubleTapControl = saved.doubleTapControl
     touchControlHapticFeedback = saved.touchControlHapticFeedback
+    controllerInvertYAxis = saved.controllerInvertYAxis
+    gyroEnabled = saved.gyroEnabled
+    gyroSensitivity = saved.gyroSensitivity
   }
   
   func saveToUserDefaults() {
@@ -156,6 +166,10 @@ struct ControlOptionsView: View {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
             OptionsDoubleTapPickerRow(selectedControl: $viewModel.doubleTapControl)
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
+          }
+          Section(header: Text("Gyroscope").font(.small)) {
+            OptionsSwitchRow(isOn: $viewModel.gyroEnabled, label: "Gyroscope Aiming")
+            OptionsSliderRow(sliderValue: $viewModel.gyroSensitivity, label: "Gyroscope Sensitivity", min: 2, max: 10.0)
           }
           Section(header: Text("Game Controller").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")

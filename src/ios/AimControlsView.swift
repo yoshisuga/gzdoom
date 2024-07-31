@@ -32,12 +32,12 @@ class AimControlsView: UIView {
     if isDoubleTap || isMoving {
       return
     }
-    print(#function)
+//    print(#function)
     delegate?.aimDidSingleTap()
   }
   
   func doubleTapAction() {
-    print(#function)
+//    print(#function)
     delegate?.aimDidDoubleTap()
   }
   
@@ -64,7 +64,7 @@ class AimControlsView: UIView {
     let dx = location.x - prev.x
     let dy = location.y - prev.y
     delegate?.aimDidMove(dx: Float(dx), dy: Float(dy), isDoubleTap: isDoubleTap)
-    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
+//    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

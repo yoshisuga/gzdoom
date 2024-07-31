@@ -48,7 +48,7 @@ class JoystickView: UIView {
     let dx = location.x - joystickCenter.x
     let dy = location.y - joystickCenter.y
     delegate?.joystickMoved(dx: Float(dx), dy: Float(dy))
-    print("touchesMoved: dx = \(dx), dy = \(dy)")
+//    print("touchesMoved: dx = \(dx), dy = \(dy)")
     let distance = sqrt(dx * dx + dy * dy)
     let maxDistance: CGFloat = 50
     

@@ -574,6 +574,8 @@ struct KeyPosition {
   var touchControlsView = UIView()
   var touchControlsVC: TouchControlViewController?
   
+  let gyroHandler = GyroscopeHandler()
+  
    @objc init(leftKeyboardModel: EmulatorKeyboardViewModel, rightKeyboardModel: EmulatorKeyboardViewModel) {
       self.leftKeyboardModel = leftKeyboardModel
       self.rightKeyboardModel = rightKeyboardModel
@@ -588,87 +590,88 @@ struct KeyPosition {
       view = EmulatorKeyboardPassthroughView()
    }
 
-    override func viewDidLoad() {
-      super.viewDidLoad()
-      setupView()
-      
-      let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
-      leftKeyboardView.dragMeView.isUserInteractionEnabled = true
-      leftKeyboardView.dragMeView.addGestureRecognizer(panGesture)
-      let panGestureRightKeyboard = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
-      rightKeyboardView.dragMeView.isUserInteractionEnabled = true
-      rightKeyboardView.dragMeView.addGestureRecognizer(panGestureRightKeyboard)
-      
-      GameControllerHandler.shared.delegate = self
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupView()
     
-    func setupView() {
-      NSLayoutConstraint.deactivate(keyboardConstraints)
-      keyboardConstraints.removeAll()
-      leftKeyboardView.translatesAutoresizingMaskIntoConstraints = false
-      view.addSubview(leftKeyboardView)
-      leftKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
-      leftKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
-      keyboardConstraints.append(contentsOf: [
-        leftKeyboardView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-        leftKeyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-      ])
-      rightKeyboardView.translatesAutoresizingMaskIntoConstraints = false
-      view.addSubview(rightKeyboardView)
-      keyboardConstraints.append(contentsOf: [
-        rightKeyboardView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        rightKeyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-      ])
-      rightKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
-      rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
-      NSLayoutConstraint.activate(keyboardConstraints)
-
-      let touchControlsViewController = TouchControlViewController()
-      addChild(touchControlsViewController)
-      touchControlsView = touchControlsViewController.view
-      touchControlsView.translatesAutoresizingMaskIntoConstraints = false
-      view.addSubview(touchControlsView)
-      touchControlsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-      touchControlsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-      touchControlsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-      touchControlsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-      touchControlsView.isHidden = true
-      touchControlsViewController.didMove(toParent: self)
-      touchControlsVC = touchControlsViewController
-      
-      controlOptionsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
-      
-      toggleButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
-      
-      toggleVirtualControllerButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
-      
-      customizeControlsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
-      
-//      view.addSubview(escButtonView)
-//      escButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-//      escButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-//      escButtonView.delegate = self
-
-      escButton.addTarget(self, action: #selector(escButtonPressed(_:)), for: .touchUpInside)
-      
-      let optionsStack = UIStackView(arrangedSubviews: [
-        escButton, controlOptionsButton, toggleButton, toggleVirtualControllerButton, customizeControlsButton
-      ])
-      optionsStack.axis = .horizontal
-      optionsStack.spacing = 8
-      optionsStack.translatesAutoresizingMaskIntoConstraints = false
-      view.addSubview(optionsStack)
-      optionsStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-      optionsStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 4).isActive = true
-      
-      // setup initial state: show gamepad
-      leftKeyboardView.isHidden = true
-      rightKeyboardView.isHidden = true
-      touchControlsView.isHidden = false
-      customizeControlsButton.isHidden = false
-
-      //      GameControllerHandler.shared.enableVirtual()
-    }
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
+    leftKeyboardView.dragMeView.isUserInteractionEnabled = true
+    leftKeyboardView.dragMeView.addGestureRecognizer(panGesture)
+    let panGestureRightKeyboard = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
+    rightKeyboardView.dragMeView.isUserInteractionEnabled = true
+    rightKeyboardView.dragMeView.addGestureRecognizer(panGestureRightKeyboard)
+    
+    GameControllerHandler.shared.delegate = self
+    gyroHandler.setup()
+  }
+  
+  func setupView() {
+    NSLayoutConstraint.deactivate(keyboardConstraints)
+    keyboardConstraints.removeAll()
+    leftKeyboardView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(leftKeyboardView)
+    leftKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
+    leftKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
+    keyboardConstraints.append(contentsOf: [
+      leftKeyboardView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      leftKeyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+    rightKeyboardView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(rightKeyboardView)
+    keyboardConstraints.append(contentsOf: [
+      rightKeyboardView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      rightKeyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+    rightKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
+    rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
+    NSLayoutConstraint.activate(keyboardConstraints)
+    
+    let touchControlsViewController = TouchControlViewController()
+    addChild(touchControlsViewController)
+    touchControlsView = touchControlsViewController.view
+    touchControlsView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(touchControlsView)
+    touchControlsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    touchControlsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    touchControlsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+    touchControlsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    touchControlsView.isHidden = true
+    touchControlsViewController.didMove(toParent: self)
+    touchControlsVC = touchControlsViewController
+    
+    controlOptionsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+    
+    toggleButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+    
+    toggleVirtualControllerButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+    
+    customizeControlsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
+    
+    //      view.addSubview(escButtonView)
+    //      escButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+    //      escButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+    //      escButtonView.delegate = self
+    
+    escButton.addTarget(self, action: #selector(escButtonPressed(_:)), for: .touchUpInside)
+    
+    let optionsStack = UIStackView(arrangedSubviews: [
+      escButton, controlOptionsButton, toggleButton, toggleVirtualControllerButton, customizeControlsButton
+    ])
+    optionsStack.axis = .horizontal
+    optionsStack.spacing = 8
+    optionsStack.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(optionsStack)
+    optionsStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    optionsStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 4).isActive = true
+    
+    // setup initial state: show gamepad
+    leftKeyboardView.isHidden = true
+    rightKeyboardView.isHidden = true
+    touchControlsView.isHidden = false
+    customizeControlsButton.isHidden = false
+    
+    //      GameControllerHandler.shared.enableVirtual()
+  }
   
   @objc func changeInputMode(_ sender: UIButton) {
     if sender == controlOptionsButton {
@@ -676,6 +679,7 @@ struct KeyPosition {
       optionsView.dismissClosure = { [weak self] in
         self?.dismiss(animated: true)
         self?.touchControlsVC?.updateOpacity()
+        self?.gyroHandler.setup()
       }
       let hostingController = UIHostingController(rootView: optionsView)
       present(hostingController, animated: true)
@@ -731,42 +735,42 @@ struct KeyPosition {
   @objc func toggleVirtualController(_ sender: UIButton) {
     GameControllerHandler.shared.toggleVirtual()
   }
-    
-    func setupViewFrames() {
-        // initial placement on the bottom corners
-        // since we don't know the frame of this view yet until layout time,
-        // assume it's taking the full screen
-        let screenFrame = UIScreen.main.bounds
-        let keyboardHeight: CGFloat = 250.0
-        let keyboardWidth: CGFloat = 180.0
-        let bottomLeftFrame = CGRect(
-            x: 0,
-            y: screenFrame.size.height - 20 - keyboardHeight - 20,
-            width: keyboardWidth, height: keyboardHeight)
-        let bottomRightFrame = CGRect(
-            x: screenFrame.size.width - 20 - keyboardWidth,
-            y:screenFrame.size.height - 20 - keyboardHeight - 20,
-            width: keyboardWidth, height: keyboardHeight
-        )
-        view.addSubview(leftKeyboardView)
-        view.addSubview(rightKeyboardView)
-        leftKeyboardView.frame = bottomLeftFrame
-        rightKeyboardView.frame = bottomRightFrame
+  
+  func setupViewFrames() {
+    // initial placement on the bottom corners
+    // since we don't know the frame of this view yet until layout time,
+    // assume it's taking the full screen
+    let screenFrame = UIScreen.main.bounds
+    let keyboardHeight: CGFloat = 250.0
+    let keyboardWidth: CGFloat = 180.0
+    let bottomLeftFrame = CGRect(
+      x: 0,
+      y: screenFrame.size.height - 20 - keyboardHeight - 20,
+      width: keyboardWidth, height: keyboardHeight)
+    let bottomRightFrame = CGRect(
+      x: screenFrame.size.width - 20 - keyboardWidth,
+      y:screenFrame.size.height - 20 - keyboardHeight - 20,
+      width: keyboardWidth, height: keyboardHeight
+    )
+    view.addSubview(leftKeyboardView)
+    view.addSubview(rightKeyboardView)
+    leftKeyboardView.frame = bottomLeftFrame
+    rightKeyboardView.frame = bottomRightFrame
+  }
+  
+  func setupKeyModels() {
+    leftKeyboardView.setupWithModel(leftKeyboardModel)
+    rightKeyboardView.setupWithModel(rightKeyboardModel)
+  }
+  
+  @objc func draggedView(_ sender:UIPanGestureRecognizer){
+    guard let keyboardView = sender.view?.superview else {
+      return
     }
-    
-    func setupKeyModels() {
-        leftKeyboardView.setupWithModel(leftKeyboardModel)
-        rightKeyboardView.setupWithModel(rightKeyboardModel)
-    }
-    
-    @objc func draggedView(_ sender:UIPanGestureRecognizer){
-        guard let keyboardView = sender.view?.superview else {
-            return
-        }
-        let translation = sender.translation(in: self.view)
-        keyboardView.center = CGPoint(x: keyboardView.center.x + translation.x, y: keyboardView.center.y + translation.y)
-        sender.setTranslation(CGPoint.zero, in: self.view)
-    }
+    let translation = sender.translation(in: self.view)
+    keyboardView.center = CGPoint(x: keyboardView.center.x + translation.x, y: keyboardView.center.y + translation.y)
+    sender.setTranslation(CGPoint.zero, in: self.view)
+  }
   
   func toggleVisibility() {
     leftKeyboardView.isHidden = !leftKeyboardView.isHidden
@@ -775,21 +779,21 @@ struct KeyPosition {
 }
 
 extension EmulatorKeyboardController: EmulatorKeyboardViewDelegate {
-    func toggleAlternateKeys() {
-        for keyboard in [leftKeyboardView, rightKeyboardView] {
-            keyboard.toggleKeysStackView()
-        }
+  func toggleAlternateKeys() {
+    for keyboard in [leftKeyboardView, rightKeyboardView] {
+      keyboard.toggleKeysStackView()
     }
-    func refreshModifierStates() {
-        for keyboard in [leftKeyboardView, rightKeyboardView] {
-            keyboard.refreshModifierStates()
-        }
+  }
+  func refreshModifierStates() {
+    for keyboard in [leftKeyboardView, rightKeyboardView] {
+      keyboard.refreshModifierStates()
     }
-    func updateTransparency(toAlpha alpha: Float) {
-        for keyboard in [leftKeyboardView, rightKeyboardView] {
-            keyboard.alpha = CGFloat(alpha)
-        }
+  }
+  func updateTransparency(toAlpha alpha: Float) {
+    for keyboard in [leftKeyboardView, rightKeyboardView] {
+      keyboard.alpha = CGFloat(alpha)
     }
+  }
 }
 
 extension EmulatorKeyboardController: DPadDelegate {
