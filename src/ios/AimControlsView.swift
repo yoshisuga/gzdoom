@@ -18,6 +18,7 @@ protocol AimControlsDelegate {
   func aimDidDoubleTap()
   func aimDidMove(dx: Float, dy: Float, isDoubleTap: Bool)
   func aimEnded()
+  func aimDidStart()
 }
 
 class AimControlsView: UIView {
@@ -42,9 +43,11 @@ class AimControlsView: UIView {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard let touch = touches.first else {
+    guard let touch = touches.first, touch.type == .direct else {
       return
     }
+    print("AimControls touch type = \(touch.type)")
+    delegate?.aimDidStart()
     startTouchPoint = touch.location(in: self)
     if touch.tapCount == 1 {
       DispatchQueue.main.asyncAfter(deadline: .now() + timeToWaitAsecondTap) {
@@ -57,7 +60,7 @@ class AimControlsView: UIView {
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard let touch = touches.first else { return }
+    guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = true
     let location = touch.location(in: self)
     let prev = touch.previousLocation(in: self)
@@ -68,14 +71,14 @@ class AimControlsView: UIView {
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard touches.first != nil else { return }
+    guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = false
     isDoubleTap = false
     delegate?.aimEnded()
   }
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard touches.first != nil else { return }
+    guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = false
     isDoubleTap = false
     delegate?.aimEnded()

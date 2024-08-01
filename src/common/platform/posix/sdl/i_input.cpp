@@ -207,6 +207,7 @@ static void MouseRead ()
 	}
 
 	SDL_GetRelativeMouseState (&x, &y);
+  PostMouseMove (x, y);
 //  printf("yoshi debug mouse: SDL relative x = %i, y = %i\n",x,y);
   
   IOS_GetMouseDeltas(&iosX, &iosY);

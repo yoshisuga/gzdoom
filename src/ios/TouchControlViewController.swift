@@ -95,7 +95,8 @@ class TouchControlViewController: UIViewController {
   
   @objc func guideTimerFired() {
     print("guideTimerFired!")
-    if guideOverlayView.isHidden,
+    if ControlOptionsViewModel.shared.enableTouchControlsGuideOverlay,
+       guideOverlayView.isHidden,
        guideNumberOfTimesShown < 2,
         let lastTouchTime,
        Date().timeIntervalSince1970 - lastTouchTime > guideOverlayTimeIntervalThreshold {
@@ -106,7 +107,7 @@ class TouchControlViewController: UIViewController {
       }
       guideNumberOfTimesShown += 1
     }
-    if guideNumberOfTimesShown >= 2 {
+    if guideNumberOfTimesShown >= 2 || !ControlOptionsViewModel.shared.enableTouchControlsGuideOverlay {
       guideTimer?.invalidate()
     }
   }
@@ -155,9 +156,20 @@ class TouchControlViewController: UIViewController {
       controlView.alpha = CGFloat(optionsModel.touchControlsOpacity)
     }
   }
+  
+  func changeTouchControls(isHidden: Bool) {
+    if isHidden {
+      guideOverlayView.isHidden = true
+    }
+    view.subviews.filter{ $0 is GamepadButtonView || $0 is DPadView }.forEach{ $0.isHidden = isHidden }
+  }
 }
 
 extension TouchControlViewController: JoystickDelegate {
+  func joystickDidStart() {
+    changeTouchControls(isHidden: false)
+  }
+  
   func joystickEnded() {
     guard let utils = IOSUtils.shared() else {
       return
@@ -201,6 +213,10 @@ extension TouchControlViewController: JoystickDelegate {
 }
 
 extension TouchControlViewController: AimControlsDelegate {
+  func aimDidStart() {
+    changeTouchControls(isHidden: false)
+  }
+  
   func aimEnded() {
     MouseInputHolder.shared.deltaX = 0
     MouseInputHolder.shared.deltaY = 0

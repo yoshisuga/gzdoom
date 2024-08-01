@@ -10,6 +10,7 @@ import UIKit
 protocol JoystickDelegate {
   func joystickMoved(dx: Float, dy: Float)
   func joystickEnded()
+  func joystickDidStart()
 }
 
 class JoystickView: UIView {
@@ -35,7 +36,8 @@ class JoystickView: UIView {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard let touch = touches.first else { return }
+    guard let touch = touches.first, touch.type == .direct else { return }
+    delegate?.joystickDidStart()
     joystickCenter = touch.location(in: self)
     knobCenter = joystickCenter
     isTouching = true
@@ -43,7 +45,7 @@ class JoystickView: UIView {
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard let touch = touches.first else { return }
+    guard let touch = touches.first, touch.type == .direct else { return }
     let location = touch.location(in: self)
     let dx = location.x - joystickCenter.x
     let dy = location.y - joystickCenter.y
@@ -62,6 +64,7 @@ class JoystickView: UIView {
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first, touch.type == .direct else { return }
     isTouching = false
     setNeedsDisplay()
     delegate?.joystickEnded()

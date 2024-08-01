@@ -776,6 +776,12 @@ struct KeyPosition {
     leftKeyboardView.isHidden = !leftKeyboardView.isHidden
     rightKeyboardView.isHidden = !rightKeyboardView.isHidden
   }
+  
+  override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    guard presses.first != nil else { return }
+    print("presses began!")
+    touchControlsVC?.changeTouchControls(isHidden: true)
+  }
 }
 
 extension EmulatorKeyboardController: EmulatorKeyboardViewDelegate {

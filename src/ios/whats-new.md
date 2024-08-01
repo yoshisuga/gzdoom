@@ -1,5 +1,27 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+Version 2024.8.3
+
+^[°°±±²²ÛÛ Better iPad Support ÛÛ²²±±°°](colored: 'cyan')
+
+- Fixed mouse movement using a touch pad or physical mouse.
+
+- Interacting with a physical keyboard will automatically hide touch controls, and touching the screen will show the touch screen controls again.
+
+^[°°±±²²ÛÛ Miscellaneous ÛÛ²²±±°°](colored: 'cyan')
+
+- Touch Controls: Added an option to disable the Move/Aim guidance overlay that's displayed if you do not interact with the screen. This is displayed twice when running the app but now there's an option to disable it completely.
+
+
+
+^[°°±±²²ÛÛ Chat on Discord! ÛÛ²²±±°°](colored: 'cyan')
+
+Chat and ask questions in our [Discord Server](https://discord.gg/S4tVTNEmsj)!
+
+---
+
+Here's what was updated in the last couple updates:
+
 Version 2024.8.2
 
 ^[°°±±²²ÛÛ Gyroscope Aiming! ÛÛ²²±±°°](colored: 'cyan')
@@ -10,13 +32,6 @@ Gyroscope aimimg is on by default, and can be enabled/disabled in the Control Op
 
 I re-did the internals of the control option settings, and your previously saved settings may be reset back to the defaults. This will not happen in future updates, and I apologize for the inconvenience.
 
-^[°°±±²²ÛÛ Chat on Discord! ÛÛ²²±±°°](colored: 'cyan')
-
-Chat and ask questions in our [Discord Server](https://discord.gg/S4tVTNEmsj)!
-
----
-
-Here's what was updated in the last update:
 
 Version 2024.8.1
 

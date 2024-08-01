@@ -15,6 +15,7 @@ class ControlOptionsViewModel: ObservableObject {
   @Published var controllerInvertYAxis = false
   @Published var gyroEnabled: Bool = true
   @Published var gyroSensitivity: Float = 5.0
+  @Published var enableTouchControlsGuideOverlay: Bool = true
   
   let userDefaultsKey = "controlOptions"
   private static let userDefaultsKeyPrefix = "controlOptions_"
@@ -23,6 +24,7 @@ class ControlOptionsViewModel: ObservableObject {
     case touchControlsOpacity, aimSensitivity, doubleTapControl, touchControlHapticFeedback,
          controllerInvertYAxis
     case gyroEnabled, gyroSensitivity
+    case enableTouchControlsGuideOverlay
     
     var keyName: String {
       return "\(userDefaultsKeyPrefix)\(self.rawValue)"
@@ -78,6 +80,12 @@ class ControlOptionsViewModel: ObservableObject {
       gyroSensitivity = gyroSensitivityDef
     } else {
       gyroSensitivity = 5.0
+    }
+    
+    if let touchControlsGuideOverlayDef = UserDefaults.standard.object(forKey: OptionKeys.enableTouchControlsGuideOverlay.keyName) as? Bool {
+      enableTouchControlsGuideOverlay = touchControlsGuideOverlayDef
+    } else {
+      enableTouchControlsGuideOverlay = true
     }
   }
   
@@ -179,6 +187,7 @@ struct ControlOptionsView: View {
         List {
           Section (header: Text("General").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.aimSensitivity, label: "Aim Sensitivity", min: 0.25, max: 4.0)
+            OptionsSwitchRow(isOn: $viewModel.enableTouchControlsGuideOverlay, label: "Show Move/Aim Overlay Guide")
           }
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
