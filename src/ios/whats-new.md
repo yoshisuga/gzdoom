@@ -1,5 +1,23 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+Version 2024.8.2
+
+^[°°±±²²ÛÛ Gyroscope Aiming! ÛÛ²²±±°°](colored: 'cyan')
+
+Gyroscope aimimg is on by default, and can be enabled/disabled in the Control Options screen. You can also adjust the gyroscope sensitivity here as well.
+
+^[°°±±²²ÛÛ Miscellaneous ÛÛ²²±±°°](colored: 'cyan')
+
+I re-did the internals of the control option settings, and your previously saved settings may be reset back to the defaults. This will not happen in future updates, and I apologize for the inconvenience.
+
+^[°°±±²²ÛÛ Chat on Discord! ÛÛ²²±±°°](colored: 'cyan')
+
+Chat and ask questions in our [Discord Server](https://discord.gg/S4tVTNEmsj)!
+
+---
+
+Here's what was updated in the last update:
+
 Version 2024.8.1
 
 ^[°°±±²²ÛÛ New Touch Controls ÛÛ²²±±°°](colored: 'cyan')

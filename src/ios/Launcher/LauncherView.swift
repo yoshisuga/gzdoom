@@ -146,7 +146,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.8.1"
+  static let currentVersion = "2024.8.2"
   
   var body: some View {
     VStack {
@@ -174,9 +174,7 @@ struct LauncherView: View {
         }
       }
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder, activeSheet: $activeSheet).padding(.bottom)
-//      ColoredText("Ported to ^[iOS](colored: 'green') by ^[@yoshisuga](colored: 'purple'), 2024.").font(.small).foregroundColor(.gray)
-      ColoredText("^[Tap](colored: 'green') a launch configuration name to ^[start game](colored: 'orange').").font(.small).foregroundColor(.gray)
-      ColoredText("^[Tap](colored: 'green') ^[[+]](colored: 'orange') to ^[add a launch configuration](colored: 'orange').").font(.small).foregroundColor(.gray)
+      ColoredText("Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.gray)
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
     }.padding([.bottom], 4)
@@ -191,7 +189,7 @@ struct LauncherView: View {
         }
       }.onAppear {
         viewModel.setup()
-        let whatsNewVersionSeen = UserDefaults.standard.string(forKey: WhatsNewView.userDefaultsKey)        
+        let whatsNewVersionSeen = UserDefaults.standard.string(forKey: WhatsNewView.userDefaultsKey)
         whatsNewAvailable =
         (whatsNewVersionSeen == nil || (whatsNewVersionSeen != nil && whatsNewVersionSeen! != Self.currentVersion )) &&
         Bundle.main.url(forResource: "whats-new", withExtension: "md") != nil

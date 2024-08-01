@@ -1,5 +1,7 @@
 ^[°°±±²²ÛÛ Welcome to](colored: 'cyan') ^[GenZD](colored: 'red')! ^[ÛÛ²²±±°°](colored: 'cyan')
 
+^[Feeling impatient? Chat and ask questions in our](colored: 'yellow') [Discord Server](https://discord.gg/S4tVTNEmsj)!
+
 ^[GenZD](colored: 'white') is an implementation of the ^[open-source](colored: 'orange') ^[idTech 1](colored: 'white') game engine. 
 
 A source port is able to read the original game files and ^[render the game using modern technology](colored: 'white'). The game engine can be rendered in ^[full 3D](colored: 'white') using the latest 3D graphics hardware and drivers. ^[GenZD](colored: 'white')  uses ^[Metal](colored: 'blue') to render its graphics through MoltenVK and the Vulkan API.
