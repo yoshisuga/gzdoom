@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class ControlOptionsViewModel: ObservableObject, Codable {
+class ControlOptionsViewModel: ObservableObject {
   @Published var touchControlsOpacity: Float = 0.8
   @Published var aimSensitivity: Float = 1.0
   @Published var doubleTapControl: OptionsDoubleTapControl = .none
@@ -17,22 +17,16 @@ class ControlOptionsViewModel: ObservableObject, Codable {
   @Published var gyroSensitivity: Float = 5.0
   
   let userDefaultsKey = "controlOptions"
+  private static let userDefaultsKeyPrefix = "controlOptions_"
   
-  enum CodingKeys: CodingKey {
+  enum OptionKeys: String {
     case touchControlsOpacity, aimSensitivity, doubleTapControl, touchControlHapticFeedback,
          controllerInvertYAxis
     case gyroEnabled, gyroSensitivity
-  }
-  
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(touchControlsOpacity, forKey: .touchControlsOpacity)
-    try container.encode(aimSensitivity, forKey: .aimSensitivity)
-    try container.encode(doubleTapControl.rawValue, forKey: .doubleTapControl)
-    try container.encode(touchControlHapticFeedback, forKey: .touchControlHapticFeedback)
-    try container.encode(controllerInvertYAxis, forKey: .controllerInvertYAxis)
-    try container.encode(gyroEnabled, forKey: .gyroEnabled)
-    try container.encode(gyroSensitivity, forKey: .gyroSensitivity)
+    
+    var keyName: String {
+      return "\(userDefaultsKeyPrefix)\(self.rawValue)"
+    }
   }
   
   private init() {
@@ -41,36 +35,60 @@ class ControlOptionsViewModel: ObservableObject, Codable {
   
   static let shared = ControlOptionsViewModel()
   
-  required init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    touchControlsOpacity = try container.decode(Float.self, forKey: .touchControlsOpacity)
-    aimSensitivity = try container.decode(Float.self, forKey: .aimSensitivity)
-    doubleTapControl = try container.decode(OptionsDoubleTapControl.self, forKey: .doubleTapControl)
-    touchControlHapticFeedback = try container.decode(Bool.self, forKey: .touchControlHapticFeedback)
-    controllerInvertYAxis = try container.decode(Bool.self, forKey: .controllerInvertYAxis)
-    gyroEnabled = try container.decode(Bool?.self, forKey: .gyroEnabled) ?? false
-    gyroSensitivity = try container.decode(Float?.self, forKey: .gyroSensitivity) ?? 1.0
-  }
-  
   func loadFromUserDefaults() {
-    guard let saveData = UserDefaults.standard.data(forKey: userDefaultsKey),
-          let saved = try? PropertyListDecoder().decode(ControlOptionsViewModel.self, from: saveData) else {
-      return
+    if let touchOpacity = UserDefaults.standard.object(forKey: OptionKeys.touchControlsOpacity.keyName) as? Float {
+      touchControlsOpacity = touchOpacity
+    } else {
+      touchControlsOpacity = 0.8
     }
-    touchControlsOpacity = saved.touchControlsOpacity
-    aimSensitivity = saved.aimSensitivity
-    doubleTapControl = saved.doubleTapControl
-    touchControlHapticFeedback = saved.touchControlHapticFeedback
-    controllerInvertYAxis = saved.controllerInvertYAxis
-    gyroEnabled = saved.gyroEnabled
-    gyroSensitivity = saved.gyroSensitivity
+    
+    if let aimSensitivityDef = UserDefaults.standard.object(forKey: OptionKeys.aimSensitivity.keyName) as? Float {
+      aimSensitivity = aimSensitivityDef
+    } else {
+      aimSensitivity = 1.0
+    }
+    
+    if let doubleTapControlDef = UserDefaults.standard.object(forKey: OptionKeys.doubleTapControl.keyName) as? Int,
+       let doubleTapLookup = OptionsDoubleTapControl(rawValue: doubleTapControlDef)
+    {
+      doubleTapControl = doubleTapLookup
+    } else {
+      doubleTapControl = .none
+    }
+    
+    if let touchControlHapticFeedbackDef = UserDefaults.standard.object(forKey: OptionKeys.touchControlHapticFeedback.keyName) as? Bool {
+      touchControlHapticFeedback = touchControlHapticFeedbackDef
+    } else {
+      touchControlHapticFeedback = true
+    }
+    
+    if let controllerInvertYAxisDef = UserDefaults.standard.object(forKey: OptionKeys.controllerInvertYAxis.keyName) as? Bool {
+      controllerInvertYAxis = controllerInvertYAxisDef
+    } else {
+      controllerInvertYAxis = false
+    }
+    
+    if let gyroEnabledDef = UserDefaults.standard.object(forKey: OptionKeys.gyroEnabled.keyName) as? Bool {
+      gyroEnabled = gyroEnabledDef
+    } else {
+      gyroEnabled = true
+    }
+    
+    if let gyroSensitivityDef = UserDefaults.standard.object(forKey: OptionKeys.gyroSensitivity.keyName) as? Float {
+      gyroSensitivity = gyroSensitivityDef
+    } else {
+      gyroSensitivity = 5.0
+    }
   }
   
   func saveToUserDefaults() {
-    guard let data = try? PropertyListEncoder().encode(self) else {
-      return
-    }
-    UserDefaults.standard.set(data, forKey: userDefaultsKey)
+    UserDefaults.standard.set(touchControlsOpacity, forKey: OptionKeys.touchControlsOpacity.keyName)
+    UserDefaults.standard.set(aimSensitivity, forKey: OptionKeys.aimSensitivity.keyName)
+    UserDefaults.standard.set(doubleTapControl.rawValue, forKey: OptionKeys.doubleTapControl.keyName)
+    UserDefaults.standard.set(touchControlHapticFeedback, forKey: OptionKeys.touchControlHapticFeedback.keyName)
+    UserDefaults.standard.set(controllerInvertYAxis, forKey: OptionKeys.controllerInvertYAxis.keyName)
+    UserDefaults.standard.set(gyroEnabled, forKey: OptionKeys.gyroEnabled.keyName)
+    UserDefaults.standard.set(gyroSensitivity, forKey: OptionKeys.gyroSensitivity.keyName)
   }
 }
 
