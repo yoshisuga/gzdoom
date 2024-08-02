@@ -125,7 +125,7 @@ extension AddGamepadControlViewController: GamepadButtonDelegate {
     }
   }
   
-  func gamepadButton(released button: GamepadButtonView) {
+  func gamepadButton(released button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {
     guard let releasedControl = GamepadControl(rawValue: button.tag) else {
       return
     }

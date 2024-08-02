@@ -9,8 +9,15 @@ import Foundation
 import UIKit
 
 protocol GamepadButtonDelegate: AnyObject {
-  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool);
-  func gamepadButton(released button: GamepadButtonView);
+  func gamepadButton(began button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?)
+  func gamepadButton(moved button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?)
+  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool)
+  func gamepadButton(released button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?)
+}
+
+extension GamepadButtonDelegate {
+  func gamepadButton(began button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {}
+  func gamepadButton(moved button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {}
 }
 
 class GamepadButtonView: UIView {
@@ -59,6 +66,7 @@ class GamepadButtonView: UIView {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    delegate?.gamepadButton(began: self, touches: touches, event: event)
     delegate?.gamepadButton(pressed: self, isMove: false)
     if isAnimated {
       imageView.image = UIImage(named: "button-pressed")
@@ -66,6 +74,7 @@ class GamepadButtonView: UIView {
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    delegate?.gamepadButton(moved: self, touches: touches, event: event)
     delegate?.gamepadButton(pressed: self, isMove: true)
     if isAnimated {
       imageView.image = UIImage(named: "button-pressed")
@@ -73,7 +82,8 @@ class GamepadButtonView: UIView {
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    delegate?.gamepadButton(released: self)
+    print("GamepadButtonView: touchesEnded!")
+    delegate?.gamepadButton(released: self, touches: touches, event: event)
     if isAnimated {
       imageView.image = UIImage(named: "button")
     }

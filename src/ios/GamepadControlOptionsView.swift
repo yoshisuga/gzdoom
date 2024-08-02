@@ -10,20 +10,20 @@ import SwiftUI
 class ControlOptionsViewModel: ObservableObject {
   @Published var touchControlsOpacity: Float = 0.8
   @Published var aimSensitivity: Float = 1.0
-  @Published var doubleTapControl: OptionsDoubleTapControl = .none
   @Published var touchControlHapticFeedback = true
   @Published var controllerInvertYAxis = false
   @Published var gyroEnabled: Bool = true
   @Published var gyroSensitivity: Float = 5.0
+  @Published var gyroUpdateInterval: Float = 0.06
   @Published var enableTouchControlsGuideOverlay: Bool = true
   
   let userDefaultsKey = "controlOptions"
   private static let userDefaultsKeyPrefix = "controlOptions_"
   
   enum OptionKeys: String {
-    case touchControlsOpacity, aimSensitivity, doubleTapControl, touchControlHapticFeedback,
+    case touchControlsOpacity, aimSensitivity, touchControlHapticFeedback,
          controllerInvertYAxis
-    case gyroEnabled, gyroSensitivity
+    case gyroEnabled, gyroSensitivity, gyroUpdateInterval
     case enableTouchControlsGuideOverlay
     
     var keyName: String {
@@ -50,14 +50,6 @@ class ControlOptionsViewModel: ObservableObject {
       aimSensitivity = 1.0
     }
     
-    if let doubleTapControlDef = UserDefaults.standard.object(forKey: OptionKeys.doubleTapControl.keyName) as? Int,
-       let doubleTapLookup = OptionsDoubleTapControl(rawValue: doubleTapControlDef)
-    {
-      doubleTapControl = doubleTapLookup
-    } else {
-      doubleTapControl = .none
-    }
-    
     if let touchControlHapticFeedbackDef = UserDefaults.standard.object(forKey: OptionKeys.touchControlHapticFeedback.keyName) as? Bool {
       touchControlHapticFeedback = touchControlHapticFeedbackDef
     } else {
@@ -81,7 +73,13 @@ class ControlOptionsViewModel: ObservableObject {
     } else {
       gyroSensitivity = 5.0
     }
-    
+
+    if let gyroUpdateDef = UserDefaults.standard.object(forKey: OptionKeys.gyroUpdateInterval.keyName) as? Float {
+      gyroUpdateInterval = gyroUpdateDef
+    } else {
+      gyroUpdateInterval = 0.06
+    }
+
     if let touchControlsGuideOverlayDef = UserDefaults.standard.object(forKey: OptionKeys.enableTouchControlsGuideOverlay.keyName) as? Bool {
       enableTouchControlsGuideOverlay = touchControlsGuideOverlayDef
     } else {
@@ -92,11 +90,11 @@ class ControlOptionsViewModel: ObservableObject {
   func saveToUserDefaults() {
     UserDefaults.standard.set(touchControlsOpacity, forKey: OptionKeys.touchControlsOpacity.keyName)
     UserDefaults.standard.set(aimSensitivity, forKey: OptionKeys.aimSensitivity.keyName)
-    UserDefaults.standard.set(doubleTapControl.rawValue, forKey: OptionKeys.doubleTapControl.keyName)
     UserDefaults.standard.set(touchControlHapticFeedback, forKey: OptionKeys.touchControlHapticFeedback.keyName)
     UserDefaults.standard.set(controllerInvertYAxis, forKey: OptionKeys.controllerInvertYAxis.keyName)
     UserDefaults.standard.set(gyroEnabled, forKey: OptionKeys.gyroEnabled.keyName)
     UserDefaults.standard.set(gyroSensitivity, forKey: OptionKeys.gyroSensitivity.keyName)
+    UserDefaults.standard.set(gyroUpdateInterval, forKey: OptionKeys.gyroUpdateInterval.keyName)
   }
 }
 
@@ -129,6 +127,7 @@ struct OptionsSliderRow: View {
     VStack {
       Text(label).font(.body).frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
       Slider(value: $sliderValue, in: min...max).padding().tint(.red)
+//      Text("\(sliderValue)").font(.small)
     }
   }
 }
@@ -191,12 +190,12 @@ struct ControlOptionsView: View {
           }
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
-            OptionsDoubleTapPickerRow(selectedControl: $viewModel.doubleTapControl)
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
           }
           Section(header: Text("Gyroscope").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.gyroEnabled, label: "Gyroscope Aiming")
             OptionsSliderRow(sliderValue: $viewModel.gyroSensitivity, label: "Gyroscope Sensitivity", min: 2, max: 10.0)
+//            OptionsSliderRow(sliderValue: $viewModel.gyroUpdateInterval, label: "Gyroscope Update Interval", min: 0.0167, max: 1.0)
           }
           Section(header: Text("Game Controller").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
@@ -208,8 +207,11 @@ struct ControlOptionsView: View {
             Button(action: {
               viewModel.aimSensitivity = 1.0
               viewModel.touchControlsOpacity = 0.8
-              viewModel.doubleTapControl = .none
               viewModel.touchControlHapticFeedback = true
+              viewModel.enableTouchControlsGuideOverlay = true
+              viewModel.controllerInvertYAxis = false
+              viewModel.gyroEnabled = true
+              viewModel.gyroSensitivity = 5.0
               viewModel.saveToUserDefaults()
               dismissClosure?()
             }, label: {

@@ -11,5 +11,6 @@
 void InputUpdateGUICapture(bool capt);
 void IOS_HandleInput();
 void IOS_GetMouseDeltas(int *x, int *y);
+void IOS_GetGyroDeltas(int *x, int *y);
 
 #endif /* ios_input_hook_h */

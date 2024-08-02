@@ -95,6 +95,17 @@ void IOS_GetMouseDeltas(int *x, int *y) {
   }
 }
 
+void IOS_GetGyroDeltas(int *x, int *y) {
+  MouseInputHolder *mouse = [MouseInputHolder shared];
+  if (x) {
+    *x = (int) mouse.gyroDeltaX;
+  }
+  if (y) {
+    *y = (int) mouse.gyroDeltaY;
+  }
+
+}
+
 const UInt8 DIK_TO_ASCII[128] =
 {
     DIK_A, DIK_S, DIK_D, DIK_F, DIK_H, DIK_G, DIK_Z, DIK_X,

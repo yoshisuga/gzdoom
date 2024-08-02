@@ -24,6 +24,8 @@ class GyroscopeHandler {
   private func setupGyro() {
     if motionManager.isGyroAvailable {
       motionManager.gyroUpdateInterval = 0.06 // Update interval (adjust as needed)
+//      motionManager.gyroUpdateInterval = TimeInterval(ControlOptionsViewModel.shared.gyroUpdateInterval)
+
       motionManager.startGyroUpdates(to: .current!) { [weak self] (data, error) in
         guard let self else { return }
         guard ControlOptionsViewModel.shared.gyroEnabled else {
@@ -49,7 +51,7 @@ class GyroscopeHandler {
     let adjustedY = abs(yRotation) > deadZone ? yRotation * sensitivity : 0.0
     
 //    print("\(adjustedX) , \(adjustedY)")
-    MouseInputHolder.shared.deltaX = Int(adjustedX)
-    MouseInputHolder.shared.deltaY = Int(adjustedY)
+    MouseInputHolder.shared.gyroDeltaX = Int(adjustedX)
+    MouseInputHolder.shared.gyroDeltaY = Int(adjustedY)
   }
 }

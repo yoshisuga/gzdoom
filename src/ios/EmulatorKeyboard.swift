@@ -702,7 +702,8 @@ struct KeyPosition {
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
-      touchControlsView.isHidden = false
+      touchControlsView.isHidden.toggle()
+      touchControlsVC?.changeTouchControls(isHidden: touchControlsView.isHidden)
       customizeControlsButton.isHidden = false
     } else if sender == customizeControlsButton {
       touchControlsVC?.arrangeButtonTapped(customizeControlsButton)
@@ -779,7 +780,6 @@ struct KeyPosition {
   
   override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
     guard presses.first != nil else { return }
-    print("presses began!")
     touchControlsVC?.changeTouchControls(isHidden: true)
   }
 }
@@ -815,22 +815,6 @@ extension EmulatorKeyboardController: DPadDelegate {
       return
     }
     utils.handleOverlayDPad(with: DPadDirection.none)
-  }
-}
-
-extension EmulatorKeyboardController: GamepadButtonDelegate {
-  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool) {
-    guard let utils = IOSUtils.shared() else {
-      return
-    }
-    utils.handleOverlayButtonName(button.buttonName, isPressed: true)
-  }
-  
-  func gamepadButton(released button: GamepadButtonView) {
-    guard let utils = IOSUtils.shared() else {
-      return
-    }
-    utils.handleOverlayButtonName(button.buttonName, isPressed: false)
   }
 }
 

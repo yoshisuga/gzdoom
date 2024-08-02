@@ -21,6 +21,8 @@ class TouchControlViewController: UIViewController {
   var guideTimer: Timer?
   var guideNumberOfTimesShown = 0
   
+  var aimControlsView = AimControlsView()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -41,15 +43,15 @@ class TouchControlViewController: UIViewController {
     joystick.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
     joystick.delegate = self
     
-    let aim = AimControlsView()
-    aim.translatesAutoresizingMaskIntoConstraints = false
-    aim.backgroundColor = .clear
-    view.addSubview(aim)
-    aim.leadingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    aim.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-    aim.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    aim.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-    aim.delegate = self
+    aimControlsView = AimControlsView()
+    aimControlsView.translatesAutoresizingMaskIntoConstraints = false
+    aimControlsView.backgroundColor = .clear
+    view.addSubview(aimControlsView)
+    aimControlsView.leadingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    aimControlsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    aimControlsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    aimControlsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    aimControlsView.delegate = self
     
     guideTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(guideTimerFired), userInfo: nil, repeats: true)
   }
@@ -218,11 +220,21 @@ extension TouchControlViewController: AimControlsDelegate {
   }
   
   func aimEnded() {
+    print("aimEnded called!")
     MouseInputHolder.shared.deltaX = 0
     MouseInputHolder.shared.deltaY = 0
-    guard let utils = IOSUtils.shared(),
-          let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
-    utils.handleGameControl(control, isPressed: false)
+    guard let utils = IOSUtils.shared() else { return }
+
+    // Release buttons if the buttons are within the aiming view
+    for subview in view.subviews {
+      guard let gameButton = subview as? GamepadButtonView,
+            let gamepadControl = GamepadControl(rawValue: gameButton.tag) else {
+        continue
+      }
+      if aimControlsView.frame.contains(gameButton.center) {
+        utils.handleGameControl(gamepadControl, isPressed: false)
+      }
+    }
     lastTouchTime = Date().timeIntervalSince1970
   }
   
@@ -230,16 +242,17 @@ extension TouchControlViewController: AimControlsDelegate {
   }
   
   func aimDidDoubleTap() {
-    guard let utils = IOSUtils.shared() else { return }
-    if let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl {
-      utils.handleGameControl(control, isPressed: true)
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-        utils.handleGameControl(control, isPressed: false)
-      }
-    }
+//    guard let utils = IOSUtils.shared() else { return }
+//    if let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl {
+//      utils.handleGameControl(control, isPressed: true)
+//      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//        utils.handleGameControl(control, isPressed: false)
+//      }
+//    }
   }
   
   func aimDidMove(dx: Float, dy: Float, isDoubleTap: Bool) {
+    print("aimDidMove called!")
     let aimSensitivity = ControlOptionsViewModel.shared.aimSensitivity
     let updatedDX = dx * aimSensitivity
     let updatedDY = dy * aimSensitivity
@@ -249,34 +262,64 @@ extension TouchControlViewController: AimControlsDelegate {
     
     MouseInputHolder.shared.deltaX = mouseMoveX
     MouseInputHolder.shared.deltaY = mouseMoveY
-    if isDoubleTap {
-      guard let utils = IOSUtils.shared(),
-            let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
-      utils.handleGameControl(control, isPressed: true)
-    }
+//    if isDoubleTap {
+//      guard let utils = IOSUtils.shared(),
+//            let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
+//      utils.handleGameControl(control, isPressed: true)
+//    }
     lastTouchTime = Date().timeIntervalSince1970
   }
 }
 
 extension TouchControlViewController: GamepadButtonDelegate {
+  func gamepadButton(began button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {
+    guard let touch = touches.first, touch.type == .direct else {
+      return
+    }
+    let touchLocationInButton = touch.location(in: button)
+    let convertedTouch = button.convert(touchLocationInButton, to: self.view)
+    if aimControlsView.frame.contains(convertedTouch) {
+      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
+      aimControlsView.touchesBegan(touches, with: event)
+    }
+  }
+  
+  func gamepadButton(moved button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {
+    guard let touch = touches.first, touch.type == .direct else {
+      return
+    }
+    let touchLocationInButton = touch.location(in: button)
+    let convertedTouch = button.convert(touchLocationInButton, to: self.view)
+    if aimControlsView.frame.contains(convertedTouch) {
+      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
+      aimControlsView.touchesMoved(touches, with: event)
+    }
+  }
+  
   func gamepadButton(pressed button: GamepadButtonView, isMove: Bool) {
     guard let utils = IOSUtils.shared(),
           let gamepadControl = GamepadControl(rawValue: button.tag) else {
       return
     }
+    print("gamepadButtonPressed called: \(gamepadControl)")
     utils.handleGameControl(gamepadControl, isPressed: true)
+    
     if ControlOptionsViewModel.shared.touchControlHapticFeedback && !isMove {
       generator.impactOccurred()
     }
     lastTouchTime = Date().timeIntervalSince1970
   }
   
-  func gamepadButton(released button: GamepadButtonView) {
+  func gamepadButton(released button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {
     guard let utils = IOSUtils.shared(),
           let gamepadControl = GamepadControl(rawValue: button.tag) else {
       return
     }
+    print("gamepadButtonReleased called: \(gamepadControl)")
     utils.handleGameControl(gamepadControl, isPressed: false)
+    if aimControlsView.frame.contains(button.center) {
+      aimControlsView.touchesEnded(touches, with: event)
+    }
     lastTouchTime = Date().timeIntervalSince1970
   }
 }

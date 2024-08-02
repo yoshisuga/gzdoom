@@ -11,6 +11,9 @@ import UIKit
   static let shared = MouseInputHolder()
   var deltaX: Int = 0
   var deltaY: Int = 0
+  
+  var gyroDeltaX: Int = 0
+  var gyroDeltaY: Int = 0
 }
 
 protocol AimControlsDelegate {
@@ -23,7 +26,7 @@ protocol AimControlsDelegate {
 
 class AimControlsView: UIView {
   private var isDoubleTap = false
-  private var isMoving = false
+  private(set) var isMoving = false
   private let timeToWaitAsecondTap: TimeInterval = 0.2
   private var startTouchPoint = CGPoint.zero
   
@@ -67,10 +70,11 @@ class AimControlsView: UIView {
     let dx = location.x - prev.x
     let dy = location.y - prev.y
     delegate?.aimDidMove(dx: Float(dx), dy: Float(dy), isDoubleTap: isDoubleTap)
-//    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
+    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    print("AimControlsView: touchesEnded!")
     guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = false
     isDoubleTap = false
@@ -78,6 +82,7 @@ class AimControlsView: UIView {
   }
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    print("AimControlsView: touchesCancelled!")
     guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = false
     isDoubleTap = false

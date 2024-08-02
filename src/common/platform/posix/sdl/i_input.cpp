@@ -200,6 +200,7 @@ static void MouseRead ()
 	int x, y;
   
   int iosX, iosY;
+  int gyroX, gyroY;
 
 	if (NativeMouse)
 	{
@@ -211,10 +212,14 @@ static void MouseRead ()
 //  printf("yoshi debug mouse: SDL relative x = %i, y = %i\n",x,y);
   
   IOS_GetMouseDeltas(&iosX, &iosY);
-//  printf("yoshi debug mouse: MouseInputHolder x = %i, y = %i\n",yoshi_x,yoshi_y);
-  
+//  printf("yoshi debug mouse: MouseInputHolder x = %i, y = %i\n",iosX,iosY);
   
 	PostMouseMove (iosX, iosY);
+  
+  IOS_GetGyroDeltas(&gyroX, &gyroY);
+//  printf("yoshi debug mouse: Gyro x = %i, y = %i\n",gyroX,gyroY);
+
+  PostMouseMove (gyroX, gyroY);
 }
 
 static void I_CheckNativeMouse ()
