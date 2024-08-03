@@ -16,6 +16,7 @@ class ControlOptionsViewModel: ObservableObject {
   @Published var gyroSensitivity: Float = 5.0
   @Published var gyroUpdateInterval: Float = 0.06
   @Published var enableTouchControlsGuideOverlay: Bool = true
+  @Published var touchJoystickDeadzone: Float = 10
   
   let userDefaultsKey = "controlOptions"
   private static let userDefaultsKeyPrefix = "controlOptions_"
@@ -25,6 +26,7 @@ class ControlOptionsViewModel: ObservableObject {
          controllerInvertYAxis
     case gyroEnabled, gyroSensitivity, gyroUpdateInterval
     case enableTouchControlsGuideOverlay
+    case touchJoystickDeadzone
     
     var keyName: String {
       return "\(userDefaultsKeyPrefix)\(self.rawValue)"
@@ -85,6 +87,12 @@ class ControlOptionsViewModel: ObservableObject {
     } else {
       enableTouchControlsGuideOverlay = true
     }
+    
+    if let joystickDeadzoneDef = UserDefaults.standard.object(forKey: OptionKeys.touchJoystickDeadzone.keyName) as? Float {
+      touchJoystickDeadzone = joystickDeadzoneDef
+    } else {
+      touchJoystickDeadzone = 10
+    }
   }
   
   func saveToUserDefaults() {
@@ -95,6 +103,7 @@ class ControlOptionsViewModel: ObservableObject {
     UserDefaults.standard.set(gyroEnabled, forKey: OptionKeys.gyroEnabled.keyName)
     UserDefaults.standard.set(gyroSensitivity, forKey: OptionKeys.gyroSensitivity.keyName)
     UserDefaults.standard.set(gyroUpdateInterval, forKey: OptionKeys.gyroUpdateInterval.keyName)
+    UserDefaults.standard.set(touchJoystickDeadzone, forKey: OptionKeys.touchJoystickDeadzone.keyName)
   }
 }
 
@@ -127,7 +136,9 @@ struct OptionsSliderRow: View {
     VStack {
       Text(label).font(.body).frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
       Slider(value: $sliderValue, in: min...max).padding().tint(.red)
-//      Text("\(sliderValue)").font(.small)
+      #if DEBUG
+      Text("\(sliderValue)").font(.small)
+      #endif
     }
   }
 }
@@ -191,6 +202,7 @@ struct ControlOptionsView: View {
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
+            OptionsSliderRow(sliderValue: $viewModel.touchJoystickDeadzone, label: "Deadzone", min: 0, max: 40.0)
           }
           Section(header: Text("Gyroscope").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.gyroEnabled, label: "Gyroscope Aiming")

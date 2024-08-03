@@ -47,8 +47,9 @@ class JoystickView: UIView {
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first, touch.type == .direct else { return }
     let location = touch.location(in: self)
-    let dx = location.x - joystickCenter.x
-    let dy = location.y - joystickCenter.y
+    let deadzone = CGFloat(ControlOptionsViewModel.shared.touchJoystickDeadzone)
+    let dx = abs(location.x - joystickCenter.x) > deadzone ? location.x - joystickCenter.x : 0.0
+    let dy = abs(location.y - joystickCenter.y) > deadzone ? location.y - joystickCenter.y : 0.0
     delegate?.joystickMoved(dx: Float(dx), dy: Float(dy))
 //    print("touchesMoved: dx = \(dx), dy = \(dy)")
     let distance = sqrt(dx * dx + dy * dy)
