@@ -99,7 +99,7 @@ class TouchControlViewController: UIViewController {
     print("guideTimerFired!")
     if ControlOptionsViewModel.shared.enableTouchControlsGuideOverlay,
        guideOverlayView.isHidden,
-       guideNumberOfTimesShown < 2,
+       guideNumberOfTimesShown < 1,
         let lastTouchTime,
        Date().timeIntervalSince1970 - lastTouchTime > guideOverlayTimeIntervalThreshold {
       guideOverlayView.alpha = 0
@@ -109,7 +109,7 @@ class TouchControlViewController: UIViewController {
       }
       guideNumberOfTimesShown += 1
     }
-    if guideNumberOfTimesShown >= 2 || !ControlOptionsViewModel.shared.enableTouchControlsGuideOverlay {
+    if guideNumberOfTimesShown >= 1 || !ControlOptionsViewModel.shared.enableTouchControlsGuideOverlay {
       guideTimer?.invalidate()
     }
   }
@@ -149,6 +149,7 @@ class TouchControlViewController: UIViewController {
       self.loadSavedControls()
       self.updateOpacity()
     }
+    controller.modalPresentationStyle = .fullScreen
     present(controller, animated: true)
   }
   

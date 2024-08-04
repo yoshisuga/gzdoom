@@ -4,14 +4,22 @@ Version 2024.8.3
 
 ^[°°±±²²ÛÛ Better iPad Support ÛÛ²²±±°°](colored: 'cyan')
 
-- Fixed mouse movement using a touch pad or physical mouse.
+- Improved controls with Magic Keyboard + Touchpad or Physical Mouse:
+  - Fixed mouse movement using a touch pad or physical mouse.
+  - Interacting with a physical keyboard will automatically hide touch controls, and touching the screen will show the touch screen controls again.
 
-- Interacting with a physical keyboard will automatically hide touch controls, and touching the screen will show the touch screen controls again.
+If you're updating the app and playing with an iPad for the first time, you may need to manually map the primary tap or left click button to the Fire/Attack control.
 
-^[°°±±²²ÛÛ Miscellaneous ÛÛ²²±±°°](colored: 'cyan')
+^[°°±±²²ÛÛ Touch Controller ÛÛ²²±±°°](colored: 'cyan')
 
-- Touch Controls: Added an option to disable the Move/Aim guidance overlay that's displayed if you do not interact with the screen. This is displayed twice when running the app but now there's an option to disable it completely.
+- You can now shoot and aim at the same time by ^[touch and dragging](colored: 'yellow') a button that is on the aiming side (right side).
+- Removed the double-tap to shoot option because the above method to shoot and aim is more intuitive.
+- Disable the Move/Aim overlay guide: Now a configurable option to disable the Move/Aim guidance overlay that's displayed if you do not interact with the screen. This is displayed once when running the app but now there's an option to disable it completely.
+- Joystick Deadzone: If you find the movement joystick too sensitive, there's now an option "Movement Joystick Deadzone" to adjust this.
 
+^[°°±±²²ÛÛ Game Controller ÛÛ²²±±°°](colored: 'cyan')
+
+- Fixed aiming with the right stick when gyro aiming is enabled.
 
 
 ^[°°±±²²ÛÛ Chat on Discord! ÛÛ²²±±°°](colored: 'cyan')

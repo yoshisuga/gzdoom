@@ -103,7 +103,10 @@ void IOS_GetGyroDeltas(int *x, int *y) {
   if (y) {
     *y = (int) mouse.gyroDeltaY;
   }
+}
 
+float IOS_GetAimSensitivity() {
+  return ObjCControlOptionsViewModel.aimSensitivity;
 }
 
 const UInt8 DIK_TO_ASCII[128] =

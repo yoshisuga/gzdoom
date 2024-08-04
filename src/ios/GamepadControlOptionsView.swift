@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+@objcMembers class ObjCControlOptionsViewModel: NSObject {
+  static var aimSensitivity: Float {
+    ControlOptionsViewModel.shared.aimSensitivity
+  }
+}
+
 class ControlOptionsViewModel: ObservableObject {
   @Published var touchControlsOpacity: Float = 0.8
   @Published var aimSensitivity: Float = 1.0
@@ -104,6 +110,7 @@ class ControlOptionsViewModel: ObservableObject {
     UserDefaults.standard.set(gyroSensitivity, forKey: OptionKeys.gyroSensitivity.keyName)
     UserDefaults.standard.set(gyroUpdateInterval, forKey: OptionKeys.gyroUpdateInterval.keyName)
     UserDefaults.standard.set(touchJoystickDeadzone, forKey: OptionKeys.touchJoystickDeadzone.keyName)
+    UserDefaults.standard.set(enableTouchControlsGuideOverlay, forKey: OptionKeys.enableTouchControlsGuideOverlay.keyName)
   }
 }
 
@@ -202,7 +209,7 @@ struct ControlOptionsView: View {
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
-            OptionsSliderRow(sliderValue: $viewModel.touchJoystickDeadzone, label: "Deadzone", min: 0, max: 40.0)
+            OptionsSliderRow(sliderValue: $viewModel.touchJoystickDeadzone, label: "Movement Joystick Deadzone", min: 0, max: 40.0)
           }
           Section(header: Text("Gyroscope").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.gyroEnabled, label: "Gyroscope Aiming")
