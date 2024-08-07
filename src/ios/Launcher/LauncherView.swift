@@ -101,7 +101,9 @@ struct CreateLaunchConfigView: View {
       }
     }.onAppear {
       viewModel.setup()
-    }.fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
+    }
+    #if os(iOS)
+    .fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
       switch result {
       case .success(let files):
         let fm = FileManager.default
@@ -126,6 +128,7 @@ struct CreateLaunchConfigView: View {
         print("failure in import file: \(error)")
       }
     }
+    #endif
   }
 }
 

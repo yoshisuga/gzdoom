@@ -412,7 +412,7 @@ FString I_GetFromClipboard (bool use_primary_selection)
 
 FString I_GetCWD()
 {
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
   char curdir[256];
   getcwd(curdir, 256);
 #else
@@ -423,7 +423,7 @@ FString I_GetCWD()
 		return "";
 	}
 	FString ret(curdir);
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #else
 	free(curdir);
 #endif
@@ -459,7 +459,7 @@ unsigned int I_MakeRNGSeed()
 
 void I_OpenShellFolder(const char* infolder)
 {
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
   char curdir[256];
   getcwd(curdir, 256);
 #else
@@ -468,7 +468,7 @@ void I_OpenShellFolder(const char* infolder)
 
 	if (!chdir(infolder))
 	{
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     printf("Opening folder: %s\n", infolder);
 #else
 		Printf("Opening folder: %s\n", infolder);
@@ -478,13 +478,13 @@ void I_OpenShellFolder(const char* infolder)
 	}
 	else
 	{
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     printf("Unable to open directory '%s\n", infolder);
 #else
 		Printf("Unable to open directory '%s\n", infolder);
 #endif
 	}
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #else
 	free(curdir);
 #endif

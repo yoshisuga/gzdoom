@@ -6,3 +6,6 @@
 #include "dikeys.h"
 #import "ios_launch.h"
 #include "keydef.h"
+#if TARGET_OS_TV
+#import "GCDWebUploader/GCDWebUploader.h"
+#endif

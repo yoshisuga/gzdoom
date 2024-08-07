@@ -4,7 +4,7 @@
 #elif defined(__APPLE__)
 #import "TargetConditionals.h"
 #import <os/log.h>
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #define VK_USE_PLATFORM_IOS_MVK
 #else
 #define VK_USE_PLATFORM_MACOS_MVK

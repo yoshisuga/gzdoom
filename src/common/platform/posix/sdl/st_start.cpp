@@ -289,7 +289,7 @@ bool FTTYStartupScreen::NetLoop(bool (*timer_callback)(void *), void *userdata)
 				return true;
 			}
 		}
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     else if (retval == 1)
     {
       // yoshi: not sure why this is needed for iOS to respond to callbacks for hosts/joiners

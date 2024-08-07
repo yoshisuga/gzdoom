@@ -34,6 +34,7 @@
 */
 
 #import <Foundation/NSFileManager.h>
+#import "TargetConditionals.h"
 
 #include "cmdlib.h"
 #include "version.h"	// for GAMENAME
@@ -43,7 +44,15 @@ FString M_GetMacAppSupportPath(const bool create);
 
 static FString GetSpecialPath(const NSSearchPathDirectory kind, const BOOL create = YES, const NSSearchPathDomainMask domain = NSUserDomainMask)
 {
-	NSURL* url = [[NSFileManager defaultManager] URLForDirectory:kind
+
+  NSSearchPathDirectory directoryKind = kind;
+#if TARGET_OS_TV
+  if (directoryKind == NSDocumentDirectory) {
+    directoryKind = NSCachesDirectory;
+  }
+#endif
+  
+	NSURL* url = [[NSFileManager defaultManager] URLForDirectory:directoryKind
 														inDomain:domain
 											   appropriateForURL:nil
 														  create:create

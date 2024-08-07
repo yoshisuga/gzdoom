@@ -118,7 +118,9 @@ struct LauncherConfigsView: View {
                 }
                 viewModel.launchActionClosure?(viewModel.arguments)
                 viewModel.saveLauncherConfig(name: config.name, iwad: config.baseIWAD, arguments: config.arguments, ranAt: Date())
-              }.foregroundColor(.red).swipeActions {
+              }.foregroundColor(.red)
+              #if os(iOS)
+                .swipeActions {
                 Button(role: .destructive) {
                   viewModel.deleteLauncherConfigs([config])
                 } label: {
@@ -131,7 +133,9 @@ struct LauncherConfigsView: View {
                 } label: {
                   Image(systemName: "pencil")
                 }
-              }.listRowBackground(Color.black.opacity(0.1))
+              }
+              #endif
+                .listRowBackground(Color.black.opacity(0.1))
             }.onDelete { indexSet in
               let configsToDelete = indexSet.map{ viewModel.savedConfigs[$0] }
               viewModel.deleteLauncherConfigs(configsToDelete)

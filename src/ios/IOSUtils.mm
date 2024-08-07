@@ -18,6 +18,9 @@
 #include "ios-input-hook.h"
 #include "m_argv.h"
 #include "keydef.h"
+//#if TARGET_OS_TV
+//#include "dikeys.h"
+//#endif
 
 int GameMain();
 FArgs *args;
@@ -26,8 +29,13 @@ void ios_get_base_path(char *path) {
     NSArray *paths;
     NSString *DocumentsDirPath;
     
+#if TARGET_OS_IOS
     paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     DocumentsDirPath = [paths objectAtIndex:0];
+#elif TARGET_OS_TV
+  paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+  DocumentsDirPath = [paths objectAtIndex:0];
+#endif
     sprintf(path, "%s/", [DocumentsDirPath UTF8String]);
 }
 
@@ -50,23 +58,27 @@ UIViewController* GetSDLViewController(SDL_Window *sdlWindow) {
 }
 
 void SDLWindowAfterCreate(SDL_Window *window) {
-    UIViewController *rootVC = GetSDLViewController(window);
-    NSLog(@"root VC = %@",rootVC);
-    NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSLog(@"Documents path: %@",docsPath);
-    IOSUtils *iosUtils = [IOSUtils shared];
-    EmulatorKeyboardController *keyboardController = [[EmulatorKeyboardController alloc] initWithLeftKeyboardModel:iosUtils.leftKeyboardModel rightKeyboardModel:iosUtils.rightKeyboardModel];
-    keyboardController.rightKeyboardModel.delegate = (id<EmulatorKeyboardKeyPressedDelegate>)iosUtils;
-    keyboardController.leftKeyboardModel.delegate = (id<EmulatorKeyboardKeyPressedDelegate>)iosUtils;
-    [rootVC addChildViewController:keyboardController];
-    [keyboardController didMoveToParentViewController:rootVC];
-    keyboardController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [rootVC.view addSubview:keyboardController.view];
-    [[keyboardController.view.leadingAnchor constraintEqualToAnchor:rootVC.view.leadingAnchor] setActive:YES];
-    [[keyboardController.view.trailingAnchor constraintEqualToAnchor:rootVC.view.trailingAnchor] setActive:YES];
-    [[keyboardController.view.topAnchor constraintEqualToAnchor:rootVC.view.topAnchor] setActive:YES];
-    [[keyboardController.view.bottomAnchor constraintEqualToAnchor:rootVC.view.bottomAnchor] setActive:YES];
-//    [[GameControllerHandler shared] setupVirtualIfNeeded];
+  UIViewController *rootVC = GetSDLViewController(window);
+  NSLog(@"root VC = %@",rootVC);
+  NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+  NSLog(@"Documents path: %@",docsPath);
+  IOSUtils *iosUtils = [IOSUtils shared];
+  
+#if TARGET_OS_IOS
+  EmulatorKeyboardController *keyboardController = [[EmulatorKeyboardController alloc] initWithLeftKeyboardModel:iosUtils.leftKeyboardModel rightKeyboardModel:iosUtils.rightKeyboardModel];
+  keyboardController.rightKeyboardModel.delegate = (id<EmulatorKeyboardKeyPressedDelegate>)iosUtils;
+  keyboardController.leftKeyboardModel.delegate = (id<EmulatorKeyboardKeyPressedDelegate>)iosUtils;
+  [rootVC addChildViewController:keyboardController];
+  [keyboardController didMoveToParentViewController:rootVC];
+  keyboardController.view.translatesAutoresizingMaskIntoConstraints = NO;
+  [rootVC.view addSubview:keyboardController.view];
+  [[keyboardController.view.leadingAnchor constraintEqualToAnchor:rootVC.view.leadingAnchor] setActive:YES];
+  [[keyboardController.view.trailingAnchor constraintEqualToAnchor:rootVC.view.trailingAnchor] setActive:YES];
+  [[keyboardController.view.topAnchor constraintEqualToAnchor:rootVC.view.topAnchor] setActive:YES];
+  [[keyboardController.view.bottomAnchor constraintEqualToAnchor:rootVC.view.bottomAnchor] setActive:YES];
+#elif TARGET_OS_TV
+  [GameControllerHandler shared];
+#endif
 }
 
 void SDLWindowAfterSurfaceCreate(SDL_Window *window) {
@@ -109,14 +121,20 @@ float IOS_GetAimSensitivity() {
   return ObjCControlOptionsViewModel.aimSensitivity;
 }
 
+
 const UInt8 DIK_TO_ASCII[128] =
 {
     DIK_A, DIK_S, DIK_D, DIK_F, DIK_H, DIK_G, DIK_Z, DIK_X,
     DIK_C, DIK_V, 0, DIK_B, DIK_Q
 };
 
+#if TARGET_OS_IOS
 @interface IOSUtils()<EmulatorKeyboardKeyPressedDelegate>
 @end
+#else
+@interface IOSUtils()
+@end
+#endif
 
 @implementation IOSUtils
 

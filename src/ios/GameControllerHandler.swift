@@ -18,8 +18,7 @@ protocol GameControllerHandlerDelegate: AnyObject {
   
   var controller: GCController?
   weak var delegate: GameControllerHandlerDelegate?
-  
-  private var virtualController: GCVirtualController?
+
   private var reconnectVirtual = false
   
   override init() {
@@ -27,51 +26,9 @@ protocol GameControllerHandlerDelegate: AnyObject {
     NotificationCenter.default.addObserver(self, selector: #selector(gameControllerConnected(_:)), name: NSNotification.Name.GCControllerDidConnect, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(gameControllerDisconnected(_:)), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
   }
-  
-  @objc var virtualConnected: Bool { virtualController != nil }
-  
-  @objc func toggleVirtual() {
-//    if virtualConnected {
-//      disableVirtual()
-//    } else {
-//      reconnectVirtual = true
-//      setupVirtualIfNeeded()
-//    }
-  }
-  
-  @objc func setupVirtualIfNeeded() {
-//    if GCController.controllers().isEmpty {
-//      let config = GCVirtualController.Configuration()
-//      config.elements = [
-//        GCInputDirectionPad,
-//        GCInputRightThumbstick,
-//        GCInputButtonA,
-//        GCInputButtonB,
-//        GCInputButtonX,
-//        GCInputButtonY,
-//        GCInputLeftTrigger,
-//        GCInputRightTrigger,
-//        GCInputLeftShoulder,
-//        GCInputRightShoulder
-//      ]
-//      virtualController = GCVirtualController(configuration: config)
-//      virtualController?.connect()
-//    }
-  }
-  
-  @objc func disableVirtual() {
-    reconnectVirtual = false
-    virtualController?.disconnect()
-    virtualController = nil
-  }
-  
-  @objc func enableVirtual() {
-//    reconnectVirtual = true
-//    setupVirtualIfNeeded()
-  }
-  
+    
   @objc func gameControllerConnected(_ sender: Notification) {
-    guard let connectedController = sender.object as? GCController else {
+     guard let connectedController = sender.object as? GCController else {
       return
     }
     print("GCController connected: \(connectedController.vendorName ?? "Controller of Unknown Vendor")")
@@ -79,18 +36,11 @@ protocol GameControllerHandlerDelegate: AnyObject {
       print("Controller already connected, skipping setup")
       return
     }
-    if virtualController != nil && virtualController?.controller != connectedController {
-      // a physical controller connected; disable the virtual
-      disableVirtual()
-    }
     setupController(connectedController)
     delegate?.gameControllerDidConnect()
   }
   
   @objc func gameControllerDisconnected(_ sender: Notification) {
-//    if reconnectVirtual {
-//      setupVirtualIfNeeded()
-//    }
     delegate?.gameControllerDidDisconnect()
   }
   

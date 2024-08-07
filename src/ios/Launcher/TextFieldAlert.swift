@@ -20,7 +20,13 @@ struct TextFieldAlert: ViewModifier {
             if isPresented {
                 VStack {
                     Text(title).font(.body).padding()
-                    TextField(placeholder, text: $text).textFieldStyle(.roundedBorder).padding()
+                    TextField(placeholder, text: $text)
+                  #if os(iOS)
+                    .textFieldStyle(.roundedBorder)
+                  #else
+                    .textFieldStyle(.automatic)
+                  #endif
+                    .padding()
                     Divider()
                     HStack{
                         Spacer()

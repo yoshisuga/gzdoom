@@ -9,7 +9,11 @@ import SwiftUI
 
 extension Font {
   public static var largeTitle: Font {
+    #if os(iOS)
     Font.custom("PerfectDOSVGA437", size: UIFont.preferredFont(forTextStyle: .largeTitle).pointSize)
+    #else
+    Font.custom("PerfectDOSVGA437", size: UIFont.preferredFont(forTextStyle: .title1).pointSize)
+    #endif
   }
   
   public static var body: Font {

@@ -46,7 +46,7 @@
 #include "engineerrors.h"
 #include "i_interface.h"
 
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #include "ios/ios-input-hook.h"
 #endif
 
@@ -173,7 +173,7 @@ static void I_CheckGUICapture ()
 	if (wantCapt != GUICapture)
 	{
 		GUICapture = wantCapt;
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
         InputUpdateGUICapture(GUICapture);
 #endif
 		if (wantCapt)

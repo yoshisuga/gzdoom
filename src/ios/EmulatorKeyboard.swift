@@ -72,7 +72,11 @@ protocol EmulatorKeyboardViewDelegate: AnyObject {
 }
 
 class EmulatorKeyboardView: UIView {
+  #if os(iOS)
   static var keyboardBackgroundColor = UIColor.systemGray6.withAlphaComponent(0.5)
+  #else
+  static var keyboardBackgroundColor = UIColor.black.withAlphaComponent(0.5)
+  #endif
   static var keyboardCornerRadius = 6.0
   static var keyboardDragColor = UIColor.systemGray
   
@@ -85,15 +89,29 @@ class EmulatorKeyboardView: UIView {
   static var keyNormalFont = UIFont.systemFont(ofSize: 12)
   static var keyPressedFont = UIFont.boldSystemFont(ofSize: 24)
   
+  #if os(iOS)
   static var keyNormalBackgroundColor = UIColor.systemGray4.withAlphaComponent(0.5)
+  #else
+  static var keyNormalBackgroundColor = UIColor.black.withAlphaComponent(0.5)
+  #endif
   static var keyNormalBorderColor = keyNormalBackgroundColor
   static var keyNormalTextColor = UIColor.label
   
+  #if os(iOS)
   static var keyPressedBackgroundColor = UIColor.systemGray2
+  #else
+  static var keyPressedBackgroundColor = UIColor.systemGray
+  #endif
+  
   static var keyPressedBorderColor = keyPressedBackgroundColor
   static var keyPressedTextColor = UIColor.label
   
+  #if os(iOS)
   static var keySelectedBackgroundColor = UIColor.systemGray2.withAlphaComponent(0.8)
+  #else
+  static var keySelectedBackgroundColor = UIColor.systemGray.withAlphaComponent(0.8)
+  #endif
+  
   static var keySelectedBorderColor = keySelectedBackgroundColor
   static var keySelectedTextColor = UIColor.label
   
@@ -387,18 +405,25 @@ class SliderKey: KeyCoded {
         self.keySize = keySize
     }
     func createView() -> UIView {
-        let slider = UISlider(frame: .zero)
-        slider.minimumValue = 0.1
-        slider.maximumValue = 1.0
-        slider.addTarget(self, action: #selector(adjustKeyboardAlpha(_:)), for: .valueChanged)
-        slider.value = 1.0
-        let size = CGSize(width:EmulatorKeyboardView.keyNormalFont.pointSize, height:EmulatorKeyboardView.keyNormalFont.pointSize)
-        slider.setThumbImage(UIImage.dot(size:size, color:EmulatorKeyboardView.keyNormalTextColor), for: .normal)
-        return slider
+      #if os(iOS)
+      let slider = UISlider(frame: .zero)
+      slider.minimumValue = 0.1
+      slider.maximumValue = 1.0
+      slider.addTarget(self, action: #selector(adjustKeyboardAlpha(_:)), for: .valueChanged)
+      slider.value = 1.0
+      let size = CGSize(width:EmulatorKeyboardView.keyNormalFont.pointSize, height:EmulatorKeyboardView.keyNormalFont.pointSize)
+      slider.setThumbImage(UIImage.dot(size:size, color:EmulatorKeyboardView.keyNormalTextColor), for: .normal)
+      return slider
+      #else
+      return UIView()
+      #endif
     }
+  
+  #if os(iOS)
     @objc func adjustKeyboardAlpha(_ sender: UISlider) {
       keyboardView?.delegate?.updateTransparency(toAlpha: sender.value)
     }
+  #endif
 }
 
 private extension UIImage {
@@ -572,9 +597,11 @@ struct KeyPosition {
   }()
   
   var touchControlsView = UIView()
-  var touchControlsVC: TouchControlViewController?
   
+  #if os(iOS)
+  var touchControlsVC: TouchControlViewController?
   let gyroHandler = GyroscopeHandler()
+  #endif
   
    @objc init(leftKeyboardModel: EmulatorKeyboardViewModel, rightKeyboardModel: EmulatorKeyboardViewModel) {
       self.leftKeyboardModel = leftKeyboardModel
@@ -602,7 +629,10 @@ struct KeyPosition {
     rightKeyboardView.dragMeView.addGestureRecognizer(panGestureRightKeyboard)
     
     GameControllerHandler.shared.delegate = self
+    
+    #if os(iOS)
     gyroHandler.setup()
+    #endif
   }
   
   func setupView() {
@@ -626,6 +656,7 @@ struct KeyPosition {
     rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
     NSLayoutConstraint.activate(keyboardConstraints)
     
+    #if os(iOS)
     let touchControlsViewController = TouchControlViewController()
     addChild(touchControlsViewController)
     touchControlsView = touchControlsViewController.view
@@ -638,6 +669,7 @@ struct KeyPosition {
     touchControlsView.isHidden = true
     touchControlsViewController.didMove(toParent: self)
     touchControlsVC = touchControlsViewController
+    #endif
     
     controlOptionsButton.addTarget(self, action: #selector(changeInputMode(_:)), for: .touchUpInside)
     
@@ -669,8 +701,6 @@ struct KeyPosition {
     rightKeyboardView.isHidden = true
     touchControlsView.isHidden = false
     customizeControlsButton.isHidden = false
-    
-    //      GameControllerHandler.shared.enableVirtual()
   }
   
   @objc func changeInputMode(_ sender: UIButton) {
@@ -678,35 +708,32 @@ struct KeyPosition {
       var optionsView = ControlOptionsView()
       optionsView.dismissClosure = { [weak self] in
         self?.dismiss(animated: true)
+        #if os(iOS)
         self?.touchControlsVC?.updateOpacity()
         self?.gyroHandler.setup()
+        #endif
       }
       let hostingController = UIHostingController(rootView: optionsView)
       present(hostingController, animated: true)
     } else if sender == toggleButton {
       leftKeyboardView.isHidden = false
       rightKeyboardView.isHidden = false
-      GameControllerHandler.shared.disableVirtual()
       escButtonView.isHidden = true
       touchControlsView.isHidden = true
       customizeControlsButton.isHidden = true
-    } else if sender == toggleVirtualControllerButton2 {
-      GameControllerHandler.shared.enableVirtual()
-      escButtonView.isHidden = false
-      leftKeyboardView.isHidden = true
-      rightKeyboardView.isHidden = true
-      touchControlsView.isHidden = true
-      customizeControlsButton.isHidden = true
     } else if sender == toggleVirtualControllerButton {
-      GameControllerHandler.shared.disableVirtual()
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
       touchControlsView.isHidden.toggle()
+      #if os(iOS)
       touchControlsVC?.changeTouchControls(isHidden: touchControlsView.isHidden)
+      #endif
       customizeControlsButton.isHidden = false
     } else if sender == customizeControlsButton {
+      #if os(iOS)
       touchControlsVC?.arrangeButtonTapped(customizeControlsButton)
+      #endif
     }
   }
   
@@ -731,10 +758,6 @@ struct KeyPosition {
   
   @objc func toggleVisibility(_ sender: UIButton) {
     toggleVisibility()
-  }
-  
-  @objc func toggleVirtualController(_ sender: UIButton) {
-    GameControllerHandler.shared.toggleVirtual()
   }
   
   func setupViewFrames() {
@@ -780,7 +803,9 @@ struct KeyPosition {
   
   override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
     guard presses.first != nil else { return }
+    #if os(iOS)
     touchControlsVC?.changeTouchControls(isHidden: true)
+    #endif
   }
 }
 

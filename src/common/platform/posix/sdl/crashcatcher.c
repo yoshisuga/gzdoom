@@ -144,7 +144,7 @@ static void gdb_info(pid_t pid)
 		snprintf(cmd_buf, sizeof(cmd_buf), "gdb --quiet --batch --command=%s", respfile);
 		printf("Executing: %s\n", cmd_buf);
 		fflush(stdout);
-#if !defined(TARGET_OS_IOS)
+#if !defined(TARGET_OS_IPHONE)
 		system(cmd_buf);
 		/* Clean up */
 		remove(respfile);
@@ -220,6 +220,7 @@ static void crash_catcher(int signum, siginfo_t *siginfo, void *context)
 		cc_user_info(crash_info.buf, crash_info.buf+sizeof(crash_info.buf));
 
 	/* Fork off to start a crash handler */
+#if !TARGET_OS_TV
 	switch((dbg_pid=fork()))
 	{
 		/* Error */
@@ -258,6 +259,7 @@ static void crash_catcher(int signum, siginfo_t *siginfo, void *context)
 				}
 			} while(1);
 	}
+#endif
 }
 
 static void crash_handler(const char *logfile)
@@ -375,7 +377,7 @@ static void crash_handler(const char *logfile)
 			snprintf(buf, sizeof(buf), "gxmessage -buttons \"Okay:0\" -geometry 800x600 -title \"Very Fatal Error\" -center -file \"%s\"", logfile);
 		else
 			snprintf(buf, sizeof(buf), "xmessage -buttons \"Okay:0\" -center -file \"%s\"", logfile);
-#if !defined(TARGET_OS_IOS)
+#if !defined(TARGET_OS_IPHONE)
 		system(buf);
 #endif
 	}
@@ -407,7 +409,9 @@ int cc_install_handlers(int argc, char **argv, int num_signals, int *signals, co
 	altss.ss_sp = altstack;
 	altss.ss_flags = 0;
 	altss.ss_size = sizeof(altstack);
+#if !TARGET_OS_TV
 	sigaltstack(&altss, NULL);
+#endif
 
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_sigaction = crash_catcher;

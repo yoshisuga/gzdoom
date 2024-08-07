@@ -142,7 +142,8 @@ class TouchControlViewController: UIViewController {
       }
     }
   }
-  
+
+  #if os(iOS)
   @objc func arrangeButtonTapped(_ sender: UIButton) {
     let controller = ArrangeGamepadControlViewController()
     controller.onSaveClosure = {
@@ -152,6 +153,7 @@ class TouchControlViewController: UIViewController {
     controller.modalPresentationStyle = .fullScreen
     present(controller, animated: true)
   }
+  #endif
   
   func updateOpacity() {
     let optionsModel = ControlOptionsViewModel.shared

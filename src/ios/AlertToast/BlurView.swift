@@ -35,11 +35,19 @@ public struct BlurView: UIViewRepresentable {
     public typealias UIViewType = UIVisualEffectView
     
     public func makeUIView(context: Context) -> UIVisualEffectView {
-        return UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+      #if os(iOS)
+      return UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+      #else
+      return UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+      #endif
     }
     
     public func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        uiView.effect = UIBlurEffect(style: .systemMaterial)
+      #if os(iOS)
+      uiView.effect = UIBlurEffect(style: .systemMaterial)
+      #else
+      uiView.effect = UIBlurEffect(style: .regular)
+      #endif
     }
 }
 

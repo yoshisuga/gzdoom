@@ -68,7 +68,7 @@
 #include <SDL_vulkan.h>
 #endif // HAVE_VULKAN
 
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #include "ios/ios-glue.h"
 #include "video-hook.h"
 #endif
@@ -145,7 +145,7 @@ namespace Priv
 		caption.Format(GAMENAME " %s (%s)", GetVersionString(), GetGitTime());
 
 		const uint32_t windowFlags = (win_maximized ? SDL_WINDOW_MAXIMIZED : 0) | SDL_WINDOW_RESIZABLE | extraFlags;
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
         int width, height;
         ios_get_screen_width_height(&width, &height);
 //        SDL_Vulkan_LoadLibrary("libMoltenVK.dylib");
@@ -247,7 +247,7 @@ bool I_CreateVulkanSurface(VkInstance instance, VkSurfaceKHR *surface)
 {
 	assert(Priv::vulkanEnabled);
 	assert(Priv::window != nullptr);
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     bool createdSurface = SDL_Vulkan_CreateSurface(Priv::window, instance, surface) == SDL_TRUE;
     SDLWindowAfterSurfaceCreate(Priv::window);
     return createdSurface;
@@ -273,7 +273,7 @@ SDLVideo::SDLVideo ()
 	}
 
 #ifdef HAVE_VULKAN
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
   Priv::vulkanEnabled = true;
 #else
 	Priv::vulkanEnabled = V_GetBackend() == 1;
@@ -371,7 +371,7 @@ SystemBaseFrameBuffer::SystemBaseFrameBuffer (void *, bool fullscreen)
 	{
 		SDL_SetWindowFullscreen(Priv::window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 		SDL_ShowWindow(Priv::window);
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
         SDLWindowAfterCreate(Priv::window);
 #endif
 	}
@@ -541,7 +541,7 @@ int SystemGLFrameBuffer::GetClientHeight()
 void SystemGLFrameBuffer::SetVSync( bool vsync )
 {
     // yoshi: for iOS use the default implementation - hope it works!
-#if defined (__APPLE__) && !defined(TARGET_OS_IOS)
+#if defined (__APPLE__) && !defined(TARGET_OS_IPHONE)
 	const GLint value = vsync ? 1 : 0;
 	CGLSetParameter( CGLGetCurrentContext(), kCGLCPSwapInterval, &value );
 #else

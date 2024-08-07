@@ -28,7 +28,7 @@
 
 #if defined(__APPLE__)
 #import "TargetConditionals.h"
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #else
 #include <OpenGL/OpenGL.h>
 #endif

@@ -2,7 +2,7 @@
 #include <sys/stat.h>
 
 #import "TargetConditionals.h"
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else
 #import <AppKit/AppKit.h>
@@ -10,7 +10,7 @@
 
 #include "discord_register.h"
 
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 static void RegisterCommand(const char* applicationId, const char* command)
 {
 }

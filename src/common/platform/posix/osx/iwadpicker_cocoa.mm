@@ -35,7 +35,7 @@
 
 #import "TargetConditionals.h"
 
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 // yoshi: don't include this
 
 // no-op this for now, might implement UIKit version?

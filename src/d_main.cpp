@@ -2000,7 +2000,7 @@ static void D_DoomInit()
 static void AddAutoloadFiles(const char *autoname, std::vector<std::string>& allwads)
 {
 	LumpFilterIWAD.Format("%s.", autoname);	// The '.' is appened to simplify parsing the string
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     autoloadlights = true;
     autoloadbrightmaps = true;
     autoloadwidescreen = true;

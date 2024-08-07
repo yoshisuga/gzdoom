@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import ZIPFoundation
 
-class LauncherViewModel: ObservableObject {
+class LauncherViewModel: NSObject, ObservableObject {
   @Published var iWadFiles = [GZDoomFile]()
   @Published var externalFiles = [GZDoomFile]()
   
@@ -57,9 +57,20 @@ class LauncherViewModel: ObservableObject {
   
   var launchActionClosure: (([String]) -> Void)?
   
+  var documentsPath: String {
+    #if os(tvOS)
+    FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].path
+    #else
+    FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path
+    #endif
+  }
+  
+  #if os(tvOS)
+  var webServer: GCDWebUploader?
+  #endif
+  
   func setup() {
     let fm = FileManager.default
-    let documentsPath = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].path
     var iwads = [GZDoomFile]()
     var mods = [GZDoomFile]()
     print("Documents path: \(documentsPath)")
@@ -134,7 +145,20 @@ class LauncherViewModel: ObservableObject {
       print("Could not read docs dir: \(error)")
     }
     refreshSavedConfigs()
+    #if os(tvOS)
+    startWebUploader()
+    #endif
   }
+  
+  #if os(tvOS)
+  func startWebUploader() {
+    webServer = GCDWebUploader(uploadDirectory: documentsPath)
+    webServer?.allowHiddenItems = true
+    webServer?.delegate = self
+    webServer?.start()
+    print("Web Server URL = \(webServer?.serverURL)")
+  }
+  #endif
   
   var defaultLauncherConfig: LauncherConfig {
     let demo = "\(Bundle.main.bundlePath)/GenZDDemo.ipk3"
@@ -228,3 +252,11 @@ class LauncherViewModel: ObservableObject {
     return true
   }
 }
+
+#if os(tvOS)
+extension LauncherViewModel: GCDWebUploaderDelegate {
+  func webUploader(_ uploader: GCDWebUploader, didDownloadFileAt path: String) {
+    print("File uploaded!")
+  }
+}
+#endif

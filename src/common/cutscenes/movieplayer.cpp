@@ -46,7 +46,7 @@
 #include "gamestate.h"
 #include "SmackerDecoder.h"
 #include "playmve.h"
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
 #include <VPX/vpx/vpx_decoder.h>
 #include <VPX/vpx/vp8dx.h>
 #else

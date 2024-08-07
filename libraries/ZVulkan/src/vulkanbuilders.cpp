@@ -1824,7 +1824,7 @@ std::vector<VulkanCompatibleDevice> VulkanDeviceBuilder::FindDevices(const std::
 		if (!requiredExtensionSearch.empty())
 			continue;
 
-#if !defined(TARGET_OS_IOS)
+#if !defined(TARGET_OS_IPHONE)
 		// Check if all required features are there
 		if (info.Features.Features.samplerAnisotropy != VK_TRUE ||
 			info.Features.Features.fragmentStoresAndAtomics != VK_TRUE)

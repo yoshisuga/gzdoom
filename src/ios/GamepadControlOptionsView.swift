@@ -142,7 +142,11 @@ struct OptionsSliderRow: View {
   var body: some View {
     VStack {
       Text(label).font(.body).frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+      #if os(iOS)
       Slider(value: $sliderValue, in: min...max).padding().tint(.red)
+      #else
+      CustomSlider(value: $sliderValue, range: min...max, step: 0.1)
+      #endif
       #if DEBUG
       Text("\(sliderValue)").font(.small)
       #endif
@@ -220,7 +224,10 @@ struct ControlOptionsView: View {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
           }
         }
-      }.navigationTitle("Control Settings").navigationBarTitleDisplayMode(.inline)
+      }.navigationTitle("Control Settings")
+      #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+      #endif
         .toolbar {
           ToolbarItem(placement: .topBarLeading) {
             Button(action: {
