@@ -18,7 +18,12 @@ struct WhatsNewView: View {
     VStack {
       ScrollView {
         VStack(spacing: 4) {
-          ColoredText(content).font(.body).foregroundColor(.gray).lineSpacing(4)
+          if #available(iOS 17.0, *) {
+//            TextView(attributedText: <#T##Binding<AttributedString>#>, font: <#T##UIFont#>)
+            ColoredText(content).font(.body).foregroundColor(.gray).lineSpacing(4).focusable()
+          } else {
+            ColoredText(content).font(.body).foregroundColor(.gray).lineSpacing(4)
+          }
         }.padding()
       }
       Button(action: {

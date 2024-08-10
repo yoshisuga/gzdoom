@@ -17,7 +17,11 @@ extension Font {
   }
   
   public static var body: Font {
+    #if os(tvOS)
+    Font.custom("PerfectDOSVGA437", size: 40)
+    #else
     Font.custom("PerfectDOSVGA437", size: 20)
+    #endif
   }
   
   public static var selected: Font {
@@ -25,10 +29,18 @@ extension Font {
   }
   
   public static var actionButton: Font {
+    #if os(tvOS)
+    Font.custom("PerfectDOSVGA437", size: 56)
+    #else
     Font.custom("PerfectDOSVGA437", size: 28)
+    #endif
   }
   
   public static var small: Font {
+    #if os(tvOS)
+    Font.custom("PerfectDOSVGA437", size: 32)
+    #else
     Font.custom("PerfectDOSVGA437", size: 16)
+    #endif
   }
 }

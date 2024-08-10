@@ -40,11 +40,19 @@ struct LauncherConfigSheetView: View {
           withAnimation {
             saveAlertDisplayed = true
           }
-        }.padding().border(.gray, width: 2).foregroundColor(.green)
+        }.padding()
+        #if !os(tvOS)
+          .border(.gray, width: 2)
+        #endif
+          .foregroundColor(.green)
         Spacer()
         Button("Cancel") {
           dismiss()
-        }.padding().border(.gray, width: 2).foregroundColor(.red)
+        }.padding()
+        #if !os(tvOS)
+          .border(.gray, width: 2)
+        #endif
+          .foregroundColor(.red)
         Spacer()
       }
     }.onAppear {
@@ -102,13 +110,8 @@ struct LauncherConfigsView: View {
   
   var body: some View {
     VStack {
-//      if viewModel.savedConfigs.isEmpty {
-//        Spacer()
-//        Text("No saved configurations. Tap the + button above to create one now!").foregroundColor(.gray)
-//        Spacer()
-//      } else {
         List {
-          Section(header: Text("Launcher Configurations").foregroundColor(.yellow)) {
+          Section(header: Text("Launch Configurations").font(.body).foregroundColor(.yellow)) {
             ForEach(sortedConfigs) { config in
               Button(config.name) {
                 viewModel.currentConfig = config

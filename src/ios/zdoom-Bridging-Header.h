@@ -9,3 +9,4 @@
 #if TARGET_OS_TV
 #import "GCDWebUploader/GCDWebUploader.h"
 #endif
+#include <SDL.h>

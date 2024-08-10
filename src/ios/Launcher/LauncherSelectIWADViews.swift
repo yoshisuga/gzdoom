@@ -40,11 +40,17 @@ struct IWADSelectedView: View {
       Text("Selected").foregroundColor(.green)
       Button("Save Launch Config") {
         activeSheet = .saveLaunchConfig
-      }.padding().foregroundColor(.green).border(.gray, width: 2)
+      }.padding().foregroundColor(.green)
+      #if !os(tvOS)
+        .border(.gray, width: 2)
+      #endif
       Button("Back") {
         viewModel.selectedIWAD = nil
         viewModel.externalFiles.append(selected)
-      }.padding().border(.gray, width: 2)
+      }.padding()
+      #if !os(tvOS)
+        .border(.gray, width: 2)
+      #endif
       Spacer()
       Button("Launch Now without saving") {
         if !viewModel.validateFiles() {
@@ -52,10 +58,17 @@ struct IWADSelectedView: View {
           return
         }
         viewModel.launchActionClosure?(viewModel.arguments)
-      }.foregroundColor(.red).padding().border(.gray, width: 2)
+      }.foregroundColor(.red).padding()
+      #if !os(tvOS)
+        .border(.gray, width: 2)
+      #endif
       Button("Multiplayer Options") {
         activeSheet = .multiplayer
-      }.padding().foregroundColor(.cyan).border(.gray, width: 2).font(.small)
+      }.padding().foregroundColor(.cyan)
+      #if !os(tvOS)
+        .border(.gray, width: 2)
+      #endif
+        .font(.small)
     }.sheet(item: $activeSheet) { item in
       switch item {
       case .saveLaunchConfig:

@@ -78,6 +78,7 @@ void SDLWindowAfterCreate(SDL_Window *window) {
   [[keyboardController.view.bottomAnchor constraintEqualToAnchor:rootVC.view.bottomAnchor] setActive:YES];
 #elif TARGET_OS_TV
   [GameControllerHandler shared];
+  [[TVOSUIHandler shared] setRootViewController:rootVC];
 #endif
 }
 

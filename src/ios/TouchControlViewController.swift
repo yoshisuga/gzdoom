@@ -255,7 +255,7 @@ extension TouchControlViewController: AimControlsDelegate {
   }
   
   func aimDidMove(dx: Float, dy: Float, isDoubleTap: Bool) {
-    print("aimDidMove called!")
+//    print("aimDidMove called!")
     let aimSensitivity = ControlOptionsViewModel.shared.aimSensitivity
     let updatedDX = dx * aimSensitivity
     let updatedDY = dy * aimSensitivity
@@ -282,7 +282,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
     let touchLocationInButton = touch.location(in: button)
     let convertedTouch = button.convert(touchLocationInButton, to: self.view)
     if aimControlsView.frame.contains(convertedTouch) {
-      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
+//      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
       aimControlsView.touchesBegan(touches, with: event)
     }
   }
@@ -294,7 +294,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
     let touchLocationInButton = touch.location(in: button)
     let convertedTouch = button.convert(touchLocationInButton, to: self.view)
     if aimControlsView.frame.contains(convertedTouch) {
-      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
+//      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
       aimControlsView.touchesMoved(touches, with: event)
     }
   }
@@ -304,7 +304,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
           let gamepadControl = GamepadControl(rawValue: button.tag) else {
       return
     }
-    print("gamepadButtonPressed called: \(gamepadControl)")
+//    print("gamepadButtonPressed called: \(gamepadControl)")
     utils.handleGameControl(gamepadControl, isPressed: true)
     
     if ControlOptionsViewModel.shared.touchControlHapticFeedback && !isMove {
@@ -318,7 +318,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
           let gamepadControl = GamepadControl(rawValue: button.tag) else {
       return
     }
-    print("gamepadButtonReleased called: \(gamepadControl)")
+//    print("gamepadButtonReleased called: \(gamepadControl)")
     utils.handleGameControl(gamepadControl, isPressed: false)
     if aimControlsView.frame.contains(button.center) {
       aimControlsView.touchesEnded(touches, with: event)

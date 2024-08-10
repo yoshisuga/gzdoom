@@ -20,13 +20,19 @@ struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {
   var id: String { name }
   var lastRanAt: Date?
   
+  var documentsPath: String {
+    #if os(tvOS)
+    FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].path
+    #else
+    FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path
+    #endif
+  }
+  
   var baseIWAD: GZDoomFile {
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path
     return GZDoomFile(displayName: baseIWADName, fullPath: "\(documentsPath)/\(baseIWADName)")
   }
   
   var arguments: [GZDoomFile] {
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path
     return argumentsByName.map { GZDoomFile(displayName: $0, fullPath: "\(documentsPath)/\($0)") }
   }
   

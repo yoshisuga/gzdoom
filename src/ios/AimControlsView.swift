@@ -70,11 +70,11 @@ class AimControlsView: UIView {
     let dx = location.x - prev.x
     let dy = location.y - prev.y
     delegate?.aimDidMove(dx: Float(dx), dy: Float(dy), isDoubleTap: isDoubleTap)
-    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
+//    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    print("AimControlsView: touchesEnded!")
+//    print("AimControlsView: touchesEnded!")
     guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = false
     isDoubleTap = false
@@ -82,7 +82,7 @@ class AimControlsView: UIView {
   }
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    print("AimControlsView: touchesCancelled!")
+//    print("AimControlsView: touchesCancelled!")
     guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = false
     isDoubleTap = false

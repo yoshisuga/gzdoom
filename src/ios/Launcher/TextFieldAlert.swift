@@ -51,8 +51,13 @@ struct TextFieldAlert: ViewModifier {
                         Spacer()
                     }.frame(maxHeight: 40)
                 }
-                .background(.background)
+                .background(.black)
+              #if os(tvOS)
+                .frame(maxWidth: 700, alignment: .center)
+                .padding(.vertical, 20)
+              #else
                 .frame(width: 300, height: 200, alignment: .center)
+              #endif
                 .cornerRadius(20)
                 .overlay {
                     RoundedRectangle(cornerRadius: 20)

@@ -19,7 +19,17 @@ protocol GameControllerHandlerDelegate: AnyObject {
   var controller: GCController?
   weak var delegate: GameControllerHandlerDelegate?
 
-  private var reconnectVirtual = false
+  @objc var disableControls = false
+  var isOptionPressed = false {
+    didSet {
+      checkForOptionsHotKey()
+    }
+  }
+  var isMenuPressed = false {
+    didSet {
+      checkForOptionsHotKey()
+    }
+  }
   
   override init() {
     super.init()
@@ -124,10 +134,12 @@ protocol GameControllerHandlerDelegate: AnyObject {
     gamepad.dpad.right.valueChangedHandler = { button, _, pressed in
       utils.handleGameControllerInput(for: gamepad, button: button, isPressed: pressed)
     }
-    gamepad.buttonOptions?.valueChangedHandler = { button, _, pressed in
+    gamepad.buttonOptions?.valueChangedHandler = { [weak self] button, _, pressed in
+      self?.isOptionPressed = pressed
       utils.handleGameControllerInput(for: gamepad, button: button, isPressed: pressed)
     }
-    gamepad.buttonMenu.valueChangedHandler = { button, _, pressed in
+    gamepad.buttonMenu.valueChangedHandler = { [weak self] button, _, pressed in
+      self?.isMenuPressed = pressed
       utils.handleGameControllerInput(for: gamepad, button: button, isPressed: pressed)
     }
     gamepad.leftThumbstickButton?.valueChangedHandler = { button, _, pressed in
@@ -140,11 +152,49 @@ protocol GameControllerHandlerDelegate: AnyObject {
     controller = controllerToSetup
   }
   
+  func disableController() {
+    guard let gamepad = controller?.extendedGamepad else { return }
+    gamepad.dpad.up.valueChangedHandler = nil
+    gamepad.dpad.down.valueChangedHandler = nil
+    gamepad.dpad.left.valueChangedHandler = nil
+    gamepad.dpad.right.valueChangedHandler = nil
+    gamepad.buttonA.valueChangedHandler = nil
+    gamepad.buttonB.valueChangedHandler = nil
+    gamepad.buttonX.valueChangedHandler = nil
+    gamepad.buttonY.valueChangedHandler = nil
+    gamepad.leftShoulder.valueChangedHandler = nil
+    gamepad.rightShoulder.valueChangedHandler = nil
+    gamepad.leftTrigger.valueChangedHandler = nil
+    gamepad.rightTrigger.valueChangedHandler = nil
+    gamepad.leftThumbstick.valueChangedHandler = nil
+    gamepad.rightThumbstick.valueChangedHandler = nil
+    gamepad.leftThumbstickButton?.valueChangedHandler = nil
+    gamepad.rightThumbstickButton?.valueChangedHandler = nil
+    gamepad.buttonOptions?.valueChangedHandler = nil
+    gamepad.buttonMenu.valueChangedHandler = nil
+  }
+  
   @objc func handleInput() {
     // Hook into the GZDoom polling handler every frame by polling our game controller for thumbstick values to mimic mouse movement
 //    guard let utils = IOSUtils.shared(), let controller, let extendedGamepad = controller.extendedGamepad else { return }
 //    let mouseMoveX: Int = Int(extendedGamepad.rightThumbstick.xAxis.value * 20)
 //    let mouseMoveY: Int = Int(extendedGamepad.rightThumbstick.yAxis.value * 20) * -1
 //    utils.mouseMoveWith(x: mouseMoveX, y: mouseMoveY)
+  }
+  
+  private func checkForOptionsHotKey() {
+    #if os(tvOS)
+    print("checkForOptionsHotKey called!")
+    guard isOptionPressed && isMenuPressed else { return }
+    TVOSUIHandler.shared.showOptionsScreen(
+      beforePresent: { [weak self] in
+        self?.disableController()
+      },
+      afterDismiss: { [weak self] in
+        guard let self, let controller = self.controller else { return }
+        self.setupController(controller)
+      }
+    )
+    #endif
   }
 }

@@ -51,7 +51,7 @@ struct CreateLaunchConfigView: View {
       ZStack {
         HStack {
           Spacer()
-          Text("\(isEditing ? "Edit" : "Create") Launcher Configuration")
+          Text("\(isEditing ? "Edit" : "Create") Launch Configuration")
           Spacer()
         }.padding()
         HStack {
@@ -59,18 +59,35 @@ struct CreateLaunchConfigView: View {
             dismiss()
           }.buttonStyle(.bordered).foregroundColor(.red).font(.body)
           Spacer()
+          #if !os(tvOS)
           Button("Import") {
             showDocumentPicker = true
           }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
+          #endif
         }.padding()
       }
       if viewModel.iWadFiles.isEmpty {
         VStack(spacing: 24) {
           Spacer()
           Text("You do not have any valid base game files available.")
+          
+          #if os(tvOS)
+          if let webServer = viewModel.webServer {
+            Spacer()
+            Text("Upload files by navigating to one of the following URLs on another device:")
+            if let bonjourServerUrl = webServer.bonjourServerURL {
+              Text(bonjourServerUrl.absoluteString).foregroundStyle(.cyan)
+            }
+            if let serverUrl = webServer.serverURL {
+              Text(serverUrl.absoluteString).foregroundStyle(.cyan)
+            }
+            Spacer()
+          }
+          #else
           Button("Import Files") {
             showDocumentPicker = true
           }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
+          #endif
           Spacer()
         }
       } else {
@@ -163,20 +180,43 @@ struct LauncherView: View {
           HStack {
             Button("+") {
               activeSheet = .addLauncherConfig
-            }.buttonStyle(.bordered).foregroundColor(.yellow).font(.actionButton)
+            }.buttonStyle(.bordered)
+            #if os(tvOS)
+              .foregroundColor(.red)
+            #else
+              .foregroundColor(.yellow)
+            #endif
+              .font(.actionButton)
             Spacer()
+
+            
+            #if os(tvOS)
+            Spacer()
+            #endif
             Picker("Launch Config Order", selection: $launchConfigSortOrder) {
               ForEach(LaunchConfigSortOrder.allCases) {
                 Text($0.rawValue)
               }
-            }.pickerStyle(.segmented).frame(width: 200)
+            }.pickerStyle(.segmented)
+            #if os(tvOS)
+              .frame(width: 400)
+            #else
+              .frame(width: 200)
+            #endif
+
+            #if !os(tvOS)
             Button("Help") {
               activeSheet = .showHelp
-            }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
+            }.buttonStyle(.bordered)
+              .foregroundColor(.yellow)
+              .font(.body)
+            #endif
           }
         }
       }
+      
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder, activeSheet: $activeSheet).padding(.bottom)
+
       ColoredText("Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.gray)
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
@@ -193,9 +233,13 @@ struct LauncherView: View {
       }.onAppear {
         viewModel.setup()
         let whatsNewVersionSeen = UserDefaults.standard.string(forKey: WhatsNewView.userDefaultsKey)
+        #if os(tvOS)
+        whatsNewAvailable = false
+        #else
         whatsNewAvailable =
         (whatsNewVersionSeen == nil || (whatsNewVersionSeen != nil && whatsNewVersionSeen! != Self.currentVersion )) &&
         Bundle.main.url(forResource: "whats-new", withExtension: "md") != nil
+        #endif
     }.font(.body)
       .background {
         LinearGradient(colors: [.red.opacity(0.2), .orange.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -211,7 +255,8 @@ struct LauncherView: View {
           ZStack {
             WhatsNewView(closeClosure: {
               whatsNewAvailable = false
-            }).frame(width: 600, height: 330)
+            })
+            .frame(width: 600, height: 330)
           }
         }
       }
@@ -222,7 +267,15 @@ struct LauncherView: View {
   init(viewModel: LauncherViewModel, selections: [GZDoomFile] = [GZDoomFile]()) {
     self.viewModel = viewModel
     self.selections = selections
-    UISegmentedControl.appearance().setTitleTextAttributes([.font : UIFont(name: "PerfectDOSVGA437", size: 20)!], for: .normal)
+    #if os(tvOS)
+    let segmentedControlFont = UIFont(name: "PerfectDOSVGA437", size: 40)!
+    #else
+    let segmentedControlFont = UIFont(name: "PerfectDOSVGA437", size: 20)!
+    #endif
+    UISegmentedControl.appearance().setTitleTextAttributes(
+      [.font : segmentedControlFont],
+      for: .normal
+    )
   }
 }
 
@@ -267,6 +320,9 @@ struct LauncherView_Previews: PreviewProvider {
   override func viewDidLoad() {
     super.viewDidLoad()
     viewModel.launchActionClosure = { [weak self] arguments in
+      #if os(tvOS)
+      self?.viewModel.webServer?.stop()
+      #endif
       self?.startSDLMain(withArgs: arguments)
     }
     let launcherView = LauncherView(viewModel: viewModel)

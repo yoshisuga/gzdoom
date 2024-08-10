@@ -57,17 +57,29 @@ class LauncherViewModel: NSObject, ObservableObject {
   
   var launchActionClosure: (([String]) -> Void)?
   
-  var documentsPath: String {
+  var documentsURL: URL {
     #if os(tvOS)
-    FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].path
+    FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     #else
-    FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path
+    FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     #endif
   }
+
+  var documentsPath: String {
+    documentsURL.path
+  }
+  
   
   #if os(tvOS)
-  var webServer: GCDWebUploader?
+  @Published var webServer: GCDWebUploader?
   #endif
+  
+#if os(tvOS)
+  override init() {
+    super.init()
+    startWebUploader()
+  }
+#endif
   
   func setup() {
     let fm = FileManager.default
@@ -110,7 +122,7 @@ class LauncherViewModel: NSObject, ObservableObject {
         if itemNS == "gzdoom.ini" {
           if !fm.fileExists(atPath: "\(documentsPath)/Preferences/gzdoom.ini") {
             let sourceUrl = Bundle.main.bundleURL.appendingPathComponent(itemNS as String)
-            var destUrl = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("Preferences")
+            var destUrl = documentsURL.appendingPathComponent("Preferences")
             if !fm.fileExists(atPath: destUrl.path) {
               do {
                 try fm.createDirectory(at: destUrl, withIntermediateDirectories: true)
@@ -145,18 +157,17 @@ class LauncherViewModel: NSObject, ObservableObject {
       print("Could not read docs dir: \(error)")
     }
     refreshSavedConfigs()
-    #if os(tvOS)
-    startWebUploader()
-    #endif
   }
   
   #if os(tvOS)
   func startWebUploader() {
-    webServer = GCDWebUploader(uploadDirectory: documentsPath)
-    webServer?.allowHiddenItems = true
-    webServer?.delegate = self
-    webServer?.start()
-    print("Web Server URL = \(webServer?.serverURL)")
+    DispatchQueue.main.async { [weak self] in
+      guard let self else { return }
+      self.webServer = GCDWebUploader(uploadDirectory: documentsPath)
+      self.webServer?.allowHiddenItems = true
+      self.webServer?.delegate = self
+      self.webServer?.start()
+    }
   }
   #endif
   
@@ -255,7 +266,7 @@ class LauncherViewModel: NSObject, ObservableObject {
 
 #if os(tvOS)
 extension LauncherViewModel: GCDWebUploaderDelegate {
-  func webUploader(_ uploader: GCDWebUploader, didDownloadFileAt path: String) {
+  func webUploader(_ uploader: GCDWebUploader, didDownloadFileAtPath path: String) {
     print("File uploaded!")
   }
 }

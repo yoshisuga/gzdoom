@@ -145,7 +145,7 @@ struct OptionsSliderRow: View {
       #if os(iOS)
       Slider(value: $sliderValue, in: min...max).padding().tint(.red)
       #else
-      CustomSlider(value: $sliderValue, range: min...max, step: 0.1)
+      TvOSSliderSwiftUI(value: $sliderValue, minimumValue: min, maximumValue: max)
       #endif
       #if DEBUG
       Text("\(sliderValue)").font(.small)
@@ -208,8 +208,11 @@ struct ControlOptionsView: View {
         List {
           Section (header: Text("General").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.aimSensitivity, label: "Aim Sensitivity", min: 0.25, max: 4.0)
+#if !os(tvOS)
             OptionsSwitchRow(isOn: $viewModel.enableTouchControlsGuideOverlay, label: "Show Move/Aim Overlay Guide")
+#endif
           }
+#if !os(tvOS)
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
@@ -218,8 +221,11 @@ struct ControlOptionsView: View {
           Section(header: Text("Gyroscope").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.gyroEnabled, label: "Gyroscope Aiming")
             OptionsSliderRow(sliderValue: $viewModel.gyroSensitivity, label: "Gyroscope Sensitivity", min: 2, max: 10.0)
-//            OptionsSliderRow(sliderValue: $viewModel.gyroUpdateInterval, label: "Gyroscope Update Interval", min: 0.0167, max: 1.0)
+            #if DEBUG
+            OptionsSliderRow(sliderValue: $viewModel.gyroUpdateInterval, label: "Gyroscope Update Interval", min: 0.0167, max: 1.0)
+            #endif
           }
+#endif
           Section(header: Text("Game Controller").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
           }
