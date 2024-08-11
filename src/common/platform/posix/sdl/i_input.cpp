@@ -466,12 +466,12 @@ void MessagePump (const SDL_Event &sev)
 				D_PostEvent (&event);
 			}
       
-      if (event.subtype != EV_GUI_KeyUp) {
+      if (event.subtype != EV_GUI_KeyUp && !(kmod & KMOD_CTRL)) {
         event.subtype = EV_GUI_Char;
         int16_t ascii = IOS_GetAsciiFromSDLKeyCode(sev.key.keysym.sym);
         if (ascii != 0) {
           wchar_t realchar = (wchar_t)ascii;
-          if (kmod & GKM_SHIFT) {
+          if (kmod & KMOD_SHIFT) {
             if (ascii == '-') {
               realchar = '_';
             } else if (ascii == '\'') {
@@ -480,6 +480,32 @@ void MessagePump (const SDL_Event &sev)
               realchar = '+';
             } else if (ascii == ';') {
               realchar = ':';
+            } else if (ascii == '1') {
+              realchar = '!';
+            } else if (ascii == '2') {
+              realchar = '@';
+            } else if (ascii == '3') {
+              realchar = '#';
+            } else if (ascii == '4') {
+              realchar = '$';
+            } else if (ascii == '5') {
+              realchar = '%';
+            } else if (ascii == '6') {
+              realchar = '^';
+            } else if (ascii == '7') {
+              realchar = '&';
+            } else if (ascii == '8') {
+              realchar = '*';
+            } else if (ascii == '9') {
+              realchar = '(';
+            } else if (ascii == '0') {
+              realchar = ')';
+            } else if (ascii == ',') {
+              realchar = '<';
+            } else if (ascii == '.') {
+              realchar = '>';
+            } else if (ascii == '/') {
+              realchar = '?';
             } else {
               realchar = (wchar_t) toupper(ascii);
             }

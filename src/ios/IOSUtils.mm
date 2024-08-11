@@ -349,6 +349,40 @@ const UInt8 DIK_TO_ASCII[128] =
           realchar = '+';
         } else if (keyCode == DIK_APOSTROPHE) {
           realchar = '"';
+        } else if (keyCode == DIK_1) {
+          realchar = '!';
+        } else if (keyCode == DIK_2) {
+          realchar = '@';
+        } else if (keyCode == DIK_3) {
+          realchar = '#';
+        } else if (keyCode == DIK_4) {
+          realchar = '$';
+        } else if (keyCode == DIK_5) {
+          realchar = '%';
+        } else if (keyCode == DIK_6) {
+          realchar = '^';
+        } else if (keyCode == DIK_7) {
+          realchar = '&';
+        } else if (keyCode == DIK_8) {
+          realchar = '*';
+        } else if (keyCode == DIK_9) {
+          realchar = '(';
+        } else if (keyCode == DIK_0) {
+          realchar = ')';
+        } else if (keyCode == DIK_LBRACKET) {
+          realchar = '{';
+        } else if (keyCode == DIK_RBRACKET) {
+          realchar = '}';
+        } else if (keyCode == DIK_BACKSLASH) {
+          realchar = '|';
+        } else if (keyCode == DIK_SEMICOLON) {
+          realchar = ':';
+        } else if (keyCode == DIK_COMMA) {
+          realchar = '<';
+        } else if (keyCode == DIK_PERIOD) {
+          realchar = '>';
+        } else if (keyCode == DIK_SLASH) {
+          realchar = '?';
         } else {
           realchar = toupper(realchar);
         }
