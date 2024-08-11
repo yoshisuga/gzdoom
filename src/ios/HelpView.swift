@@ -11,17 +11,36 @@ struct HelpSheetView: View {
   @Environment(\.dismiss) var dismiss
   @Environment(\.openURL) var openURL
   
+  enum ViewMode {
+    case help, whatsNew
+  }
+  
+  @State var viewMode = ViewMode.help
+  
   @State var helpContents: String.LocalizationValue = ""
   
   var body: some View {
     VStack {
       ZStack {
-        HStack {
-          Spacer()
-          Text("GenZD Help")
-          Spacer()
+        if viewMode == .whatsNew {
+          Text("What's New")
+        } else {
+          Text("GenZD")
         }
         HStack {
+          Button {
+            if viewMode == .help {
+              viewMode = .whatsNew
+            } else {
+              viewMode = .help
+            }
+          } label: {
+            if viewMode == .help {
+              Text("What's New?")
+            } else {
+              Text("Help")
+            }
+          }.buttonStyle(.bordered)
           Spacer()
           Button("Done") {
             dismiss()
@@ -30,15 +49,25 @@ struct HelpSheetView: View {
       }
       ScrollView {
         VStack(spacing: 4) {
-          ColoredText(helpContents).font(.body).foregroundColor(.gray).lineSpacing(4)
+          ColoredText(loadContent()).font(.body).foregroundColor(.gray).lineSpacing(4)
         }.padding()
       }
     }.padding(.top)
-      .onAppear {
-        guard let fileURL = Bundle.main.url(forResource: "ios-help", withExtension: "md") else { return }
-        let string = (try? String(contentsOf: fileURL, encoding: .utf8)) ?? "Error loading help file 😖"
-        helpContents = String.LocalizationValue(string)
-      }
+//      .onAppear {
+//        guard let fileURL = viewMode == .whatsNew ?
+//                Bundle.main.url(forResource: "whats-new", withExtension: "md") :
+//                  Bundle.main.url(forResource: "ios-help", withExtension: "md") else { return }
+//        let string = (try? String(contentsOf: fileURL, encoding: .utf8)) ?? "Error loading help file 😖"
+//        helpContents = String.LocalizationValue(string)
+//      }
+  }
+  
+  private func loadContent() -> String.LocalizationValue {
+    guard let fileURL = viewMode == .whatsNew ?
+            Bundle.main.url(forResource: "whats-new", withExtension: "md") :
+              Bundle.main.url(forResource: "ios-help", withExtension: "md") else { return "" }
+    let string = (try? String(contentsOf: fileURL, encoding: .utf8)) ?? "Error loading help file 😖"
+    return String.LocalizationValue(string)
   }
 }
 
