@@ -166,7 +166,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.8.2"
+  static let currentVersion = "2024.8.5"
   
   var body: some View {
     VStack {

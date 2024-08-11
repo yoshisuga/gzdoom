@@ -47,8 +47,9 @@ class GyroscopeHandler {
     
     // Apply sensitivity and dead zone
     let sensitivity = Double(ControlOptionsViewModel.shared.gyroSensitivity)
-    let adjustedX = abs(xRotation) > deadZone ? xRotation * sensitivity * -1 : 0.0
-    let adjustedY = abs(yRotation) > deadZone ? yRotation * sensitivity : 0.0
+    let orientationAdjustment: Double = UIDevice.current.orientation == .landscapeLeft ? 1 : -1;
+    let adjustedX = abs(xRotation) > deadZone ? xRotation * sensitivity * -1 * orientationAdjustment : 0.0
+    let adjustedY = abs(yRotation) > deadZone ? yRotation * sensitivity * orientationAdjustment : 0.0
     
 //    print("\(adjustedX) , \(adjustedY)")
     MouseInputHolder.shared.gyroDeltaX = Int(adjustedX)
