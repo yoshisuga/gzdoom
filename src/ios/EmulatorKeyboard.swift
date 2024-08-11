@@ -281,7 +281,7 @@ class EmulatorKeyboardView: UIView {
   
   func refreshModifierStates() {
     modifierButtons.forEach{ button in
-      button.toggleState = viewModel.modifierKeyToggleStateForKey(button.key)
+      button.isSelected = viewModel.modifierKeyToggleStateForKey(button.key)
       //            button.isSelected = button.toggleState
     }
   }
