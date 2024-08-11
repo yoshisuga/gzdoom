@@ -46,6 +46,8 @@
 #include "engineerrors.h"
 #include "i_interface.h"
 
+// Yoshi Custom
+#include <wchar.h>
 #if TARGET_OS_IPHONE
 #include "ios/ios-input-hook.h"
 #endif
@@ -463,6 +465,29 @@ void MessagePump (const SDL_Event &sev)
 				event.data1 = toupper(event.data1);
 				D_PostEvent (&event);
 			}
+      
+      if (event.subtype != EV_GUI_KeyUp) {
+        event.subtype = EV_GUI_Char;
+        int16_t ascii = IOS_GetAsciiFromSDLKeyCode(sev.key.keysym.sym);
+        if (ascii != 0) {
+          wchar_t realchar = (wchar_t)ascii;
+          if (kmod & GKM_SHIFT) {
+            if (ascii == '-') {
+              realchar = '_';
+            } else if (ascii == '\'') {
+              realchar = '"';
+            } else if (ascii == '=') {
+              realchar = '+';
+            } else if (ascii == ';') {
+              realchar = ':';
+            } else {
+              realchar = (wchar_t) toupper(ascii);
+            }
+          }
+          event.data1 = realchar;
+          D_PostEvent (&event);
+        }
+      }
 		}
 		break;
 

@@ -10,6 +10,8 @@
 #import <GameController/GameController.h>
 #import "ios-glue.h"
 
+@protocol KeyCoded;
+
 typedef NS_ENUM(NSInteger, ThumbstickDirection) {
   ThumbstickDirectionUp,
   ThumbstickDirectionDown,
@@ -64,5 +66,8 @@ typedef NS_ENUM(NSInteger, GamepadControl) {
 -(void)handleOverlayDPadWithDirection:(DPadDirection)direction;
 -(void)handleOverlayButtonName:(NSString*)buttonName isPressed:(BOOL)isPressed;
 -(void)handleLeftMouseButtonWithPressed:(BOOL)isPressed;
+
+- (void)keyUp:(id<KeyCoded> _Nonnull)key;
+- (void)keyDown:(id<KeyCoded> _Nonnull)key;
 
 @end

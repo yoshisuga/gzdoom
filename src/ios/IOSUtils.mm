@@ -68,6 +68,8 @@ void SDLWindowAfterCreate(SDL_Window *window) {
   EmulatorKeyboardController *keyboardController = [[EmulatorKeyboardController alloc] initWithLeftKeyboardModel:iosUtils.leftKeyboardModel rightKeyboardModel:iosUtils.rightKeyboardModel];
   keyboardController.rightKeyboardModel.delegate = (id<EmulatorKeyboardKeyPressedDelegate>)iosUtils;
   keyboardController.leftKeyboardModel.delegate = (id<EmulatorKeyboardKeyPressedDelegate>)iosUtils;
+  keyboardController.rightKeyboardModel.modifierDelegate = (id<EmulatorKeyboardModifierPressedDelegate>)iosUtils;
+  keyboardController.leftKeyboardModel.modifierDelegate = (id<EmulatorKeyboardModifierPressedDelegate>)iosUtils;
   [rootVC addChildViewController:keyboardController];
   [keyboardController didMoveToParentViewController:rootVC];
   keyboardController.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -122,6 +124,56 @@ float IOS_GetAimSensitivity() {
   return ObjCControlOptionsViewModel.aimSensitivity;
 }
 
+int16_t IOS_GetAsciiFromSDLKeyCode(SDL_Keycode keyCode) {
+  NSDictionary *sdlKeyCodeToAsciiMap = @{
+    @(SDLK_1) : [NSNumber numberWithUnsignedChar:'1'],
+    @(SDLK_2) : [NSNumber numberWithUnsignedChar:'2'],
+    @(SDLK_3) : [NSNumber numberWithUnsignedChar:'3'],
+    @(SDLK_4) : [NSNumber numberWithUnsignedChar:'4'],
+    @(SDLK_5) : [NSNumber numberWithUnsignedChar:'5'],
+    @(SDLK_6) : [NSNumber numberWithUnsignedChar:'6'],
+    @(SDLK_7) : [NSNumber numberWithUnsignedChar:'7'],
+    @(SDLK_8) : [NSNumber numberWithUnsignedChar:'8'],
+    @(SDLK_9) : [NSNumber numberWithUnsignedChar:'9'],
+    @(SDLK_0) : [NSNumber numberWithUnsignedChar:'0'],
+    @(SDLK_a) : [NSNumber numberWithUnsignedChar:'a'],
+    @(SDLK_b) : [NSNumber numberWithUnsignedChar:'b'],
+    @(SDLK_c) : [NSNumber numberWithUnsignedChar:'c'],
+    @(SDLK_d) : [NSNumber numberWithUnsignedChar:'d'],
+    @(SDLK_e) : [NSNumber numberWithUnsignedChar:'e'],
+    @(SDLK_f) : [NSNumber numberWithUnsignedChar:'f'],
+    @(SDLK_g) : [NSNumber numberWithUnsignedChar:'g'],
+    @(SDLK_h) : [NSNumber numberWithUnsignedChar:'h'],
+    @(SDLK_i) : [NSNumber numberWithUnsignedChar:'i'],
+    @(SDLK_j) : [NSNumber numberWithUnsignedChar:'j'],
+    @(SDLK_k) : [NSNumber numberWithUnsignedChar:'k'],
+    @(SDLK_l) : [NSNumber numberWithUnsignedChar:'l'],
+    @(SDLK_m) : [NSNumber numberWithUnsignedChar:'m'],
+    @(SDLK_n) : [NSNumber numberWithUnsignedChar:'n'],
+    @(SDLK_o) : [NSNumber numberWithUnsignedChar:'o'],
+    @(SDLK_p) : [NSNumber numberWithUnsignedChar:'p'],
+    @(SDLK_q) : [NSNumber numberWithUnsignedChar:'q'],
+    @(SDLK_r) : [NSNumber numberWithUnsignedChar:'r'],
+    @(SDLK_s) : [NSNumber numberWithUnsignedChar:'s'],
+    @(SDLK_t) : [NSNumber numberWithUnsignedChar:'t'],
+    @(SDLK_u) : [NSNumber numberWithUnsignedChar:'u'],
+    @(SDLK_v) : [NSNumber numberWithUnsignedChar:'v'],
+    @(SDLK_w) : [NSNumber numberWithUnsignedChar:'w'],
+    @(SDLK_x) : [NSNumber numberWithUnsignedChar:'x'],
+    @(SDLK_y) : [NSNumber numberWithUnsignedChar:'y'],
+    @(SDLK_z) : [NSNumber numberWithUnsignedChar:'z'],
+    @(SDLK_MINUS) : [NSNumber numberWithUnsignedChar:'-'],
+    @(SDLK_EQUALS) : [NSNumber numberWithUnsignedChar:'='],
+    @(SDLK_PERIOD) : [NSNumber numberWithUnsignedChar:'.'],
+    @(SDLK_COMMA) : [NSNumber numberWithUnsignedChar:','],
+    @(SDLK_SEMICOLON) : [NSNumber numberWithUnsignedChar:';'],
+    @(SDLK_SPACE) : [NSNumber numberWithUnsignedChar:' '],
+    @(SDLK_QUOTE) : [NSNumber numberWithUnsignedChar:'\''],
+    @(SDLK_UNDERSCORE) : [NSNumber numberWithUnsignedChar:'_'],
+  };
+  NSNumber *asciiNumber = (NSNumber*) [sdlKeyCodeToAsciiMap objectForKey:@(keyCode)];
+  return asciiNumber != nil ? [asciiNumber unsignedCharValue] : 0;
+}
 
 const UInt8 DIK_TO_ASCII[128] =
 {
@@ -130,12 +182,14 @@ const UInt8 DIK_TO_ASCII[128] =
 };
 
 #if TARGET_OS_IOS
-@interface IOSUtils()<EmulatorKeyboardKeyPressedDelegate>
-@end
+@interface IOSUtils()<EmulatorKeyboardKeyPressedDelegate, EmulatorKeyboardModifierPressedDelegate>
+
+@property(nonatomic, strong) NSMutableSet<NSNumber*> *modifiersPressed;
 #else
 @interface IOSUtils()
-@end
 #endif
+@end
+
 
 @implementation IOSUtils
 
@@ -150,12 +204,14 @@ const UInt8 DIK_TO_ASCII[128] =
 
 -(id)init {
   self = [super init];
+  _modifiersPressed = [[NSMutableSet<NSNumber*> alloc] init];
   return self;
 }
 
 -(void)doMain {
   GameMain();
 }
+
 
 -(NSDictionary*)dikToAsciiMap {
   return @{
@@ -242,8 +298,20 @@ const UInt8 DIK_TO_ASCII[128] =
       case DIK_F1:
         event.data1 = GK_F1;
         break;
-      case DIK_DELETE:
+      case DIK_BACK:
         event.data1 = GK_BACKSPACE;
+        break;
+      case DIK_PRIOR:
+        event.data1 = GK_PGUP;
+        break;
+      case DIK_NEXT:
+        event.data1 = GK_PGDN;
+        break;
+      case DIK_HOME:
+        event.data1 = GK_HOME;
+        break;
+      case DIK_END:
+        event.data1 = GK_END;
         break;
       default:
         short keyCodeShort = (short) keyCode;
@@ -257,6 +325,15 @@ const UInt8 DIK_TO_ASCII[128] =
         break;
     }
     if (event.data1 < 128 && isAsciiKey) {
+
+      // Deal with modifiers
+      BOOL isShiftDown = [self.modifiersPressed containsObject:@(DIK_LSHIFT)];
+      BOOL isCtrlDown = [self.modifiersPressed containsObject:@(DIK_LCONTROL)];
+      BOOL isAltDown = [self.modifiersPressed containsObject:@(DIK_LMENU)];
+      event.data3 = (isShiftDown ? GKM_SHIFT : 0) |
+                    (isCtrlDown ? GKM_CTRL : 0) |
+                    (isAltDown ? GKM_ALT : 0);
+
       event.data1 = toupper(event.data1);
       //            event.data2 = 97; // testing..a - don't need to set this
 //      NSLog(@"keydown: posting gui key event for key %@, event.data1 = %i",key.keyLabel, event.data1);
@@ -265,10 +342,22 @@ const UInt8 DIK_TO_ASCII[128] =
       unichar realchar = [label characterAtIndex:0];
       if (keyCode == DIK_SPACE) {
         realchar = ' ';
+      } else if (isShiftDown) {
+        if (keyCode == DIK_MINUS) {
+          realchar = '_';
+        } else if (keyCode == DIK_EQUALS) {
+          realchar = '+';
+        } else if (keyCode == DIK_APOSTROPHE) {
+          realchar = '"';
+        } else {
+          realchar = toupper(realchar);
+        }
       }
       event.subtype = EV_GUI_Char;
-      event.data1   = realchar;
+      event.data1   =  realchar;
       event.data2   = 0;
+      
+      NSLog(@"Posting GUI Capture key: data1 = %c data3 = %i", event.data1, event.data3);
       D_PostEvent(&event);
       return;
     }
@@ -512,5 +601,20 @@ const UInt8 DIK_TO_ASCII[128] =
   D_PostEvent(&event);
 }
 
-@end
+#if TARGET_OS_IOS
+#pragma mark EmulatorKeyboardModifierPressedDelegate
+- (BOOL)isModifierEnabledWithKey:(id<KeyCoded> _Nonnull)key {
+  return [self.modifiersPressed containsObject:@(key.keyCode)];
+}
 
+- (void)modifierPressedWithKey:(id<KeyCoded> _Nonnull)key enable:(BOOL)enable { 
+  if (enable) {
+    [self keyDown:key];
+    [self.modifiersPressed addObject:@(key.keyCode)];
+  } else {
+    [self keyUp:key];
+    [self.modifiersPressed removeObject:@(key.keyCode)];
+  }
+}
+#endif
+@end

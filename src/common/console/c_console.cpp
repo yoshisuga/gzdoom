@@ -66,6 +66,11 @@
 #include "c_commandbuffer.h"
 #include "vm.h"
 
+// Yoshi Custom
+#if defined(__APPLE__)
+#import "TargetConditionals.h"
+#endif
+
 #define LEFTMARGIN 8
 #define RIGHTMARGIN 8
 #define BOTTOMARGIN 12
@@ -128,7 +133,11 @@ static GameAtExit *ExitCmdList;
 static char *work = NULL;
 static int worklen = 0;
 
+#if TARGET_OS_IPHONE
+CUSTOM_CVAR(Int, con_scale, 4, CVAR_ARCHIVE)
+#else
 CUSTOM_CVAR(Int, con_scale, 0, CVAR_ARCHIVE)
+#endif
 {
 	if (self < 0) self = 0;
 }
