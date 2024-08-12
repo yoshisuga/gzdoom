@@ -25,7 +25,93 @@ extension GamepadControl: Codable {
     case .dpad: return "D-Pad"
     case .leftMouseClick: return "LMB"
     case .rightMouseClick: return "RMB"
+    case .kb_Esc: return "ESC"
+    case .KB_F1: return "F1"
+    case .KB_F2: return "F2"
+    case .KB_F3: return "F3"
+    case .KB_F4: return "F4"
+    case .KB_F5: return "F5"
+    case .KB_F6: return "F6"
+    case .KB_F7: return "F7"
+    case .KB_F8: return "F8"
+    case .KB_F9: return "F9"
+    case .KB_F10: return "F10"
+    case .KB_F11: return "F11"
+    case .KB_F12: return "F12"
+    case .kb_Tab: return "Tab"
+    case .kb_Tilde: return "~"
+    case .KB_1: return "1"
+    case .KB_2: return "2"
+    case .KB_3: return "3"
+    case .KB_4: return "4"
+    case .KB_5: return "5"
+    case .KB_6: return "6"
+    case .KB_7: return "7"
+    case .KB_8: return "8"
+    case .KB_9: return "9"
+    case .KB_0: return "0"
+    case .kb_Minus: return "-"
+    case .kb_Equal: return "="
+    case .kb_Backspace: return "BSP"
+    case .KB_Q: return "Q"
+    case .KB_W: return "W"
+    case .KB_E: return "E"
+    case .KB_R: return "R"
+    case .KB_T: return "T"
+    case .KB_Y: return "Y"
+    case .KB_U: return "U"
+    case .KB_I: return "I"
+    case .KB_O: return "O"
+    case .KB_P: return "P"
+    case .kb_LeftBracket: return "["
+    case .kb_RightBracket: return "]"
+    case .KB_A: return "A"
+    case .KB_S: return "S"
+    case .KB_D: return "D"
+    case .KB_F: return "F"
+    case .KB_G: return "G"
+    case .KB_H: return "H"
+    case .KB_J: return "J"
+    case .KB_K: return "K"
+    case .KB_L: return "L"
+    case .kb_Semicolon: return ";"
+    case .kb_Quote: return ";"
+    case .kb_Return: return ";"
+    case .kb_Shift: return "SHF"
+    case .KB_Z: return "Z"
+    case .KB_X: return "X"
+    case .KB_C: return "C"
+    case .KB_V: return "V"
+    case .KB_B: return "B"
+    case .KB_N: return "N"
+    case .KB_M: return "M"
+    case .kb_Comma: return ","
+    case .kb_Period: return "."
+    case .kb_Slash: return "/"
+    case .kb_Control: return "CTR"
+    case .kb_Alt: return "ALT"
+    case .kb_Space: return "SPC"
+    case .kb_Up: return "⬆️"
+    case .kb_Down: return "⬇️"
+    case .kb_Left: return "⬅️"
+    case .kb_Right: return "➡️"
+    case .kb_Home: return "HME"
+    case .kb_Insert: return "INS"
+    case .kb_End: return "END"
+    case .kb_Del: return "DEL"
+    case .kb_PageUp: return "PGU"
+    case .kb_PageDown: return "PGD"
+    case .kb_Backslash: return "\\"
     default: return "unk"
+    }
+  }
+  
+  var buttonType: GamepadButtonType {
+    switch self {
+    case .A, .B, .X, .Y, .L, .R, .LT, .RT, .LS, .RS, .select, .start, .dpad, .leftMouseClick, .rightMouseClick:
+      return .gamepad
+    default:
+      return .keyboard
     }
   }
 }
@@ -59,18 +145,16 @@ extension GamepadControl: Codable {
 extension GamepadControl {
   var view: UIView {
     switch self {
-    case .A, .B, .X, .Y, .L, .R, .LT, .RT, .LS, .RS, .select, .start, .leftMouseClick, .rightMouseClick:
-      let view = GamepadButtonView(buttonName: self.name)
-      view.translatesAutoresizingMaskIntoConstraints = false
-      view.tag = rawValue
-      return view
     case .dpad:
       let view = DPadView()
       view.translatesAutoresizingMaskIntoConstraints = false
       view.tag = rawValue
       return view
     default:
-      return UIView()
+      let view = GamepadButtonView(buttonName: self.name, buttonType: buttonType)
+      view.translatesAutoresizingMaskIntoConstraints = false
+      view.tag = rawValue
+      return view
     }
   }
   

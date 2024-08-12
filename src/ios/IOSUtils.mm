@@ -522,6 +522,390 @@ const UInt8 DIK_TO_ASCII[128] =
     data1 = KEY_MOUSE1;
   } else if (gamepadControl == GamepadControlRightMouseClick) {
     data1 = KEY_MOUSE2;
+  } else if (gamepadControl == GamepadControlKB_Esc) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_ESCAPE label:@"ESC"];
+    } else {
+      [self keyUpInternal:DIK_ESCAPE];
+    }
+  } else if (gamepadControl == GamepadControlKB_1) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_1 label:@"1"];
+    } else {
+      [self keyUpInternal:DIK_1];
+    }
+  } else if (gamepadControl == GamepadControlKB_2) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_2 label:@"2"];
+    } else {
+      [self keyUpInternal:DIK_2];
+    }
+  } else if (gamepadControl == GamepadControlKB_3) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_3 label:@"3"];
+    } else {
+      [self keyUpInternal:DIK_3];
+    }
+  } else if (gamepadControl == GamepadControlKB_4) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_4 label:@"4"];
+    } else {
+      [self keyUpInternal:DIK_4];
+    }
+  } else if (gamepadControl == GamepadControlKB_5) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_5 label:@"5"];
+    } else {
+      [self keyUpInternal:DIK_5];
+    }
+  } else if (gamepadControl == GamepadControlKB_6) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_6 label:@"6"];
+    } else {
+      [self keyUpInternal:DIK_6];
+    }
+  } else if (gamepadControl == GamepadControlKB_7) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_7 label:@"7"];
+    } else {
+      [self keyUpInternal:DIK_8];
+    }
+  } else if (gamepadControl == GamepadControlKB_8) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_8 label:@"8"];
+    } else {
+      [self keyUpInternal:DIK_8];
+    }
+  } else if (gamepadControl == GamepadControlKB_9) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_9 label:@"9"];
+    } else {
+      [self keyUpInternal:DIK_9];
+    }
+  } else if (gamepadControl == GamepadControlKB_0) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_0 label:@"0"];
+    } else {
+      [self keyUpInternal:DIK_0];
+    }
+  } else if (gamepadControl == GamepadControlKB_Minus) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_MINUS label:@"-"];
+    } else {
+      [self keyUpInternal:DIK_MINUS];
+    }
+  } else if (gamepadControl == GamepadControlKB_Equal) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_EQUALS label:@"="];
+    } else {
+      [self keyUpInternal:DIK_EQUALS];
+    }
+  } else if (gamepadControl == GamepadControlKB_Backspace) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_BACK label:@"BSP"];
+    } else {
+      [self keyUpInternal:DIK_BACK];
+    }
+  } else if (gamepadControl == GamepadControlKB_Tab) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_TAB label:@"TAB"];
+    } else {
+      [self keyUpInternal:DIK_TAB];
+    }
+  } else if (gamepadControl == GamepadControlKB_Q) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_Q label:@"Q"];
+    } else {
+      [self keyUpInternal:DIK_Q];
+    }
+  } else if (gamepadControl == GamepadControlKB_W) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_W label:@"W"];
+    } else {
+      [self keyUpInternal:DIK_W];
+    }
+  } else if (gamepadControl == GamepadControlKB_E) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_E label:@"E"];
+    } else {
+      [self keyUpInternal:DIK_E];
+    }
+  } else if (gamepadControl == GamepadControlKB_R) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_R label:@"R"];
+    } else {
+      [self keyUpInternal:DIK_R];
+    }
+  } else if (gamepadControl == GamepadControlKB_T) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_T label:@"T"];
+    } else {
+      [self keyUpInternal:DIK_T];
+    }
+  } else if (gamepadControl == GamepadControlKB_Y) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_Y label:@"Y"];
+    } else {
+      [self keyUpInternal:DIK_Y];
+    }
+  } else if (gamepadControl == GamepadControlKB_U) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_U label:@"U"];
+    } else {
+      [self keyUpInternal:DIK_U];
+    }
+  } else if (gamepadControl == GamepadControlKB_I) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_I label:@"I"];
+    } else {
+      [self keyUpInternal:DIK_I];
+    }
+  } else if (gamepadControl == GamepadControlKB_O) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_O label:@"O"];
+    } else {
+      [self keyUpInternal:DIK_O];
+    }
+  } else if (gamepadControl == GamepadControlKB_P) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_P label:@"P"];
+    } else {
+      [self keyUpInternal:DIK_P];
+    }
+  } else if (gamepadControl == GamepadControlKB_RightBracket) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_RBRACKET label:@"]"];
+    } else {
+      [self keyUpInternal:DIK_RBRACKET];
+    }
+  } else if (gamepadControl == GamepadControlKB_LeftBracket) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_LBRACKET label:@"["];
+    } else {
+      [self keyUpInternal:DIK_LBRACKET];
+    }
+  } else if (gamepadControl == GamepadControlKB_Backslash) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_BACKSLASH label:@"\\"];
+    } else {
+      [self keyUpInternal:DIK_BACKSLASH];
+    }
+  } else if (gamepadControl == GamepadControlKB_A) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_A label:@"A"];
+    } else {
+      [self keyUpInternal:DIK_A];
+    }
+  } else if (gamepadControl == GamepadControlKB_S) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_S label:@"S"];
+    } else {
+      [self keyUpInternal:DIK_S];
+    }
+  } else if (gamepadControl == GamepadControlKB_D) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_D label:@"D"];
+    } else {
+      [self keyUpInternal:DIK_D];
+    }
+  } else if (gamepadControl == GamepadControlKB_F) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F label:@"F"];
+    } else {
+      [self keyUpInternal:DIK_F];
+    }
+  } else if (gamepadControl == GamepadControlKB_G) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_G label:@"G"];
+    } else {
+      [self keyUpInternal:DIK_G];
+    }
+  } else if (gamepadControl == GamepadControlKB_H) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_H label:@"H"];
+    } else {
+      [self keyUpInternal:DIK_H];
+    }
+  } else if (gamepadControl == GamepadControlKB_J) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_J label:@"J"];
+    } else {
+      [self keyUpInternal:DIK_J];
+    }
+  } else if (gamepadControl == GamepadControlKB_K) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_K label:@"D"];
+    } else {
+      [self keyUpInternal:DIK_K];
+    }
+  } else if (gamepadControl == GamepadControlKB_L) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_L label:@"L"];
+    } else {
+      [self keyUpInternal:DIK_L];
+    }
+  } else if (gamepadControl == GamepadControlKB_Semicolon) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_SEMICOLON label:@";"];
+    } else {
+      [self keyUpInternal:DIK_SEMICOLON];
+    }
+  } else if (gamepadControl == GamepadControlKB_Quote) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_APOSTROPHE label:@"'"];
+    } else {
+      [self keyUpInternal:DIK_APOSTROPHE];
+    }
+  } else if (gamepadControl == GamepadControlKB_Return) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_RETURN label:@"R"];
+    } else {
+      [self keyUpInternal:DIK_RETURN];
+    }
+  } else if (gamepadControl == GamepadControlKB_Shift) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_LSHIFT label:@"SHIFT"];
+    } else {
+      [self keyUpInternal:DIK_LSHIFT];
+    }
+  } else if (gamepadControl == GamepadControlKB_Z) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_Z label:@"Z"];
+    } else {
+      [self keyUpInternal:DIK_Z];
+    }
+  } else if (gamepadControl == GamepadControlKB_X) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_X label:@"X"];
+    } else {
+      [self keyUpInternal:DIK_X];
+    }
+  } else if (gamepadControl == GamepadControlKB_C) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_C label:@"C"];
+    } else {
+      [self keyUpInternal:DIK_C];
+    }
+  } else if (gamepadControl == GamepadControlKB_D) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_V label:@"V"];
+    } else {
+      [self keyUpInternal:DIK_V];
+    }
+  } else if (gamepadControl == GamepadControlKB_D) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_B label:@"B"];
+    } else {
+      [self keyUpInternal:DIK_B];
+    }
+  } else if (gamepadControl == GamepadControlKB_N) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_N label:@"N"];
+    } else {
+      [self keyUpInternal:DIK_N];
+    }
+  } else if (gamepadControl == GamepadControlKB_D) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_M label:@"M"];
+    } else {
+      [self keyUpInternal:DIK_M];
+    }
+  } else if (gamepadControl == GamepadControlKB_Comma) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_COMMA label:@","];
+    } else {
+      [self keyUpInternal:DIK_COMMA];
+    }
+  } else if (gamepadControl == GamepadControlKB_Period) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_PERIOD label:@"."];
+    } else {
+      [self keyUpInternal:DIK_PERIOD];
+    }
+  } else if (gamepadControl == GamepadControlKB_Slash) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_SLASH label:@"/"];
+    } else {
+      [self keyUpInternal:DIK_SLASH];
+    }
+  } else if (gamepadControl == GamepadControlKB_Control) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_LCONTROL label:@"CTRL"];
+    } else {
+      [self keyUpInternal:DIK_LCONTROL];
+    }
+  } else if (gamepadControl == GamepadControlKB_Alt) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_LMENU label:@"ALT"];
+    } else {
+      [self keyUpInternal:DIK_LMENU];
+    }
+  } else if (gamepadControl == GamepadControlKB_Space) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_SPACE label:@" "];
+    } else {
+      [self keyUpInternal:DIK_SPACE];
+    }
+  } else if (gamepadControl == GamepadControlKB_Up) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_UP label:@"UP"];
+    } else {
+      [self keyUpInternal:DIK_UP];
+    }
+  } else if (gamepadControl == GamepadControlKB_Down) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_DOWN label:@"DWN"];
+    } else {
+      [self keyUpInternal:DIK_DOWN];
+    }
+  } else if (gamepadControl == GamepadControlKB_Left) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_LEFT label:@"LFT"];
+    } else {
+      [self keyUpInternal:DIK_LEFT];
+    }
+  } else if (gamepadControl == GamepadControlKB_Right) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_RIGHT label:@"RGT"];
+    } else {
+      [self keyUpInternal:DIK_RIGHT];
+    }
+  } else if (gamepadControl == GamepadControlKB_Home) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_HOME label:@"HME"];
+    } else {
+      [self keyUpInternal:DIK_HOME];
+    }
+  } else if (gamepadControl == GamepadControlKB_Insert) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_INSERT label:@"INS"];
+    } else {
+      [self keyUpInternal:DIK_INSERT];
+    }
+  } else if (gamepadControl == GamepadControlKB_Del) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_DELETE label:@"DEL"];
+    } else {
+      [self keyUpInternal:DIK_DELETE];
+    }
+  } else if (gamepadControl == GamepadControlKB_End) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_END label:@"END"];
+    } else {
+      [self keyUpInternal:DIK_END];
+    }
+  } else if (gamepadControl == GamepadControlKB_PageUp) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_PRIOR label:@"PU"];
+    } else {
+      [self keyUpInternal:DIK_PRIOR];
+    }
+  } else if (gamepadControl == GamepadControlKB_PageDown) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_NEXT label:@"PD"];
+    } else {
+      [self keyUpInternal:DIK_NEXT];
+    }
   }
   if (data1 == 0) { return; }
   event.type = isPressed ? EV_KeyDown : EV_KeyUp;

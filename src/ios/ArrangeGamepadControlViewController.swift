@@ -191,7 +191,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     addControlView?.translatesAutoresizingMaskIntoConstraints = false
     addControlView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     addControlView?.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    addControlView?.widthAnchor.constraint(equalToConstant: 640).isActive = true
+    addControlView?.widthAnchor.constraint(equalToConstant: 660).isActive = true
     addControlView?.heightAnchor.constraint(equalToConstant: 345).isActive = true
     addControlView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
     addControlView?.isHidden = true
@@ -336,7 +336,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     let size: CGFloat = controlView is DPadView ? 150 : 80
     controlView.frame = CGRect(x: xPosn, y: yPosn, width: size, height: size)
     if let buttonView = controlView as? GamepadButtonView {
-      buttonView.isAnimated = false
+      buttonView.operationMode = .arranging
     } else if let dpad = controlView as? DPadView {
       dpad.isAnimated = false
     }
