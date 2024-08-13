@@ -337,6 +337,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     controlView.frame = CGRect(x: xPosn, y: yPosn, width: size, height: size)
     if let buttonView = controlView as? GamepadButtonView {
       buttonView.operationMode = .arranging
+      buttonView.delegate = self
     } else if let dpad = controlView as? DPadView {
       dpad.isAnimated = false
     }
@@ -405,5 +406,28 @@ class ArrangeGamepadControlViewController: UIViewController {
         }
       }
     }
+  }
+}
+
+extension ArrangeGamepadControlViewController: GamepadButtonDelegate {
+  func gamepadButton(pressed button: GamepadButtonView, isMove: Bool) {
+  }
+  
+  func gamepadButton(released button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {
+  }
+  
+  func gamepadButton(customizeColorPressed button: GamepadButtonView) {
+    let colorPicker = UIColorPickerViewController()
+    colorPicker.title = "Button Color"
+    colorPicker.supportsAlpha = false
+    colorPicker.delegate = self
+    colorPicker.modalPresentationStyle = .automatic
+    present(colorPicker, animated: true)
+  }
+}
+
+extension ArrangeGamepadControlViewController: UIColorPickerViewControllerDelegate {
+  func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+    print("Picked color: \(color)")
   }
 }

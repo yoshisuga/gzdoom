@@ -13,11 +13,13 @@ protocol GamepadButtonDelegate: AnyObject {
   func gamepadButton(moved button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?)
   func gamepadButton(pressed button: GamepadButtonView, isMove: Bool)
   func gamepadButton(released button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?)
+  func gamepadButton(customizeColorPressed button: GamepadButtonView)
 }
 
 extension GamepadButtonDelegate {
   func gamepadButton(began button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {}
   func gamepadButton(moved button: GamepadButtonView, touches: Set<UITouch>, event: UIEvent?) {}
+  func gamepadButton(customizeColorPressed button: GamepadButtonView) {}
 }
 
 enum GamepadButtonType {
@@ -49,6 +51,25 @@ enum GamepadButtonTypeOperationMode {
 class GamepadButtonView: UIView {
   let imageView: UIImageView
   private let buttonLabel: UILabel
+  
+  let colorCustomizeButton: UIButton = {
+    let button = UIButton(type: .custom)
+    let config = UIImage.SymbolConfiguration.preferringMulticolor()
+    let image = UIImage(systemName: "paintpalette")
+    button.setImage(image?.applyingSymbolConfiguration(config), for: .normal)
+    button.isHidden = true
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.widthAnchor.constraint(equalToConstant: 20).isActive = true
+    button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+    let pulse = CABasicAnimation(keyPath: "transform.scale")
+    pulse.duration = 0.5
+    pulse.fromValue = 0.8
+    pulse.toValue = 1.3
+    pulse.autoreverses = true
+    pulse.repeatCount = .greatestFiniteMagnitude
+    button.imageView?.layer.add(pulse, forKey: "pulse")
+    return button
+  }()
   
   let buttonName: String
   let buttonType: GamepadButtonType
@@ -115,13 +136,18 @@ class GamepadButtonView: UIView {
     addSubview(buttonLabel)
     buttonLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     buttonLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    
+    addSubview(colorCustomizeButton)
+    colorCustomizeButton.trailingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    colorCustomizeButton.addTarget(self, action: #selector(colorCustomizeButtonPressed(_:)), for: .touchUpInside)
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     delegate?.gamepadButton(began: self, touches: touches, event: event)
     delegate?.gamepadButton(pressed: self, isMove: false)
     if operationMode == .normal {
-      imageView.image = UIImage(named: "\(buttonType.imageName)-pressed")
+      setPressedState()
     }
   }
   
@@ -129,15 +155,39 @@ class GamepadButtonView: UIView {
     delegate?.gamepadButton(moved: self, touches: touches, event: event)
     delegate?.gamepadButton(pressed: self, isMove: true)
     if operationMode == .normal {
-      imageView.image = UIImage(named: "\(buttonType.imageName)-pressed")
+      setPressedState()
     }
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     print("GamepadButtonView: touchesEnded!")
     delegate?.gamepadButton(released: self, touches: touches, event: event)
-    if operationMode == .normal {
-      imageView.image = UIImage(named: buttonType.imageName)
+    setNormalState()
+    if operationMode == .arranging {
+      colorCustomizeButton.isHidden.toggle()
     }
   }
+  
+  func setNormalState() {
+    imageView.image = UIImage(named: buttonType.imageName)
+  }
+  
+  func setPressedState() {
+    imageView.image = UIImage(named: "\(buttonType.imageName)-pressed")
+  }
+  
+  @objc private func colorCustomizeButtonPressed(_ sender: UIButton) {
+    delegate?.gamepadButton(customizeColorPressed: self)
+  }
+  
+  // Since the arrange-specific buttons are outside of the bounds, allow touches to them
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    // Convert point to color button coordinate system
+    let pointForCustomizeColorButton = colorCustomizeButton.convert(point, from: self)
+    if CGRectContainsPoint(colorCustomizeButton.bounds, pointForCustomizeColorButton) {
+      return colorCustomizeButton.hitTest(pointForCustomizeColorButton, with: event)
+    }
+    return super.hitTest(point, with: event)
+  }
+  
 }
