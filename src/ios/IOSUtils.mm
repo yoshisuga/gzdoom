@@ -528,6 +528,78 @@ const UInt8 DIK_TO_ASCII[128] =
     } else {
       [self keyUpInternal:DIK_ESCAPE];
     }
+  } else if (gamepadControl == GamepadControlKB_F1) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F1 label:@"F1"];
+    } else {
+      [self keyUpInternal:DIK_F1];
+    }
+  } else if (gamepadControl == GamepadControlKB_F2) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F2 label:@"F2"];
+    } else {
+      [self keyUpInternal:DIK_F2];
+    }
+  } else if (gamepadControl == GamepadControlKB_F3) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F3 label:@"F3"];
+    } else {
+      [self keyUpInternal:DIK_F3];
+    }
+  } else if (gamepadControl == GamepadControlKB_F4) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F3 label:@"F4"];
+    } else {
+      [self keyUpInternal:DIK_F4];
+    }
+  } else if (gamepadControl == GamepadControlKB_F5) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F5 label:@"F5"];
+    } else {
+      [self keyUpInternal:DIK_F5];
+    }
+  } else if (gamepadControl == GamepadControlKB_F6) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F6 label:@"F6"];
+    } else {
+      [self keyUpInternal:DIK_F6];
+    }
+  } else if (gamepadControl == GamepadControlKB_F7) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F7 label:@"F7"];
+    } else {
+      [self keyUpInternal:DIK_F7];
+    }
+  } else if (gamepadControl == GamepadControlKB_F8) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F8 label:@"F8"];
+    } else {
+      [self keyUpInternal:DIK_F8];
+    }
+  } else if (gamepadControl == GamepadControlKB_F9) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F9 label:@"F9"];
+    } else {
+      [self keyUpInternal:DIK_F9];
+    }
+  } else if (gamepadControl == GamepadControlKB_F10) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F10 label:@"F10"];
+    } else {
+      [self keyUpInternal:DIK_F10];
+    }
+  } else if (gamepadControl == GamepadControlKB_F11) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F11 label:@"F11"];
+    } else {
+      [self keyUpInternal:DIK_F11];
+    }
+  } else if (gamepadControl == GamepadControlKB_F12) {
+    if (isPressed) {
+      [self keyDownInternal:DIK_F12 label:@"F12"];
+    } else {
+      [self keyUpInternal:DIK_F12];
+    }
   } else if (gamepadControl == GamepadControlKB_1) {
     if (isPressed) {
       [self keyDownInternal:DIK_1 label:@"1"];
