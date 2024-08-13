@@ -22,6 +22,10 @@ extension GamepadButtonDelegate {
   func gamepadButton(customizeColorPressed button: GamepadButtonView) {}
 }
 
+protocol CustomizableColor {
+  var customizedColor: UIColor? { get set }
+}
+
 enum GamepadButtonType {
   case gamepad, keyboard
   
@@ -48,7 +52,7 @@ enum GamepadButtonTypeOperationMode {
   case normal, arranging
 }
 
-class GamepadButtonView: UIView {
+class GamepadButtonView: UIView, CustomizableColor {
   let imageView: UIImageView
   private let buttonLabel: UILabel
   
@@ -74,6 +78,14 @@ class GamepadButtonView: UIView {
   let buttonName: String
   let buttonType: GamepadButtonType
   var operationMode: GamepadButtonTypeOperationMode
+
+  var customizedColor: UIColor? {
+    didSet {
+      let colorToSet = customizedColor ?? .gray
+      imageView.tintColor = colorToSet
+      buttonLabel.textColor = colorToSet
+    }
+  }
   
   weak var delegate: GamepadButtonDelegate?
   
@@ -90,7 +102,8 @@ class GamepadButtonView: UIView {
     buttonType: GamepadButtonType = .gamepad,
     operationMode: GamepadButtonTypeOperationMode = .normal,
     delegate: GamepadButtonDelegate? = nil,
-    tag: Int? = nil
+    tag: Int? = nil,
+    customizedColor: UIColor? = nil
   ) {
     self.buttonName = buttonName
     self.buttonType = buttonType
@@ -102,6 +115,7 @@ class GamepadButtonView: UIView {
     if let tag {
       self.tag = tag
     }
+    self.customizedColor = customizedColor
     setup()
   }
 
@@ -128,9 +142,9 @@ class GamepadButtonView: UIView {
     imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
     imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     imageView.image = UIImage(named: buttonType.imageName)
-    imageView.tintColor = .gray
+    imageView.tintColor = customizedColor ?? .gray
     buttonLabel.text = buttonName
-    buttonLabel.textColor = .gray
+    buttonLabel.textColor = customizedColor ?? .gray
     buttonLabel.font = UIFont(name: "PerfectDOSVGA437", size: 24)
     buttonLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(buttonLabel)
@@ -138,7 +152,7 @@ class GamepadButtonView: UIView {
     buttonLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     
     addSubview(colorCustomizeButton)
-    colorCustomizeButton.trailingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+    colorCustomizeButton.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
     colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     colorCustomizeButton.addTarget(self, action: #selector(colorCustomizeButtonPressed(_:)), for: .touchUpInside)
   }

@@ -226,10 +226,19 @@ extension GamepadControl {
 }
 
 struct GamepadButtonColor: Codable {
-  var red : CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
+  static let userDefaultsKey = "colorPositions"
+  
+  var red : CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 1.0
   
   var uiColor : UIColor {
       return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+  }
+  
+  init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat = 1.0) {
+    self.red = red
+    self.green = green
+    self.blue = blue
+    self.alpha = alpha
   }
   
   init(uiColor : UIColor) {

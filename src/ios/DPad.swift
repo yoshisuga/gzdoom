@@ -38,19 +38,51 @@ extension DPadDirection  {
 protocol DPadDelegate: AnyObject {
   func dPad(_ dPadView: DPadView, didPress: DPadDirection)
   func dPadDidRelease(_ dPadView: DPadView)
+  func dPad(colorCustomized dPadView: DPadView)
 }
 
-class DPadView: UIView {
+extension DPadDelegate {
+  func dPad(colorCustomized dPadView: DPadView) {}
+}
+
+class DPadView: UIView, CustomizableColor {
   let imageView: UIImageView
   var currentDirection: DPadDirection = .none
   
   weak var delegate: DPadDelegate?
   
   var isAnimated = true
-  
-  init() {
+
+  var customizedColor: UIColor? {
+    didSet {
+      let colorToSet = customizedColor ?? .gray
+      imageView.tintColor = colorToSet
+    }
+  }
+
+  let colorCustomizeButton: UIButton = {
+    let button = UIButton(type: .custom)
+    let config = UIImage.SymbolConfiguration.preferringMulticolor()
+    let image = UIImage(systemName: "paintpalette")
+    button.setImage(image?.applyingSymbolConfiguration(config), for: .normal)
+    button.isHidden = true
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.widthAnchor.constraint(equalToConstant: 20).isActive = true
+    button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+    let pulse = CABasicAnimation(keyPath: "transform.scale")
+    pulse.duration = 0.5
+    pulse.fromValue = 0.8
+    pulse.toValue = 1.3
+    pulse.autoreverses = true
+    pulse.repeatCount = .greatestFiniteMagnitude
+    button.imageView?.layer.add(pulse, forKey: "pulse")
+    return button
+  }()
+
+  init(customizedColor: UIColor? = nil) {
     imageView = UIImageView(frame: .zero)
     imageView.translatesAutoresizingMaskIntoConstraints = false
+    self.customizedColor = customizedColor
     super.init(frame: .zero)
     translatesAutoresizingMaskIntoConstraints = false
     clipsToBounds = false
@@ -64,7 +96,11 @@ class DPadView: UIView {
     ]
     NSLayoutConstraint.activate(constraints)
     imageView.image = UIImage(named: "dPad-None")
-    imageView.tintColor = .gray
+    imageView.tintColor = self.customizedColor ?? .gray
+    addSubview(colorCustomizeButton)
+    colorCustomizeButton.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 14).isActive = true
+    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    colorCustomizeButton.addTarget(self, action: #selector(colorCustomizeButtonPressed(_:)), for: .touchUpInside)
   }
   
   required init?(coder: NSCoder) {
@@ -118,6 +154,22 @@ class DPadView: UIView {
     delegate?.dPadDidRelease(self)
     if isAnimated {
       imageView.image = currentDirection.image
+    } else {
+      colorCustomizeButton.isHidden.toggle()
     }
+  }
+  
+  @objc private func colorCustomizeButtonPressed(_ sender: UIButton) {
+    delegate?.dPad(colorCustomized: self)
+  }
+
+  // Since the arrange-specific buttons are outside of the bounds, allow touches to them
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    // Convert point to color button coordinate system
+    let pointForCustomizeColorButton = colorCustomizeButton.convert(point, from: self)
+    if CGRectContainsPoint(colorCustomizeButton.bounds, pointForCustomizeColorButton) {
+      return colorCustomizeButton.hitTest(pointForCustomizeColorButton, with: event)
+    }
+    return super.hitTest(point, with: event)
   }
 }

@@ -8,6 +8,13 @@
 import Foundation
 import UIKit
 
+extension Collection {
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
 class ArrangeGamepadControlViewController: UIViewController {
   
   enum ViewMode {
@@ -21,6 +28,7 @@ class ArrangeGamepadControlViewController: UIViewController {
   }
   
   var buttonPositions = [GamepadButtonPosition]()
+  var colorPositions = [GamepadButtonColor]()
   
   var currentControlViews = [UIView]()
   
@@ -117,8 +125,8 @@ class ArrangeGamepadControlViewController: UIViewController {
   private let instructionsLabel: UILabel = {
     let label = UILabel(frame: .zero)
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.numberOfLines = 2
-    label.text = "Tap and drag to move controls.\nDrag to the trash icon to remove."
+    label.numberOfLines = 3
+    label.text = "Tap and drag to move controls.\nTap to show customization options.\nDrag to the trash icon to remove."
     label.font = UIFont(name: "PerfectDOSVGA437", size: 18)
     label.alpha = 0.5
     label.textAlignment = .center
@@ -268,6 +276,10 @@ class ArrangeGamepadControlViewController: UIViewController {
           controlView.removeFromSuperview()
         }
       }
+      
+      // remove color positions
+      UserDefaults.standard.removeObject(forKey: GamepadButtonColor.userDefaultsKey)
+      
       loadSavedControls()
     }
 
@@ -277,21 +289,57 @@ class ArrangeGamepadControlViewController: UIViewController {
   }
   
   @objc func saveButtonPressed(_ sender: UIButton) {
-    buttonPositions = view.subviews.compactMap { subview in
+    buttonPositions = []
+    colorPositions = []
+    
+    view.subviews.forEach { subview in
+      var red: CGFloat = 0
+      var blue: CGFloat = 0
+      var green: CGFloat = 0
+
       if let gamepadButtonView = subview as? GamepadButtonView,
          let gamepadControl = GamepadControl(rawValue: gamepadButtonView.tag) {
-        return GamepadButtonPosition(button: gamepadControl, originX: Float(gamepadButtonView.frame.origin.x), originY: Float(gamepadButtonView.frame.origin.y))
+
+        buttonPositions.append(
+          GamepadButtonPosition(
+            button: gamepadControl,
+            originX: Float(gamepadButtonView.frame.origin.x),
+            originY: Float(gamepadButtonView.frame.origin.y)
+          )
+        )
+
       } else if let dpadView = subview as? DPadView,
-                let gamepadControl = GamepadControl(rawValue: dpadView.tag) {
-        return GamepadButtonPosition(button: gamepadControl, originX: Float(dpadView.frame.origin.x), originY: Float(dpadView.frame.origin.y))
+        let gamepadControl = GamepadControl(rawValue: dpadView.tag) {
+          buttonPositions.append(
+            GamepadButtonPosition(
+              button: gamepadControl,
+              originX: Float(dpadView.frame.origin.x),
+              originY: Float(dpadView.frame.origin.y)
+            )
+          )
       }
-      return nil
+      
+      if let customizableColorView = subview as? CustomizableColor {
+        if let customizedColor = customizableColorView.customizedColor {
+          customizedColor.getRed(&red, green: &green, blue: &blue, alpha: nil)
+        } else {
+          UIColor.gray.getRed(&red, green: &green, blue: &blue, alpha: nil)
+        }
+        colorPositions.append(
+          GamepadButtonColor(red: red, green: green, blue: blue)
+        )
+      }
     }
 
     if let saveData = try? PropertyListEncoder().encode(buttonPositions) {
       UserDefaults.standard.set(saveData, forKey: GamepadButtonPosition.userDefaultsKey)
     }
+    if let saveColorData = try? PropertyListEncoder().encode(colorPositions) {
+      UserDefaults.standard.set(saveColorData, forKey: GamepadButtonColor.userDefaultsKey)
+    }
+    
     print("Saved buttonPositions: \(buttonPositions)")
+    print("Saved colorPositions: \(colorPositions)")
     
     // save opacity setting
     if let touchControlsOpacitySetValue {
@@ -327,7 +375,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     }
   }
   
-  private func addControl(_ control: GamepadControl, xPos: Float? = nil, yPos: Float? = nil) {
+  private func addControl(_ control: GamepadControl, xPos: Float? = nil, yPos: Float? = nil, color: UIColor? = nil) {
     let controlView = control.view
     controlView.translatesAutoresizingMaskIntoConstraints = true
     controlView.tag = control.rawValue
@@ -338,8 +386,11 @@ class ArrangeGamepadControlViewController: UIViewController {
     if let buttonView = controlView as? GamepadButtonView {
       buttonView.operationMode = .arranging
       buttonView.delegate = self
+      buttonView.customizedColor = color 
     } else if let dpad = controlView as? DPadView {
       dpad.isAnimated = false
+      dpad.delegate = self
+      dpad.customizedColor = color
     }
     view.addSubview(controlView)
     view.bringSubviewToFront(overlayView)
@@ -349,14 +400,32 @@ class ArrangeGamepadControlViewController: UIViewController {
   }
   
   private func loadSavedControls() {
-    guard let saveData = UserDefaults.standard.data(forKey: GamepadButtonPosition.userDefaultsKey),
-          let controlPositions = try? PropertyListDecoder().decode([GamepadButtonPosition].self, from: saveData) else { return }
+    guard let saveData = UserDefaults.standard.data(
+      forKey: GamepadButtonPosition.userDefaultsKey
+      ),
+      let controlPositions = try? PropertyListDecoder().decode(
+        [GamepadButtonPosition].self,
+        from: saveData
+      ) else {
+      return
+    }
     for controlView in view.subviews {
       if controlView is DPadView || controlView is GamepadButtonView {
         controlView.removeFromSuperview()
       }
     }
-    controlPositions.forEach { self.addControl($0.button, xPos: $0.originX, yPos: $0.originY) }
+    
+    // read color positions
+    var loadedColorPositions = [GamepadButtonColor]()
+    if let savedColorData = UserDefaults.standard.data(forKey: GamepadButtonColor.userDefaultsKey),
+       let colorPositions = try? PropertyListDecoder().decode([GamepadButtonColor].self, from: savedColorData) {
+      loadedColorPositions = colorPositions
+    }
+    
+    controlPositions.enumerated().forEach { index, pos in
+      let customizedColor: UIColor? = loadedColorPositions[safe: index]?.uiColor
+      self.addControl(pos.button, xPos: pos.originX, yPos: pos.originY, color: customizedColor)
+    }
     view.bringSubviewToFront(overlayView)
   }
 
@@ -407,6 +476,8 @@ class ArrangeGamepadControlViewController: UIViewController {
       }
     }
   }
+  
+  var buttonSelectedForCustomizingColor: CustomizableColor?
 }
 
 extension ArrangeGamepadControlViewController: GamepadButtonDelegate {
@@ -422,6 +493,25 @@ extension ArrangeGamepadControlViewController: GamepadButtonDelegate {
     colorPicker.supportsAlpha = false
     colorPicker.delegate = self
     colorPicker.modalPresentationStyle = .automatic
+    buttonSelectedForCustomizingColor = button
+    present(colorPicker, animated: true)
+  }
+}
+
+extension ArrangeGamepadControlViewController: DPadDelegate {
+  func dPad(_ dPadView: DPadView, didPress: DPadDirection) {
+  }
+  
+  func dPadDidRelease(_ dPadView: DPadView) {
+  }
+  
+  func dPad(colorCustomized dPadView: DPadView) {
+    let colorPicker = UIColorPickerViewController()
+    colorPicker.title = "Button Color"
+    colorPicker.supportsAlpha = false
+    colorPicker.delegate = self
+    colorPicker.modalPresentationStyle = .automatic
+    buttonSelectedForCustomizingColor = dPadView
     present(colorPicker, animated: true)
   }
 }
@@ -429,5 +519,14 @@ extension ArrangeGamepadControlViewController: GamepadButtonDelegate {
 extension ArrangeGamepadControlViewController: UIColorPickerViewControllerDelegate {
   func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
     print("Picked color: \(color)")
+    var selectedRed: CGFloat = 0
+    var selectedGreen: CGFloat = 0
+    var selectedBlue: CGFloat = 0
+    color.getRed(&selectedRed, green: &selectedGreen, blue: &selectedBlue, alpha: nil)
+    if selectedRed < 0.2 && selectedGreen < 0.2 && selectedBlue < 0.2 {
+      buttonSelectedForCustomizingColor?.customizedColor = .gray
+    } else {
+      buttonSelectedForCustomizingColor?.customizedColor = color
+    }
   }
 }

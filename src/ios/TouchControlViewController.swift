@@ -128,17 +128,28 @@ class TouchControlViewController: UIViewController {
       }
     }
     
-    for controlPos in controlPositions {
+    // read color positions
+    var loadedColorPositions = [GamepadButtonColor]()
+    if let savedColorData = UserDefaults.standard.data(forKey: GamepadButtonColor.userDefaultsKey),
+       let colorPositions = try? PropertyListDecoder().decode([GamepadButtonColor].self, from: savedColorData) {
+      loadedColorPositions = colorPositions
+    }
+     
+    controlPositions.enumerated().forEach { index, controlPos in
       let controlView = controlPos.button.view
       controlView.translatesAutoresizingMaskIntoConstraints = true
       controlView.tag = controlPos.button.rawValue
       let size: CGFloat = controlPos.button == .dpad ? 150 : 80
       controlView.frame = CGRect(x: CGFloat(controlPos.originX), y: CGFloat(controlPos.originY), width: size, height: size)
       view.addSubview(controlView)
+      let customizedColor = loadedColorPositions[safe: index]?.uiColor
       if let gamepadButton = controlView as? GamepadButtonView {
         gamepadButton.delegate = self
       } else if let dpad = controlView as? DPadView {
         dpad.delegate = self
+      }
+      if var customizableColorView = controlView as? CustomizableColor {
+        customizableColorView.customizedColor = customizedColor
       }
     }
   }
