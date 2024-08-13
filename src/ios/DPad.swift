@@ -98,8 +98,8 @@ class DPadView: UIView, CustomizableColor {
     imageView.image = UIImage(named: "dPad-None")
     imageView.tintColor = self.customizedColor ?? .gray
     addSubview(colorCustomizeButton)
-    colorCustomizeButton.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 14).isActive = true
-    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    colorCustomizeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14).isActive = true
+    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
     colorCustomizeButton.addTarget(self, action: #selector(colorCustomizeButtonPressed(_:)), for: .touchUpInside)
   }
   

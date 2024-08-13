@@ -49,7 +49,7 @@ enum GamepadButtonType {
 }
 
 enum GamepadButtonTypeOperationMode {
-  case normal, arranging
+  case normal, arranging, adding
 }
 
 class GamepadButtonView: UIView, CustomizableColor {
@@ -128,7 +128,7 @@ class GamepadButtonView: UIView, CustomizableColor {
     clipsToBounds = false
     isUserInteractionEnabled = true
     let size: CGFloat = {
-      if operationMode == .arranging && buttonType == .keyboard {
+      if operationMode == .adding && buttonType == .keyboard {
         return 55
       }
       return 80
@@ -146,14 +146,28 @@ class GamepadButtonView: UIView, CustomizableColor {
     buttonLabel.text = buttonName
     buttonLabel.textColor = customizedColor ?? .gray
     buttonLabel.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    if buttonName.starts(with: "SFMONO_"),
+       let specialPart = buttonName.split(separator: "_")[safe: 1] {
+      buttonLabel.font = UIFont.monospacedSystemFont(ofSize: 30, weight: .bold)
+      let text: String = {
+        switch specialPart {
+        case "UP": return "↑"
+        case "DOWN": return "↓"
+        case "LEFT": return "←"
+        case "RIGHT": return "→"
+        default: return "↑"
+        }
+      }()
+      buttonLabel.text = text
+    }
     buttonLabel.translatesAutoresizingMaskIntoConstraints = false
     addSubview(buttonLabel)
     buttonLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     buttonLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     
     addSubview(colorCustomizeButton)
-    colorCustomizeButton.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    colorCustomizeButton.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
     colorCustomizeButton.addTarget(self, action: #selector(colorCustomizeButtonPressed(_:)), for: .touchUpInside)
   }
   

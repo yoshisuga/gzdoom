@@ -450,9 +450,19 @@ class ArrangeGamepadControlViewController: UIViewController {
     
     // Change color while dragging
     if gesture.state == .began || gesture.state == .changed {
-      (viewToMove as? GamepadButtonView)?.imageView.tintColor = .blue
+      if let buttonView = viewToMove as? GamepadButtonView {
+        buttonView.imageView.tintColor = .blue
+      }
+      if let dpadView = viewToMove as? DPadView {
+        dpadView.imageView.tintColor = .blue
+      }
     } else {
-      (viewToMove as? GamepadButtonView)?.imageView.tintColor = .gray
+      if let buttonView = viewToMove as? GamepadButtonView {
+        buttonView.imageView.tintColor = buttonView.customizedColor ?? .gray
+      }
+      if let dpadView = viewToMove as? DPadView {
+        dpadView.imageView.tintColor = dpadView.customizedColor ?? .gray
+      }
     }
     
     // Check if the view is over the trash icon
@@ -489,7 +499,7 @@ extension ArrangeGamepadControlViewController: GamepadButtonDelegate {
   
   func gamepadButton(customizeColorPressed button: GamepadButtonView) {
     let colorPicker = UIColorPickerViewController()
-    colorPicker.title = "Button Color"
+    colorPicker.title = "Button \(button.buttonName)"
     colorPicker.supportsAlpha = false
     colorPicker.delegate = self
     colorPicker.modalPresentationStyle = .automatic
@@ -507,7 +517,7 @@ extension ArrangeGamepadControlViewController: DPadDelegate {
   
   func dPad(colorCustomized dPadView: DPadView) {
     let colorPicker = UIColorPickerViewController()
-    colorPicker.title = "Button Color"
+    colorPicker.title = "D-Pad"
     colorPicker.supportsAlpha = false
     colorPicker.delegate = self
     colorPicker.modalPresentationStyle = .automatic
