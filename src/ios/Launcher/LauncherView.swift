@@ -44,6 +44,8 @@ struct CreateLaunchConfigView: View {
   @State var isEditing = false
   @State private var showDocumentPicker = false
   
+  @Namespace var namespace
+  
   let zdFileType = UTType(exportedAs: "com.yoshisuga.genzd.data", conformingTo: .data)
   
   var body: some View {
@@ -94,9 +96,9 @@ struct CreateLaunchConfigView: View {
         HStack {
           VStack {
             if let selectedIWAD = viewModel.selectedIWAD {
-              IWADSelectedView(viewModel: viewModel, selected: selectedIWAD)
+              IWADSelectedView(viewModel: viewModel, selected: selectedIWAD, namespace: namespace)
             } else {
-              SelectIWADView(viewModel: viewModel)
+              SelectIWADView(viewModel: viewModel, namespace: namespace)
             }
           }.frame(maxWidth: .infinity)
           VStack {
