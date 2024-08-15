@@ -268,19 +268,16 @@ extension TouchControlViewController: AimControlsDelegate {
   func aimDidMove(dx: Float, dy: Float, isDoubleTap: Bool) {
 //    print("aimDidMove called!")
     let aimSensitivity = ControlOptionsViewModel.shared.aimSensitivity
-    let updatedDX = dx * aimSensitivity
-    let updatedDY = dy * aimSensitivity
-    
+    let updatedDX = (dx < 0 ? floor(dx) : ceil(dx)) * aimSensitivity
+    let updatedDY = (dy < 0 ? floor(dy) : ceil(dy)) * aimSensitivity
+
     let mouseMoveX: Int = Int(updatedDX)
     let mouseMoveY: Int = Int(updatedDY)
     
+//    print("aimDidMove: delta=\(dx),\(dy), aimS=\(aimSensitivity) afterAimSensitivity=\(updatedDX),\(updatedDY) convertedMouseMove=\(mouseMoveX),\(mouseMoveY)")
+    
     MouseInputHolder.shared.deltaX = mouseMoveX
     MouseInputHolder.shared.deltaY = mouseMoveY
-//    if isDoubleTap {
-//      guard let utils = IOSUtils.shared(),
-//            let control = ControlOptionsViewModel.shared.doubleTapControl.gameControl else { return }
-//      utils.handleGameControl(control, isPressed: true)
-//    }
     lastTouchTime = Date().timeIntervalSince1970
   }
 }

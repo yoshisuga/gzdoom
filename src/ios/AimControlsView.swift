@@ -5,6 +5,7 @@
 //  Created by Yoshi Sugawara on 7/27/24.
 //
 
+import Combine
 import UIKit
 
 @objcMembers class MouseInputHolder: NSObject {
@@ -32,6 +33,22 @@ class AimControlsView: UIView {
   
   var delegate: AimControlsDelegate?
   
+  private var touchSubject = PassthroughSubject<Void, Never>()
+  private var cancellable: AnyCancellable?
+
+  override init(frame: CGRect) {
+      super.init(frame: frame)
+      cancellable = touchSubject
+      .debounce(for: .milliseconds(1), scheduler: RunLoop.main)
+      .sink{ [weak self] in
+        self?.delegate?.aimEnded()
+      }
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   func singleTapAction() {
     if isDoubleTap || isMoving {
       return
@@ -71,6 +88,7 @@ class AimControlsView: UIView {
     let dy = location.y - prev.y
     delegate?.aimDidMove(dx: Float(dx), dy: Float(dy), isDoubleTap: isDoubleTap)
 //    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
+    touchSubject.send()
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

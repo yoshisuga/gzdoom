@@ -204,7 +204,9 @@ const UInt8 DIK_TO_ASCII[128] =
 
 -(id)init {
   self = [super init];
+#if TARGET_OS_IOS
   _modifiersPressed = [[NSMutableSet<NSNumber*> alloc] init];
+#endif
   return self;
 }
 
@@ -326,13 +328,16 @@ const UInt8 DIK_TO_ASCII[128] =
     }
     if (event.data1 < 128 && isAsciiKey) {
 
+      BOOL isShiftDown = NO;
+#if TARGET_IS_IOS
       // Deal with modifiers
-      BOOL isShiftDown = [self.modifiersPressed containsObject:@(DIK_LSHIFT)];
+      isShiftDown = [self.modifiersPressed containsObject:@(DIK_LSHIFT)];
       BOOL isCtrlDown = [self.modifiersPressed containsObject:@(DIK_LCONTROL)];
       BOOL isAltDown = [self.modifiersPressed containsObject:@(DIK_LMENU)];
       event.data3 = (isShiftDown ? GKM_SHIFT : 0) |
                     (isCtrlDown ? GKM_CTRL : 0) |
                     (isAltDown ? GKM_ALT : 0);
+#endif
 
       event.data1 = toupper(event.data1);
       //            event.data2 = 97; // testing..a - don't need to set this

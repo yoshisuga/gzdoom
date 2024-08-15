@@ -1,22 +1,39 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+Version 2024.8.6
+
+^[°°±±²²ÛÛ Touch Controller ÛÛ²²±±°°](colored: 'cyan')
+
+- ^[C](colored: 'red')^[o](colored: 'green')^[l](colored: 'blue')^[o](colored: 'yellow')^[r](colored: 'cyan')^[a](colored: 'orange')^[b](colored: 'pink')^[l](colored: 'mint')^[e](colored: 'purple') ^[Buttons](colored: 'white'): You can now assign colors to each button! Tap on the button to reveal a color palette button on the lower left corner of the button, and tap it to select a color.
+
+- ^[Added Keyboard Keys](colored: 'white'): Keyboard keys can now be added as touch buttons! When adding a control, tap the keyboard icon on the lower left to switch to a keyboard. Since there are many keys, you may need to scroll to the right to see more of them.
+
+^[°°±±²²ÛÛ Fixes ÛÛ²²±±°°](colored: 'cyan')
+
+- Added transition animations when selecting a base game and going back so it's less jarring.
+
+
+Chat and ask questions in our [Discord Server](https://discord.gg/S4tVTNEmsj)!
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 Version 2024.8.5
 
 ^[°°±±²²ÛÛ Bug Fixes ÛÛ²²±±°°](colored: 'cyan')
 
 - ^[Gyroscope Aiming](colored: 'white'): Fixed issue where flipping your device upside down reversed aiming with the gyroscope.
+
 - ^[Virtual Keyboard](colored: 'white'): The Shift, Control and Alt buttons now are toggle-able and work.
+
 - ^[Physical Keyboard](colored: 'white'): Fixed issue where you could not type in the console opening it using the ~ key.
+
 - ^[Console](colored: 'white'): Increased the default text size of the in-game console so it's more readable. Open the console using the ^[~](colored: 'white') key on the keyboard to enter cheats and other commands. The fixed text size only show up on fresh installs for now. You can manually update this by editing the ^[gzdoom.ini](colored: 'gray') in the Preferences folder of GenZD, by setting ^[con_scale=4](colored: 'gray').
 
 You can now view this ^[What's New](colored: 'white') content in the ^[Help](colored: 'white') screen, by tapping on the ^[What's New](colored: 'white') button in the upper left corner.
 
 ^[°°±±²²ÛÛ Chat on Discord! ÛÛ²²±±°°](colored: 'cyan')
 
-Chat and ask questions in our [Discord Server](https://discord.gg/S4tVTNEmsj)!
 
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 Version 2024.8.4
 
