@@ -18,6 +18,7 @@
 #include "ios-input-hook.h"
 #include "m_argv.h"
 #include "keydef.h"
+#include "m_joy.h"
 //#if TARGET_OS_TV
 //#include "dikeys.h"
 //#endif
@@ -98,6 +99,16 @@ void InputUpdateGUICapture(bool capt) {
 void IOS_HandleInput() {
   GameControllerHandler *gcHandler = [GameControllerHandler shared];
   [gcHandler handleInput];
+}
+
+void IOS_HandleJoystickAxes(float axes[NUM_JOYAXIS]) {
+  axes[JOYAXIS_Forward] = [JoystickInputHolder shared].axisY * -1.0;
+  axes[JOYAXIS_Side] = [JoystickInputHolder shared].axisX * -1.0;
+  
+  // translate axis values to button states - might be for directional input for menu?
+  uint8_t buttonstate = Joy_XYAxesToButtons(axes[JOYAXIS_Side], [JoystickInputHolder shared].axisY);
+  Joy_GenerateButtonEvents([JoystickInputHolder shared].buttonState, buttonstate, 4, KEY_JOYAXIS1PLUS);
+  [JoystickInputHolder shared].buttonState = buttonstate;
 }
 
 void IOS_GetMouseDeltas(int *x, int *y) {

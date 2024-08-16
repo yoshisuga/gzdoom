@@ -38,6 +38,10 @@
 #include "m_joy.h"
 #include "keydef.h"
 
+#if TARGET_OS_IPHONE
+#include "ios/ios-input-hook.h"
+#endif
+
 // Very small deadzone so that floating point magic doesn't happen
 #define MIN_DEADZONE 0.000001f
 
@@ -355,6 +359,9 @@ void I_GetAxes(float axes[NUM_JOYAXIS])
 	{
 		axes[i] = 0;
 	}
+  
+  IOS_HandleJoystickAxes(axes);
+  
 	if (use_joystick && JoystickManager)
 //    if (JoystickManager)
 	{

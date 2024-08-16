@@ -637,6 +637,19 @@ struct KeyPosition {
 #endif
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+#if os(iOS)
+    gyroHandler.updateOrientation()
+#endif
+  }
+  
+  override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+    #if os(iOS)
+    gyroHandler.updateOrientation()
+    #endif
+  }
+  
   func setupView() {
     NSLayoutConstraint.deactivate(keyboardConstraints)
     keyboardConstraints.removeAll()

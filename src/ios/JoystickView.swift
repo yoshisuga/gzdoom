@@ -7,6 +7,14 @@
 
 import UIKit
 
+@objcMembers class JoystickInputHolder: NSObject {
+  static let shared = JoystickInputHolder()
+  var axisX: Float = 0
+  var axisY: Float = 0
+  
+  var buttonState: UInt8 = 0
+}
+
 protocol JoystickDelegate {
   func joystickMoved(dx: Float, dy: Float)
   func joystickEnded()
@@ -50,17 +58,30 @@ class JoystickView: UIView {
     let deadzone = CGFloat(ControlOptionsViewModel.shared.touchJoystickDeadzone)
     let dx = abs(location.x - joystickCenter.x) > deadzone ? location.x - joystickCenter.x : 0.0
     let dy = abs(location.y - joystickCenter.y) > deadzone ? location.y - joystickCenter.y : 0.0
-    delegate?.joystickMoved(dx: Float(dx), dy: Float(dy))
-//    print("touchesMoved: dx = \(dx), dy = \(dy)")
+    // Yoshi temp: disabling for now to test new joystick impl
+//    delegate?.joystickMoved(dx: Float(dx), dy: Float(dy))
+    print("touchesMoved: dx = \(dx), dy = \(dy)")
     let distance = sqrt(dx * dx + dy * dy)
     let maxDistance: CGFloat = 50
-    
+
+    let angle = atan2(dy, dx)
     if distance > maxDistance {
-      let angle = atan2(dy, dx)
       knobCenter = CGPoint(x: joystickCenter.x + cos(angle) * maxDistance, y: joystickCenter.y + sin(angle) * maxDistance)
     } else {
       knobCenter = location
     }
+    
+    let knobPosition = CGPoint(x: cos(angle) * 50, y: sin(angle) * 50)
+    let normalizedX = knobPosition.x / 50
+    let normalizedY = knobPosition.y / 50
+    let clampedX = max(-1, min(1, normalizedX))
+    let clampedY = max(-1, min(1, normalizedY))
+    #if DEBUG
+    print("JoystickView: x=\(clampedX),y=\(clampedY)")
+    #endif
+    JoystickInputHolder.shared.axisX = Float(clampedX)
+    JoystickInputHolder.shared.axisY = Float(clampedY)
+    
     setNeedsDisplay()
   }
   
@@ -69,6 +90,9 @@ class JoystickView: UIView {
     isTouching = false
     setNeedsDisplay()
     delegate?.joystickEnded()
+    
+    JoystickInputHolder.shared.axisX = 0
+    JoystickInputHolder.shared.axisY = 0
   }
   
   override func draw(_ rect: CGRect) {

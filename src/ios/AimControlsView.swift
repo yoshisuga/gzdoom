@@ -66,7 +66,6 @@ class AimControlsView: UIView {
     guard let touch = touches.first, touch.type == .direct else {
       return
     }
-    print("AimControls touch type = \(touch.type)")
     delegate?.aimDidStart()
     startTouchPoint = touch.location(in: self)
     if touch.tapCount == 1 {

@@ -152,7 +152,14 @@ namespace Priv
         SDL_Vulkan_LoadLibrary(NULL);
         const char *errorv = SDL_GetError();
         printf("SDL_CreateWindow error = %s",errorv);
-        Priv::window = SDL_CreateWindow(caption.GetChars(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
+
+    // Yoshi Custom: tvOS to not use high dpi for performance and do 1080p
+#if TARGET_OS_TV
+    Priv::window = SDL_CreateWindow(caption.GetChars(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
+#else
+    Priv::window = SDL_CreateWindow(caption.GetChars(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_BORDERLESS | SDL_WINDOW_VULKAN);
+#endif
+
         const char *error = SDL_GetError();
         printf("SDL_CreateWindow error = %s",error);
 #else

@@ -234,7 +234,9 @@ extension TouchControlViewController: AimControlsDelegate {
   }
   
   func aimEnded() {
+    #if DEBUG
     print("aimEnded called!")
+    #endif
     MouseInputHolder.shared.deltaX = 0
     MouseInputHolder.shared.deltaY = 0
     guard let utils = IOSUtils.shared() else { return }
