@@ -28,7 +28,7 @@ class ArrangeGamepadControlViewController: UIViewController {
   
   let addControlButton: UIButton = {
     var configuration = UIButton.Configuration.filled()
-    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
     configuration.baseForegroundColor = .white
     configuration.baseBackgroundColor = .darkGray
     var container = AttributeContainer()
@@ -42,7 +42,7 @@ class ArrangeGamepadControlViewController: UIViewController {
   let opacitySlider: UISlider = {
     let slider = UISlider()
     slider.tintColor = .red
-    slider.widthAnchor.constraint(equalToConstant: 200).isActive = true
+    slider.widthAnchor.constraint(equalToConstant: 100).isActive = true
     slider.minimumValue = 0.1
     slider.maximumValue = 1.0
     return slider
@@ -54,6 +54,31 @@ class ArrangeGamepadControlViewController: UIViewController {
     imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
     imageView.tintColor = .red
     return imageView
+  }()
+  
+  let alignHorizontalButton: UIButton = {
+    var selectedConfig = UIButton.Configuration.filled()
+    selectedConfig.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+    selectedConfig.baseForegroundColor = .red
+    selectedConfig.baseBackgroundColor = .gray
+    selectedConfig.imagePadding = 10
+    selectedConfig.image = UIImage(systemName: "align.vertical.center.fill")
+    let button = UIButton(configuration: selectedConfig)
+    button.isSelected = true
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
+  let alignVerticalButton: UIButton = {
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+    configuration.baseForegroundColor = .red
+    configuration.baseBackgroundColor = .gray
+    configuration.image = UIImage(systemName: "align.horizontal.center.fill")
+    let button = UIButton(configuration: configuration)
+    button.isSelected = true
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
   }()
   
   let cancelButton: UIButton = {
@@ -138,8 +163,11 @@ class ArrangeGamepadControlViewController: UIViewController {
     
     view.addSubview(addControlButton)
     addControlButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-    addControlButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
+    addControlButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
     addControlButton.addTarget(self, action: #selector(addControlButtonPressed(_:)), for: .touchUpInside)
+    
+    alignHorizontalButton.addTarget(self, action: #selector(alignButtonPressed(_:)), for: .touchUpInside)
+    alignVerticalButton.addTarget(self, action: #selector(alignButtonPressed(_:)), for: .touchUpInside)
     
     let sliderStack = UIStackView(arrangedSubviews: [
       opacityIcon, opacitySlider
@@ -151,7 +179,16 @@ class ArrangeGamepadControlViewController: UIViewController {
     sliderStack.leadingAnchor.constraint(equalTo: addControlButton.trailingAnchor, constant: 16).isActive = true
     sliderStack.centerYAnchor.constraint(equalTo: addControlButton.centerYAnchor).isActive = true
     opacitySlider.addTarget(self, action: #selector(opacitySliderChanged(_:)), for: .valueChanged)
-        
+    
+    view.addSubview(alignHorizontalButton)
+    view.addSubview(alignVerticalButton)
+    NSLayoutConstraint.activate([
+      alignHorizontalButton.leadingAnchor.constraint(equalTo: sliderStack.trailingAnchor, constant: 8),
+      alignHorizontalButton.centerYAnchor.constraint(equalTo: addControlButton.centerYAnchor),
+      alignVerticalButton.leadingAnchor.constraint(equalTo: alignHorizontalButton.trailingAnchor, constant: 8),
+      alignVerticalButton.centerYAnchor.constraint(equalTo: addControlButton.centerYAnchor)
+    ])
+    
     view.addSubview(cancelButton)
     cancelButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
     cancelButton.topAnchor.constraint(equalTo: addControlButton.topAnchor).isActive = true
@@ -239,6 +276,17 @@ class ArrangeGamepadControlViewController: UIViewController {
   @objc func cancelButtonPressed(_ sender: UIButton) {
     self.onSaveClosure?()
     dismiss(animated: true)
+  }
+  
+  @objc func alignButtonPressed(_ sender: UIButton) {
+    sender.isSelected.toggle()
+    if sender.isSelected {
+      sender.configuration?.baseForegroundColor = .red
+      sender.configuration?.baseBackgroundColor = .white
+    } else {
+      sender.configuration?.baseForegroundColor = .white
+      sender.configuration?.baseBackgroundColor = .gray
+    }
   }
   
   @objc func resetButtonPressed(_ sender: UIButton) {
@@ -467,11 +515,19 @@ class ArrangeGamepadControlViewController: UIViewController {
       }
       
       if gesture.state != .cancelled {
-        alignableView.updateGuides(using: self.view.subviews.filter { $0 is AlignableView })
+        alignableView.updateGuides(
+          using: self.view.subviews.filter { $0 is AlignableView },
+          alignHorizontal: alignHorizontalButton.isSelected,
+          alignVertical: alignVerticalButton.isSelected
+        )
       }
       
       if gesture.state == .ended {
-        alignableView.snapToNearestGuide(using: self.view.subviews.filter { $0 is AlignableView })
+        alignableView.snapToNearestGuide(
+          using: self.view.subviews.filter { $0 is AlignableView },
+          alignHorizontal: alignHorizontalButton.isSelected,
+          alignVertical: alignVerticalButton.isSelected
+        )
         alignableView.hideGuides()
       }
     }

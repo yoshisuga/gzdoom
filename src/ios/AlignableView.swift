@@ -37,35 +37,47 @@ class AlignableView: UIView {
     verticalGuide.removeFromSuperview()
   }
   
-  func updateGuides(using subviews: [UIView]) {
+  func updateGuides(using subviews: [UIView],
+                    alignHorizontal: Bool = true,
+                    alignVertical: Bool = true) {
     var horizontalAligned = false
     var verticalAligned = false
 
     for subview in subviews where subview !== self {
+      if alignHorizontal {
         if abs(center.y - subview.center.y) < alignmentThreshold {
-            horizontalAligned = true
-            horizontalGuide.frame.origin.y = subview.center.y - 1
+          horizontalAligned = true
+          horizontalGuide.frame.origin.y = subview.center.y - 1
         }
+      }
 
+      if alignVertical {
         if abs(center.x - subview.center.x) < alignmentThreshold {
-            verticalAligned = true
-            verticalGuide.frame.origin.x = subview.center.x - 1
+          verticalAligned = true
+          verticalGuide.frame.origin.x = subview.center.x - 1
         }
+      }
     }
 
     horizontalGuide.isHidden = !horizontalAligned
     verticalGuide.isHidden = !verticalAligned
   }
   
-  func snapToNearestGuide(using subviews: [UIView]) {
+  func snapToNearestGuide(using subviews: [UIView],
+                          alignHorizontal: Bool = true,
+                          alignVertical: Bool = true) {
       for subview in subviews where subview !== self {
+        if alignHorizontal {
           if abs(center.y - subview.center.y) < alignmentThreshold {
-              center.y = subview.center.y
+            center.y = subview.center.y
           }
+        }
 
+        if alignVertical {
           if abs(center.x - subview.center.x) < alignmentThreshold {
-              center.x = subview.center.x
+            center.x = subview.center.x
           }
+        }
       }
   }
 }
