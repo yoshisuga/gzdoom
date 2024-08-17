@@ -45,7 +45,7 @@ extension DPadDelegate {
   func dPad(colorCustomized dPadView: DPadView) {}
 }
 
-class DPadView: UIView, CustomizableColor {
+class DPadView: AlignableView, CustomizableColor {
   let imageView: UIImageView
   var currentDirection: DPadDirection = .none
   

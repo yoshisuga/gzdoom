@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 
 class ArrangeGamepadControlViewController: UIViewController {
@@ -458,6 +459,23 @@ class ArrangeGamepadControlViewController: UIViewController {
       }
     }
     
+    // handle alignment guide
+    if let alignableView = viewToMove as? AlignableView {
+      if gesture.state == .began {
+        alignableView.initialCenter = newCenter
+        alignableView.showGuides()
+      }
+      
+      if gesture.state != .cancelled {
+        alignableView.updateGuides(using: self.view.subviews.filter { $0 is AlignableView })
+      }
+      
+      if gesture.state == .ended {
+        alignableView.snapToNearestGuide(using: self.view.subviews.filter { $0 is AlignableView })
+        alignableView.hideGuides()
+      }
+    }
+    
     // Check if the view is over the trash icon
     if trashIcon.frame.contains(viewToMove.center) {
       UIView.animate(withDuration: 0.2) {
@@ -533,3 +551,16 @@ extension ArrangeGamepadControlViewController: UIColorPickerViewControllerDelega
     }
   }
 }
+
+struct ArrangeControlsView: UIViewControllerRepresentable {
+  typealias UIViewControllerType = ArrangeGamepadControlViewController
+  
+  func makeUIViewController(context: Context) -> ArrangeGamepadControlViewController {
+    let vc = ArrangeGamepadControlViewController()
+    return vc
+  }
+  
+  func updateUIViewController(_ uiViewController: ArrangeGamepadControlViewController, context: Context) {
+  }
+}
+

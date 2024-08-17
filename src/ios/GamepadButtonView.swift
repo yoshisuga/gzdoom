@@ -52,7 +52,7 @@ enum GamepadButtonTypeOperationMode {
   case normal, arranging, adding
 }
 
-class GamepadButtonView: UIView, CustomizableColor {
+class GamepadButtonView: AlignableView, CustomizableColor {
   let imageView: UIImageView
   private let buttonLabel: UILabel
   
