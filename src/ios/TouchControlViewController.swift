@@ -242,15 +242,15 @@ extension TouchControlViewController: AimControlsDelegate {
     guard let utils = IOSUtils.shared() else { return }
 
     // Release buttons if the buttons are within the aiming view
-    for subview in view.subviews {
-      guard let gameButton = subview as? GamepadButtonView,
-            let gamepadControl = GamepadControl(rawValue: gameButton.tag) else {
-        continue
-      }
-      if aimControlsView.frame.contains(gameButton.center) {
-        utils.handleGameControl(gamepadControl, isPressed: false)
-      }
-    }
+//    for subview in view.subviews {
+//      guard let gameButton = subview as? GamepadButtonView,
+//            let gamepadControl = GamepadControl(rawValue: gameButton.tag) else {
+//        continue
+//      }
+//      if aimControlsView.frame.contains(gameButton.center) {
+//        utils.handleGameControl(gamepadControl, isPressed: false)
+//      }
+//    }
     lastTouchTime = Date().timeIntervalSince1970
   }
   

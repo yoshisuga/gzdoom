@@ -168,7 +168,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.8.6"
+  static let currentVersion = "2024.8.8"
   
   var body: some View {
     VStack {
@@ -340,7 +340,32 @@ struct LauncherView_Previews: PreviewProvider {
       hostingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       hostingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
+    
+    #if DEBUG
+    let debugToolbar = UIToolbar()
+    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
+    let debug1 = UIBarButtonItem(
+      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
+      style: .plain,
+      target: self,
+      action: #selector(debug1Tapped(_:))
+    )
+    debugToolbar.setItems([debug1], animated: false)
+    view.addSubview(debugToolbar)
+    NSLayoutConstraint.activate([
+      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ])
+    #endif
   }
+  
+  #if DEBUG
+  @objc func debug1Tapped(_ sender: UIBarButtonItem) {
+    let vc = ArrangeGamepadControlViewController()
+    present(vc, animated: true)
+  }
+  #endif
 }
 
 @objc class LauncherViewControllerFactory: NSObject {

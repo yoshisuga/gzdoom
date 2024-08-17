@@ -64,27 +64,29 @@ protocol GameControllerHandlerDelegate: AnyObject {
     guard let gamepad = controllerToSetup.extendedGamepad else { return }
 
     gamepad.leftThumbstick.valueChangedHandler = { dpad, x, y in
-      let movementDeadzone: Float = 0.2
-      if x > movementDeadzone {
-        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: true)
-        utils.handleLeftThumbstickDirectionalInput(.left, isPressed: false)
-      } else if x < -movementDeadzone {
-        utils.handleLeftThumbstickDirectionalInput(.left, isPressed: true)
-        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: false)
-      } else if x >= -movementDeadzone && x < movementDeadzone {
-        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: false)
-        utils.handleLeftThumbstickDirectionalInput(.left, isPressed: false)
-      }
-      if y > movementDeadzone {
-        utils.handleLeftThumbstickDirectionalInput(.up, isPressed: true)
-        utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
-      } else if y < -movementDeadzone {
-        utils.handleLeftThumbstickDirectionalInput(.down, isPressed: true)
-        utils.handleLeftThumbstickDirectionalInput(.up, isPressed: false)
-      } else if y >= -movementDeadzone && y < movementDeadzone {
-        utils.handleLeftThumbstickDirectionalInput(.up, isPressed: false)
-        utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
-      }
+      JoystickInputHolder.shared.axisX = x
+      JoystickInputHolder.shared.axisY = y * -1
+//      let movementDeadzone: Float = 0.2
+//      if x > movementDeadzone {
+//        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: true)
+//        utils.handleLeftThumbstickDirectionalInput(.left, isPressed: false)
+//      } else if x < -movementDeadzone {
+//        utils.handleLeftThumbstickDirectionalInput(.left, isPressed: true)
+//        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: false)
+//      } else if x >= -movementDeadzone && x < movementDeadzone {
+//        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: false)
+//        utils.handleLeftThumbstickDirectionalInput(.left, isPressed: false)
+//      }
+//      if y > movementDeadzone {
+//        utils.handleLeftThumbstickDirectionalInput(.up, isPressed: true)
+//        utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
+//      } else if y < -movementDeadzone {
+//        utils.handleLeftThumbstickDirectionalInput(.down, isPressed: true)
+//        utils.handleLeftThumbstickDirectionalInput(.up, isPressed: false)
+//      } else if y >= -movementDeadzone && y < movementDeadzone {
+//        utils.handleLeftThumbstickDirectionalInput(.up, isPressed: false)
+//        utils.handleLeftThumbstickDirectionalInput(.down, isPressed: false)
+//      }
     }
     
     gamepad.rightThumbstick.valueChangedHandler = { _, dx, dy in

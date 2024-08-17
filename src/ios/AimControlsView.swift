@@ -39,7 +39,7 @@ class AimControlsView: UIView {
   override init(frame: CGRect) {
       super.init(frame: frame)
       cancellable = touchSubject
-      .debounce(for: .milliseconds(1), scheduler: RunLoop.main)
+      .debounce(for: .milliseconds(10), scheduler: RunLoop.main)
       .sink{ [weak self] in
         self?.delegate?.aimEnded()
       }
@@ -79,6 +79,9 @@ class AimControlsView: UIView {
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    #if DEBUG
+    print("AIM touchesMoved: number of touches: \(touches.count)")
+    #endif
     guard let touch = touches.first, touch.type == .direct else { return }
     isMoving = true
     let location = touch.location(in: self)
@@ -86,7 +89,9 @@ class AimControlsView: UIView {
     let dx = location.x - prev.x
     let dy = location.y - prev.y
     delegate?.aimDidMove(dx: Float(dx), dy: Float(dy), isDoubleTap: isDoubleTap)
-//    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
+    #if DEBUG
+    print("AIM touchesMoved: dx = \(dx), dy = \(dy), Tap type = \(isDoubleTap ? "DOUBLE TAP" : "NORMAL")")
+    #endif
     touchSubject.send()
   }
   

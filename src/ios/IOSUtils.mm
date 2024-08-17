@@ -102,8 +102,8 @@ void IOS_HandleInput() {
 }
 
 void IOS_HandleJoystickAxes(float axes[NUM_JOYAXIS]) {
-  axes[JOYAXIS_Forward] = [JoystickInputHolder shared].axisY * -1.0;
-  axes[JOYAXIS_Side] = [JoystickInputHolder shared].axisX * -1.0;
+  axes[JOYAXIS_Forward] = [JoystickInputHolder shared].axisY * -1.0;  
+  axes[JOYAXIS_Side] = [JoystickInputHolder shared].axisX * (guiCapture ? 1 : -1.0);
   
   // translate axis values to button states - might be for directional input for menu?
   uint8_t buttonstate = Joy_XYAxesToButtons(axes[JOYAXIS_Side], [JoystickInputHolder shared].axisY);

@@ -15,7 +15,7 @@ import SwiftUI
 
 class ControlOptionsViewModel: ObservableObject {
   @Published var touchControlsOpacity: Float = 0.8
-  @Published var aimSensitivity: Float = 1.0
+  @Published var aimSensitivity: Float = 1.4
   @Published var touchControlHapticFeedback = true
   @Published var controllerInvertYAxis = false
   @Published var gyroEnabled: Bool = true
@@ -55,7 +55,7 @@ class ControlOptionsViewModel: ObservableObject {
     if let aimSensitivityDef = UserDefaults.standard.object(forKey: OptionKeys.aimSensitivity.keyName) as? Float {
       aimSensitivity = aimSensitivityDef
     } else {
-      aimSensitivity = 1.0
+      aimSensitivity = 1.4
     }
     
     if let touchControlHapticFeedbackDef = UserDefaults.standard.object(forKey: OptionKeys.touchControlHapticFeedback.keyName) as? Bool {
@@ -237,7 +237,7 @@ struct ControlOptionsView: View {
         .toolbar {
           ToolbarItem(placement: .topBarLeading) {
             Button(action: {
-              viewModel.aimSensitivity = 1.0
+              viewModel.aimSensitivity = 1.4
               viewModel.touchControlsOpacity = 0.8
               viewModel.touchControlHapticFeedback = true
               viewModel.enableTouchControlsGuideOverlay = true

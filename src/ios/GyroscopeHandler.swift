@@ -79,7 +79,7 @@ class GyroscopeHandler {
     let adjustedY = abs(yRotation) > deadZone ? yRotation * sensitivity * orientationAdjustment : 0.0
     
     #if DEBUG
-    print("gyro: \(adjustedX) , \(adjustedY), orientationAdjust: \(orientationAdjustment) orientation=\(orientation)")
+//    print("gyro: \(adjustedX) , \(adjustedY), orientationAdjust: \(orientationAdjustment) orientation=\(orientation)")
     #endif
     MouseInputHolder.shared.gyroDeltaX = Int(adjustedX)
     MouseInputHolder.shared.gyroDeltaY = Int(adjustedY)

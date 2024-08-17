@@ -1,12 +1,25 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
-Version 2024.8.7
+^[Version 2024.8.8](colored: 'yellow')
 
-^[Touch Screen Aiming]: Fixed the touch controls to be more sensitive and responsive. Previously, moving in small amounts would not trigger aiming movement due to a math error. This problem is now gone and aiming feels much better.
-
-Chat and ask questions in our [Discord Server](https://discord.gg/S4tVTNEmsj)!
+Fixed an issue with the touch aiming where it can get unresponsive while moving.
 
 ^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2024.8.7](colored: 'yellow')
+
+^[°°±±²²ÛÛ Control Improvements ÛÛ²²±±°°](colored: 'cyan')
+
+- ^[Analog Movement](colored: 'white'): Fixed the analog movement for both the virtual and physical controllers. You can now move slower if you don't push the stick all the way and have more fine-grained control over movement.
+
+- ^[Touch Screen Aiming](colored: 'white'): Fixed the touch controls to be more sensitive and responsive. Previously, moving in small amounts would not trigger aiming movement due to a math error. This problem is now gone and aiming feels much smoother.
+
+- The ^[Virtual Joystick/Left Thumbstick](colored: 'white') can now be used in the ^[in-game menus](colored: 'white'). Before it was unusable in the menus because it moved too fast. This has now been fixed.
+
+- ^[Fixed Gyroscope Aiming](colored: 'white'): Facing down or up unintentionally reversed the gyroscope aiming. This has now been fixed, and the aiming will adjust properly if you flip the device.
+
+Special thanks to those who reported these issues on [Discord](https://discord.gg/S4tVTNEmsj)! 
+
 
 Version 2024.8.6
 
