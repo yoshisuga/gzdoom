@@ -667,6 +667,7 @@ OptionMenu "OtherControlsMenu" protected
 	Control    "$CNTRLMNU_ADJUST_GAMMA"    , "bumpgamma"
 
 	StaticText ""
+	Control    "$CNTRLMNU_OPEN_MAIN"       , "menu_main"
 	Control    "$CNTRLMNU_OPEN_HELP"       , "menu_help"
 	Control    "$CNTRLMNU_OPEN_SAVE"       , "menu_save"
 	Control    "$CNTRLMNU_OPEN_LOAD"       , "menu_load"
@@ -1154,6 +1155,7 @@ OptionMenu "AltHUDOptions" protected
 	Option "$ALTHUDMNU_AMMOORDER",				"hud_ammo_order", "AltHUDAmmoOrder"
 	Slider "$ALTHUDMNU_AMMORED",				"hud_ammo_red", 0, 100, 1, 0
 	Slider "$ALTHUDMNU_AMMOYELLOW",				"hud_ammo_yellow", 0, 100, 1, 0
+	Option "$ALTHUDMNU_SWAPHEALTHARMOR",		"hud_swaphealtharmor", "OnOff"
 	Slider "$ALTHUDMNU_HEALTHRED",				"hud_health_red", 0, 100, 1, 0
 	Slider "$ALTHUDMNU_HEALTHYELLOW",			"hud_health_yellow", 0, 100, 1, 0
 	Slider "$ALTHUDMNU_HEALTHGREEN",			"hud_health_green", 0, 100, 1, 0
@@ -1218,6 +1220,7 @@ OptionMenu "MiscOptions" protected
 	Option "$MISCMNU_NOCHEATS",					"nocheats", "OnOff"
 	Option "$MISCMNU_ALLCHEATS",				"allcheats", "OnOff"
 	Option "$MISCMNU_ENABLEAUTOSAVES",			"disableautosave", "Autosave"
+	Option "$MISCMNU_RESTARTONDEATH",			"cl_restartondeath", "OnOff"
 	Option "$MISCMNU_SAVELOADCONFIRMATION",		"saveloadconfirmation", "OnOff"
 	Slider "$MISCMNU_AUTOSAVECOUNT",			"autosavecount", 1, 20, 1, 0
 	Option "$MISCMNU_QUICKSAVEROTATION",		"quicksaverotation", "OnOff"
@@ -1627,6 +1630,7 @@ OptionMenu GameplayOptions protected
 	StaticText " "
 	Option "$GMPLYMNU_SMARTAUTOAIM",			"sv_smartaim", "SmartAim"
 	StaticText " "
+	Option "$GMPLYMNU_PISTOLSTART",				"sv_pistolstart", "YesNo"
 	Option "$GMPLYMNU_FALLINGDAMAGE",			"sv_fallingdamage", "FallingDM"
 	Option "$GMPLYMNU_DROPWEAPON",				"sv_weapondrop", "YesNo"
 	Option "$GMPLYMNU_DOUBLEAMMO",				"sv_doubleammo", "YesNo"
@@ -1688,6 +1692,8 @@ OptionMenu CoopOptions protected
 	Title 	"$GMPLYMNU_COOPERATIVE"
 
 	Option "$GMPLYMNU_MULTIPLAYERTHINGS",	 	"sv_nothingspawn", "NoYes"
+	Option "$GMPLYMNU_COOPTHINGS",	 			"sv_nocoopthings", "NoYes"
+	Option "$GMPLYMNU_COOPITEMS",	 			"sv_nocoopitems", "NoYes"
 	Option "$GMPLYMNU_MULTIPLAYERWEAPONS",	 	"sv_noweaponspawn", "NoYes"
 	Option "$GMPLYMNU_LOSEINVENTORY",			"sv_cooploseinventory", "YesNo"
 	Option "$GMPLYMNU_KEEPKEYS",				"sv_cooplosekeys", "NoYes"
@@ -1699,6 +1705,9 @@ OptionMenu CoopOptions protected
 	Option "$GMPLYMNU_SPAWNWHEREDIED",			"sv_samespawnspot", "YesNo"
 	Option "$GMPLYMNU_NOPLAYERCLIP",			"sv_noplayerclip", "YesNo"
 	Option "$GMPLYMNU_SHAREKEYS",				"sv_coopsharekeys", "YesNo"
+	Option "$GMPLYMNU_LOCALITEMS",				"sv_localitems", "YesNo"
+	Option "$GMPLYMNU_NOLOCALDROP",				"sv_nolocaldrops", "YesNo"
+	Option "$GMPLYMNU_REMEMBERWEAP",			"sv_rememberlastweapon", "YesNo"
 	Class "GameplayMenu"
 }
 
@@ -1749,6 +1758,7 @@ OptionMenu "CompatActorMenu" protected
 	Option "$CMPTMNU_INVISIBILITY",					"compat_INVISIBILITY", "YesNo"
 	Option "$CMPTMNU_MINOTAUR",						"compat_MINOTAUR", "YesNo"
 	Option "$CMPTMNU_NOTOSSDROPS",					"compat_NOTOSSDROPS", "YesNo"
+	Option "$CMPTMNU_VOODOOZOMBIES",				"compat_voodoozombies", "YesNo"
 	Class "CompatibilityMenu"
 }
 
@@ -1775,6 +1785,7 @@ OptionMenu "CompatMapMenu" protected
 	Option "$CMPTMNU_POINTONLINE",					"compat_pointonline", "YesNo"
 	Option "$CMPTMNU_MULTIEXIT",					"compat_multiexit", "YesNo"
 	Option "$CMPTMNU_TELEPORT",						"compat_teleport", "YesNo"
+	Option "$CMPTMNU_FDTELEPORT",					"compat_fdteleport", "YesNo"
 	Option "$CMPTMNU_PUSHWINDOW",					"compat_pushwindow", "YesNo"
 	Option "$CMPTMNU_CHECKSWITCHRANGE",				"compat_checkswitchrange", "YesNo"
 	Option "$CMPTMNU_RAILINGHACK",					"compat_railing", "YesNo"

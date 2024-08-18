@@ -18,7 +18,7 @@ struct FSpriteModelFrame;
 
 FTextureID LoadSkin(const char* path, const char* fn);
 void FlushModels();
-extern TArray<FString> savedModelFiles;
+
 extern TDeletingArray<FModel*> Models;
 extern TArray<FSpriteModelFrame> SpriteModelFrames;
 extern TMap<void*, FSpriteModelFrame> BaseSpriteModelFrames;
@@ -41,7 +41,9 @@ struct FSpriteModelFrame
 	float xrotate, yrotate, zrotate;
 	float rotationCenterX, rotationCenterY, rotationCenterZ;
 	float rotationSpeed;
+private:
 	unsigned int flags;
+public:
 	const void* type;	// used for hashing, must point to something usable as identifier for the model's owner.
 	short sprite;
 	short frame;
@@ -50,6 +52,9 @@ struct FSpriteModelFrame
 	// added pithoffset, rolloffset.
 	float pitchoffset, rolloffset; // I don't want to bother with type transformations, so I made this variables float.
 	bool isVoxel;
+	unsigned int getFlags(class DActorModelData * defs) const;
+	friend void InitModels();
+	friend void ParseModelDefLump(int Lump);
 };
 
 
@@ -71,6 +76,7 @@ enum EFrameError
 class FModel
 {
 public:
+
 	FModel();
 	virtual ~FModel();
 
@@ -95,7 +101,9 @@ public:
 	void DestroyVertexBuffer();
 
 	bool hasSurfaces = false;
+
 	FString mFileName;
+	std::pair<FString, FString> mFilePath;
 	
 	FSpriteModelFrame *baseFrame;
 private:

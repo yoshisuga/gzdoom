@@ -81,7 +81,7 @@ CUSTOM_CVAR(Int, gl_pipeline_depth, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_N
 	Printf("Changing the pipeline depth requires a restart for " GAMENAME ".\n");
 }
 
-CUSTOM_CVAR(Int, vid_maxfps, 200, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+CUSTOM_CVAR(Int, vid_maxfps, 500, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 {
 	if (self < GameTicRate && self != 0)
 	{
@@ -103,8 +103,9 @@ CUSTOM_CVAR(Int, vid_preferbackend, 1, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_N
 	{
 #ifdef HAVE_GLES2
 	case 3:
-	case 2:
 		self = 2;
+		return; // beware of recursions here. Assigning to 'self' will recursively call this handler again.
+	case 2:
 		Printf("Selecting OpenGLES 2.0 backend...\n");
 		break;
 #endif

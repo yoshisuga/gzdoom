@@ -324,6 +324,9 @@ if (HAVE_VULKAN)
 	list( APPEND PROJECT_LIBRARIES "zvulkan" )
 endif()
 
+list( APPEND PROJECT_LIBRARIES "zwidget" )
+list( APPEND PROJECT_LIBRARIES "webp" )
+
 # ZMUSIC
 
 if( MSVC )
@@ -378,13 +381,6 @@ if( VPX_FOUND )
 	set( PROJECT_LIBRARIES ${PROJECT_LIBRARIES} ${VPX_LIBRARIES} )
 else()
 	# message( SEND_ERROR "Could not find libvpx" )
-endif()
-
-if (TARGET WebP::webp)
-	list( APPEND PROJECT_LIBRARIES WebP::webp WebP::webpdemux WebP::libwebpmux )
-	if (TARGET WebP::webpdecoder)
-		list( APPEND PROJECT_LIBRARIES WebP::webpdecoder)
-	endif()
 endif()
 
 include_directories( SYSTEM "${BZIP2_INCLUDE_DIR}" "${LZMA_INCLUDE_DIR}" "${ZMUSIC_INCLUDE_DIR}" "${DRPC_INCLUDE_DIR}")
@@ -589,6 +585,7 @@ file( GLOB HEADER_FILES
 	common/models/*.h
 	common/textures/*.h
 	common/startscreen/*.h
+	common/widgets/*.h
 	common/textures/hires/hqnx/*.h
 	common/textures/hires/hqnx_asm/*.h
 	common/textures/hires/xbr/*.h
@@ -614,6 +611,7 @@ file( GLOB HEADER_FILES
 	common/scripting/frontend/*.h
 
 	utility/*.h
+	launcher/*.h
 	scripting/*.h
 	scripting/backend/*.h
 	scripting/decorate/*.h
@@ -973,6 +971,12 @@ set (PCH_SOURCES
 	rendering/swrenderer/textures/warptexture.cpp
 	rendering/swrenderer/textures/swcanvastexture.cpp
 	events.cpp
+	launcher/launcherwindow.cpp
+	launcher/launcherbanner.cpp
+	launcher/launcherbuttonbar.cpp
+	launcher/playgamepage.cpp
+	launcher/settingspage.cpp
+
 	common/audio/sound/i_sound.cpp
 	common/audio/sound/oalsound.cpp
 	common/audio/sound/s_environment.cpp
@@ -987,6 +991,7 @@ set (PCH_SOURCES
 	common/2d/v_drawtext.cpp
 	common/2d/v_draw.cpp
 	common/2d/wipe.cpp
+	common/thirdparty/animlib.cpp
 	common/thirdparty/gain_analysis.cpp
 	common/thirdparty/sfmt/SFMT.cpp
 	common/startscreen/startscreen.cpp
@@ -995,6 +1000,9 @@ set (PCH_SOURCES
 	common/startscreen/startscreen_strife.cpp
 	common/startscreen/startscreen_generic.cpp
 	common/startscreen/endoom.cpp
+	common/widgets/errorwindow.cpp
+	common/widgets/netstartwindow.cpp
+	common/widgets/widgetresourcedata.cpp
 	common/fonts/singlelumpfont.cpp
 	common/fonts/singlepicfont.cpp
 	common/fonts/specialfont.cpp
@@ -1015,7 +1023,6 @@ set (PCH_SOURCES
 	common/textures/skyboxtexture.cpp
 	common/textures/animtexture.cpp
 	common/textures/v_collection.cpp
-	common/textures/animlib.cpp
 	common/textures/formats/automaptexture.cpp
 	common/textures/formats/brightmaptexture.cpp
 	common/textures/formats/buildtexture.cpp
@@ -1287,6 +1294,7 @@ include_directories(
 	common/fonts
 	common/objects
 	common/startscreen
+	common/widgets
 	common/rendering
 	common/rendering/hwrenderer/data
 	common/rendering/gl_load
@@ -1321,7 +1329,10 @@ include_directories(
 	scripting
 	scripting/zscript
 	rendering
+	launcher
 	../libraries/ZVulkan/include
+	../libraries/ZWidget/include
+	../libraries/webp/include
 	${SYSTEM_SOURCES_DIR}
 )
 
@@ -1370,7 +1381,7 @@ if( NOT WIN32 AND NOT APPLE )
 	IF ("${INSTALL_RPATH}" STREQUAL "")
 		set_target_properties(zdoom PROPERTIES
 			#allow libzmusic.so.1 library in same folder as executable at runtime
-			INSTALL_RPATH "\$ORIGIN"
+			INSTALL_RPATH "\$ORIGIN:\$ORIGIN/zmusic/build/source"
 			BUILD_WITH_INSTALL_RPATH ON
 		)
 	endif()
@@ -1481,6 +1492,8 @@ source_group("Common\\Fonts" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/co
 source_group("Common\\File System" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/filesystem/.+")
 source_group("Common\\File System\\Include" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/filesystem/include/.+")
 source_group("Common\\File System\\Source" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/filesystem/source/.+")
+source_group("Common\\Startscreen" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/startscreen/.+")
+source_group("Common\\Widgets" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/widgets/.+")
 source_group("Common\\Scripting" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/scripting/.+")
 source_group("Common\\Scripting\\Interface" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/scripting/interface/.+")
 source_group("Common\\Scripting\\Frontend" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/scripting/frontend/.+" FILES ${CMAKE_CURRENT_BINARY_DIR}/zcc-parse.c ${CMAKE_CURRENT_BINARY_DIR}/zcc-parse.h)
@@ -1523,6 +1536,7 @@ source_group("Utility\\Smackerdec" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_D
 source_group("Utility\\Smackerdec\\Headers" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/libsmackerdec/include/.+")
 source_group("Utility\\Smackerdec\\Sources" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/libsmackerdec/src/.+")
 source_group("Statusbar" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/g_statusbar/.+")
+source_group("Launcher" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/launcher/.+")
 source_group("Versioning" FILES version.h win32/zdoom.rc)
 source_group("Xlat" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/xlat/.+" FILES ${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c ${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.h)
 source_group("Source Files" FILES ${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h common/engine/sc_man_scanner.re)

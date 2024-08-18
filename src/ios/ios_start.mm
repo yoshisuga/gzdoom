@@ -14,10 +14,10 @@
 
 // FStartupScreen *StartScreen;
 
-FBasicStartupScreen::FBasicStartupScreen(int maxProgress, bool showBar)
+FBasicStartupScreen::FBasicStartupScreen(int maxProgress)
 : FStartupScreen(maxProgress)
 {
-    NSLog(@"FBasicStartupScreen: set maxprogress: %i, showBar: %i", maxProgress, showBar);
+    NSLog(@"FBasicStartupScreen: set maxprogress: %i", maxProgress);
 }
 
 FBasicStartupScreen::~FBasicStartupScreen()

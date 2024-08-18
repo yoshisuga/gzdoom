@@ -180,7 +180,13 @@ enum : unsigned
 enum : unsigned
 {
 	DF3_NO_PLAYER_CLIP		= 1 << 0,	// Players can walk through and shoot through each other
-	DF3_COOP_SHARE_KEYS		= 1 << 1,	// Keys will be given to all players in coop
+	DF3_COOP_SHARE_KEYS		= 1 << 1,	// Keys and other core items will be given to all players in coop
+	DF3_LOCAL_ITEMS			= 1 << 2,	// Items are picked up client-side rather than fully taken by the client who picked it up
+	DF3_NO_LOCAL_DROPS		= 1 << 3,	// Drops from Actors aren't picked up locally
+	DF3_NO_COOP_ONLY_ITEMS	= 1 << 4,	// Items that only appear in co-op are disabled
+	DF3_NO_COOP_ONLY_THINGS	= 1 << 5,	// Any Actor that only appears in co-op is disabled
+	DF3_REMEMBER_LAST_WEAP	= 1 << 6,	// When respawning in co-op, keep the last used weapon out instead of switching to the best new one.
+	DF3_PISTOL_START		= 1 << 7,	// Take player inventory when exiting to the next level.
 };
 
 // [RH] Compatibility flags.
@@ -235,6 +241,7 @@ enum : unsigned int
 	COMPATF2_STAYONLIFT		= 1 << 13,	// yet another MBF thing.
 	COMPATF2_NOMBF21		= 1 << 14,	// disable MBF21 features that may clash with certain maps
 	COMPATF2_VOODOO_ZOMBIES = 1 << 15,	// [RL0] allow playerinfo, playerpawn, and voodoo health to all be different, and skip killing the player's mobj if a voodoo doll dies to allow voodoo zombies
+	COMPATF2_FDTELEPORT		= 1 << 16,	// Emulate Final Doom's teleporter z glitch.
 
 };
 

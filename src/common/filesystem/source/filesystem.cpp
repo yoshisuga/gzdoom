@@ -40,6 +40,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <inttypes.h>
 
 #include "resourcefile.h"
 #include "fs_filesystem.h"
@@ -101,10 +102,6 @@ struct FileSystem::LumpRecord
 
 	void SetFromLump(FResourceFile* file, int fileindex, int filenum, StringPool* sp, const char* name = nullptr)
 	{
-		if (fileindex == 649 && filenum == 0)
-		{
-			int a = 0;
-		}
 		resfile = file;
 		resindex = fileindex;
 		rfnum = filenum;
@@ -255,7 +252,7 @@ bool FileSystem::InitMultipleFiles (std::vector<std::string>& filenames, LumpFil
 	stringpool->shared = true;	// will be used by all owned resource files.
 
 	// first, check for duplicates
-	if (allowduplicates)
+	if (!allowduplicates)
 	{
 		for (size_t i=0;i<filenames.size(); i++)
 		{
@@ -398,7 +395,7 @@ void FileSystem::AddFile (const char *filename, FileReader *filer, LumpFilterInf
 				std::string path = filename;
 				path += ':';
 				path += resfile->getName(i);
-				auto embedded = resfile->GetEntryReader(i, READER_NEW, READERFLAG_SEEKABLE);
+				auto embedded = resfile->GetEntryReader(i, READER_CACHED);
 				AddFile(path.c_str(), &embedded, filter, Printf, hashfile);
 			}
 		}
@@ -419,7 +416,7 @@ void FileSystem::AddFile (const char *filename, FileReader *filer, LumpFilterInf
 					snprintf(cksumout + (j * 2), 3, "%02X", cksum[j]);
 				}
 
-				fprintf(hashfile, "file: %s, hash: %s, size: %d\n", filename, cksumout, (int)filereader.GetLength());
+				fprintf(hashfile, "file: %s, hash: %s, size: %td\n", filename, cksumout, filereader.GetLength());
 			}
 
 			else
@@ -438,7 +435,7 @@ void FileSystem::AddFile (const char *filename, FileReader *filer, LumpFilterInf
 						snprintf(cksumout + (j * 2), 3, "%02X", cksum[j]);
 					}
 
-					fprintf(hashfile, "file: %s, lump: %s, hash: %s, size: %llu\n", filename, resfile->getName(i), cksumout, (uint64_t)resfile->Length(i));
+					fprintf(hashfile, "file: %s, lump: %s, hash: %s, size: %zu\n", filename, resfile->getName(i), cksumout, (uint64_t)resfile->Length(i));
 				}
 			}
 		}
@@ -1276,7 +1273,7 @@ void FileSystem::ReadFile (int lump, void *dest)
 
 	if (numread != size)
 	{
-		throw FileSystemException("W_ReadFile: only read %ld of %ld on '%s'\n",
+		throw FileSystemException("W_ReadFile: only read %td of %td on '%s'\n",
 			numread, size, FileInfo[lump].LongName);
 	}
 }

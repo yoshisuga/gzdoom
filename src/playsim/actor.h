@@ -498,6 +498,9 @@ enum ActorRenderFlag2
 	RF2_ONLYVISIBLEINMIRRORS	= 0x0002,	// [Nash] only renders in mirrors
 	RF2_BILLBOARDFACECAMERA		= 0x0004,	// Sprite billboard face camera (override gl_billboard_faces_camera)
 	RF2_BILLBOARDNOFACECAMERA	= 0x0008,	// Sprite billboard face camera angle (override gl_billboard_faces_camera)
+	RF2_FLIPSPRITEOFFSETX		= 0x0010,
+	RF2_FLIPSPRITEOFFSETY		= 0x0020,
+	RF2_CAMFOLLOWSPLAYER		= 0x0040,	// Matches the cam's base position and angles to the main viewpoint.
 };
 
 // This translucency value produces the closest match to Heretic's TINTTAB.
@@ -706,7 +709,7 @@ struct AnimOverride
 	double startFrame;
 	int flags = ANIMOVERRIDE_NONE;
 	float framerate;
-	double startTic; // when the animation starts if interpolating from previous animation
+	double startTic; // when the current animation started (changing framerates counts as restarting) (or when animation starts if interpolating from previous animation)
 	double switchTic; // when the animation was changed -- where to interpolate the switch from
 };
 
@@ -716,21 +719,34 @@ struct ModelOverride
 	TArray<FTextureID> surfaceSkinIDs;
 };
 
+struct AnimModelOverride
+{
+	int id;
+
+	AnimModelOverride() = default;
+
+	AnimModelOverride(int i) : id(i) {}
+	operator int() { return id; }
+};
+
 enum EModelDataFlags
 {
 	MODELDATA_HADMODEL =		1 << 0,
+	MODELDATA_OVERRIDE_FLAGS =	1 << 1,
 };
 
 class DActorModelData : public DObject
 {
 	DECLARE_CLASS(DActorModelData, DObject);
 public:
-	FName					modelDef;
-	TArray<ModelOverride>	models;
-	TArray<FTextureID>		skinIDs;
-	TArray<int>				animationIDs;
-	TArray<int>				modelFrameGenerators;
-	int						flags;
+	PClass *					modelDef;
+	TArray<ModelOverride>		models;
+	TArray<FTextureID>			skinIDs;
+	TArray<AnimModelOverride>	animationIDs;
+	TArray<int>					modelFrameGenerators;
+	int							flags;
+	int							overrideFlagsSet;
+	int							overrideFlagsClear;
 
 	AnimOverride curAnim;
 	AnimOverride prevAnim; // used for interpolation when switching anims
@@ -764,7 +780,7 @@ public:
 			Flags = f;
 	}
 
-	bool isZero()
+	bool isZero() const
 	{
 		return Offset.isZero();
 	}
@@ -788,6 +804,7 @@ public:
 	virtual void PostSerialize() override;
 	virtual void PostBeginPlay() override;		// Called immediately before the actor's first tick
 	virtual void Tick() override;
+	void EnableNetworking(const bool enable) override;
 
 	static AActor *StaticSpawn (FLevelLocals *Level, PClassActor *type, const DVector3 &pos, replace_t allowreplacement, bool SpawningMapThing = false);
 
@@ -896,6 +913,9 @@ public:
 
 	// Returns true if this view is considered "local" for the player.
 	bool CheckLocalView() const;
+	// Allows for enabling/disabling client-side rendering in a way the playsim can't access.
+	void DisableLocalRendering(const unsigned int pNum, const bool disable);
+	bool ShouldRenderLocally() const;
 
 	// Finds the first item of a particular type.
 	AActor *FindInventory (PClassActor *type, bool subclass=false);
@@ -1098,6 +1118,7 @@ public:
 
 	DAngle			SpriteAngle;
 	DAngle			SpriteRotation;
+	DVector2		AutomapOffsets;		// Offset the actors' sprite view on the automap by these coordinates.
 	DRotator		Angles;
 	DRotator		ViewAngles;			// Angle offsets for cameras
 	TObjPtr<DViewPosition*> ViewPos;			// Position offsets for cameras
@@ -1116,6 +1137,7 @@ public:
 	uint32_t			RenderRequired;		// current renderer must have this feature set
 	uint32_t			RenderHidden;		// current renderer must *not* have any of these features
 
+	bool				NoLocalRender;		// DO NOT EXPORT THIS! This is a way to disable rendering such that the playsim cannot access it.
 	ActorRenderFlags	renderflags;		// Different rendering flags
 	ActorRenderFlags2	renderflags2;		// More rendering flags...
 	ActorFlags		flags;
@@ -1340,13 +1362,21 @@ public:
 	DVector3 Prev;
 	DRotator PrevAngles;
 	DAngle   PrevFOV;
-	int PrevPortalGroup;
 	TArray<FDynamicLight *> AttachedLights;
 	TDeletingArray<FLightDefaults *> UserLights;
+	int PrevPortalGroup;
 
 	// When was this actor spawned?
 	int SpawnTime;
 	uint32_t SpawnOrder;
+
+	int UnmorphTime;
+	int MorphFlags;
+	int PremorphProperties;
+	PClassActor* MorphExitFlash;
+	// landing speed from a jump with normal gravity (squats the player's view)
+	// (note: this is put into AActor instead of the PlayerPawn because non-players also use the value)
+	double LandingSpeed;
 
 
 	// ThingIDs
@@ -1468,6 +1498,11 @@ public:
 		result.Pitch = PrevAngles.Pitch + deltaangle(PrevAngles.Pitch, Angles.Pitch) * ticFrac;
 		result.Roll = PrevAngles.Roll + deltaangle(PrevAngles.Roll, Angles.Roll) * ticFrac;
 		return result;
+	}
+	float GetSpriteOffset(bool y) const
+	{
+		if (y)	return (float)(renderflags2 & RF2_FLIPSPRITEOFFSETY ? SpriteOffset.Y : -SpriteOffset.Y);
+		else	return (float)(renderflags2 & RF2_FLIPSPRITEOFFSETX ? SpriteOffset.X : -SpriteOffset.X);
 	}
 	DAngle GetSpriteAngle(DAngle viewangle, double ticFrac)
 	{
@@ -1718,8 +1753,8 @@ struct FTranslatedLineTarget
 	bool unlinked;	// found by a trace that went through an unlinked portal.
 };
 
-
-void StaticPointerSubstitution(AActor* old, AActor* notOld);
+void PlayerPointerSubstitution(AActor* oldPlayer, AActor* newPlayer, bool removeOld);
+int MorphPointerSubstitution(AActor* from, AActor* to);
 
 #define S_FREETARGMOBJ	1
 

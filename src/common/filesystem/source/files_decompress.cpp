@@ -931,7 +931,7 @@ bool OpenDecompressor(FileReader& self, FileReader &parent, FileReader::Size len
 		{
 			FileData buffer(nullptr, length);
 			FZipExploder exploder;
-			if (exploder.Explode(buffer.writable(), length, *p, p->GetLength(), method - METHOD_IMPLODE_MIN) == -1)
+			if (exploder.Explode(buffer.writable(), (unsigned)length, *p, (unsigned)p->GetLength(), method - METHOD_IMPLODE_MIN) == -1)
 			{
 				if (exceptions)
 				{
@@ -947,7 +947,7 @@ bool OpenDecompressor(FileReader& self, FileReader &parent, FileReader::Size len
 		case METHOD_SHRINK:
 		{
 			FileData buffer(nullptr, length);
-			ShrinkLoop(buffer.writable(), length, *p, p->GetLength()); // this never fails.
+			ShrinkLoop(buffer.writable(), (unsigned)length, *p, (unsigned)p->GetLength()); // this never fails.
 			fr = new MemoryArrayReader(buffer);
 			flags &= ~(DCF_SEEKABLE | DCF_CACHED);
 			break;
@@ -980,11 +980,12 @@ bool OpenDecompressor(FileReader& self, FileReader &parent, FileReader::Size len
 			}
 			dec->Length = length;
 		}
-		if ((flags & DCF_CACHED))
+		if ((flags & (DCF_CACHED| DCF_SEEKABLE))) // the buffering reader does not seem to be stable, so cache it instead until we find out what's wrong.
 		{
 			// read everything into a MemoryArrayReader.
 			FileData data(nullptr, length);
 			fr->Read(data.writable(), length);
+			delete fr;
 			fr = new MemoryArrayReader(data);
 		}
 		else if ((flags & DCF_SEEKABLE))

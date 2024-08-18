@@ -159,6 +159,7 @@ void I_UpdateDiscordPresence(bool SendPresence, const char* curstatus, const cha
 bool M_SetSpecialMenu(FName& menu, int param);	// game specific checks
 
 const FIWADInfo *D_FindIWAD(TArray<FString> &wadfiles, const char *iwad, const char *basewad);
+void InitWidgetResources(const char* basewad);
 
 // PUBLIC FUNCTION PROTOTYPES ----------------------------------------------
 
@@ -427,14 +428,14 @@ CUSTOM_CVAR (Int, dmflags, 0, CVAR_SERVERINFO | CVAR_NOINITCALL)
 
 	if (self & DF_NO_FREELOOK)
 	{
-		Net_WriteByte (DEM_CENTERVIEW);
+		Net_WriteInt8 (DEM_CENTERVIEW);
 	}
 	// If nofov is set, force everybody to the arbitrator's FOV.
 	if ((self & DF_NO_FOV) && consoleplayer == Net_Arbitrator)
 	{
 		float fov;
 
-		Net_WriteByte (DEM_FOV);
+		Net_WriteInt8 (DEM_FOV);
 
 		// If the game is started with DF_NO_FOV set, the arbitrator's
 		// DesiredFOV will not be set when this callback is run, so
@@ -574,6 +575,12 @@ CUSTOM_CVAR(Int, dmflags3, 0, CVAR_SERVERINFO | CVAR_NOINITCALL)
 
 CVAR(Flag, sv_noplayerclip, dmflags3, DF3_NO_PLAYER_CLIP);
 CVAR(Flag, sv_coopsharekeys, dmflags3, DF3_COOP_SHARE_KEYS);
+CVAR(Flag, sv_localitems, dmflags3, DF3_LOCAL_ITEMS);
+CVAR(Flag, sv_nolocaldrops, dmflags3, DF3_NO_LOCAL_DROPS);
+CVAR(Flag, sv_nocoopitems, dmflags3, DF3_NO_COOP_ONLY_ITEMS);
+CVAR(Flag, sv_nocoopthings, dmflags3, DF3_NO_COOP_ONLY_THINGS);
+CVAR(Flag, sv_rememberlastweapon, dmflags3, DF3_REMEMBER_LAST_WEAP);
+CVAR(Flag, sv_pistolstart, dmflags3, DF3_PISTOL_START);
 
 //==========================================================================
 //
@@ -705,6 +712,8 @@ CVAR (Flag, compat_railing,				compatflags2, COMPATF2_RAILING);
 CVAR (Flag, compat_avoidhazard,			compatflags2, COMPATF2_AVOID_HAZARDS);
 CVAR (Flag, compat_stayonlift,			compatflags2, COMPATF2_STAYONLIFT);
 CVAR (Flag, compat_nombf21,				compatflags2, COMPATF2_NOMBF21);
+CVAR (Flag, compat_voodoozombies,		compatflags2, COMPATF2_VOODOO_ZOMBIES);
+CVAR (Flag, compat_fdteleport,			compatflags2, COMPATF2_FDTELEPORT);
 
 CVAR(Bool, vid_activeinbackground, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 
@@ -2637,7 +2646,7 @@ void Mlook_ReleaseHandler()
 {
 	if (lookspring)
 	{
-		Net_WriteByte(DEM_CENTERVIEW);
+		Net_WriteInt8(DEM_CENTERVIEW);
 	}
 }
 
@@ -2649,7 +2658,7 @@ int StrTable_GetGender()
 bool StrTable_ValidFilter(const char* str)
 {
 	if (gameinfo.gametype == GAME_Strife && (gameinfo.flags & GI_SHAREWARE) && !stricmp(str, "strifeteaser")) return true;
-	return stricmp(str, GameNames[gameinfo.gametype]) == 0;
+	return gameinfo.gametype == 0 || stricmp(str, GameNames[gameinfo.gametype]) == 0;
 }
 
 bool System_WantGuiCapture()
@@ -3104,6 +3113,14 @@ static int FileSystemPrintf(FSMessageLevel level, const char* fmt, ...)
 
 static int D_InitGame(const FIWADInfo* iwad_info, std::vector<std::string>& allwads, std::vector<std::string>& pwads)
 {
+	NetworkEntityManager::InitializeNetworkEntities();
+
+	if (!restart)
+	{
+		V_InitScreenSize();
+		// This allocates a dummy framebuffer as a stand-in until V_Init2 is called.
+		V_InitScreen();
+	}
 	SavegameFolder = iwad_info->Autoname;
 	gameinfo.gametype = iwad_info->gametype;
 	gameinfo.flags = iwad_info->flags;
@@ -3239,8 +3256,11 @@ static int D_InitGame(const FIWADInfo* iwad_info, std::vector<std::string>& allw
 		exec = NULL;
 	}
 
-	// [RH] Initialize localizable strings.
-	GStrings.LoadStrings (language);
+	if (!restart)
+		V_Init2();
+
+	// [RH] Initialize localizable strings. 
+	GStrings.LoadStrings(fileSystem, language);
 
 	V_InitFontColors ();
 
@@ -3263,16 +3283,8 @@ static int D_InitGame(const FIWADInfo* iwad_info, std::vector<std::string>& allw
 	if (!batchrun) Printf ("V_Init: allocate screen.\n");
 	if (!restart)
 	{
-		V_InitScreenSize();
-		// This allocates a dummy framebuffer as a stand-in until V_Init2 is called.
-		V_InitScreen ();
-
-		if (StartScreen != nullptr)
-		{
-			V_Init2();
-			StartScreen->Render();
-		}
-
+		screen->CompileNextShader();
+		if (StartScreen != nullptr) StartScreen->Render();
 	}
 	else
 	{
@@ -3293,7 +3305,7 @@ static int D_InitGame(const FIWADInfo* iwad_info, std::vector<std::string>& allw
 	if (!batchrun) Printf ("ST_Init: Init startup screen.\n");
 	if (!restart)
 	{
-		StartWindow = FStartupScreen::CreateInstance (TexMan.GuesstimateNumTextures() + 5, StartScreen == nullptr);
+		StartWindow = FStartupScreen::CreateInstance (TexMan.GuesstimateNumTextures() + 5);
 	}
 	else
 	{
@@ -3508,7 +3520,6 @@ static int D_InitGame(const FIWADInfo* iwad_info, std::vector<std::string>& allw
 			return 1337; // special exit
 		}
 
-		if (StartScreen == nullptr) V_Init2();
 		if (StartScreen)
 		{
 			StartScreen->Progress(max_progress);	// advance progress bar to the end.
@@ -3681,6 +3692,7 @@ static int D_DoomMain_Internal (void)
 		I_FatalError("Cannot find " BASEWAD);
 	}
 	LoadHexFont(wad);	// load hex font early so we have it during startup.
+	InitWidgetResources(wad);
 
 	C_InitConsole(80*8, 25*8, false);
 	I_DetectOS();

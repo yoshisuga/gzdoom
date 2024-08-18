@@ -179,7 +179,7 @@ public:
 	F7ZFile(const char * filename, FileReader &filer, StringPool* sp);
 	bool Open(LumpFilterInfo* filter, FileSystemMessageFunc Printf);
 	virtual ~F7ZFile();
-	FileData Read(int entry) override;
+	FileData Read(uint32_t entry) override;
 	FileReader GetEntryReader(uint32_t entry, int, int) override;
 };
 
@@ -242,12 +242,12 @@ bool F7ZFile::Open(LumpFilterInfo *filter, FileSystemMessageFunc Printf)
 	std::u16string nameUTF16;
 	std::vector<char> nameASCII;
 
+	uint32_t j = 0;
 	for (uint32_t i = 0; i < NumLumps; ++i)
 	{
 		// skip Directories
 		if (SzArEx_IsDir(archPtr, i))
 		{
-			skipped++;
 			continue;
 		}
 
@@ -255,7 +255,6 @@ bool F7ZFile::Open(LumpFilterInfo *filter, FileSystemMessageFunc Printf)
 
 		if (0 == nameLength)
 		{
-			++skipped;
 			continue;
 		}
 
@@ -265,16 +264,17 @@ bool F7ZFile::Open(LumpFilterInfo *filter, FileSystemMessageFunc Printf)
 		SzArEx_GetFileNameUtf16(archPtr, i, (UInt16*)nameUTF16.data());
 		utf16_to_utf8((uint16_t*)nameUTF16.data(), nameASCII);
 
-		Entries[i].FileName = NormalizeFileName(nameASCII.data());
-		Entries[i].Length = SzArEx_GetFileSize(archPtr, i);
-		Entries[i].Flags = RESFF_FULLPATH|RESFF_COMPRESSED;
-		Entries[i].ResourceID = -1;
-		Entries[i].Namespace = ns_global;
-		Entries[i].Method = METHOD_INVALID;
-		Entries[i].Position = i;
+		Entries[j].FileName = NormalizeFileName(nameASCII.data());
+		Entries[j].Length = SzArEx_GetFileSize(archPtr, i);
+		Entries[j].Flags = RESFF_FULLPATH|RESFF_COMPRESSED;
+		Entries[j].ResourceID = -1;
+		Entries[j].Namespace = ns_global;
+		Entries[j].Method = METHOD_INVALID;
+		Entries[j].Position = i;
+		j++;
 	}
 	// Resize the lump record array to its actual size
-	NumLumps -= skipped;
+	NumLumps = j;
 
 	if (NumLumps > 0)
 	{
@@ -282,7 +282,7 @@ bool F7ZFile::Open(LumpFilterInfo *filter, FileSystemMessageFunc Printf)
 
 		FileData temp(nullptr, Entries[0].Length);
 
-		if (SZ_OK != Archive->Extract(Entries[0].Position, (char*)temp.writable()))
+		if (SZ_OK != Archive->Extract((UInt32)Entries[0].Position, (char*)temp.writable()))
 		{
 			Printf(FSMessageLevel::Error, "%s: unsupported 7z/LZMA file!\n", FileName);
 			return false;
@@ -314,15 +314,15 @@ F7ZFile::~F7ZFile()
 //
 //==========================================================================
 
-FileData F7ZFile::Read(int entry)
+FileData F7ZFile::Read(uint32_t entry)
 {
 	FileData buffer;
-	if ((entry >= 0 || entry < NumLumps) && Entries[entry].Length > 0)
+	if (entry < NumLumps && Entries[entry].Length > 0)
 	{
 		auto p = buffer.allocate(Entries[entry].Length);
 		// There is no realistic way to keep multiple references to a 7z file open without massive overhead so to make this thread-safe a mutex is the only option.
 		std::lock_guard<FCriticalSection> lock(critsec);
-		SRes code = Archive->Extract(Entries[entry].Position, (char*)p);
+		SRes code = Archive->Extract((UInt32)Entries[entry].Position, (char*)p);
 		if (code != SZ_OK) buffer.clear();
 	}
 	return buffer;

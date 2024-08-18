@@ -63,8 +63,10 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 {
 	// Setup transformation.
 
+	int smf_flags = smf->getFlags(actor->modelData);
+
 	FTranslationID translation = NO_TRANSLATION;
-	if (!(smf->flags & MDL_IGNORETRANSLATION))
+	if (!(smf_flags & MDL_IGNORETRANSLATION))
 		translation = actor->Translation;
 
 	// y scale for a sprite means height, i.e. z in the world!
@@ -82,7 +84,7 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 	float angle = angles.Yaw.Degrees();
 
 	// [BB] Workaround for the missing pitch information.
-	if ((smf->flags & MDL_PITCHFROMMOMENTUM))
+	if ((smf_flags & MDL_PITCHFROMMOMENTUM))
 	{
 		const double x = actor->Vel.X;
 		const double y = actor->Vel.Y;
@@ -102,7 +104,7 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 		}
 	}
 
-	if (smf->flags & MDL_ROTATING)
+	if (smf_flags & MDL_ROTATING)
 	{
 		if (smf->rotationSpeed > 0.0000000001 || smf->rotationSpeed < -0.0000000001)
 		{
@@ -118,13 +120,13 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 
 	// Added MDL_USEACTORPITCH and MDL_USEACTORROLL flags processing.
 	// If both flags MDL_USEACTORPITCH and MDL_PITCHFROMMOMENTUM are set, the pitch sums up the actor pitch and the velocity vector pitch.
-	if (smf->flags & MDL_USEACTORPITCH)
+	if (smf_flags & MDL_USEACTORPITCH)
 	{
 		double d = angles.Pitch.Degrees();
-		if (smf->flags & MDL_BADROTATION) pitch += d;
+		if (smf_flags & MDL_BADROTATION) pitch += d;
 		else pitch -= d;
 	}
-	if (smf->flags & MDL_USEACTORROLL) roll += angles.Roll.Degrees();
+	if (smf_flags & MDL_USEACTORROLL) roll += angles.Roll.Degrees();
 
 	VSMatrix objectToWorldMatrix;
 	objectToWorldMatrix.loadIdentity();
@@ -140,7 +142,7 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 
 	// [MK] distortions might happen depending on when the pixel stretch is compensated for
 	// so we make the "undistorted" behavior opt-in
-	if (smf->flags & MDL_CORRECTPIXELSTRETCH)
+	if (smf_flags & MDL_CORRECTPIXELSTRETCH)
 	{
 		stretch = (smf->modelIDs[0] != -1 ? Models[smf->modelIDs[0]]->getAspectFactor(actor->Level->info->pixelstretch) : 1.f) / actor->Level->info->pixelstretch;
 		objectToWorldMatrix.scale(1, stretch, 1);
@@ -148,14 +150,14 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 
 	// Applying model transformations:
 	// 1) Applying actor angle, pitch and roll to the model
-	if (smf->flags & MDL_USEROTATIONCENTER)
+	if (smf_flags & MDL_USEROTATIONCENTER)
 	{
 		objectToWorldMatrix.translate(smf->rotationCenterX, smf->rotationCenterZ/stretch, smf->rotationCenterY);
 	}
 	objectToWorldMatrix.rotate(-angle, 0, 1, 0);
 	objectToWorldMatrix.rotate(pitch, 0, 0, 1);
 	objectToWorldMatrix.rotate(-roll, 1, 0, 0);
-	if (smf->flags & MDL_USEROTATIONCENTER)
+	if (smf_flags & MDL_USEROTATIONCENTER)
 	{
 		objectToWorldMatrix.translate(-smf->rotationCenterX, -smf->rotationCenterZ/stretch, -smf->rotationCenterY);
 	}
@@ -163,7 +165,7 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 	// 2) Applying Doomsday like rotation of the weapon pickup models
 	// The rotation angle is based on the elapsed time.
 
-	if (smf->flags & MDL_ROTATING)
+	if (smf_flags & MDL_ROTATING)
 	{
 		objectToWorldMatrix.translate(smf->rotationCenterX, smf->rotationCenterY/stretch, smf->rotationCenterZ);
 		objectToWorldMatrix.rotate(rotateOffset, smf->xrotate, smf->yrotate, smf->zrotate);
@@ -181,7 +183,7 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 	objectToWorldMatrix.rotate(smf->pitchoffset, 0, 0, 1);
 	objectToWorldMatrix.rotate(-smf->rolloffset, 1, 0, 0);
 
-	if (!(smf->flags & MDL_CORRECTPIXELSTRETCH))
+	if (!(smf_flags & MDL_CORRECTPIXELSTRETCH))
 	{
 		stretch = (smf->modelIDs[0] != -1 ? Models[smf->modelIDs[0]]->getAspectFactor(actor->Level->info->pixelstretch) : 1.f) / actor->Level->info->pixelstretch;
 		objectToWorldMatrix.scale(1, stretch, 1);
@@ -189,14 +191,16 @@ void RenderModel(FModelRenderer *renderer, float x, float y, float z, FSpriteMod
 
 	float orientation = scaleFactorX * scaleFactorY * scaleFactorZ;
 
-	renderer->BeginDrawModel(actor->RenderStyle, smf, objectToWorldMatrix, orientation < 0);
+	renderer->BeginDrawModel(actor->RenderStyle, smf_flags, objectToWorldMatrix, orientation < 0);
 	RenderFrameModels(renderer, actor->Level, smf, actor->state, actor->tics, translation, actor);
-	renderer->EndDrawModel(actor->RenderStyle, smf);
+	renderer->EndDrawModel(actor->RenderStyle, smf_flags);
 }
 
 void RenderHUDModel(FModelRenderer *renderer, DPSprite *psp, FVector3 translation, FVector3 rotation, FVector3 rotation_pivot, FSpriteModelFrame *smf)
 {
 	AActor * playermo = players[consoleplayer].camera;
+
+	int smf_flags = smf->getFlags(psp->Caller->modelData);
 
 	// [BB] No model found for this sprite, so we can't render anything.
 	if (smf == nullptr)
@@ -208,7 +212,7 @@ void RenderHUDModel(FModelRenderer *renderer, DPSprite *psp, FVector3 translatio
 
 	// [Nash] Optional scale weapon FOV
 	float fovscale = 1.0f;
-	if (smf->flags & MDL_SCALEWEAPONFOV)
+	if (smf_flags & MDL_SCALEWEAPONFOV)
 	{
 		fovscale = tan(players[consoleplayer].DesiredFOV * (0.5f * M_PI / 180.f));
 		fovscale = 1.f + (fovscale - 1.f) * cl_scaleweaponfov;
@@ -245,24 +249,31 @@ void RenderHUDModel(FModelRenderer *renderer, DPSprite *psp, FVector3 translatio
 
 	float orientation = smf->xscale * smf->yscale * smf->zscale;
 
-	renderer->BeginDrawHUDModel(playermo->RenderStyle, objectToWorldMatrix, orientation < 0, smf);
+	renderer->BeginDrawHUDModel(playermo->RenderStyle, objectToWorldMatrix, orientation < 0, smf_flags);
 	auto trans = psp->GetTranslation();
 	if ((psp->Flags & PSPF_PLAYERTRANSLATED)) trans = psp->Owner->mo->Translation;
 
 	RenderFrameModels(renderer, playermo->Level, smf, psp->GetState(), psp->GetTics(), trans, psp->Caller);
-	renderer->EndDrawHUDModel(playermo->RenderStyle, smf);
+	renderer->EndDrawHUDModel(playermo->RenderStyle, smf_flags);
 }
 
 double getCurrentFrame(const AnimOverride &anim, double tic)
 {
 	if(anim.framerate <= 0) return anim.startFrame;
 
-	double duration = double(anim.lastFrame - anim.firstFrame) / double(anim.framerate); // duration in seconds
-	double startPos = double(anim.startFrame - anim.firstFrame) / double(anim.framerate);
+	double frame = ((tic - anim.startTic) / GameTicRate) * anim.framerate; // position in frames
 
-	double pos = startPos + ((tic - anim.startTic) / GameTicRate); // position in seconds
+	double duration = double(anim.lastFrame) - anim.startFrame;
 
-	return (((anim.flags & ANIMOVERRIDE_LOOP) ? fmod(pos, duration) : min(pos, duration)) * anim.framerate) + anim.firstFrame;
+	if((anim.flags & ANIMOVERRIDE_LOOP) && frame >= duration)
+	{
+		frame = frame - duration;
+		return fmod(frame, anim.lastFrame - anim.loopFrame) + anim.loopFrame;
+	}
+	else
+	{
+		return min(frame, duration) + anim.startFrame;
+	}
 }
 
 static void calcFrame(const AnimOverride &anim, double tic, double &inter, int &prev, int &next)
@@ -273,28 +284,16 @@ static void calcFrame(const AnimOverride &anim, double tic, double &inter, int &
 
 	inter = frame - prev;
 
-	if(frame > anim.lastFrame)
-	{
-		if(anim.flags & ANIMOVERRIDE_LOOP)
-		{
-			next = anim.loopFrame + (prev - anim.lastFrame);
-		}
-		else
-		{
-			inter = 0;
-			prev = next = anim.lastFrame;
-		}
-	}
-	else
-	{
-		next = int(ceil(frame));
-	}
+	next = int(ceil(frame));
 }
 
 void RenderFrameModels(FModelRenderer *renderer, FLevelLocals *Level, const FSpriteModelFrame *smf, const FState *curState, const int curTics, FTranslationID translation, AActor* actor)
 {
 	// [BB] Frame interpolation: Find the FSpriteModelFrame smfNext which follows after smf in the animation
 	// and the scalar value inter ( element of [0,1) ), both necessary to determine the interpolated frame.
+
+	int smf_flags = smf->getFlags(actor->modelData);
+
 	const FSpriteModelFrame * smfNext = nullptr;
 	double inter = 0.;
 	double inter_main = -1.f;
@@ -324,9 +323,18 @@ void RenderFrameModels(FModelRenderer *renderer, FLevelLocals *Level, const FSpr
 			if(actor->modelData->curAnim.startTic > tic)
 			{
 				inter = (tic - actor->modelData->curAnim.switchTic) / (actor->modelData->curAnim.startTic - actor->modelData->curAnim.switchTic);
-				
-				calcFrame(actor->modelData->curAnim, actor->modelData->curAnim.startTic, inter_next, decoupled_next_prev_frame, decoupled_next_frame);
-				calcFrame(actor->modelData->prevAnim, actor->modelData->curAnim.switchTic, inter_main, decoupled_main_prev_frame, decoupled_main_frame);
+
+				double nextFrame = actor->modelData->curAnim.startFrame;
+
+				double prevFrame = actor->modelData->prevAnim.startFrame;
+
+				decoupled_next_prev_frame = floor(nextFrame);
+				decoupled_next_frame = ceil(nextFrame);
+				inter_next = nextFrame - floor(nextFrame);
+
+				decoupled_main_prev_frame = floor(prevFrame);
+				decoupled_main_frame = ceil(prevFrame);
+				inter_main = prevFrame - floor(prevFrame);
 			}
 			else
 			{
@@ -334,7 +342,7 @@ void RenderFrameModels(FModelRenderer *renderer, FLevelLocals *Level, const FSpr
 			}
 		}
 	}
-	else if (gl_interpolate_model_frames && !(smf->flags & MDL_NOINTERPOLATION))
+	else if (gl_interpolate_model_frames && !(smf_flags & MDL_NOINTERPOLATION))
 	{
 		FState *nextState = curState->GetNextState();
 		if (curState != nextState && nextState)
@@ -356,7 +364,7 @@ void RenderFrameModels(FModelRenderer *renderer, FLevelLocals *Level, const FSpr
 			{
 				// [BB] Workaround for actors that use the same frame twice in a row.
 				// Most of the standard Doom monsters do this in their see state.
-				if ((smf->flags & MDL_INTERPOLATEDOUBLEDFRAMES))
+				if ((smf_flags & MDL_INTERPOLATEDOUBLEDFRAMES))
 				{
 					const FState *prevState = curState - 1;
 					if ((curState->sprite == prevState->sprite) && (curState->Frame == prevState->Frame))
@@ -499,7 +507,7 @@ void RenderFrameModels(FModelRenderer *renderer, FLevelLocals *Level, const FSpr
 			skinid = smf->skinIDs[i];
 		}
 
-		if (modelid >= 0)
+		if (modelid >= 0 && modelid < Models.size())
 		{
 			FModel * mdl = Models[modelid];
 			auto tex = skinid.isValid() ? TexMan.GetGameTexture(skinid, true) : nullptr;
@@ -522,7 +530,7 @@ void RenderFrameModels(FModelRenderer *renderer, FLevelLocals *Level, const FSpr
 			}
 
 			// [RL0] while per-model animations aren't done, DECOUPLEDANIMATIONS does the same as MODELSAREATTACHMENTS
-			if ((!(smf->flags & MDL_MODELSAREATTACHMENTS) && !is_decoupled) || !evaluatedSingle)
+			if ((!(smf_flags & MDL_MODELSAREATTACHMENTS) && !is_decoupled) || !evaluatedSingle)
 			{
 				if (animationid >= 0)
 				{
@@ -576,7 +584,7 @@ static TArray<int> SpriteModelHash;
 //
 //===========================================================================
 
-static void ParseModelDefLump(int Lump);
+void ParseModelDefLump(int Lump);
 
 void InitModels()
 {
@@ -658,7 +666,7 @@ void InitModels()
 	}
 }
 
-static void ParseModelDefLump(int Lump)
+void ParseModelDefLump(int Lump)
 {
 	FScanner sc(Lump);
 	while (sc.GetString())
@@ -1074,22 +1082,31 @@ static void ParseModelDefLump(int Lump)
 
 FSpriteModelFrame * FindModelFrameRaw(const PClass * ti, int sprite, int frame, bool dropped)
 {
-	if (GetDefaultByType(ti)->hasmodel)
+	auto def = GetDefaultByType(ti);
+	if (def->hasmodel)
 	{
-		FSpriteModelFrame smf;
-
-		memset(&smf, 0, sizeof(smf));
-		smf.type=ti;
-		smf.sprite=sprite;
-		smf.frame=frame;
-
-		int hash = SpriteModelHash[ModelFrameHash(&smf) % SpriteModelFrames.Size()];
-
-		while (hash>=0)
+		if(def->flags9 & MF9_DECOUPLEDANIMATIONS)
 		{
-			FSpriteModelFrame * smff = &SpriteModelFrames[hash];
-			if (smff->type==ti && smff->sprite==sprite && smff->frame==frame) return smff;
-			hash=smff->hashnext;
+			FSpriteModelFrame * smf = BaseSpriteModelFrames.CheckKey((void*)ti);
+			if(smf) return smf;
+		}
+		else
+		{
+			FSpriteModelFrame smf;
+
+			memset(&smf, 0, sizeof(smf));
+			smf.type=ti;
+			smf.sprite=sprite;
+			smf.frame=frame;
+
+			int hash = SpriteModelHash[ModelFrameHash(&smf) % SpriteModelFrames.Size()];
+
+			while (hash>=0)
+			{
+				FSpriteModelFrame * smff = &SpriteModelFrames[hash];
+				if (smff->type==ti && smff->sprite==sprite && smff->frame==frame) return smff;
+				hash=smff->hashnext;
+			}
 		}
 	}
 
@@ -1117,11 +1134,11 @@ FSpriteModelFrame * FindModelFrame(const AActor * thing, int sprite, int frame, 
 
 	if(thing->flags9 & MF9_DECOUPLEDANIMATIONS)
 	{
-		return &BaseSpriteModelFrames[thing->GetClass()];
+		return BaseSpriteModelFrames.CheckKey((thing->modelData != nullptr && thing->modelData->modelDef != nullptr) ? thing->modelData->modelDef : thing->GetClass());
 	}
 	else
 	{
-		return FindModelFrameRaw((thing->modelData != nullptr && thing->modelData->modelDef != NAME_None) ? PClass::FindActor(thing->modelData->modelDef) : thing->GetClass(), sprite, frame, dropped);
+		return FindModelFrameRaw((thing->modelData != nullptr && thing->modelData->modelDef != nullptr) ? thing->modelData->modelDef : thing->GetClass(), sprite, frame, dropped);
 	}
 }
 
@@ -1142,4 +1159,10 @@ bool IsHUDModelForPlayerAvailable (player_t * player)
 		if ( FindModelFrame(psp->Caller, psp->GetSprite(), psp->GetFrame(), false) != nullptr ) return true;
 	}
 	return false;
+}
+
+
+unsigned int FSpriteModelFrame::getFlags(class DActorModelData * defs) const
+{
+	return (defs && defs->flags & MODELDATA_OVERRIDE_FLAGS)? (flags | defs->overrideFlagsSet) & ~(defs->overrideFlagsClear) : flags;
 }
