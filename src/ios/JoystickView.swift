@@ -71,13 +71,13 @@ class JoystickView: UIView {
       knobCenter = location
     }
     
-    let knobPosition = CGPoint(x: cos(angle) * 50, y: sin(angle) * 50)
-    let normalizedX = knobPosition.x / 50
-    let normalizedY = knobPosition.y / 50
+//    let knobPosition = CGPoint(x: cos(angle) * 50, y: sin(angle) * 50)
+    let normalizedX = dx / 50
+    let normalizedY = dy / 50
     let clampedX = max(-1, min(1, normalizedX))
     let clampedY = max(-1, min(1, normalizedY))
     #if DEBUG
-    print("JoystickView: x=\(clampedX),y=\(clampedY)")
+    print("JoystickView: knobpos=\(knobCenter), norm=\(normalizedX),\(normalizedY) x=\(clampedX),y=\(clampedY)")
     #endif
     JoystickInputHolder.shared.axisX = Float(clampedX)
     JoystickInputHolder.shared.axisY = Float(clampedY)
