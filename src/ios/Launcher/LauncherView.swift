@@ -168,7 +168,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.8.8"
+  static let currentVersion = "2024.8.9"
   
   var body: some View {
     VStack {
@@ -325,7 +325,15 @@ struct LauncherView_Previews: PreviewProvider {
       #if os(tvOS)
       self?.viewModel.webServer?.stop()
       #endif
-      self?.startSDLMain(withArgs: arguments)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+        self?.startSDLMain(withArgs: arguments)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            if let window = windowScene.windows.first {
+              window.rootViewController = self
+              window.makeKeyAndVisible()
+            }
+        }
+      }
     }
     let launcherView = LauncherView(viewModel: viewModel)
     let hostingController = UIHostingController(rootView: launcherView)

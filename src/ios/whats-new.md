@@ -1,10 +1,22 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.8.9](colored: 'yellow')
+
+The underlying GZDoom engine has been updated to ^[version 4.12.2](colored: 'orange').
+
+^[°°±±²²ÛÛ Touch Control ÛÛ²²±±°°](colored: 'cyan')
+
+- ^[Alignment Controls when Arranging](colored: 'white'): Alignment guides will appear when a button is aligned with another and will automatically snap into alignment. You can turn on/off horizontal alignment using the alignment buttons to the right of the opacity controls at the top of the screen.
+
+- ^[Touch Analog Stick](colored: 'white'): Fixed the issue where moving in small increments would result in movement to the right.
+
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2024.8.8](colored: 'yellow')
 
 Fixed an issue with the touch aiming where it can get unresponsive while moving.
 
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.8.7](colored: 'yellow')
 
