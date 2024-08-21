@@ -78,7 +78,7 @@ class GamepadButtonView: AlignableView, CustomizableColor {
     button.setImage(image?.applyingSymbolConfiguration(config), for: .normal)
     button.isHidden = true
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.widthAnchor.constraint(equalToConstant: 20).isActive = true
+    button.widthAnchor.constraint(equalToConstant: 30).isActive = true
     button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
     let pulse = CABasicAnimation(keyPath: "transform.scale")
     pulse.duration = 0.5
@@ -95,7 +95,7 @@ class GamepadButtonView: AlignableView, CustomizableColor {
     button.setImage(UIImage(systemName: "square.resize"), for: .normal)
     button.isHidden = true
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.widthAnchor.constraint(equalToConstant: 20).isActive = true
+    button.widthAnchor.constraint(equalToConstant: 30).isActive = true
     button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
     let pulse = CABasicAnimation(keyPath: "transform.scale")
     pulse.duration = 0.5
@@ -217,12 +217,12 @@ class GamepadButtonView: AlignableView, CustomizableColor {
     buttonLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     
     addSubview(colorCustomizeButton)
-    colorCustomizeButton.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+    colorCustomizeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -8).isActive = true
+    colorCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
     colorCustomizeButton.addTarget(self, action: #selector(colorCustomizeButtonPressed(_:)), for: .touchUpInside)
     addSubview(sizeCustomizeButton)
-    sizeCustomizeButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-    sizeCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+    sizeCustomizeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8).isActive = true
+    sizeCustomizeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
     sizeCustomizeButton.addTarget(self, action: #selector(sizeCustomizeButtonPressed(_:)), for: .touchUpInside)
   }
   
@@ -274,6 +274,10 @@ class GamepadButtonView: AlignableView, CustomizableColor {
     let pointForCustomizeColorButton = colorCustomizeButton.convert(point, from: self)
     if CGRectContainsPoint(colorCustomizeButton.bounds, pointForCustomizeColorButton) {
       return colorCustomizeButton.hitTest(pointForCustomizeColorButton, with: event)
+    }
+    let pointForCustomizeSizeButton = sizeCustomizeButton.convert(point, from: self)
+    if CGRectContainsPoint(sizeCustomizeButton.bounds, pointForCustomizeSizeButton) {
+      return sizeCustomizeButton.hitTest(pointForCustomizeSizeButton, with: event)
     }
     return super.hitTest(point, with: event)
   }
