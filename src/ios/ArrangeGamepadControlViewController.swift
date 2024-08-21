@@ -23,6 +23,7 @@ class ArrangeGamepadControlViewController: UIViewController {
   
   var buttonPositions = [GamepadButtonPosition]()
   var colorPositions = [GamepadButtonColor]()
+  var buttonSizes = [CGFloat]()
   
   var currentControlViews = [UIView]()
   
@@ -333,6 +334,7 @@ class ArrangeGamepadControlViewController: UIViewController {
   @objc func saveButtonPressed(_ sender: UIButton) {
     buttonPositions = []
     colorPositions = []
+    buttonSizes = []
     
     view.subviews.forEach { subview in
       var red: CGFloat = 0
@@ -349,7 +351,7 @@ class ArrangeGamepadControlViewController: UIViewController {
             originY: Float(gamepadButtonView.frame.origin.y)
           )
         )
-
+        buttonSizes.append(subview.frame.size.width)
       } else if let dpadView = subview as? DPadView,
         let gamepadControl = GamepadControl(rawValue: dpadView.tag) {
           buttonPositions.append(
@@ -359,6 +361,7 @@ class ArrangeGamepadControlViewController: UIViewController {
               originY: Float(dpadView.frame.origin.y)
             )
           )
+        buttonSizes.append(subview.frame.size.width)
       }
       
       if let customizableColorView = subview as? CustomizableColor {
@@ -379,9 +382,15 @@ class ArrangeGamepadControlViewController: UIViewController {
     if let saveColorData = try? PropertyListEncoder().encode(colorPositions) {
       UserDefaults.standard.set(saveColorData, forKey: GamepadButtonColor.userDefaultsKey)
     }
+    if let saveSizeData = try? PropertyListEncoder().encode(buttonSizes) {
+      UserDefaults.standard.set(saveSizeData, forKey: GamepadButtonSize.userDefaultsKey)
+    }
     
+    #if DEBUG
     print("Saved buttonPositions: \(buttonPositions)")
     print("Saved colorPositions: \(colorPositions)")
+    print("Saved sizes: \(buttonSizes)")
+    #endif
     
     // save opacity setting
     if let touchControlsOpacitySetValue {
@@ -417,13 +426,15 @@ class ArrangeGamepadControlViewController: UIViewController {
     }
   }
   
-  private func addControl(_ control: GamepadControl, xPos: Float? = nil, yPos: Float? = nil, color: UIColor? = nil) {
+  private func addControl(_ control: GamepadControl, xPos: Float? = nil, yPos: Float? = nil, color: UIColor? = nil, size: GamepadButtonSize? = .medium) {
     let controlView = control.view
     controlView.translatesAutoresizingMaskIntoConstraints = true
     controlView.tag = control.rawValue
+    (controlView as? GamepadButtonView)?.widthConstraint?.isActive = false
+    (controlView as? GamepadButtonView)?.heightConstraint?.isActive = false
     let xPosn: CGFloat = CGFloat(xPos ?? Float((self.view.frame.width - 50) / 2))
     let yPosn: CGFloat = CGFloat(yPos ?? Float((self.view.frame.height - 50) / 2))
-    let size: CGFloat = controlView is DPadView ? 150 : 80
+    let size: CGFloat = controlView is DPadView ? 150 : (size?.rawValue ?? 80)
     controlView.frame = CGRect(x: xPosn, y: yPosn, width: size, height: size)
     if let buttonView = controlView as? GamepadButtonView {
       buttonView.operationMode = .arranging
@@ -464,9 +475,16 @@ class ArrangeGamepadControlViewController: UIViewController {
       loadedColorPositions = colorPositions
     }
     
+    var loadedSizes = [CGFloat]()
+    if let savedSizes = UserDefaults.standard.data(forKey: GamepadButtonSize.userDefaultsKey),
+       let sizes = try? PropertyListDecoder().decode([CGFloat].self, from: savedSizes) {
+      loadedSizes = sizes
+    }
+    
     controlPositions.enumerated().forEach { index, pos in
       let customizedColor: UIColor? = loadedColorPositions[safe: index]?.uiColor
-      self.addControl(pos.button, xPos: pos.originX, yPos: pos.originY, color: customizedColor)
+      let buttonSize = GamepadButtonSize(rawValue: loadedSizes[safe: index] ?? GamepadButtonSize.medium.rawValue)
+      self.addControl(pos.button, xPos: pos.originX, yPos: pos.originY, color: customizedColor, size: buttonSize)
     }
     view.bringSubviewToFront(overlayView)
   }

@@ -134,20 +134,28 @@ class TouchControlViewController: UIViewController {
        let colorPositions = try? PropertyListDecoder().decode([GamepadButtonColor].self, from: savedColorData) {
       loadedColorPositions = colorPositions
     }
+    
+    // load sizes
+    var loadedSizes = [CGFloat]()
+    if let savedSizes = UserDefaults.standard.data(forKey: GamepadButtonSize.userDefaultsKey),
+       let sizes = try? PropertyListDecoder().decode([CGFloat].self, from: savedSizes) {
+      loadedSizes = sizes
+    }
      
     controlPositions.enumerated().forEach { index, controlPos in
       let controlView = controlPos.button.view
       controlView.translatesAutoresizingMaskIntoConstraints = true
       controlView.tag = controlPos.button.rawValue
-      let size: CGFloat = controlPos.button == .dpad ? 150 : 80
-      controlView.frame = CGRect(x: CGFloat(controlPos.originX), y: CGFloat(controlPos.originY), width: size, height: size)
+      var size: CGFloat = controlPos.button == .dpad ? 150 : 80
       view.addSubview(controlView)
       let customizedColor = loadedColorPositions[safe: index]?.uiColor
       if let gamepadButton = controlView as? GamepadButtonView {
         gamepadButton.delegate = self
+        size = loadedSizes[safe: index] ?? GamepadButtonSize.medium.rawValue
       } else if let dpad = controlView as? DPadView {
         dpad.delegate = self
       }
+      controlView.frame = CGRect(x: CGFloat(controlPos.originX), y: CGFloat(controlPos.originY), width: size, height: size)
       if var customizableColorView = controlView as? CustomizableColor {
         customizableColorView.customizedColor = customizedColor
       }
@@ -239,7 +247,7 @@ extension TouchControlViewController: AimControlsDelegate {
     #endif
     MouseInputHolder.shared.deltaX = 0
     MouseInputHolder.shared.deltaY = 0
-    guard let utils = IOSUtils.shared() else { return }
+//    guard let utils = IOSUtils.shared() else { return }
 
     // Release buttons if the buttons are within the aiming view
 //    for subview in view.subviews {
