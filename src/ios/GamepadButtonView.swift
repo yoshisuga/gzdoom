@@ -92,11 +92,12 @@ class GamepadButtonView: AlignableView, CustomizableColor {
   
   let sizeCustomizeButton: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(systemName: "square.resize"), for: .normal)
+    button.setImage(UIImage(systemName: "arrow.up.right.and.arrow.down.left.rectangle"), for: .normal)
     button.isHidden = true
     button.translatesAutoresizingMaskIntoConstraints = false
     button.widthAnchor.constraint(equalToConstant: 30).isActive = true
     button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+    button.imageView?.tintColor = .red
     let pulse = CABasicAnimation(keyPath: "transform.scale")
     pulse.duration = 0.5
     pulse.fromValue = 0.8

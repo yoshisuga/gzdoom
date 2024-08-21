@@ -598,6 +598,8 @@ struct KeyPosition {
     return button
   }()
   
+  var optionsStack = UIStackView()
+  
   var touchControlsView = UIView()
   
 #if os(iOS)
@@ -635,6 +637,12 @@ struct KeyPosition {
 #if os(iOS)
     gyroHandler.setup()
 #endif
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(gameControllerNotification(_:)), name: GZDNotificationName.gameControllerDidInput, object: nil)
+  }
+  
+  @objc private func gameControllerNotification(_ notification: Notification) {
+    gameControllerDidConnect()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -673,6 +681,14 @@ struct KeyPosition {
     
 #if os(iOS)
     let touchControlsViewController = TouchControlViewController()
+    touchControlsViewController.onControlsVisibilityChange = { [weak self] isHidden in
+      guard let self else { return }
+      self.optionsStack.isHidden = isHidden
+//      if !self.optionsStack.isHidden {
+        self.leftKeyboardView.isHidden = true
+        self.rightKeyboardView.isHidden = true
+//      }
+    }
     addChild(touchControlsViewController)
     touchControlsView = touchControlsViewController.view
     touchControlsView.translatesAutoresizingMaskIntoConstraints = false
@@ -701,7 +717,7 @@ struct KeyPosition {
     
     escButton.addTarget(self, action: #selector(escButtonPressed(_:)), for: .touchUpInside)
     
-    let optionsStack = UIStackView(arrangedSubviews: [
+    optionsStack = UIStackView(arrangedSubviews: [
       escButton, controlOptionsButton, toggleButton, toggleVirtualControllerButton, customizeControlsButton
     ])
     optionsStack.axis = .horizontal
@@ -734,15 +750,18 @@ struct KeyPosition {
       leftKeyboardView.isHidden = false
       rightKeyboardView.isHidden = false
       escButtonView.isHidden = true
-      touchControlsView.isHidden = true
+      touchControlsVC?.changeTouchControls(isHidden: true, skipOnVisibilityChange: true)
+//      touchControlsView.isHidden = true
       customizeControlsButton.isHidden = true
+      view.bringSubviewToFront(leftKeyboardView)
+      view.bringSubviewToFront(rightKeyboardView)
     } else if sender == toggleVirtualControllerButton {
       escButtonView.isHidden = false
       leftKeyboardView.isHidden = true
       rightKeyboardView.isHidden = true
-      touchControlsView.isHidden.toggle()
+//      touchControlsView.isHidden.toggle()
 #if os(iOS)
-      touchControlsVC?.changeTouchControls(isHidden: touchControlsView.isHidden)
+      touchControlsVC?.toggleTouchControls()
 #endif
       customizeControlsButton.isHidden = false
     } else if sender == customizeControlsButton {
@@ -860,10 +879,14 @@ extension EmulatorKeyboardController: DPadDelegate {
 
 extension EmulatorKeyboardController: GameControllerHandlerDelegate {
   func gameControllerDidConnect() {
-    touchControlsView.isHidden = true
+    touchControlsVC?.changeTouchControls(isHidden: true)
+    optionsStack.isHidden = true
+    leftKeyboardView.isHidden = true
+    rightKeyboardView.isHidden = true
   }
   
   func gameControllerDidDisconnect() {
-    touchControlsView.isHidden = false
+    touchControlsVC?.changeTouchControls(isHidden: false)
+    optionsStack.isHidden = false
   }
 }

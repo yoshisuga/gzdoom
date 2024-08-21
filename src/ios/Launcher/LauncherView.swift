@@ -371,6 +371,7 @@ struct LauncherView_Previews: PreviewProvider {
   #if DEBUG
   @objc func debug1Tapped(_ sender: UIBarButtonItem) {
     let vc = ArrangeGamepadControlViewController()
+    vc.modalPresentationStyle = .fullScreen
     present(vc, animated: true)
   }
   #endif

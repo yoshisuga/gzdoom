@@ -23,6 +23,8 @@ class TouchControlViewController: UIViewController {
   
   var aimControlsView = AimControlsView()
   
+  var onControlsVisibilityChange: ((Bool) -> Void)?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -181,11 +183,18 @@ class TouchControlViewController: UIViewController {
     }
   }
   
-  func changeTouchControls(isHidden: Bool) {
+  func changeTouchControls(isHidden: Bool, skipOnVisibilityChange: Bool = false) {
     if isHidden {
       guideOverlayView.isHidden = true
     }
     view.subviews.filter{ $0 is GamepadButtonView || $0 is DPadView }.forEach{ $0.isHidden = isHidden }
+    if !skipOnVisibilityChange {
+      onControlsVisibilityChange?(isHidden)
+    }
+  }
+  
+  func toggleTouchControls() {
+    view.subviews.filter{ $0 is GamepadButtonView || $0 is DPadView }.forEach{ $0.isHidden.toggle() }
   }
 }
 

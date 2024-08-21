@@ -1041,6 +1041,7 @@ const UInt8 DIK_TO_ASCII[128] =
   event.type = isPressed ? EV_KeyDown : EV_KeyUp;
   event.data1 = data1;
   D_PostEvent(&event);
+  [[NSNotificationCenter defaultCenter] postNotificationName:[GZDNotificationName gameControllerDidInput] object:nil];
 }
 
 -(void)handleOverlayDPadWithDirection:(DPadDirection)direction {

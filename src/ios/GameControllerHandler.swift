@@ -13,6 +13,10 @@ protocol GameControllerHandlerDelegate: AnyObject {
   func gameControllerDidDisconnect()
 }
 
+@objc class GZDNotificationName: NSObject {
+  @objc static let gameControllerDidInput = Notification.Name("gameControllerDidInput")
+}
+
 @objc class GameControllerHandler: NSObject {
   @objc static let shared = GameControllerHandler()
   
@@ -66,6 +70,7 @@ protocol GameControllerHandlerDelegate: AnyObject {
     gamepad.leftThumbstick.valueChangedHandler = { dpad, x, y in
       JoystickInputHolder.shared.axisX = x
       JoystickInputHolder.shared.axisY = y * -1
+      NotificationCenter.default.post(name: GZDNotificationName.gameControllerDidInput, object: nil)
 //      let movementDeadzone: Float = 0.2
 //      if x > movementDeadzone {
 //        utils.handleLeftThumbstickDirectionalInput(.right, isPressed: true)
@@ -98,6 +103,7 @@ protocol GameControllerHandlerDelegate: AnyObject {
       let mouseMoveY: Int = Int(updatedDY) * invertYAxisModifier
       MouseInputHolder.shared.deltaX = mouseMoveX
       MouseInputHolder.shared.deltaY = mouseMoveY
+      NotificationCenter.default.post(name: GZDNotificationName.gameControllerDidInput, object: nil)
     }
 
     gamepad.buttonA.valueChangedHandler = { button, _, pressed in
