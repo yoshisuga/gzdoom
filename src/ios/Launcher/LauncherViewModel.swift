@@ -52,6 +52,8 @@ class LauncherViewModel: NSObject, ObservableObject {
     }
     args.append("use_joystick")
     args.append("1")
+    args.append("+logfile")
+    args.append("\(documentsPath)/logfile.txt")
     return args
   }
   
