@@ -2,13 +2,21 @@
 
 ^[Version 2024.8.9](colored: 'yellow')
 
-The underlying GZDoom engine has been updated to ^[version 4.12.2](colored: 'orange').
+The underlying GZDoom engine has been updated to ^[version 4.12.2](colored: 'orange')! I applied the patch to support the "Banshee explosion" in the new Legacy of Rust episode.
 
 ^[°°±±²²ÛÛ Touch Control ÛÛ²²±±°°](colored: 'cyan')
+
+- ^[Change Button Sizes](colored: 'white'): There's a new button that appears when tapping a button in the arrange controls screen. Tapping this button toggles the sizes between small, medium and large.
 
 - ^[Alignment Controls when Arranging](colored: 'white'): Alignment guides will appear when a button is aligned with another and will automatically snap into alignment. You can turn on/off horizontal alignment using the alignment buttons to the right of the opacity controls at the top of the screen.
 
 - ^[Touch Analog Stick](colored: 'white'): Fixed the issue where moving in small increments would result in movement to the right.
+
+^[°°±±²²ÛÛ Everything Else ÛÛ²²±±°°](colored: 'cyan')
+
+- Hide the option buttons at the top of the screen when interacting with a physical controller or keyboard. Touching the screen will bring it back.
+
+- A log file is now written to the GenZD folder, called ^[logfile.txt](colored: 'white'). If a launch configuration does not start, you can look at the log file to troubleshoot, or get help in our [Discord](https://discord.gg/S4tVTNEmsj).
 
 
 ^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
