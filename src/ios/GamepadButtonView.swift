@@ -272,15 +272,27 @@ class GamepadButtonView: AlignableView, CustomizableColor {
   // Since the arrange-specific buttons are outside of the bounds, allow touches to them
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     // Convert point to color button coordinate system
-    let pointForCustomizeColorButton = colorCustomizeButton.convert(point, from: self)
-    if CGRectContainsPoint(colorCustomizeButton.bounds, pointForCustomizeColorButton) {
-      return colorCustomizeButton.hitTest(pointForCustomizeColorButton, with: event)
+    if !colorCustomizeButton.isHidden {
+      let pointForCustomizeColorButton = colorCustomizeButton.convert(point, from: self)
+      if CGRectContainsPoint(colorCustomizeButton.bounds, pointForCustomizeColorButton) {
+        return colorCustomizeButton.hitTest(pointForCustomizeColorButton, with: event)
+      }
     }
-    let pointForCustomizeSizeButton = sizeCustomizeButton.convert(point, from: self)
-    if CGRectContainsPoint(sizeCustomizeButton.bounds, pointForCustomizeSizeButton) {
-      return sizeCustomizeButton.hitTest(pointForCustomizeSizeButton, with: event)
+    if !sizeCustomizeButton.isHidden {
+      let pointForCustomizeSizeButton = sizeCustomizeButton.convert(point, from: self)
+      if CGRectContainsPoint(sizeCustomizeButton.bounds, pointForCustomizeSizeButton) {
+        return sizeCustomizeButton.hitTest(pointForCustomizeSizeButton, with: event)
+      }
     }
     return super.hitTest(point, with: event)
   }
   
+//  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+//    if buttonSize == .small || bounds.size.width <= 50 {
+//      let margin: CGFloat = 10
+//      let area = self.bounds.insetBy(dx: 0, dy: -margin)
+//      return area.contains(point)
+//    }
+//    return super.point(inside: point, with: event)
+//  }
 }

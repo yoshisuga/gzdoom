@@ -874,13 +874,13 @@ const UInt8 DIK_TO_ASCII[128] =
     } else {
       [self keyUpInternal:DIK_C];
     }
-  } else if (gamepadControl == GamepadControlKB_D) {
+  } else if (gamepadControl == GamepadControlKB_V) {
     if (isPressed) {
       [self keyDownInternal:DIK_V label:@"V"];
     } else {
       [self keyUpInternal:DIK_V];
     }
-  } else if (gamepadControl == GamepadControlKB_D) {
+  } else if (gamepadControl == GamepadControlKB_B) {
     if (isPressed) {
       [self keyDownInternal:DIK_B label:@"B"];
     } else {
@@ -892,7 +892,7 @@ const UInt8 DIK_TO_ASCII[128] =
     } else {
       [self keyUpInternal:DIK_N];
     }
-  } else if (gamepadControl == GamepadControlKB_D) {
+  } else if (gamepadControl == GamepadControlKB_M) {
     if (isPressed) {
       [self keyDownInternal:DIK_M label:@"M"];
     } else {

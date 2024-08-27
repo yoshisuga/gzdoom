@@ -750,7 +750,9 @@ struct KeyPosition {
       leftKeyboardView.isHidden = false
       rightKeyboardView.isHidden = false
       escButtonView.isHidden = true
+      #if os(iOS)
       touchControlsVC?.changeTouchControls(isHidden: true, skipOnVisibilityChange: true)
+      #endif
 //      touchControlsView.isHidden = true
       customizeControlsButton.isHidden = true
       view.bringSubviewToFront(leftKeyboardView)
@@ -879,14 +881,18 @@ extension EmulatorKeyboardController: DPadDelegate {
 
 extension EmulatorKeyboardController: GameControllerHandlerDelegate {
   func gameControllerDidConnect() {
+    #if os(iOS)
     touchControlsVC?.changeTouchControls(isHidden: true)
+    #endif
     optionsStack.isHidden = true
     leftKeyboardView.isHidden = true
     rightKeyboardView.isHidden = true
   }
   
   func gameControllerDidDisconnect() {
+    #if os(iOS)
     touchControlsVC?.changeTouchControls(isHidden: false)
+    #endif
     optionsStack.isHidden = false
   }
 }

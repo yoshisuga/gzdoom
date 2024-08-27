@@ -168,7 +168,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.8.9"
+  static let currentVersion = "2024.8.10"
   
   var body: some View {
     VStack {
@@ -349,6 +349,7 @@ struct LauncherView_Previews: PreviewProvider {
       hostingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
     
+    #if os(iOS)
     #if DEBUG
     let debugToolbar = UIToolbar()
     debugToolbar.translatesAutoresizingMaskIntoConstraints = false
@@ -366,9 +367,10 @@ struct LauncherView_Previews: PreviewProvider {
       debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
     #endif
+    #endif
   }
   
-  #if DEBUG
+  #if DEBUG && os(iOS)
   @objc func debug1Tapped(_ sender: UIBarButtonItem) {
     let vc = ArrangeGamepadControlViewController()
     vc.modalPresentationStyle = .fullScreen

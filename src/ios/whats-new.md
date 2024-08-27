@@ -1,5 +1,18 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.8.10](colored: 'yellow')
+
+^[°°±±²²ÛÛ Touch Controls ÛÛ²²±±°°](colored: 'cyan')
+
+- Fixed the issue where small size buttons were hard to tap.
+- Fixed the mapping for keyboard keys for the "V", "B" and "M" keys.
+
+^[°°±±²²ÛÛ Patches ÛÛ²²±±°°](colored: 'cyan')
+
+- Total Chaos Fix: Updated the argument checking for the SpawnSpotForced function to be less strict and provide default values.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2024.8.9](colored: 'yellow')
 
 The underlying GZDoom engine has been updated to ^[version 4.12.2](colored: 'orange')! I applied the patch to support the "Banshee explosion" in the new Legacy of Rust episode.
@@ -18,8 +31,6 @@ The underlying GZDoom engine has been updated to ^[version 4.12.2](colored: 'ora
 
 - A log file is now written to the GenZD folder, called ^[logfile.txt](colored: 'white'). If a launch configuration does not start, you can look at the log file to troubleshoot, or get help in our [Discord](https://discord.gg/S4tVTNEmsj).
 
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.8.8](colored: 'yellow')
 

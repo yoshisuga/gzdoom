@@ -5543,7 +5543,12 @@ int DLevelScript::CallFunction(int argCount, int funcIndex, int32_t *args, int &
 		}
 
 		case ACSF_SpawnSpotForced:
-			MIN_ARG_COUNT(4);
+      // Yoshi: GenZD: Support 3 args and make the 4th zero
+      if (argCount == 3) {
+        args[3] = 0;
+        argCount = 4;
+      }
+      MIN_ARG_COUNT(4);
 			return DoSpawnSpot(args[0], args[1], args[2], args[3], true);
 
 		case ACSF_SpawnSpotFacingForced:
