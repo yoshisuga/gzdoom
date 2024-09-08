@@ -1,5 +1,23 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.9.1](colored: 'yellow')
+
+^[°°±±²²ÛÛ Bug Fixes ÛÛ²²±±°°](colored: 'cyan')
+
+- ^[Sound Fonts](colored: 'white'): Sound font files can be placed in the GenZD folder, in: ^[GZDoom/soundfonts](colored: 'yellow') and ^[GZDoom/fm_banks](colored: 'yellow'). Select the sound font file by going to ^[GZDoom Options -> Full options menu -> Sound options -> Advanced -> Midi player options -> FluidSynth -> Select configuration](colored: 'yellow') 
+
+- ^[Bots](colored: 'white'): If you want to use "zcajun" bots, place the bots.cfg file in: ^[GZDoom/zcajun](colored: 'yellow')
+
+- Fixed the touch button for the number ^[7](colored: 'yellow') keyboard key so that it's released properly when pressed.
+
+- Fixed the appearance of the list in the initial screen that shows the launch configurations 
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2024.8.11](colored: 'yellow')
+
+Support for iOS 15.
+
 ^[Version 2024.8.10](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Touch Controls ÛÛ²²±±°°](colored: 'cyan')
@@ -10,8 +28,6 @@
 ^[°°±±²²ÛÛ Patches ÛÛ²²±±°°](colored: 'cyan')
 
 - Total Chaos Fix: Updated the argument checking for the SpawnSpotForced function to be less strict and provide default values.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.8.9](colored: 'yellow')
 

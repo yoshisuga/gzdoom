@@ -190,6 +190,18 @@ struct OptionsDoubleTapPickerRow: View {
   }
 }
 
+struct NavigationWrapper<Content>: View where Content: View {
+    @ViewBuilder var content: () -> Content
+    
+    var body: some View {
+        if #available(iOS 16, *) {
+            NavigationStack(root: content)
+        } else {
+            NavigationView(content: content)
+        }
+    }
+}
+
 struct ControlOptionsView: View {
   @StateObject var viewModel: ControlOptionsViewModel
   
@@ -203,7 +215,8 @@ struct ControlOptionsView: View {
   }
   
   var body: some View {
-    NavigationStack {
+    
+    NavigationWrapper {
       VStack {
         List {
           Section (header: Text("General").font(.small)) {

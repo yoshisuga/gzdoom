@@ -98,6 +98,15 @@ Everything that is changed is marked (maybe commented) with "Added by MC"
 #include "i_system.h"  // for SHARE_DIR
 #endif // !_WIN32 && !__APPLE__
 
+// Yoshi Custom
+#ifdef __APPLE__
+#import "TargetConditionals.h"
+#endif
+#if TARGET_OS_IPHONE
+#include "ios/ios-glue.h"
+#endif
+
+
 static FRandom pr_botspawn ("BotSpawn");
 
 cycle_t BotThinkCycles, BotSupportCycles;
@@ -480,7 +489,16 @@ FString M_GetCajunPath(const char* botfilename)
 {
 	FString path;
 
+  // Yoshi Custom
+#if TARGET_OS_IPHONE
+  char ios_docs_path[4000];
+  ios_get_base_path(ios_docs_path);
+  FString iosDocs = FString(ios_docs_path);
+  path << iosDocs << "GZDoom/zcajun/" << botfilename;
+#else
+  
 	path << progdir << "zcajun/" << botfilename;
+#endif
 	if (!FileExists(path))
 	{
 		path = "";

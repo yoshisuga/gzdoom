@@ -138,7 +138,7 @@ struct LauncherConfigsView: View {
                 }
               }
               #endif
-                .listRowBackground(Color.black.opacity(0.1))
+                .listRowBackground(Color.clear)
             }.onDelete { indexSet in
               let configsToDelete = indexSet.map{ viewModel.savedConfigs[$0] }
               viewModel.deleteLauncherConfigs(configsToDelete)

@@ -246,7 +246,13 @@ class LauncherViewModel: NSObject, ObservableObject {
       var containsIwadinfoLump = false
       do {
         
-        let archive = try Archive(url: URL(filePath: selectedIWAD.fullPath), accessMode: .read)
+        var fileURL: URL
+        if #available(iOS 16.0, *) {
+          fileURL = URL(filePath: selectedIWAD.fullPath)
+        } else {
+          fileURL = URL(fileURLWithPath: selectedIWAD.fullPath)
+        }
+        let archive = try Archive(url: fileURL, accessMode: .read)
         for entry in archive {
           let filename = entry.path.lowercased() as NSString
           if filename.lastPathComponent.starts(with: "iwadinfo") {

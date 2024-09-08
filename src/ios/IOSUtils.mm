@@ -656,7 +656,7 @@ const UInt8 DIK_TO_ASCII[128] =
     if (isPressed) {
       [self keyDownInternal:DIK_7 label:@"7"];
     } else {
-      [self keyUpInternal:DIK_8];
+      [self keyUpInternal:DIK_7];
     }
   } else if (gamepadControl == GamepadControlKB_8) {
     if (isPressed) {

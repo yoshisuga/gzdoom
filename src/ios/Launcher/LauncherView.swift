@@ -168,7 +168,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.8.10"
+  static let currentVersion = "2024.9.1"
   
   var body: some View {
     VStack {
@@ -219,6 +219,7 @@ struct LauncherView: View {
       
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder, activeSheet: $activeSheet).padding(.bottom)
 
+      ColoredText("Swipe left to reveal edit and delete options.").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.yellow)
       ColoredText("Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.gray)
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
@@ -351,21 +352,21 @@ struct LauncherView_Previews: PreviewProvider {
     
     #if os(iOS)
     #if DEBUG
-    let debugToolbar = UIToolbar()
-    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
-    let debug1 = UIBarButtonItem(
-      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
-      style: .plain,
-      target: self,
-      action: #selector(debug1Tapped(_:))
-    )
-    debugToolbar.setItems([debug1], animated: false)
-    view.addSubview(debugToolbar)
-    NSLayoutConstraint.activate([
-      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-    ])
+//    let debugToolbar = UIToolbar()
+//    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
+//    let debug1 = UIBarButtonItem(
+//      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
+//      style: .plain,
+//      target: self,
+//      action: #selector(debug1Tapped(_:))
+//    )
+//    debugToolbar.setItems([debug1], animated: false)
+//    view.addSubview(debugToolbar)
+//    NSLayoutConstraint.activate([
+//      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+//    ])
     #endif
     #endif
   }
