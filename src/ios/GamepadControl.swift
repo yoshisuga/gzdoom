@@ -253,3 +253,144 @@ struct GamepadButtonPosition: Codable {
   
   static let userDefaultsKey = "controlPositions"
 }
+
+struct GamepadButtonLayoutProfile: Codable {
+  let name: String
+  let positions: [GamepadButtonPosition]
+  let colors: [GamepadButtonColor]
+  let sizes: [CGFloat]
+  let opacity: Float
+  let lastUpdatedAt: Date
+}
+
+enum GamepadButtonProfileError: Error {
+  case lastUsedNotFound, savedProfilesDidNotExist
+}
+
+class GamepadButtonProfileManager {
+  private let userDefaultsKey = "controlProfiles"
+  private let userDefaultsLastUsedKey = "profileLastUsed"
+  
+  private func getLastUsed() throws -> GamepadButtonLayoutProfile? {
+    guard let saveData = UserDefaults.standard.data(
+      forKey: userDefaultsKey
+      ),
+      let profileDict = try? PropertyListDecoder().decode(
+        [String: GamepadButtonLayoutProfile].self,
+        from: saveData
+      ) else {
+      throw GamepadButtonProfileError.savedProfilesDidNotExist
+    }
+    guard let lastUsedProfileName = UserDefaults.standard.string(forKey: userDefaultsLastUsedKey) else {
+      throw GamepadButtonProfileError.lastUsedNotFound
+    }
+    return profileDict[lastUsedProfileName]
+  }
+  
+  func get() -> [String: GamepadButtonLayoutProfile] {
+    guard let saveData = UserDefaults.standard.data(
+      forKey: userDefaultsKey
+      ),
+      let profileDict = try? PropertyListDecoder().decode(
+        [String: GamepadButtonLayoutProfile].self,
+        from: saveData
+      ) else {
+      return [:]
+    }
+    return profileDict
+  }
+  
+  func getList() -> [GamepadButtonLayoutProfile] {
+    let profileDict = get()
+    return profileDict.keys.compactMap { profileDict[$0] }
+  }
+  
+  func save(_ profile: GamepadButtonLayoutProfile, makeLastUsed: Bool = true) {
+    var profileDict = [String: GamepadButtonLayoutProfile]()
+    if let saveData = UserDefaults.standard.data(
+      forKey: userDefaultsKey
+    ), let savedProfileDict = try? PropertyListDecoder().decode(
+      [String: GamepadButtonLayoutProfile].self,
+      from: saveData
+    ) {
+      profileDict = savedProfileDict
+    }
+    profileDict[profile.name] = profile
+    if let saveData = try? PropertyListEncoder().encode(profileDict) {
+      UserDefaults.standard.set(saveData, forKey: userDefaultsKey)
+    }
+    if makeLastUsed {
+      UserDefaults.standard.set(profile.name, forKey: userDefaultsLastUsedKey)
+    }
+  }
+  
+  func save(profilesDict: [String: GamepadButtonLayoutProfile]) {
+    if let saveData = try? PropertyListEncoder().encode(profilesDict) {
+      UserDefaults.standard.set(saveData, forKey: userDefaultsKey)
+    }
+  }
+  
+  func delete(_ profile: GamepadButtonLayoutProfile) {
+    guard let saveData = UserDefaults.standard.data(
+      forKey: userDefaultsKey
+      ),
+      var profileDict = try? PropertyListDecoder().decode(
+        [String: GamepadButtonLayoutProfile].self,
+        from: saveData
+      ) else {
+      return
+    }
+    profileDict.removeValue(forKey: profile.name)
+    if let saveData = try? PropertyListEncoder().encode(profileDict) {
+      UserDefaults.standard.set(saveData, forKey: userDefaultsKey)
+    }
+  }
+  
+  func getCurrent() -> GamepadButtonLayoutProfile? {
+    var profile: GamepadButtonLayoutProfile?
+    do {
+      profile = try GamepadButtonProfileManager().getLastUsed()
+    } catch GamepadButtonProfileError.savedProfilesDidNotExist {
+      if let saveData = UserDefaults.standard.data(forKey: GamepadButtonPosition.userDefaultsKey),
+         let controlPositions = try? PropertyListDecoder().decode([GamepadButtonPosition].self, from: saveData) {
+        let savedColorPositions = {
+          if let savedColorData = UserDefaults.standard.data(forKey: GamepadButtonColor.userDefaultsKey),
+             let colorPositions = try? PropertyListDecoder().decode([GamepadButtonColor].self, from: savedColorData) {
+            return colorPositions
+          }
+          return []
+        }()
+        let savedSizes = {
+          if let savedSizes = UserDefaults.standard.data(forKey: GamepadButtonSize.userDefaultsKey),
+             let sizes = try? PropertyListDecoder().decode([CGFloat].self, from: savedSizes) {
+            return sizes
+          }
+          return []
+        }()
+        let optionsModel = ControlOptionsViewModel.shared
+        profile = GamepadButtonLayoutProfile(
+          name: "Default",
+          positions: controlPositions,
+          colors: savedColorPositions,
+          sizes: savedSizes,
+          opacity: optionsModel.touchControlsOpacity,
+          lastUpdatedAt: Date()
+        )
+        if let profile {
+          GamepadButtonProfileManager().save(profile)
+        }
+      }
+    } catch GamepadButtonProfileError.lastUsedNotFound {
+      // try to get the default
+      let profiles = GamepadButtonProfileManager().get()
+      profile = profiles["Default"]
+    } catch {
+      profile = nil
+    }
+    return profile
+  }
+  
+  func makeLastUsed(_ profile: GamepadButtonLayoutProfile) {
+    UserDefaults.standard.set(profile.name, forKey: userDefaultsLastUsedKey)
+  }
+}

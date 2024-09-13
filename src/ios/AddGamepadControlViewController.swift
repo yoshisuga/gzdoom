@@ -118,6 +118,8 @@ class AddGamepadControlViewController: UIViewController {
     (buttonRT as? GamepadButtonView)?.delegate = self
     (leftClick as? GamepadButtonView)?.delegate = self
     (rightClick as? GamepadButtonView)?.delegate = self
+    (buttonSelect as? GamepadButtonView)?.delegate = self
+    (buttonStart as? GamepadButtonView)?.delegate = self
     (dpad as? DPadView)?.delegate = self
     
     controlsView.addSubview(instructionsLabel)

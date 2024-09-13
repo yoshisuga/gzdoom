@@ -61,7 +61,6 @@ class TouchControlViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     loadSavedControls()
-    updateOpacity()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -88,10 +87,15 @@ class TouchControlViewController: UIViewController {
         }
       }
       if !controlPositions.isEmpty {
-        if let saveData = try? PropertyListEncoder().encode(controlPositions) {
-          UserDefaults.standard.set(saveData, forKey: GamepadButtonPosition.userDefaultsKey)
-          print("Saved default controls....")
-        }
+        let defaultProfile = GamepadButtonLayoutProfile(
+          name: "Default",
+          positions: controlPositions,
+          colors: [],
+          sizes: [],
+          opacity: 0.8,
+          lastUpdatedAt: Date()
+        )
+        GamepadButtonProfileManager().save(defaultProfile)
       }
       needsSavingOfDefaultControls = false
     }
@@ -117,8 +121,21 @@ class TouchControlViewController: UIViewController {
   }
   
   private func loadSavedControls() {
-    guard let saveData = UserDefaults.standard.data(forKey: GamepadButtonPosition.userDefaultsKey),
-          let controlPositions = try? PropertyListDecoder().decode([GamepadButtonPosition].self, from: saveData) else {
+    // if last used not found
+    //   get saved profiles
+    //     if not found:
+    //       get saved controls, colors, sizes
+    //       create default profile with saved controls
+    //       save new profile with default
+    //     if found:
+    //       load default profile
+    //         if not found:
+    //           create a new default profile
+    //           save new profile with default
+    //         if found:
+    //           set controls to profile
+    
+    guard let profile = GamepadButtonProfileManager().getCurrent() else {
       needsSavingOfDefaultControls = true
       GamepadControl.createDefaultPositions(to: view, buttonDelegate: self, dpadDelegate: self)
       return
@@ -130,30 +147,16 @@ class TouchControlViewController: UIViewController {
       }
     }
     
-    // read color positions
-    var loadedColorPositions = [GamepadButtonColor]()
-    if let savedColorData = UserDefaults.standard.data(forKey: GamepadButtonColor.userDefaultsKey),
-       let colorPositions = try? PropertyListDecoder().decode([GamepadButtonColor].self, from: savedColorData) {
-      loadedColorPositions = colorPositions
-    }
-    
-    // load sizes
-    var loadedSizes = [CGFloat]()
-    if let savedSizes = UserDefaults.standard.data(forKey: GamepadButtonSize.userDefaultsKey),
-       let sizes = try? PropertyListDecoder().decode([CGFloat].self, from: savedSizes) {
-      loadedSizes = sizes
-    }
-     
-    controlPositions.enumerated().forEach { index, controlPos in
+    profile.positions.enumerated().forEach { index, controlPos in
       let controlView = controlPos.button.view
       controlView.translatesAutoresizingMaskIntoConstraints = true
       controlView.tag = controlPos.button.rawValue
       var size: CGFloat = controlPos.button == .dpad ? 150 : 80
       view.addSubview(controlView)
-      let customizedColor = loadedColorPositions[safe: index]?.uiColor
+      let customizedColor = profile.colors[safe: index]?.uiColor
       if let gamepadButton = controlView as? GamepadButtonView {
         gamepadButton.delegate = self
-        size = loadedSizes[safe: index] ?? GamepadButtonSize.medium.rawValue
+        size = profile.sizes[safe: index] ?? GamepadButtonSize.medium.rawValue
       } else if let dpad = controlView as? DPadView {
         dpad.delegate = self
       }
@@ -162,6 +165,7 @@ class TouchControlViewController: UIViewController {
         customizableColorView.customizedColor = customizedColor
       }
     }
+    updateOpacity(to: profile.opacity)
   }
 
   #if os(iOS)
@@ -169,17 +173,15 @@ class TouchControlViewController: UIViewController {
     let controller = ArrangeGamepadControlViewController()
     controller.onSaveClosure = {
       self.loadSavedControls()
-      self.updateOpacity()
     }
     controller.modalPresentationStyle = .fullScreen
     present(controller, animated: true)
   }
   #endif
   
-  func updateOpacity() {
-    let optionsModel = ControlOptionsViewModel.shared
+  private func updateOpacity(to alpha: Float) {
     view.subviews.filter { $0 is GamepadButtonView || $0 is DPadView }.forEach { controlView in
-      controlView.alpha = CGFloat(optionsModel.touchControlsOpacity)
+      controlView.alpha = CGFloat(alpha)
     }
   }
   

@@ -227,7 +227,6 @@ struct ControlOptionsView: View {
           }
 #if !os(tvOS)
           Section(header: Text("Touch Controls").font(.small)) {
-            OptionsSliderRow(sliderValue: $viewModel.touchControlsOpacity, label: "Opacity", min: 0.1, max: 1.0)
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
             OptionsSliderRow(sliderValue: $viewModel.touchJoystickDeadzone, label: "Movement Joystick Deadzone", min: 0, max: 40.0)
           }

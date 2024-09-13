@@ -21,6 +21,14 @@ class ArrangeGamepadControlViewController: UIViewController {
     }
   }
   
+  var currentProfile: GamepadButtonLayoutProfile? {
+    didSet {
+      if let currentProfile {
+        GamepadButtonProfileManager().makeLastUsed(currentProfile)
+      }
+    }
+  }
+  
   var buttonPositions = [GamepadButtonPosition]()
   var colorPositions = [GamepadButtonColor]()
   var buttonSizes = [CGFloat]()
@@ -127,6 +135,19 @@ class ArrangeGamepadControlViewController: UIViewController {
     return button
   }()
   
+  let profilesButton: UIButton = {
+    var configuration = UIButton.Configuration.filled()
+    configuration.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 24, bottom: 4, trailing: 24)
+    configuration.baseForegroundColor = .white
+    configuration.baseBackgroundColor = .darkGray
+    var container = AttributeContainer()
+    container.font = UIFont(name: "PerfectDOSVGA437", size: 24)
+    configuration.attributedTitle = AttributedString("Profiles", attributes: container)
+    let button = UIButton(configuration: configuration)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
   var addControlView: UIView?
   
   private let overlayView: UIView = {
@@ -198,15 +219,20 @@ class ArrangeGamepadControlViewController: UIViewController {
     trashIcon.frame = CGRect(x: (view.bounds.width - 50) / 2, y: 54, width: 30, height: 30)
     view.addSubview(trashIcon)
     
+//    view.addSubview(saveButton)
+//    saveButton.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -8).isActive = true
+//    saveButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
+//    saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchUpInside)
+
+    view.addSubview(profilesButton)
+    profilesButton.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -8).isActive = true
+    profilesButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
+    profilesButton.addTarget(self, action: #selector(profilesButtonPressed(_:)), for: .touchUpInside)
+
     view.addSubview(saveButton)
-    saveButton.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -8).isActive = true
+    saveButton.trailingAnchor.constraint(equalTo: profilesButton.leadingAnchor, constant: -8).isActive = true
     saveButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
     saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchUpInside)
-
-    view.addSubview(resetButton)
-    resetButton.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -8).isActive = true
-    resetButton.topAnchor.constraint(equalTo: cancelButton.topAnchor).isActive = true
-    resetButton.addTarget(self, action: #selector(resetButtonPressed(_:)), for: .touchUpInside)
 
     view.addSubview(instructionsLabel)
     instructionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -254,9 +280,9 @@ class ArrangeGamepadControlViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     loadSavedControls()
-    let optionsModel = ControlOptionsViewModel.shared
-    opacitySlider.value = optionsModel.touchControlsOpacity
-    updateOpacity(to: optionsModel.touchControlsOpacity)
+//    let optionsModel = ControlOptionsViewModel.shared
+//    opacitySlider.value = optionsModel.touchControlsOpacity
+//    updateOpacity(to: optionsModel.touchControlsOpacity)
   }
 
   private func updateOpacity(to opacity: Float) {
@@ -332,6 +358,106 @@ class ArrangeGamepadControlViewController: UIViewController {
   }
   
   @objc func saveButtonPressed(_ sender: UIButton) {
+    guard let currentProfile else {
+      print("Current profile does not exist yet!")
+      return
+    }
+    saveCurrent(name: currentProfile.name)
+    dismiss(animated: true)
+  }
+  
+  @objc func profilesButtonPressed(_ sender: UIButton) {
+    guard let currentProfile else {
+      print("Current profile does not exist yet!")
+      return
+    }
+    let alert = UIAlertController(title: "Current Profile:\n\(currentProfile.name)", message: "", preferredStyle: .actionSheet)
+//    alert.addAction(UIAlertAction(title: "Save Current Profile", style: .default, handler: { _ in
+//      self.saveCurrent(name: currentProfile.name)
+//    }))
+    alert.addAction(UIAlertAction(title: "Save as New Profile", style: .default, handler: { _ in
+      let createAlert = UIAlertController(title: "New Profile", message: "Enter Profile Name:", preferredStyle: .alert)
+      createAlert.addTextField()
+      createAlert.addAction(UIAlertAction(title: "Create", style: .default, handler: { _ in
+        guard let text = createAlert.textFields?.first?.text, !text.isEmpty else {
+          let errorAlert = UIAlertController(title: "Missing Name", message: "Please enter a name for the profile.", preferredStyle: .alert)
+          errorAlert.addAction(UIAlertAction(title: "Try again", style: .default, handler: { _ in
+            self.present(createAlert, animated: true)
+          }))
+          self.present(errorAlert, animated: true)
+          return
+        }
+        let allProfiles = GamepadButtonProfileManager().get()
+        guard allProfiles[text] == nil else {
+          let errorAlert = UIAlertController(title: "Profile Exists", message: "A profile exists with that name. Would you like to overwrite it?", preferredStyle: .alert)
+          errorAlert.addAction(UIAlertAction(title: "Overwrite", style: .destructive, handler: { _ in
+            self.saveCurrent(name: text)
+            self.loadSavedControls()
+          }))
+          errorAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+          self.present(errorAlert, animated: true)
+          return
+        }
+        self.saveCurrent(name: text)
+        self.loadSavedControls()
+      }))
+      createAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+      self.present(createAlert, animated: true)
+    }))
+
+    alert.addAction(UIAlertAction(title: "Load Profile", style: .default, handler: { _ in
+      var view = SelectProfileView()
+      view.onSelect = { profile in
+        self.currentProfile = profile
+        self.loadSavedControls()
+        self.dismiss(animated: true)
+      }
+      view.onCancel = {
+        self.dismiss(animated: true)
+      }
+      let hostingController = UIHostingController(rootView: view)
+      self.present(hostingController, animated: true)
+    }))
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    
+    alert.addAction(UIAlertAction(title: "Reset this profile to default", style: .default, handler: { [weak self] _ in
+      guard let self, let currentProfile = self.currentProfile else {
+        return
+      }
+      for controlView in self.view.subviews {
+        if controlView is DPadView || controlView is GamepadButtonView {
+          controlView.removeFromSuperview()
+        }
+      }
+      GamepadControl.createDefaultPositions(to: self.view)
+      self.view.setNeedsLayout()
+      self.view.layoutIfNeeded()
+      var controlPositions = [GamepadButtonPosition]()
+      for controlView in self.view.subviews {
+        if controlView is DPadView || controlView is GamepadButtonView {
+          if let control = GamepadControl(rawValue: controlView.tag) {
+            let pos = GamepadButtonPosition(button: control, originX: Float(controlView.frame.origin.x), originY: Float(controlView.frame.origin.y))
+            controlPositions.append(pos)
+          }
+        }
+      }
+      self.currentProfile = GamepadButtonLayoutProfile(
+        name: currentProfile.name,
+        positions: controlPositions,
+        colors: [],
+        sizes: [],
+        opacity: self.opacitySlider.value,
+        lastUpdatedAt: Date()
+      )
+      if let updatedProfile = self.currentProfile {
+        GamepadButtonProfileManager().save(updatedProfile)
+      }
+    }))
+    alert.view.tintColor = .orange
+    present(alert, animated: true)
+  }
+  
+  private func saveCurrent(name: String) {
     buttonPositions = []
     colorPositions = []
     buttonSizes = []
@@ -376,15 +502,16 @@ class ArrangeGamepadControlViewController: UIViewController {
       }
     }
 
-    if let saveData = try? PropertyListEncoder().encode(buttonPositions) {
-      UserDefaults.standard.set(saveData, forKey: GamepadButtonPosition.userDefaultsKey)
-    }
-    if let saveColorData = try? PropertyListEncoder().encode(colorPositions) {
-      UserDefaults.standard.set(saveColorData, forKey: GamepadButtonColor.userDefaultsKey)
-    }
-    if let saveSizeData = try? PropertyListEncoder().encode(buttonSizes) {
-      UserDefaults.standard.set(saveSizeData, forKey: GamepadButtonSize.userDefaultsKey)
-    }
+    let profile = GamepadButtonLayoutProfile(
+      name: name,
+      positions: buttonPositions,
+      colors: colorPositions,
+      sizes: buttonSizes,
+      opacity: opacitySlider.value,
+      lastUpdatedAt: Date()
+    )
+    currentProfile = profile
+    GamepadButtonProfileManager().save(profile)
     
     #if DEBUG
     print("Saved buttonPositions: \(buttonPositions)")
@@ -392,16 +519,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     print("Saved sizes: \(buttonSizes)")
     #endif
     
-    // save opacity setting
-    if let touchControlsOpacitySetValue {
-      let optionsModel = ControlOptionsViewModel.shared
-      optionsModel.touchControlsOpacity = touchControlsOpacitySetValue
-      optionsModel.saveToUserDefaults()
-    }
-    
-    dismiss(animated: true) {
-      self.onSaveClosure?()
-    }
+    onSaveClosure?()
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -453,40 +571,53 @@ class ArrangeGamepadControlViewController: UIViewController {
   }
   
   private func loadSavedControls() {
-    guard let saveData = UserDefaults.standard.data(
-      forKey: GamepadButtonPosition.userDefaultsKey
-      ),
-      let controlPositions = try? PropertyListDecoder().decode(
-        [GamepadButtonPosition].self,
-        from: saveData
-      ) else {
-      return
+    if currentProfile == nil {
+      if let fetchedProfile = GamepadButtonProfileManager().getCurrent() {
+        currentProfile = fetchedProfile
+      } else {
+        // create default
+        GamepadControl.createDefaultPositions(to: view)
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+        var controlPositions = [GamepadButtonPosition]()
+        for controlView in view.subviews {
+          if controlView is DPadView || controlView is GamepadButtonView {
+            if let control = GamepadControl(rawValue: controlView.tag) {
+              let pos = GamepadButtonPosition(button: control, originX: Float(controlView.frame.origin.x), originY: Float(controlView.frame.origin.y))
+              controlPositions.append(pos)
+            }
+          }
+        }
+        currentProfile = GamepadButtonLayoutProfile(
+          name: "Default",
+          positions: controlPositions,
+          colors: [],
+          sizes: [],
+          opacity: opacitySlider.value,
+          lastUpdatedAt: Date()
+        )
+        if let currentProfile {
+          GamepadButtonProfileManager().save(currentProfile)
+        }
+        return
+      }
     }
+    
+    guard let currentProfile else { return }
+
     for controlView in view.subviews {
       if controlView is DPadView || controlView is GamepadButtonView {
         controlView.removeFromSuperview()
       }
     }
-    
-    // read color positions
-    var loadedColorPositions = [GamepadButtonColor]()
-    if let savedColorData = UserDefaults.standard.data(forKey: GamepadButtonColor.userDefaultsKey),
-       let colorPositions = try? PropertyListDecoder().decode([GamepadButtonColor].self, from: savedColorData) {
-      loadedColorPositions = colorPositions
-    }
-    
-    var loadedSizes = [CGFloat]()
-    if let savedSizes = UserDefaults.standard.data(forKey: GamepadButtonSize.userDefaultsKey),
-       let sizes = try? PropertyListDecoder().decode([CGFloat].self, from: savedSizes) {
-      loadedSizes = sizes
-    }
-    
-    controlPositions.enumerated().forEach { index, pos in
-      let customizedColor: UIColor? = loadedColorPositions[safe: index]?.uiColor
-      let buttonSize = GamepadButtonSize(rawValue: loadedSizes[safe: index] ?? GamepadButtonSize.medium.rawValue)
+    currentProfile.positions.enumerated().forEach { index, pos in
+      let customizedColor: UIColor? = currentProfile.colors[safe: index]?.uiColor
+      let buttonSize = GamepadButtonSize(rawValue: currentProfile.sizes[safe: index] ?? GamepadButtonSize.medium.rawValue)
       self.addControl(pos.button, xPos: pos.originX, yPos: pos.originY, color: customizedColor, size: buttonSize)
     }
     view.bringSubviewToFront(overlayView)
+    updateOpacity(to: currentProfile.opacity)
+    opacitySlider.value = currentProfile.opacity
   }
 
   
@@ -638,3 +769,54 @@ struct ArrangeControlsView: UIViewControllerRepresentable {
   }
 }
 
+struct SelectProfileView: View {
+  @State private var searchText = ""
+  @State private var profiles = GamepadButtonProfileManager().getList()
+  
+  var onSelect: ((GamepadButtonLayoutProfile) -> Void)?
+  var onCancel: (() -> Void)?
+  
+  var filtered: [GamepadButtonLayoutProfile] {
+    let filtered = searchText.isEmpty ? profiles : profiles.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    if let defaultIndex = filtered.firstIndex(where: { $0.name == "Default" }) {
+      var filteredWithDefaultOnTop = filtered
+      let removed = filteredWithDefaultOnTop.remove(at: defaultIndex)
+      filteredWithDefaultOnTop.insert(removed, at: 0)
+      return filteredWithDefaultOnTop
+    }
+    return filtered
+  }
+  
+  var body: some View {
+    NavigationWrapper {
+      VStack {
+        TextField("Search...", text: $searchText)
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+        List(filtered, id:\.name) { profile in
+          Button(action: {
+            onSelect?(profile)
+          }, label: {
+            Text(profile.name).font(.body).foregroundStyle(profile.name == "Default" ? .blue : .cyan)
+          })
+          .swipeActions {
+            if profile.name != "Default" {
+              Button(role: .destructive) {
+                var saved = GamepadButtonProfileManager().get()
+                saved.removeValue(forKey: profile.name)
+                GamepadButtonProfileManager().save(profilesDict: saved)
+                profiles = GamepadButtonProfileManager().getList()
+              } label: {
+                Image(systemName: "trash")
+              }
+            }
+          }
+        }
+      }.navigationTitle("Select a Profile").font(.body).foregroundStyle(.white)
+        .navigationBarItems(trailing: Button(action: {
+          onCancel?()
+        }, label: {
+          Text("Cancel").font(.body).foregroundStyle(.white)
+        }))
+    }
+  }
+}

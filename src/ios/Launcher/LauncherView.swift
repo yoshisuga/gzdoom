@@ -352,21 +352,21 @@ struct LauncherView_Previews: PreviewProvider {
     
     #if os(iOS)
     #if DEBUG
-//    let debugToolbar = UIToolbar()
-//    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
-//    let debug1 = UIBarButtonItem(
-//      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
-//      style: .plain,
-//      target: self,
-//      action: #selector(debug1Tapped(_:))
-//    )
-//    debugToolbar.setItems([debug1], animated: false)
-//    view.addSubview(debugToolbar)
-//    NSLayoutConstraint.activate([
-//      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-//    ])
+    let debugToolbar = UIToolbar()
+    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
+    let debug1 = UIBarButtonItem(
+      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
+      style: .plain,
+      target: self,
+      action: #selector(debug1Tapped(_:))
+    )
+    debugToolbar.setItems([debug1], animated: false)
+    view.addSubview(debugToolbar)
+    NSLayoutConstraint.activate([
+      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ])
     #endif
     #endif
   }

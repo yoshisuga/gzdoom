@@ -740,7 +740,7 @@ struct KeyPosition {
       optionsView.dismissClosure = { [weak self] in
         self?.dismiss(animated: true)
 #if os(iOS)
-        self?.touchControlsVC?.updateOpacity()
+//        self?.touchControlsVC?.updateOpacity()
         self?.gyroHandler.setup()
 #endif
       }
