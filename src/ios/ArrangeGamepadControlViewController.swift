@@ -25,6 +25,7 @@ class ArrangeGamepadControlViewController: UIViewController {
     didSet {
       if let currentProfile {
         GamepadButtonProfileManager().makeLastUsed(currentProfile)
+        currentProfileLabel.text = "Current Profile: \(currentProfile.name)"
       }
     }
   }
@@ -174,6 +175,27 @@ class ArrangeGamepadControlViewController: UIViewController {
     return label
   }()
   
+  private let currentProfileLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 1
+    label.font = UIFont(name: "PerfectDOSVGA437", size: 18)
+    label.textColor = .green
+    label.alpha = 0.8
+    label.textAlignment = .center
+    return label
+  }()
+
+  private func startInfiniteTransition() {
+    UIView.transition(with: currentProfileLabel, duration: 0.5, options: [.transitionCrossDissolve], animations: {
+      // Any changes you want to animate
+      self.currentProfileLabel.textColor = self.currentProfileLabel.textColor == .green ? .white : .green
+    }) { _ in
+      // Recursively call the function to repeat the animation
+      self.startInfiniteTransition()
+    }
+  }
+  
   var onSaveClosure: (() -> Void)?
   
   var touchControlsOpacitySetValue: Float?
@@ -237,6 +259,11 @@ class ArrangeGamepadControlViewController: UIViewController {
     view.addSubview(instructionsLabel)
     instructionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     instructionsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+
+    view.addSubview(currentProfileLabel)
+    currentProfileLabel.bottomAnchor.constraint(equalTo: instructionsLabel.topAnchor, constant: -20).isActive = true
+    currentProfileLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//    startInfiniteTransition()
     
     view.addSubview(overlayView)
     overlayView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -372,9 +399,6 @@ class ArrangeGamepadControlViewController: UIViewController {
       return
     }
     let alert = UIAlertController(title: "Current Profile:\n\(currentProfile.name)", message: "", preferredStyle: .actionSheet)
-//    alert.addAction(UIAlertAction(title: "Save Current Profile", style: .default, handler: { _ in
-//      self.saveCurrent(name: currentProfile.name)
-//    }))
     alert.addAction(UIAlertAction(title: "Save as New Profile", style: .default, handler: { _ in
       let createAlert = UIAlertController(title: "New Profile", message: "Enter Profile Name:", preferredStyle: .alert)
       createAlert.addTextField()
@@ -424,35 +448,55 @@ class ArrangeGamepadControlViewController: UIViewController {
       guard let self, let currentProfile = self.currentProfile else {
         return
       }
-      for controlView in self.view.subviews {
-        if controlView is DPadView || controlView is GamepadButtonView {
-          controlView.removeFromSuperview()
-        }
-      }
-      GamepadControl.createDefaultPositions(to: self.view)
-      self.view.setNeedsLayout()
-      self.view.layoutIfNeeded()
-      var controlPositions = [GamepadButtonPosition]()
-      for controlView in self.view.subviews {
-        if controlView is DPadView || controlView is GamepadButtonView {
-          if let control = GamepadControl(rawValue: controlView.tag) {
-            let pos = GamepadButtonPosition(button: control, originX: Float(controlView.frame.origin.x), originY: Float(controlView.frame.origin.y))
-            controlPositions.append(pos)
+      let confirmAlert = UIAlertController(title: "Reset profile", message: "This will overwrite and reset the current profile back to the default layout. Are you sure?", preferredStyle: .alert)
+      confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+      confirmAlert.addAction(UIAlertAction(title: "Reset", style: .destructive, handler: { _ in
+        for controlView in self.view.subviews {
+          if controlView is DPadView || controlView is GamepadButtonView {
+            controlView.removeFromSuperview()
           }
         }
-      }
-      self.currentProfile = GamepadButtonLayoutProfile(
-        name: currentProfile.name,
-        positions: controlPositions,
-        colors: [],
-        sizes: [],
-        opacity: self.opacitySlider.value,
-        lastUpdatedAt: Date()
-      )
-      if let updatedProfile = self.currentProfile {
-        GamepadButtonProfileManager().save(updatedProfile)
-      }
+        GamepadControl.createDefaultPositions(to: self.view)
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+        var controlPositions = [GamepadButtonPosition]()
+        for controlView in self.view.subviews {
+          if controlView is DPadView || controlView is GamepadButtonView {
+            if let control = GamepadControl(rawValue: controlView.tag) {
+              let pos = GamepadButtonPosition(button: control, originX: Float(controlView.frame.origin.x), originY: Float(controlView.frame.origin.y))
+              controlPositions.append(pos)
+            }
+          }
+        }
+        self.currentProfile = GamepadButtonLayoutProfile(
+          name: currentProfile.name,
+          positions: controlPositions,
+          colors: [],
+          sizes: [],
+          opacity: self.opacitySlider.value,
+          lastUpdatedAt: Date()
+        )
+        if let updatedProfile = self.currentProfile {
+          GamepadButtonProfileManager().save(updatedProfile)
+        }
+      }))
+      self.present(confirmAlert, animated: true)
     }))
+    if let currentProfile = self.currentProfile,
+       currentProfile.name != "Default",
+       let defaultProfile = GamepadButtonProfileManager().get()["Default"] {
+      alert.addAction(UIAlertAction(title: "Delete this Profile", style: .destructive, handler: { _ in
+        let confirmAlert = UIAlertController(title: "Delete Profile", message: "Are you sure?", preferredStyle: .alert)
+        confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        confirmAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+          guard let profileToDelete = self.currentProfile else { return }
+          GamepadButtonProfileManager().delete(profileToDelete)
+          self.currentProfile = defaultProfile
+          self.loadSavedControls()
+        }))
+        self.present(confirmAlert, animated: true)
+      }))
+    }
     alert.view.tintColor = .orange
     present(alert, animated: true)
   }

@@ -1,5 +1,19 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.9.2](colored: 'yellow')
+
+^[°°±±²²ÛÛ Touch Controls ÛÛ²²±±°°](colored: 'cyan')
+
+^[Layout Profiles](colored: 'white') are here! You can now save multiple touch control layouts and switch between them. Tap the new ^[Profiles](colored: 'yellow') button on the Arrange Controls screen to create a new profile or load an existing one. Your existing touch control layout is now the "Default" profile.
+
+^[°°±±²²ÛÛ Launch Configurations ÛÛ²²±±°°](colored: 'cyan')
+
+- ^[Search](colored: 'white'): You can now search and filter your existing launch configurations.
+
+- The sort order (Recent/ABC) is now saved and remembered the next time you open the app.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2024.9.1](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Bug Fixes ÛÛ²²±±°°](colored: 'cyan')
@@ -11,8 +25,6 @@
 - Fixed the touch button for the number ^[7](colored: 'yellow') keyboard key so that it's released properly when pressed.
 
 - Fixed the appearance of the list in the initial screen that shows the launch configurations 
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.8.11](colored: 'yellow')
 

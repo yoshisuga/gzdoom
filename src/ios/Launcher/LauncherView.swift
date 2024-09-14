@@ -58,6 +58,8 @@ struct CreateLaunchConfigView: View {
         }.padding()
         HStack {
           Button("Cancel") {
+            viewModel.selectedIWAD = nil
+            viewModel.selectedExternalFiles = []
             dismiss()
           }.buttonStyle(.bordered).foregroundColor(.red).font(.body)
           Spacer()
@@ -154,12 +156,16 @@ struct CreateLaunchConfigView: View {
 enum LaunchConfigSortOrder: String, CaseIterable, Identifiable {
   case recent = "Recent", alphabetical = "ABC"
   var id: Self { self }
+  
+  static let userDefaultsKey = "lastLaunchConfigSortOrder"
 }
 
 struct LauncherView: View {
   @ObservedObject var viewModel: LauncherViewModel
   @State private var selections = [GZDoomFile]()
-  @State private var launchConfigSortOrder: LaunchConfigSortOrder = .recent
+  @State private var launchConfigSortOrder: LaunchConfigSortOrder = LaunchConfigSortOrder(
+    rawValue: UserDefaults.standard.string(forKey: LaunchConfigSortOrder.userDefaultsKey
+  ) ?? "Recent") ?? .recent
   
   @State private var showToast = false
   
@@ -168,7 +174,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.9.1"
+  static let currentVersion = "2024.9.2"
   
   var body: some View {
     VStack {
@@ -200,6 +206,9 @@ struct LauncherView: View {
                 Text($0.rawValue)
               }
             }.pickerStyle(.segmented)
+              .onChange(of: launchConfigSortOrder) { newValue in
+                UserDefaults.standard.set(newValue.rawValue, forKey: LaunchConfigSortOrder.userDefaultsKey)
+              }
             #if os(tvOS)
               .frame(width: 400)
             #else

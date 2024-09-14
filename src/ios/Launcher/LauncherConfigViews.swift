@@ -88,30 +88,62 @@ struct LauncherConfigsView: View {
   @Binding var activeSheet: ActiveSheet?
   
   @State private var showMissingAlert = false
+  @State private var showSearch = false
+  @State private var searchText = ""
   
   var sortedConfigs: [LauncherConfig] {
-    switch sortMode {
-    case .alphabetical:
-      return viewModel.savedConfigs.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
-    case .recent:
-      return viewModel.savedConfigs.sorted(by: { a, b in
-        if a.lastRanAt == nil && b.lastRanAt != nil {
-          return false
-        } else if a.lastRanAt != nil && b.lastRanAt == nil {
-          return true
-        } else if a.lastRanAt == nil && b.lastRanAt == nil {
-          return true
-        } else {
-          return a.lastRanAt! > b.lastRanAt!
-        }
-      })
+    let configs = {
+      switch sortMode {
+      case .alphabetical:
+        return viewModel.savedConfigs.sorted(by: { $0.name.lowercased() < $1.name.lowercased() })
+      case .recent:
+        return viewModel.savedConfigs.sorted(by: { a, b in
+          if a.lastRanAt == nil && b.lastRanAt != nil {
+            return false
+          } else if a.lastRanAt != nil && b.lastRanAt == nil {
+            return true
+          } else if a.lastRanAt == nil && b.lastRanAt == nil {
+            return true
+          } else {
+            return a.lastRanAt! > b.lastRanAt!
+          }
+        })
+      }
+    }()
+    if searchText.isEmpty {
+      return configs
+    } else {
+      return configs.filter { $0.name.localizedStandardContains(searchText) }
     }
   }
   
   var body: some View {
     VStack {
         List {
-          Section(header: Text("Launch Configurations").font(.body).foregroundColor(.yellow)) {
+          Section(header: HStack {
+            Text("Launch Configurations").font(.body).foregroundColor(.yellow)
+            Spacer()
+            Button(action: {
+              withAnimation {
+                showSearch.toggle()
+                if showSearch == false {
+                  searchText = ""
+                }
+              }
+            }, label: {
+              Image(systemName: "magnifyingglass").foregroundStyle(.yellow)
+            })
+          }) {
+            if showSearch {
+              TextField("Search...", text: $searchText)
+                .background(Color.black.opacity(0.4))
+                .foregroundColor(.cyan)
+                .listRowBackground(Color.clear)
+                .font(.selected)
+                .transition(.slide)
+                .animation(.easeInOut(duration: 1.0), value: showSearch)
+              
+            }
             ForEach(sortedConfigs) { config in
               Button(config.name) {
                 viewModel.currentConfig = config
@@ -145,7 +177,7 @@ struct LauncherConfigsView: View {
             }
           }
         }.listStyle(PlainListStyle()).overlay(Group {
-          if sortedConfigs.isEmpty {
+          if sortedConfigs.isEmpty && searchText.isEmpty {
             VStack {
               Text("No saved configurations.")
               Button("Add a Launch Configuration") {
