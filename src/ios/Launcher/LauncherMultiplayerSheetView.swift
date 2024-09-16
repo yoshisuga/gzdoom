@@ -17,6 +17,10 @@ struct MultiplayerSheetView: View {
   @State private var numPlayers = ""
   @State private var isDeathmatch = false
   @State private var hostname = ""
+
+  @State private var selectedService: DiscoveredService?
+  
+  @StateObject private var browser = BonjourServiceBrowser()
   
   var body: some View {
     VStack {
@@ -38,7 +42,14 @@ struct MultiplayerSheetView: View {
         }
       }
       Form {
-        Section(header: Text("Important Note")) {
+        Section(header: Text("Instructions")) {
+          ColoredText("""
+You can either start a new game as a host, or join a game hosted by GenZD on another iOS device, or GZDoom running on a computer.
+
+Hosting
+
+Joining
+""")
           Text("This feature is currently experimental. Joining an existing game seems to work but hosting may have issues.")
             .foregroundColor(.orange)
         }
@@ -55,9 +66,36 @@ struct MultiplayerSheetView: View {
           Toggle("Deathmatch", isOn: $isDeathmatch).disabled(!isHost)
         }
         Section(header: Text("Join")) {
-          TextField("Hostname", text: $hostname)
+          TextField("Hostname", text: $hostname) {
+            selectedService = nil
+          }
+          
+          List(browser.discoveredServices) { service in
+            Button {
+              if let serviceHostname = service.netService.hostName {
+                hostname = serviceHostname
+                selectedService = service
+              }
+            } label: {
+              HStack {
+                VStack(alignment: .leading) {
+                  Text("\(service.netService.name)")
+                  Text("\(service.netService.hostName ?? "No hostname")").font(.small).foregroundStyle(.gray)
+                }
+                Spacer()
+                if selectedService?.id == service.id {
+                  Image(systemName: "checkmark")
+                }
+              }
+            }
+          }
+          
         }.disabled(isHost)
       }
+    }.onAppear {
+      browser.startBrowsing()
+    }.onDisappear {
+      browser.stopBrowsing()
     }
   }
 }

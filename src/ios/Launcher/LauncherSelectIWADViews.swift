@@ -58,38 +58,25 @@ struct IWADSelectedView: View {
         .font(viewModel.selectedIWAD?.displayName == selected.displayName ? .selected : .body)
         .frame(maxWidth: .infinity)
       Text("Selected").foregroundColor(.green)
-      Button("Save Launch Config") {
-        activeSheet = .saveLaunchConfig
-      }.padding().foregroundColor(.green)
-      #if !os(tvOS)
-        .border(.gray, width: 2)
-      #endif
-      Button("Back") {
+      Button("Choose different base game") {
         withAnimation {
           viewModel.selectedIWAD = nil
         }
         viewModel.externalFiles.append(selected)
-      }.padding()
-      #if !os(tvOS)
-        .border(.gray, width: 2)
-      #endif
-      Spacer()
+      }.buttonStyle(.bordered).padding(.horizontal, 8).frame(height: 50)
+      Button("Save Launch Configuration") {
+        activeSheet = .saveLaunchConfig
+      }.buttonStyle(.bordered).padding(.horizontal, 8).foregroundColor(.green).frame(height: 50)
       Button("Launch Now without saving") {
         if !viewModel.validateFiles() {
           showMissingAlert = true
           return
         }
         viewModel.launchActionClosure?(viewModel.arguments)
-      }.foregroundColor(.red).padding()
-      #if !os(tvOS)
-        .border(.gray, width: 2)
-      #endif
+      }.buttonStyle(.bordered).foregroundColor(.yellow).padding(.horizontal, 8).frame(height: 50)
       Button("Multiplayer Options") {
         activeSheet = .multiplayer
-      }.padding().foregroundColor(.cyan)
-      #if !os(tvOS)
-        .border(.gray, width: 2)
-      #endif
+      }.buttonStyle(.bordered).padding(.horizontal, 8).foregroundColor(.cyan)
         .font(.small)
     }.sheet(item: $activeSheet) { item in
       switch item {

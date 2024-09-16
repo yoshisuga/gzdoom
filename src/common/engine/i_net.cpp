@@ -104,6 +104,16 @@ typedef int SOCKET;
 typedef int socklen_t;
 #endif
 
+// Yoshi custom
+#if defined(__APPLE__)
+#import "TargetConditionals.h"
+#endif
+
+#if TARGET_OS_IPHONE
+#include "ios/ios-input-hook.h"
+#endif
+
+
 bool netgame, multiplayer;
 int consoleplayer; // i.e. myconnectindex in Build. 
 doomcom_t doomcom;
@@ -708,6 +718,10 @@ bool HostGame (int i)
 
 	doomcom.numnodes = 1;
 
+#if TARGET_OS_IPHONE
+  IOS_StartBonjourService();
+#endif
+
 	I_NetInit ("Waiting for players", numplayers);
 
 	// Wait for numplayers-1 different connections
@@ -1035,6 +1049,12 @@ void I_NetMessage(const char* text, ...)
 	VPrintf(PRINT_HIGH, text, ap);
 	Printf("\n");
 	va_end(ap);
+//  
+//#if TARGET_OS_IPHONE
+//  IOS_ShowSystemModal("", text);
+//  IOS_SpinRunLoop();
+//#endif
+//
 #else
 	FString str;
 	va_list argptr;

@@ -17,5 +17,11 @@ void IOS_GetMouseDeltas(int *x, int *y);
 void IOS_GetGyroDeltas(int *x, int *y);
 float IOS_GetAimSensitivity();
 int16_t IOS_GetAsciiFromSDLKeyCode(int32_t keyCode);
+void IOS_ShowSystemModal(const char* title, const char* message);
+void IOS_SpinRunLoop();
+bool IOS_DidCancelSystemModal();
+void IOS_DismissSystemModal();
+void IOS_StartBonjourService();
+void IOS_StopBonjourService();
 
 #endif /* ios_input_hook_h */

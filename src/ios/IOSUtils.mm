@@ -83,6 +83,8 @@ void SDLWindowAfterCreate(SDL_Window *window) {
   [GameControllerHandler shared];
   [[TVOSUIHandler shared] setRootViewController:rootVC];
 #endif
+    
+  [SystemModalManager shared].rootViewController = rootVC;
 }
 
 void SDLWindowAfterSurfaceCreate(SDL_Window *window) {
@@ -129,6 +131,30 @@ void IOS_GetGyroDeltas(int *x, int *y) {
   if (y) {
     *y = (int) mouse.gyroDeltaY;
   }
+}
+
+void IOS_ShowSystemModal(const char* title, const char* message) {
+  [[SystemModalManager shared] showMessageWithTitle:[NSString stringWithUTF8String:title] message:[NSString stringWithUTF8String:message]];
+}
+
+void IOS_SpinRunLoop() {
+  [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+}
+
+bool IOS_DidCancelSystemModal() {
+  return [[SystemModalManager shared] isCancelled];
+}
+
+void IOS_DismissSystemModal() {
+  [[SystemModalManager shared] dismiss];
+}
+
+void IOS_StartBonjourService() {
+  [[BonjourServicePublisher shared] startPublishingWithPort:5029];
+}
+
+void IOS_StopBonjourService() {
+  [[BonjourServicePublisher shared] stopPublishing];
 }
 
 float IOS_GetAimSensitivity() {
