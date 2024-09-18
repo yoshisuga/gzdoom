@@ -15,9 +15,24 @@ import Foundation
   
   var serviceName = UIDevice.current.name
   
+  var launcherVM: LauncherViewModel?
+  
   func startPublishing(port: Int32) {
     netService = NetService(domain: "local.", type: "_genzd._tcp.", name: serviceName, port: port)
     netService?.delegate = self
+    if let launcherVM, let selectedIWAD = launcherVM.selectedIWAD, let iwadStrData = selectedIWAD.displayName.data(using: .utf8)  {
+      var txtDict: [String: Data] = [
+        "iwad": iwadStrData
+      ]
+      if !launcherVM.selectedExternalFiles.isEmpty {
+        let mods = launcherVM.selectedExternalFiles.map { $0.displayName }.joined(separator: ",")
+        if let modsData = mods.data(using: .utf8) {
+          txtDict["mods"] = modsData
+        }
+      }
+      let txtData = NetService.data(fromTXTRecord: txtDict)
+      netService?.setTXTRecord(txtData)
+    }
     netService?.publish(options: .listenForConnections)
   }
   
@@ -77,6 +92,16 @@ class BonjourServiceBrowser: NSObject, NetServiceBrowserDelegate, NetServiceDele
            discoveredServices.remove(at: index)
        }
    }
+  
+  func netService(_ sender: NetService, didUpdateTXTRecord data: Data) {
+    guard let index = discoveredServices.firstIndex(where: { $0.netService == sender}) else {
+      return
+    }
+    let txtRecord = NetService.dictionary(fromTXTRecord: data)
+    print("TXT Record updated for service \(sender.name): \(txtRecord)")
+    sender.setTXTRecord(data)
+    discoveredServices[index] = DiscoveredService(netService: sender)
+  }
 
    // NetServiceDelegate methods
 //   func netServiceDidResolveAddress(_ sender: NetService) {

@@ -1,5 +1,25 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.9.3](colored: 'yellow')
+
+^[°°±±²²ÛÛ Local Multiplayer ÛÛ²²±±°°](colored: 'cyan')
+
+You can now host a ^[co-op or deathmatch local multiplayer game](colored: 'white), and made it easier to join a game that's being hosted by another iOS device running GenZD on the same WiFi network.
+
+Tap the ^[Multiplayer Options](colored: 'white') button when editing a launch configuration. You will have the option of hosting or joining an existing game.
+
+If you host a game and ^[Launch Now without saving](colored: 'white'), your device will be discoverable by another device running GenZD and it will automatically be shown in the "Join" section of the multiplayer options screen. You can also join a game by a computer running GZDoom on the local network by entering the local IP address.
+
+Once all of the players have joined, the multiplayer game will start.
+
+^[°°±±²²ÛÛ Small Fixes ÛÛ²²±±°°](colored: 'cyan')
+
+- A new icon that also supports tinting in iOS 18.
+- Fixed the onscreen keyboard to support the shift keys so that you can type characters such as the underscore using shift-"-".
+
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2024.9.2](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Touch Controls ÛÛ²²±±°°](colored: 'cyan')
@@ -11,8 +31,6 @@
 - ^[Search](colored: 'white'): You can now search and filter your existing launch configurations.
 
 - The sort order (Recent/ABC) is now saved and remembered the next time you open the app.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.9.1](colored: 'yellow')
 

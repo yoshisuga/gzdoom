@@ -74,18 +74,30 @@ struct IWADSelectedView: View {
         }
         viewModel.launchActionClosure?(viewModel.arguments)
       }.buttonStyle(.bordered).foregroundColor(.yellow).padding(.horizontal, 8).frame(height: 50)
-      Button("Multiplayer Options") {
+      Button {
         activeSheet = .multiplayer
-      }.buttonStyle(.bordered).padding(.horizontal, 8).foregroundColor(.cyan)
+      } label: {
+        if let multiplayerConfig = viewModel.multiplayerConfig {
+          let multiplayerDetail: String = {
+            switch multiplayerConfig {
+            case .host(let numPlayers, let isDeathmatch, _, _):
+              return "\(numPlayers)P \(isDeathmatch ? "Deathmatch" : "Co-op") Host"
+            case .player:
+              return "Join Game"
+            }
+          }()
+          ColoredText("^[Multiplayer: ](colored: 'cyan') ^[\(multiplayerDetail)](colored: 'white')")
+        } else {
+          ColoredText("^[Multiplayer Options](colored: 'cyan')")
+        }
+      }.buttonStyle(.bordered).padding(.horizontal, 8)
         .font(.small)
     }.sheet(item: $activeSheet) { item in
       switch item {
       case .saveLaunchConfig:
         LauncherConfigSheetView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
       case .multiplayer:
-        MultiplayerSheetView { config in
-          viewModel.multiplayerConfig = config
-        }
+        MultiplayerSheetView(viewModel: viewModel)
       default:
         EmptyView()
       }

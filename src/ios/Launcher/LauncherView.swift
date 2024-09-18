@@ -174,7 +174,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.9.2"
+  static let currentVersion = "2024.9.3"
   
   var body: some View {
     VStack {
@@ -336,6 +336,9 @@ struct LauncherView_Previews: PreviewProvider {
       self?.viewModel.webServer?.stop()
       #endif
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+        if let vm = self?.viewModel {
+          BonjourServicePublisher.shared.launcherVM = vm
+        }
         self?.startSDLMain(withArgs: arguments)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first {

@@ -39,8 +39,8 @@ import UIKit
     }
     alertController.setValue(NSMutableAttributedString(string: message, attributes: msgFont), forKey: "attributedMessage")
     if alertController.actions.count == 0 {
-      alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak self] _ in
-        self?.isCancelled = true
+      alertController.addAction(UIAlertAction(title: "Cancel and Quit", style: .destructive, handler: { _ in
+        exit(0)
       }))
     }
     DispatchQueue.main.async {

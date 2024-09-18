@@ -16,7 +16,7 @@ class LauncherViewModel: NSObject, ObservableObject {
   @Published var selectedIWAD: GZDoomFile?
   @Published var selectedExternalFiles = [GZDoomFile]()
   
-  var multiplayerConfig: MultiplayerConfig?
+  @Published var multiplayerConfig: MultiplayerConfig?
   
   var currentConfig: LauncherConfig? {
     didSet {

@@ -44,22 +44,31 @@ struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {
 }
 
 enum MultiplayerConfig: Hashable, Codable, Equatable {
-  case host(numPlayers: Int, isDeathmatch: Bool)
+  case host(numPlayers: Int, isDeathmatch: Bool, mapName: String?, skillLevel: String?)
   case player(joinIpAddress: String)
   
   var arguments: [String] {
     var args = [String]()
     switch self {
-    case .host(let numPlayers, let isDeathmatch):
+    case .host(let numPlayers, let isDeathmatch, let mapName, let skillLevel):
       args.append("-host")
       args.append("\(numPlayers)")
       if isDeathmatch {
         args.append("-deathmatch")
       }
+      if let mapName {
+        args.append("+map")
+        args.append(mapName)
+      }
+      if let skillLevel {
+        args.append("-skill")
+        args.append(skillLevel)
+      }
     case .player(let joinIpAddress):
       args.append("-join")
       args.append(joinIpAddress)
     }
+    args.append("-extratic")
     return args
   }  
 }

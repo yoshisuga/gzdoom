@@ -366,7 +366,7 @@ const UInt8 DIK_TO_ASCII[128] =
     if (event.data1 < 128 && isAsciiKey) {
 
       BOOL isShiftDown = NO;
-#if TARGET_IS_IOS
+#if TARGET_OS_IOS
       // Deal with modifiers
       isShiftDown = [self.modifiersPressed containsObject:@(DIK_LSHIFT)];
       BOOL isCtrlDown = [self.modifiersPressed containsObject:@(DIK_LCONTROL)];
