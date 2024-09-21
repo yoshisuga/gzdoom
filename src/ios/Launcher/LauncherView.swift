@@ -22,7 +22,7 @@ enum LaunchConfigAction {
 }
 
 enum ActiveSheet: Identifiable {
-  case addLauncherConfig, showHelp, saveLaunchConfig, multiplayer
+  case addLauncherConfig, showHelp, saveLaunchConfig, multiplayer, settings
   var id: Int { hashValue }
 }
   
@@ -174,7 +174,7 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.9.3"
+  static let currentVersion = "2024.9.4"
   
   var body: some View {
     VStack {
@@ -186,8 +186,10 @@ struct LauncherView: View {
             Spacer()
           }
           HStack {
-            Button("+") {
+            Button {
               activeSheet = .addLauncherConfig
+            } label: {
+              Image(systemName: "plus")
             }.buttonStyle(.bordered)
             #if os(tvOS)
               .foregroundColor(.red)
@@ -195,8 +197,13 @@ struct LauncherView: View {
               .foregroundColor(.yellow)
             #endif
               .font(.actionButton)
+            Button {
+              activeSheet = .settings
+            } label: {
+              Image(systemName: "gear")
+            }.buttonStyle(.bordered).foregroundStyle(.yellow)
             Spacer()
-
+            
             
             #if os(tvOS)
             Spacer()
@@ -239,6 +246,10 @@ struct LauncherView: View {
           CreateLaunchConfigView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
         case .showHelp:
           HelpSheetView()
+        case .settings:
+          ControlOptionsView(dismissClosure: {
+            activeSheet = nil
+          })
         default:
           EmptyView()
         }

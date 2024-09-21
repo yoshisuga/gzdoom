@@ -10,7 +10,7 @@
 
 #import "ios_launch.h"
 
-#import "gzdoom-Swift.h"
+#import "GenZD-Swift.h"
 
 #include "SDL_iOS.h"
 

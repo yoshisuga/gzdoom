@@ -207,11 +207,25 @@ struct ControlOptionsView: View {
   
   var dismissClosure: (() -> Void)?
   
-  init() {
+  @State private var selectedAppIcon: String? = UIApplication.shared.alternateIconName
+  
+  init(dismissClosure: (() -> Void)? = nil) {
+    self.dismissClosure = dismissClosure
     let model = ControlOptionsViewModel.shared
     model.loadFromUserDefaults()
     _viewModel = StateObject(wrappedValue: model)
     UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "PerfectDOSVGA437", size: 20)!]
+  }
+  
+  private func changeAppIcon(to iconName: String?) {
+    guard UIApplication.shared.supportsAlternateIcons else { return }
+    UIApplication.shared.setAlternateIconName(iconName) { error in
+      if let error = error {
+        print("Error changing app icon: \(error.localizedDescription)")
+      } else {
+        selectedAppIcon = iconName
+      }
+    }
   }
   
   var body: some View {
@@ -241,8 +255,46 @@ struct ControlOptionsView: View {
           Section(header: Text("Game Controller").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
           }
+          
+          Section(header: Text("App Icon").font(.small)) {
+            HStack {
+              Spacer()
+              VStack {
+                Image("OptionSettingIconModern")
+                  .resizable()
+                  .frame(width: 50, height: 50)
+                Text("Modern").font(.small)
+                if selectedAppIcon == nil {
+                  Image(systemName: "checkmark.circle.fill")
+                } else {
+                  Image(systemName: "circle")
+                }
+              }
+              .contentShape(Rectangle())
+              .onTapGesture {
+                changeAppIcon(to: nil)
+              }
+              Spacer()
+              VStack {
+                Image("OptionSettingIconClassic")
+                  .resizable()
+                  .frame(width: 50, height: 50)
+                Text("Classic").font(.small)
+                if selectedAppIcon == "AppIcon" {
+                  Image(systemName: "checkmark.circle.fill")
+                } else {
+                  Image(systemName: "circle")
+                }
+              }
+              .contentShape(Rectangle())
+              .onTapGesture {
+                changeAppIcon(to: "AppIcon")
+              }
+              Spacer()
+            }
+          }
         }
-      }.navigationTitle("Control Settings")
+      }.navigationTitle("Settings")
       #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
       #endif

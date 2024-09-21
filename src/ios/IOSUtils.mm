@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MetalKit/MetalKit.h>
 
-#import "gzdoom-Swift.h"
+#import "GenZD-Swift.h"
 
 #include "ios-glue.h"
 #include "video-hook.h"

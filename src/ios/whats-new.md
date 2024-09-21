@@ -1,5 +1,11 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.9.4](colored: 'yellow')
+
+You can now change the app icon to the old one in the Settings screen.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2024.9.3](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Local Multiplayer ÛÛ²²±±°°](colored: 'cyan')
@@ -16,9 +22,6 @@ Once all of the players have joined, the multiplayer game will start.
 
 - A new icon that also supports tinting in iOS 18.
 - Fixed the onscreen keyboard to support the shift keys so that you can type characters such as the underscore using shift-"-".
-
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.9.2](colored: 'yellow')
 
