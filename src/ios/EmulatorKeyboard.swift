@@ -598,6 +598,18 @@ struct KeyPosition {
     return button
   }()
   
+  let hideRevealControlsButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(systemName: "chevron.left.circle"), for: .normal)
+    button.setImage(UIImage(systemName: "chevron.right.circle"), for: .selected)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+    button.tintColor = .white
+    button.alpha = 0.4
+    return button
+  }()
+  
   var optionsStack = UIStackView()
   
   var touchControlsView = UIView()
@@ -717,8 +729,10 @@ struct KeyPosition {
     
     escButton.addTarget(self, action: #selector(escButtonPressed(_:)), for: .touchUpInside)
     
+    hideRevealControlsButton.addTarget(self, action: #selector(hideRevealButtonPressed(_:)), for: .touchUpInside)
+    
     optionsStack = UIStackView(arrangedSubviews: [
-      escButton, controlOptionsButton, toggleButton, toggleVirtualControllerButton, customizeControlsButton
+      escButton, controlOptionsButton, toggleButton, toggleVirtualControllerButton, customizeControlsButton, hideRevealControlsButton
     ])
     optionsStack.axis = .horizontal
     optionsStack.spacing = 8
@@ -732,6 +746,31 @@ struct KeyPosition {
     rightKeyboardView.isHidden = true
     touchControlsView.isHidden = false
     customizeControlsButton.isHidden = false
+  }
+  
+  @objc func hideRevealButtonPressed(_ sender: UIButton) {
+    sender.isSelected.toggle()
+    if sender.isSelected {
+      UIView.animate(withDuration: 0.3) {
+        self.escButton.isHidden = true
+        self.controlOptionsButton.isHidden = true
+        self.toggleButton.isHidden = true
+        self.toggleVirtualControllerButton.isHidden = true
+        self.customizeControlsButton.isHidden = true
+        self.hideRevealControlsButton.alpha = 0.2
+        self.optionsStack.layoutIfNeeded()
+      }
+    } else {
+      UIView.animate(withDuration: 0.3) {
+        self.escButton.isHidden = false
+        self.controlOptionsButton.isHidden = false
+        self.toggleButton.isHidden = false
+        self.toggleVirtualControllerButton.isHidden = false
+        self.customizeControlsButton.isHidden = false
+        self.hideRevealControlsButton.alpha = 0.4
+        self.optionsStack.layoutIfNeeded()
+      }
+    }
   }
   
   @objc func changeInputMode(_ sender: UIButton) {

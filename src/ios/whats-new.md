@@ -1,10 +1,22 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.9.6](colored: 'yellow')
+
+^[°°±±²²ÛÛ Small Fixes ÛÛ²²±±°°](colored: 'cyan')
+
+- Added button to collapse and reveal the top buttons
+
+- Added GZDoom patch to support Hands of Necromancy II
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2024.9.5](colored: 'yellow')
+
+Fixed crash on iPads when tapping the "Profiles" button on the Arrange Controls screen.
+
 ^[Version 2024.9.4](colored: 'yellow')
 
 You can now change the app icon to the old one in the Settings screen.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.9.3](colored: 'yellow')
 

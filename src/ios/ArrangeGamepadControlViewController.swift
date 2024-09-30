@@ -393,12 +393,15 @@ class ArrangeGamepadControlViewController: UIViewController {
     dismiss(animated: true)
   }
   
+  var createProfileAlert: UIAlertController?
+  
   @objc func profilesButtonPressed(_ sender: UIButton) {
     guard let currentProfile else {
       print("Current profile does not exist yet!")
       return
     }
     let alert = UIAlertController(title: "Current Profile:\n\(currentProfile.name)", message: "", preferredStyle: .actionSheet)
+
     alert.addAction(UIAlertAction(title: "Save as New Profile", style: .default, handler: { _ in
       let createAlert = UIAlertController(title: "New Profile", message: "Enter Profile Name:", preferredStyle: .alert)
       createAlert.addTextField()
@@ -426,7 +429,13 @@ class ArrangeGamepadControlViewController: UIViewController {
         self.loadSavedControls()
       }))
       createAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-      self.present(createAlert, animated: true)
+      self.createProfileAlert = createAlert
+      self.present(createAlert, animated: true) {
+        if UIDevice.current.userInterfaceIdiom == .pad,
+           let alertController = self.createProfileAlert {
+          alertController.view.frame.origin.y = alertController.view.frame.origin.y - 100
+        }
+      }
     }))
 
     alert.addAction(UIAlertAction(title: "Load Profile", style: .default, handler: { _ in
@@ -498,6 +507,13 @@ class ArrangeGamepadControlViewController: UIViewController {
       }))
     }
     alert.view.tintColor = .orange
+    
+    if let popoverController = alert.popoverPresentationController {
+      popoverController.sourceView = sender
+      popoverController.sourceRect = sender.bounds
+      popoverController.permittedArrowDirections = [.down]
+    }
+    
     present(alert, animated: true)
   }
   

@@ -123,6 +123,16 @@ struct LauncherConfigsView: View {
           Section(header: HStack {
             Text("Launch Configurations").font(.body).foregroundColor(.yellow)
             Spacer()
+
+            Picker("Launch Config Order", selection: $sortMode) {
+              ForEach(LaunchConfigSortOrder.allCases) {
+                Text($0.rawValue)
+              }
+            }.pickerStyle(.segmented)
+              .onChange(of: sortMode) { newValue in
+                UserDefaults.standard.set(newValue.rawValue, forKey: LaunchConfigSortOrder.userDefaultsKey)
+              }.fixedSize()
+
             Button(action: {
               withAnimation {
                 showSearch.toggle()

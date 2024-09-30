@@ -174,7 +174,11 @@ struct LauncherView: View {
   
   @State private var animateGradient: Bool = false
   
-  static let currentVersion = "2024.9.4"
+  #if ZERO
+  @StateObject private var purchaseModel = PurchaseViewModel.shared
+  #endif
+  
+  static let currentVersion = "2024.9.5"
   
   var body: some View {
     VStack {
@@ -182,7 +186,11 @@ struct LauncherView: View {
         ZStack {
           HStack {
             Spacer()
+            #if ZERO
+            Text(purchaseModel.isPurchased ? "GenZD" : "GenZD Zero").font(.largeTitle).foregroundColor(.red)
+            #else
             Text("GenZD").font(.largeTitle).foregroundColor(.red)
+            #endif
             Spacer()
           }
           HStack {
@@ -208,19 +216,6 @@ struct LauncherView: View {
             #if os(tvOS)
             Spacer()
             #endif
-            Picker("Launch Config Order", selection: $launchConfigSortOrder) {
-              ForEach(LaunchConfigSortOrder.allCases) {
-                Text($0.rawValue)
-              }
-            }.pickerStyle(.segmented)
-              .onChange(of: launchConfigSortOrder) { newValue in
-                UserDefaults.standard.set(newValue.rawValue, forKey: LaunchConfigSortOrder.userDefaultsKey)
-              }
-            #if os(tvOS)
-              .frame(width: 400)
-            #else
-              .frame(width: 200)
-            #endif
 
             #if !os(tvOS)
             Button("Help") {
@@ -243,7 +238,15 @@ struct LauncherView: View {
       .sheet(item: $activeSheet) { item in
         switch item {
         case .addLauncherConfig:
+          #if ZERO
+          if !PurchaseViewModel.shared.isPurchased && viewModel.savedConfigs.count > 2 {
+            UpgradeView()
+          } else {
+            CreateLaunchConfigView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
+          }
+          #else
           CreateLaunchConfigView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
+          #endif
         case .showHelp:
           HelpSheetView()
         case .settings:
@@ -405,6 +408,9 @@ struct LauncherView_Previews: PreviewProvider {
 
 @objc class LauncherViewControllerFactory: NSObject {
   @objc static func create() -> UIViewController {
+#if ZERO
+    let _ = PurchaseViewModel.shared
+#endif
     let viewModel = LauncherViewModel()
     let viewController = LauncherViewController(viewModel: viewModel)
     return viewController

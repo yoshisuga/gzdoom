@@ -18,6 +18,10 @@ class LauncherViewModel: NSObject, ObservableObject {
   
   @Published var multiplayerConfig: MultiplayerConfig?
   
+  #if ZERO
+  @Published var isFullVersionPurchased: Bool = false
+  #endif
+  
   var currentConfig: LauncherConfig? {
     didSet {
       if let currentConfig {
