@@ -228,6 +228,90 @@ struct ControlOptionsView: View {
     }
   }
   
+  private var appIconSection: some View {
+    Section(header: Text("App Icon").font(.small)) {
+      HStack {
+        Spacer()
+        VStack {
+          #if ZERO
+          Image("OptionSettingIconZero")
+            .resizable()
+            .frame(width: 50, height: 50)
+          #else
+          Image("OptionSettingIconModern")
+            .resizable()
+            .frame(width: 50, height: 50)
+          #endif
+          #if ZERO
+          Text("Zero").font(.small)
+          #else
+          Text("Modern").font(.small)
+          #endif
+          if selectedAppIcon == nil {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "circle")
+          }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+          changeAppIcon(to: nil)
+        }
+        Spacer()
+        VStack {
+          Image("OptionSettingIconClassic")
+            .resizable()
+            .frame(width: 50, height: 50)
+          Text("Classic").font(.small)
+          if selectedAppIcon == "AppIcon" {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "circle")
+          }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+          changeAppIcon(to: "AppIcon")
+        }
+        Spacer()
+        #if ZERO
+        VStack {
+          Image("OptionSettingIconModern")
+            .resizable()
+            .frame(width: 50, height: 50)
+          Text("Modern").font(.small)
+          if selectedAppIcon == "AppIcon18" {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "circle")
+          }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+          changeAppIcon(to: "AppIcon18")
+        }
+        #else
+        VStack {
+          Image("OptionSettingIconZero")
+            .resizable()
+            .frame(width: 50, height: 50)
+          Text("Zero").font(.small)
+          if selectedAppIcon == "AppIconZero" {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "circle")
+          }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+          changeAppIcon(to: "AppIconZero")
+        }
+        #endif
+        Spacer()
+      }
+    }
+  }
+  
   var body: some View {
     
     NavigationWrapper {
@@ -255,44 +339,14 @@ struct ControlOptionsView: View {
           Section(header: Text("Game Controller").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
           }
-          
-          Section(header: Text("App Icon").font(.small)) {
-            HStack {
-              Spacer()
-              VStack {
-                Image("OptionSettingIconModern")
-                  .resizable()
-                  .frame(width: 50, height: 50)
-                Text("Modern").font(.small)
-                if selectedAppIcon == nil {
-                  Image(systemName: "checkmark.circle.fill")
-                } else {
-                  Image(systemName: "circle")
-                }
-              }
-              .contentShape(Rectangle())
-              .onTapGesture {
-                changeAppIcon(to: nil)
-              }
-              Spacer()
-              VStack {
-                Image("OptionSettingIconClassic")
-                  .resizable()
-                  .frame(width: 50, height: 50)
-                Text("Classic").font(.small)
-                if selectedAppIcon == "AppIcon" {
-                  Image(systemName: "checkmark.circle.fill")
-                } else {
-                  Image(systemName: "circle")
-                }
-              }
-              .contentShape(Rectangle())
-              .onTapGesture {
-                changeAppIcon(to: "AppIcon")
-              }
-              Spacer()
-            }
+
+          #if ZERO
+          if PurchaseViewModel.shared.isPurchased {
+            appIconSection
           }
+          #else
+          appIconSection
+          #endif
         }
       }.navigationTitle("Settings")
       #if os(iOS)

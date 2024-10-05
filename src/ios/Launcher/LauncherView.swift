@@ -23,6 +23,9 @@ enum LaunchConfigAction {
 
 enum ActiveSheet: Identifiable {
   case addLauncherConfig, showHelp, saveLaunchConfig, multiplayer, settings
+#if ZERO
+  case upgrade
+#endif
   var id: Int { hashValue }
 }
   
@@ -33,8 +36,8 @@ struct PresentationKey: EnvironmentKey {
 
 extension EnvironmentValues {
     var presentations: [Binding<ActiveSheet?>] {
-        get { return self[PresentationKey] }
-        set { self[PresentationKey] = newValue }
+      get { return self[PresentationKey.self] }
+      set { self[PresentationKey.self] = newValue }
     }
 }
 
@@ -178,7 +181,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2024.9.5"
+  static let currentVersion = "2024.9.6"
   
   var body: some View {
     VStack {
@@ -218,6 +221,17 @@ struct LauncherView: View {
             #endif
 
             #if !os(tvOS)
+
+            #if ZERO
+            if !purchaseModel.isPurchased {
+              Button {
+                activeSheet = .upgrade
+              } label: {
+                Text("Upgrade Now")
+              }.buttonStyle(.bordered).foregroundStyle(.cyan).font(.body)
+            }
+            #endif
+
             Button("Help") {
               activeSheet = .showHelp
             }.buttonStyle(.bordered)
@@ -253,6 +267,12 @@ struct LauncherView: View {
           ControlOptionsView(dismissClosure: {
             activeSheet = nil
           })
+
+        #if ZERO
+        case .upgrade:
+          UpgradeView()
+        #endif
+
         default:
           EmptyView()
         }
@@ -378,21 +398,21 @@ struct LauncherView_Previews: PreviewProvider {
     
     #if os(iOS)
     #if DEBUG
-    let debugToolbar = UIToolbar()
-    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
-    let debug1 = UIBarButtonItem(
-      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
-      style: .plain,
-      target: self,
-      action: #selector(debug1Tapped(_:))
-    )
-    debugToolbar.setItems([debug1], animated: false)
-    view.addSubview(debugToolbar)
-    NSLayoutConstraint.activate([
-      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-    ])
+//    let debugToolbar = UIToolbar()
+//    debugToolbar.translatesAutoresizingMaskIntoConstraints = false
+//    let debug1 = UIBarButtonItem(
+//      image: UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"),
+//      style: .plain,
+//      target: self,
+//      action: #selector(debug1Tapped(_:))
+//    )
+//    debugToolbar.setItems([debug1], animated: false)
+//    view.addSubview(debugToolbar)
+//    NSLayoutConstraint.activate([
+//      debugToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//      debugToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//      debugToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+//    ])
     #endif
     #endif
   }

@@ -400,6 +400,16 @@ class ArrangeGamepadControlViewController: UIViewController {
       print("Current profile does not exist yet!")
       return
     }
+    
+    #if ZERO
+    guard PurchaseViewModel.shared.isPurchased else {
+      let purchaseVC = UIHostingController(rootView: UpgradeView())
+      purchaseVC.modalPresentationStyle = .fullScreen
+      present(purchaseVC, animated: true)
+      return
+    }
+    #endif
+    
     let alert = UIAlertController(title: "Current Profile:\n\(currentProfile.name)", message: "", preferredStyle: .actionSheet)
 
     alert.addAction(UIAlertAction(title: "Save as New Profile", style: .default, handler: { _ in

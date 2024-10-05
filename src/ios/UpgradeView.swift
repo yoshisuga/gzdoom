@@ -14,7 +14,21 @@ struct UpgradeView: View {
   var body: some View {
     GeometryReader { geo in
       VStack {
-        Text("Upgrade to the Full Version!").font(.largeTitle).foregroundStyle(.yellow).padding(.vertical).frame(maxWidth: .infinity)
+        ZStack {
+          HStack {
+            Spacer()
+            Text("Upgrade to the Full Version!").font(.largeTitle).foregroundStyle(.yellow).padding(.vertical).frame(maxWidth: .infinity)
+            Spacer()
+          }
+          HStack {
+            Spacer()
+            Button {
+              dismiss()
+            } label: {
+              Text("Cancel").foregroundStyle(.red).font(.body)
+            }.buttonStyle(.bordered)
+          }
+        }
         switch viewModel.productFetchState {
         case .fetching:
           HStack {
@@ -50,6 +64,16 @@ struct UpgradeView: View {
         Button {
           Task {
             await viewModel.purchase()
+            if case .purchased = viewModel.purchaseState {
+              DispatchQueue.main.async {
+                dismiss()
+              }
+            }
+            if case .restored = viewModel.purchaseState {
+              DispatchQueue.main.async {
+                dismiss()
+              }
+            }
           }
         } label: {
           switch viewModel.purchaseState {
@@ -60,27 +84,33 @@ struct UpgradeView: View {
           default:
             Text("Upgrade Now").foregroundStyle(.green).font(.selected)
           }
-        }.buttonStyle(.bordered).disabled(!viewModel.productFetchState.isFetched)
+        }.buttonStyle(.bordered).disabled(
+          !viewModel.productFetchState.isFetched ||
+          (viewModel.purchaseState == .purchasing || viewModel.purchaseState == .purchased || viewModel.purchaseState == .restoring || viewModel.purchaseState == .restored)
+        )
         HStack {
           Button {
             Task {
               await viewModel.restorePurchases()
+              if case .restored = viewModel.purchaseState {
+                DispatchQueue.main.async {
+                  dismiss()
+                }
+              }
             }
           } label: {
             switch viewModel.purchaseState {
             case .restoring:
-              Text("Restoring...")
+              Text("Restoring...").font(.body)
             case .restored:
-              Text("Purchase Restored!")
+              Text("Purchase Restored!").font(.body)
             default:
-              Text("Restore Purchase")
+              Text("Restore Purchase").font(.body)
             }
-          }.buttonStyle(.bordered).disabled(!viewModel.productFetchState.isFetched)
-          Button {
-            dismiss()
-          } label: {
-            Text("Cancel").foregroundStyle(.red)
-          }.buttonStyle(.bordered)
+          }.buttonStyle(.bordered).disabled(
+            !viewModel.productFetchState.isFetched ||
+            (viewModel.purchaseState == .restoring || viewModel.purchaseState == .restored || viewModel.purchaseState == .purchased || viewModel.purchaseState == .purchasing)
+          )
         }
         Spacer()
       }.onAppear {

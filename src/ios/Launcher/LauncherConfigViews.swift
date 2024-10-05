@@ -37,6 +37,19 @@ struct LauncherConfigSheetView: View {
       HStack {
         Spacer()
         Button("Save Launch Configuration") {
+          #if ZERO
+          if !viewModel.isFullVersionPurchased && viewModel.savedConfigs.count > 2 {
+            // since the max limit is reached just save the launch config now
+            print("Saving and overwriting launch config since max limit is reached")
+            guard let currentConfig = viewModel.currentConfig,
+                  let selectedIWAD = viewModel.selectedIWAD else { return }
+            viewModel.saveLauncherConfig(name: currentConfig.name, iwad:selectedIWAD, arguments: orderedArgs, ranAt: Date())
+            presentations.forEach {
+              $0.wrappedValue = nil
+            }
+            return
+          }
+          #endif
           withAnimation {
             saveAlertDisplayed = true
           }

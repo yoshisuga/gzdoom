@@ -129,11 +129,13 @@ class PurchaseViewModel: ObservableObject {
         case .verified(let transaction):
           if transaction.productID == productId {
             DispatchQueue.main.async {
+              print("Purchase Restored!")
               self.purchaseState = .restored
             }
           }
         case .unverified:
           DispatchQueue.main.async {
+            print("Purchase Restore Failed!")
             self.purchaseState = .restoreFailed(.purchaseVerificationFailed)
           }
         }
@@ -149,8 +151,23 @@ class PurchaseViewModel: ObservableObject {
     for await transaction in Transaction.currentEntitlements {
       if case let .verified(trans) = transaction {
         if trans.productID == productId {
-          isPurchased = true
+          DispatchQueue.main.async {
+            self.isPurchased = true
+          }
           break
+        }
+      }
+    }
+    for await result in Transaction.updates {
+      do {
+        switch result {
+        case .verified(let trans):
+          DispatchQueue.main.async {
+            self.isPurchased = true
+          }
+          await trans.finish()
+        case .unverified(_, let error):
+          print("Purchase failed: \(error)")
         }
       }
     }
