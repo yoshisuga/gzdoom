@@ -1,5 +1,21 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.9.8](colored: 'yellow')
+
+^[°°±±²²ÛÛ Small Fixes ÛÛ²²±±°°](colored: 'cyan')
+
+- Fixed the issue where the Profiles button does not show the popover menu after tapping on it for some iPads.
+
+- Fixed the appearance of the buttons in the Save Launch Configuration screen.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2024.9.7](colored: 'yellow')
+
+^[°°±±²²ÛÛ Small Fixes ÛÛ²²±±°°](colored: 'cyan')
+
+- Highlight the launch configuration after adding or editing one.
+
 ^[Version 2024.9.6](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Small Fixes ÛÛ²²±±°°](colored: 'cyan')
@@ -7,8 +23,6 @@
 - Added button to collapse and reveal the top buttons
 
 - Added GZDoom patch to support Hands of Necromancy II
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.9.5](colored: 'yellow')
 

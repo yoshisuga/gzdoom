@@ -521,7 +521,8 @@ class ArrangeGamepadControlViewController: UIViewController {
     if let popoverController = alert.popoverPresentationController {
       popoverController.sourceView = sender
       popoverController.sourceRect = sender.bounds
-      popoverController.permittedArrowDirections = [.down]
+      print("Profiles popover bounds: \(sender.bounds)")
+//      popoverController.permittedArrowDirections = [.down]
     }
     
     present(alert, animated: true)

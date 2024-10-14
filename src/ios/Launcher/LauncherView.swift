@@ -35,10 +35,15 @@ struct PresentationKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-    var presentations: [Binding<ActiveSheet?>] {
-      get { return self[PresentationKey.self] }
-      set { self[PresentationKey.self] = newValue }
-    }
+  var presentations: [Binding<ActiveSheet?>] {
+    get { return self[PresentationKey.self] }
+    set { self[PresentationKey.self] = newValue }
+  }
+}
+
+class HighlightManager: ObservableObject {
+  static let shared = HighlightManager()
+  @Published var nameToHighlight: String?
 }
 
 struct CreateLaunchConfigView: View {
@@ -181,7 +186,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2024.9.6"
+  static let currentVersion = "2024.9.8"
   
   var body: some View {
     VStack {
@@ -242,7 +247,7 @@ struct LauncherView: View {
         }
       }
       
-      LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder, activeSheet: $activeSheet).padding(.bottom)
+      LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder).padding(.bottom)
 
       ColoredText("Swipe left to reveal edit and delete options.").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.yellow)
       ColoredText("Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.gray)
@@ -370,9 +375,11 @@ struct LauncherView_Previews: PreviewProvider {
       self?.viewModel.webServer?.stop()
       #endif
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+        #if !os(tvOS)
         if let vm = self?.viewModel {
           BonjourServicePublisher.shared.launcherVM = vm
         }
+        #endif
         self?.startSDLMain(withArgs: arguments)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first {

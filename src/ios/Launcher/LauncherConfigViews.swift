@@ -38,7 +38,7 @@ struct LauncherConfigSheetView: View {
         Spacer()
         Button("Save Launch Configuration") {
           #if ZERO
-          if !viewModel.isFullVersionPurchased && viewModel.savedConfigs.count > 2 {
+          if !PurchaseViewModel.shared.isPurchased && viewModel.savedConfigs.count > 2 {
             // since the max limit is reached just save the launch config now
             print("Saving and overwriting launch config since max limit is reached")
             guard let currentConfig = viewModel.currentConfig,
@@ -53,18 +53,12 @@ struct LauncherConfigSheetView: View {
           withAnimation {
             saveAlertDisplayed = true
           }
-        }.padding()
-        #if !os(tvOS)
-          .border(.gray, width: 2)
-        #endif
+        }.buttonStyle(.bordered).padding()
           .foregroundColor(.green)
         Spacer()
         Button("Cancel") {
           dismiss()
-        }.padding()
-        #if !os(tvOS)
-          .border(.gray, width: 2)
-        #endif
+        }.buttonStyle(.bordered).padding()
           .foregroundColor(.red)
         Spacer()
       }
@@ -78,9 +72,11 @@ struct LauncherConfigSheetView: View {
         return
       }
       viewModel.saveLauncherConfig(name: configName, iwad: selectedIWAD, arguments: orderedArgs, ranAt: Date())
-//      dismiss()
       presentations.forEach {
         $0.wrappedValue = nil
+      }
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        HighlightManager.shared.nameToHighlight = configName
       }
     }.padding(.bottom)
   }
@@ -94,11 +90,14 @@ struct LauncherConfigsView: View {
   @ObservedObject var viewModel: LauncherViewModel
   
   @State private var showSaveConfigSheet = false
-  @State private var selectedConfig: LauncherConfig?
+  @State private var activeSheet: ActiveSheet?
+  @Environment(\.presentations) private var presentations
+  
+  @ObservedObject var highlightManager: HighlightManager = .shared
+  @State private var doHighlight: Bool = false
   
   @Binding var showToast: Bool
   @Binding var sortMode: LaunchConfigSortOrder
-  @Binding var activeSheet: ActiveSheet?
   
   @State private var showMissingAlert = false
   @State private var showSearch = false
@@ -132,11 +131,12 @@ struct LauncherConfigsView: View {
   
   var body: some View {
     VStack {
+      ScrollViewReader { scrollProxy in
         List {
           Section(header: HStack {
             Text("Launch Configurations").font(.body).foregroundColor(.yellow)
             Spacer()
-
+            
             Picker("Launch Config Order", selection: $sortMode) {
               ForEach(LaunchConfigSortOrder.allCases) {
                 Text($0.rawValue)
@@ -145,7 +145,7 @@ struct LauncherConfigsView: View {
               .onChange(of: sortMode) { newValue in
                 UserDefaults.standard.set(newValue.rawValue, forKey: LaunchConfigSortOrder.userDefaultsKey)
               }.fixedSize()
-
+            
             Button(action: {
               withAnimation {
                 showSearch.toggle()
@@ -168,7 +168,7 @@ struct LauncherConfigsView: View {
               
             }
             ForEach(sortedConfigs) { config in
-              Button(config.name) {
+              Button {
                 viewModel.currentConfig = config
                 if !viewModel.validateFiles() {
                   showMissingAlert = true
@@ -176,24 +176,52 @@ struct LauncherConfigsView: View {
                 }
                 viewModel.launchActionClosure?(viewModel.arguments)
                 viewModel.saveLauncherConfig(name: config.name, iwad: config.baseIWAD, arguments: config.arguments, ranAt: Date())
-              }.foregroundColor(.red)
-              #if os(iOS)
-                .swipeActions {
+              } label: {
+                Text(config.name)
+                  .foregroundColor(
+                    doHighlight && HighlightManager.shared.nameToHighlight == config.name ?
+                      .white :
+                        .red
+                  )
+                  .animation(.easeInOut(duration: 1), value: doHighlight)
+                  .onAppear {
+                    if highlightManager.nameToHighlight == config.name {
+                      doHighlight = true
+                      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        doHighlight = false
+                        HighlightManager.shared.nameToHighlight = nil
+                      }
+                    }
+                  }
+                  .onReceive(highlightManager.$nameToHighlight) { newValue in
+                    if newValue == config.name {
+                      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        doHighlight = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                          doHighlight = false
+                          HighlightManager.shared.nameToHighlight = nil
+                        }
+                      }
+                    }
+                  }
+              }.id(config.name)
+#if os(iOS)
+              .swipeActions {
                 Button(role: .destructive) {
                   viewModel.deleteLauncherConfigs([config])
                 } label: {
                   Image(systemName: "trash")
                 }
                 Button {
-                  selectedConfig = config
+                  activeSheet = .addLauncherConfig
                   viewModel.currentConfig = config
                   showToast = true
                 } label: {
                   Image(systemName: "pencil")
                 }
               }
-              #endif
-                .listRowBackground(Color.clear)
+#endif
+              .listRowBackground(Color.clear)
             }.onDelete { indexSet in
               let configsToDelete = indexSet.map{ viewModel.savedConfigs[$0] }
               viewModel.deleteLauncherConfigs(configsToDelete)
@@ -208,10 +236,23 @@ struct LauncherConfigsView: View {
               }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
             }
           }
-      })
+        })
+        .onReceive(highlightManager.$nameToHighlight) { newValue in
+          guard let newValue else { return }
+          print("List recieved nameToHightlight change to: \(newValue)")
+          withAnimation {
+            scrollProxy.scrollTo(newValue, anchor: .center)
+          }
+        }
+      }
 //      }
-    }.sheet(item: $selectedConfig) { config in
-      CreateLaunchConfigView(viewModel: viewModel, isEditing: true)
+    }.sheet(item: $activeSheet) { config in
+      switch config {
+      case .addLauncherConfig:
+        CreateLaunchConfigView(viewModel: viewModel, isEditing: true).environment(\.presentations, presentations + [$activeSheet])
+      default:
+        EmptyView()
+      }
     }.alert("Cannot launch: Missing or Invalid Files in Launch Configuration", isPresented: $showMissingAlert) {
       Button("OK", role: .cancel) { }
     }

@@ -10,7 +10,11 @@
 
 #import "ios_launch.h"
 
+#if TARGET_OS_TV
+#import "gzdoom-Swift.h"
+#else
 #import "GenZD-Swift.h"
+#endif
 
 #include "SDL_iOS.h"
 

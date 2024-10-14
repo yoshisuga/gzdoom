@@ -74,6 +74,8 @@ struct IWADSelectedView: View {
         }
         viewModel.launchActionClosure?(viewModel.arguments)
       }.buttonStyle(.bordered).foregroundColor(.yellow).padding(.horizontal, 8).frame(height: 50)
+      
+      #if !os(tvOS)
       Button {
         activeSheet = .multiplayer
       } label: {
@@ -92,12 +94,18 @@ struct IWADSelectedView: View {
         }
       }.buttonStyle(.bordered).padding(.horizontal, 8)
         .font(.small)
+      #endif
+      
     }.sheet(item: $activeSheet) { item in
       switch item {
       case .saveLaunchConfig:
         LauncherConfigSheetView(viewModel: viewModel).environment(\.presentations, presentations + [$activeSheet])
       case .multiplayer:
+      #if !os(tvOS)
         MultiplayerSheetView(viewModel: viewModel)
+      #else
+        EmptyView()
+      #endif
       default:
         EmptyView()
       }

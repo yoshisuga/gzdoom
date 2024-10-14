@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <MetalKit/MetalKit.h>
 
+#if TARGET_OS_TV
+#import "gzdoom-Swift.h"
+#else
 #import "GenZD-Swift.h"
+#endif
+
 
 #include "ios-glue.h"
 #include "video-hook.h"
@@ -83,8 +88,10 @@ void SDLWindowAfterCreate(SDL_Window *window) {
   [GameControllerHandler shared];
   [[TVOSUIHandler shared] setRootViewController:rootVC];
 #endif
-    
+
+#if TARGET_OS_IOS
   [SystemModalManager shared].rootViewController = rootVC;
+#endif
 }
 
 void SDLWindowAfterSurfaceCreate(SDL_Window *window) {
@@ -134,7 +141,9 @@ void IOS_GetGyroDeltas(int *x, int *y) {
 }
 
 void IOS_ShowSystemModal(const char* title, const char* message) {
+#if TARGET_OS_IOS
   [[SystemModalManager shared] showMessageWithTitle:[NSString stringWithUTF8String:title] message:[NSString stringWithUTF8String:message]];
+#endif
 }
 
 void IOS_SpinRunLoop() {
@@ -142,19 +151,27 @@ void IOS_SpinRunLoop() {
 }
 
 bool IOS_DidCancelSystemModal() {
+#if TARGET_OS_IOS
   return [[SystemModalManager shared] isCancelled];
+#endif
 }
 
 void IOS_DismissSystemModal() {
+#if TARGET_OS_IOS
   [[SystemModalManager shared] dismiss];
+#endif
 }
 
 void IOS_StartBonjourService() {
+#if TARGET_OS_IOS
   [[BonjourServicePublisher shared] startPublishingWithPort:5029];
+#endif
 }
 
 void IOS_StopBonjourService() {
+#if TARGET_OS_IOS
   [[BonjourServicePublisher shared] stopPublishing];
+#endif
 }
 
 float IOS_GetAimSensitivity() {
