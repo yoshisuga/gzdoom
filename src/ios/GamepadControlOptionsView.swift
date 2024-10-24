@@ -306,6 +306,38 @@ struct ControlOptionsView: View {
         .onTapGesture {
           changeAppIcon(to: "AppIconZero")
         }
+        Spacer()
+        VStack {
+          Image("OptionSettingIconGold1")
+            .resizable()
+            .frame(width: 50, height: 50)
+          Text("Regal").font(.small)
+          if selectedAppIcon == "AppIconGold1" {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "circle")
+          }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+          changeAppIcon(to: "AppIconGold1")
+        }
+        Spacer()
+        VStack {
+          Image("OptionSettingIconGold2")
+            .resizable()
+            .frame(width: 50, height: 50)
+          Text("Obsidian").font(.small)
+          if selectedAppIcon == "AppIconGold2" {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "circle")
+          }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+          changeAppIcon(to: "AppIconGold2")
+        }
         #endif
         Spacer()
       }

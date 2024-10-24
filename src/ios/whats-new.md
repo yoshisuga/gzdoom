@@ -1,5 +1,23 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2024.10.0](colored: 'yellow')
+
+^[°°±±²²ÛÛ Special Thanks For Your Support! ÛÛ²²±±°°](colored: 'cyan')
+
+Thank you for supporting GenZD by purchasing it sight unseen! Exclusive to the paid version of GenZD, you will get:
+
+- ^[A Handy Lockscreen Widget](colored: 'yellow')
+- ^[A Nifty Control Center Widget](colored: 'yellow') (requires iOS 18)
+- ^[Two New Exclusive App Icons: "Regal" and "Obsidian"](colored: 'yellow').
+
+To add the lock screen widget, long press the lock screen to customize it, and add the GenZD widget to the lock screen.
+
+To add the control center widget, look for it under "GenZD" when editing Control Center.
+
+You can change the app icon in the settings screen by going to the Settings gear icon in the first screen or while in-game using the buttons at the top of the screen.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2024.9.8](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Small Fixes ÛÛ²²±±°°](colored: 'cyan')
@@ -7,8 +25,6 @@
 - Fixed the issue where the Profiles button does not show the popover menu after tapping on it for some iPads.
 
 - Fixed the appearance of the buttons in the Save Launch Configuration screen.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.9.7](colored: 'yellow')
 

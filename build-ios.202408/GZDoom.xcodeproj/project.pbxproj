@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -656,6 +656,9 @@
 		924657982C96C94800485339 /* SystemModalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924657972C96C94800485339 /* SystemModalManager.swift */; };
 		9246579A2C97BB7900485339 /* MultiplayerHostDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924657992C97BB7900485339 /* MultiplayerHostDiscovery.swift */; };
 		92484F4469E1498194DDA7FA /* r_sections.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225B373D63DC44A3B57BDFF0 /* r_sections.cpp */; };
+		929C86F72CC972E6004B3459 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929C86C42CC96F69004B3459 /* WidgetKit.framework */; };
+		929C86F82CC972E6004B3459 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929C86C62CC96F69004B3459 /* SwiftUI.framework */; };
+		929C87032CC972E7004B3459 /* GenZDWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 929C86F62CC972E6004B3459 /* GenZDWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92A9D6B8E02B4B53868E67A2 /* animlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC092AE501AD411EA8D72594 /* animlib.cpp */; };
 		92C6BC9E2C9EB98C00376CE9 /* perfectdos437.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9214886B2C71E112003F7DA9 /* perfectdos437.ttf */; };
 		92C6BC9F2C9EB98C00376CE9 /* whats-new.md in Resources */ = {isa = PBXBuildFile; fileRef = 9214886D2C71E112003F7DA9 /* whats-new.md */; };
@@ -1667,6 +1670,13 @@
 			remoteGlobalIDString = 910FFE138641B9A7DB81A13C;
 			remoteInfo = webp;
 		};
+		929C87012CC972E7004B3459 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8FD89C796554535B61CF8FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 929C86F52CC972E6004B3459;
+			remoteInfo = GenZDWidgetExtension;
+		};
 		92C6BC8B2C9EB98C00376CE9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B8FD89C796554535B61CF8FC /* Project object */;
@@ -1836,6 +1846,17 @@
 				92148B062C71E2A3003F7DA9 /* VPX.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		929C86DF2CC96F6B004B3459 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				929C87032CC972E7004B3459 /* GenZDWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		92C6BEDF2C9EB98C00376CE9 /* Embed Frameworks */ = {
@@ -6098,6 +6119,9 @@
 		9277984F5E114809B253DCFD /* picture_rescale_enc.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = picture_rescale_enc.c; path = libraries/webp/src/enc/picture_rescale_enc.c; sourceTree = SOURCE_ROOT; };
 		9279CFC6406849AA8FF8D298 /* 03BF.lmp */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = file; name = 03BF.lmp; path = wadsrc_extra/static/filter/doom.id/fonts/bigupper/03BF.lmp; sourceTree = SOURCE_ROOT; };
 		9287C6B2E2644BF59A231320 /* fuzz_smoothtranslucent.fp */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = text; name = fuzz_smoothtranslucent.fp; path = wadsrc/static/shaders/glsl/fuzz_smoothtranslucent.fp; sourceTree = SOURCE_ROOT; };
+		929C86C42CC96F69004B3459 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		929C86C62CC96F69004B3459 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
+		929C86F62CC972E6004B3459 /* GenZDWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GenZDWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A6EB0F8E1B4157B9066CDD /* 0110.lmp */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = file; name = 0110.lmp; path = "wadsrc_extra/static/filter/game-heretic/fonts/defsmallfont/0110.lmp"; sourceTree = SOURCE_ROOT; };
 		92A9B58F36CE443CA9CF808E /* r_draw_pal.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = r_draw_pal.cpp; path = src/rendering/swrenderer/drawers/r_draw_pal.cpp; sourceTree = SOURCE_ROOT; };
 		92B49546704B4C7B94354BB1 /* 0401.lmp */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = file; name = 0401.lmp; path = "wadsrc_extra/static/filter/game-chex/fonts/defsmallfont/0401.lmp"; sourceTree = SOURCE_ROOT; };
@@ -8719,6 +8743,27 @@
 		FFFB7022A6814ED3AF042441 /* 0176.lmp */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = file; name = 0176.lmp; path = wadsrc_extra/static/filter/doom.id/fonts/defsmallfont/0176.lmp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		929C87042CC972E7004B3459 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 929C86F52CC972E6004B3459 /* GenZDWidgetExtension */;
+		};
+		929C870D2CC98321004B3459 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppIntent.swift,
+			);
+			target = E85BEECD00A5C7DD7EA81FB1 /* zdoom */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		929C86F92CC972E6004B3459 /* GenZDWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (929C870D2CC98321004B3459 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 929C87042CC972E7004B3459 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); name = GenZDWidget; path = "build-ios.202408/GenZDWidget"; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		1F7A71553C2548A9839E8A5D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -8738,6 +8783,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		929C86F32CC972E6004B3459 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				929C86F82CC972E6004B3459 /* SwiftUI.framework in Frameworks */,
+				929C86F72CC972E6004B3459 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11054,6 +11108,7 @@
 				F9B142A7BBB5448A87F12D83 /* libzvulkan.a */,
 				B29F864103F6405A88F1442A /* libzwidget.a */,
 				92C6BEF02C9EB98C00376CE9 /* GenZD.app */,
+				929C86F62CC972E6004B3459 /* GenZDWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -11220,6 +11275,8 @@
 				921488B22C71E1D8003F7DA9 /* CoreAudio.framework */,
 				921488B02C71E1D1003F7DA9 /* AVFoundation.framework */,
 				921488AE2C71E1CB003F7DA9 /* AudioToolbox.framework */,
+				929C86C42CC96F69004B3459 /* WidgetKit.framework */,
+				929C86C62CC96F69004B3459 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -18461,6 +18518,7 @@
 				46F773D8BDAF4C669AA95C89 /* game_widescreen_gfx_pk3 */,
 				7DE9031A8BFE4465BC6575F6 /* revision_check */,
 				0177AEF8AFE5453FBBC90DC8 /* zdoom */,
+				929C86F92CC972E6004B3459 /* GenZDWidget */,
 				3937720E50A443278DEB5DF9 /* Products */,
 				41B36CC6A39548CE9C199ABF /* Frameworks */,
 				4B7B80637B984235AB34D36C /* Resources */,
@@ -19154,6 +19212,28 @@
 			productReference = 02815CD05F804B6FB0F8DEB4 /* libwebp.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		929C86F52CC972E6004B3459 /* GenZDWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 929C87052CC972E7004B3459 /* Build configuration list for PBXNativeTarget "GenZDWidgetExtension" */;
+			buildPhases = (
+				929C86F22CC972E6004B3459 /* Sources */,
+				929C86F32CC972E6004B3459 /* Frameworks */,
+				929C86F42CC972E6004B3459 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				929C86F92CC972E6004B3459 /* GenZDWidget */,
+			);
+			name = GenZDWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = GenZDWidgetExtension;
+			productReference = 929C86F62CC972E6004B3459 /* GenZDWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		92C6BC892C9EB98C00376CE9 /* GenZDZero */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 92C6BEEB2C9EB98C00376CE9 /* Build configuration list for PBXNativeTarget "GenZDZero" */;
@@ -19212,6 +19292,7 @@
 				F23FB1BC87C04E6E85FDDBFF /* Frameworks */,
 				4842D6D102ABC725FB9BAEB8 /* CMake PostBuild Rules */,
 				92148B002C71E256003F7DA9 /* Embed Frameworks */,
+				929C86DF2CC96F6B004B3459 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -19224,6 +19305,7 @@
 				6D07C849120A45A6B7BF5BD9 /* PBXTargetDependency */,
 				A6DDA7720A7C4AE6B1F8041D /* PBXTargetDependency */,
 				223A0C36F4674643B29340F3 /* PBXTargetDependency */,
+				929C87022CC972E7004B3459 /* PBXTargetDependency */,
 			);
 			name = zdoom;
 			productName = zdoom;
@@ -19236,7 +19318,13 @@
 		B8FD89C796554535B61CF8FC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					929C86F52CC972E6004B3459 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
 			};
 			buildConfigurationList = D566AC49E7594570A6F811C9 /* Build configuration list for PBXProject "GZDoom" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -19268,6 +19356,7 @@
 				5905AA8D2930CE554152962E /* zvulkan */,
 				72908ED90C81A00F68730796 /* zwidget */,
 				92C6BC892C9EB98C00376CE9 /* GenZDZero */,
+				929C86F52CC972E6004B3459 /* GenZDWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -19285,6 +19374,13 @@
 				921488812C71E112003F7DA9 /* GCDWebUploader.bundle in Resources */,
 				921488A22C71E112003F7DA9 /* ios-help.md in Resources */,
 				921488AD2C71E11D003F7DA9 /* gzdoom.ini in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		929C86F42CC972E6004B3459 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -19786,6 +19882,13 @@
 				4A6B8119286240D1BC215D4B /* discord_rpc.cpp in Sources */,
 				26811311E5F24FA59D0E77F0 /* rpc_connection.cpp in Sources */,
 				DCC00E74E7D347D2851E301F /* serialization.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		929C86F22CC972E6004B3459 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -21213,6 +21316,11 @@
 			target = 33EEDF34AE951A10C0974AF6 /* miniz */;
 			targetProxy = D945D99843F145D9999D6A40 /* PBXContainerItemProxy */;
 		};
+		929C87022CC972E7004B3459 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 929C86F52CC972E6004B3459 /* GenZDWidgetExtension */;
+			targetProxy = 929C87012CC972E7004B3459 /* PBXContainerItemProxy */;
+		};
 		92C6BC8A2C9EB98C00376CE9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5905AA8D2930CE554152962E /* zvulkan */;
@@ -21363,7 +21471,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = arm64;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero AppIconGold2 AppIconGold1";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon18;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -22442,7 +22550,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = arm64;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero AppIconGold2 AppIconGold1";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon18;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -23084,6 +23192,318 @@
 				WARNING_CFLAGS = "$(inherited)";
 			};
 			name = Release;
+		};
+		929C87062CC972E7004B3459 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build-ios.202408/GenZDWidget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = GenZDWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.genZD.GenZDWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		929C87072CC972E7004B3459 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build-ios.202408/GenZDWidget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = GenZDWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.genZD.GenZDWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		929C87082CC972E7004B3459 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build-ios.202408/GenZDWidget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = GenZDWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.genZD.GenZDWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = MinSizeRel;
+		};
+		929C87092CC972E7004B3459 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R72X3BF4KE;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build-ios.202408/GenZDWidget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = GenZDWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoshisuga.genZD.GenZDWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = RelWithDebInfo;
 		};
 		92C6BEEC2C9EB98C00376CE9 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -23935,7 +24355,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = arm64;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero AppIconGold2 AppIconGold1";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon18;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -24286,7 +24706,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = arm64;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconZero AppIconGold2 AppIconGold1";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon18;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -25168,6 +25588,17 @@
 				461D0BDB017F4C359ECACCF3 /* Release */,
 				B65B748A47BD4E81ACBE0C39 /* MinSizeRel */,
 				6B31527A0CE24C7B9385D98D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		929C87052CC972E7004B3459 /* Build configuration list for PBXNativeTarget "GenZDWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				929C87062CC972E7004B3459 /* Debug */,
+				929C87072CC972E7004B3459 /* Release */,
+				929C87082CC972E7004B3459 /* MinSizeRel */,
+				929C87092CC972E7004B3459 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
