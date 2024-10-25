@@ -254,6 +254,13 @@ bool P_TestActivateLine (line_t *line, AActor *mo, int side, int activationType,
 		return false;
 	}
 
+	if ((activationType & (SPAC_Cross|SPAC_MCross)) && (lineActivation & SPAC_Walking))
+	{
+		// not on floor
+		if ((mo->Pos().Z > mo->floorz) && !(mo->flags2 & MF2_ONMOBJ))
+			return false;
+	}
+
 	if (lineActivation & SPAC_UseThrough)
 	{
 		lineActivation |= SPAC_Use;
@@ -384,7 +391,9 @@ bool P_PredictLine(line_t *line, AActor *mo, int side, int activationType)
 
 	// Only predict a very specifc section of specials
 	if (line->special != Teleport_Line &&
-		line->special != Teleport)
+		line->special != Teleport &&
+		line->special != Teleport_NoFog &&
+		line->special != Teleport_NoStop)
 	{
 		return false;
 	}
@@ -619,7 +628,7 @@ void P_GiveSecret(FLevelLocals *Level, AActor *actor, bool printmessage, bool pl
 		{
 			if (printmessage)
 			{
-				C_MidPrint(nullptr, GStrings["SECRETMESSAGE"]);
+				C_MidPrint(nullptr, GStrings.CheckString("SECRETMESSAGE"));
 				if (showsecretsector && sectornum >= 0) 
 				{
 					Printf(PRINT_HIGH | PRINT_NONOTIFY, "Secret found in sector %d\n", sectornum);
@@ -696,7 +705,7 @@ void P_UpdateSpecials (FLevelLocals *Level)
 	{
 		if (Level->maptime >= (int)(timelimit * TICRATE * 60))
 		{
-			Printf ("%s\n", GStrings("TXT_TIMELIMIT"));
+			Printf ("%s\n", GStrings.GetString("TXT_TIMELIMIT"));
 			Level->ExitLevel(0, false);
 		}
 	}
