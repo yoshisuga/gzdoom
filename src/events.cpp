@@ -42,6 +42,8 @@
 #include "info.h"
 #include "utf8.h"
 
+#include "ios/ios-event-hook.h"
+
 EventManager staticEventManager;
 
 static int ListGetInt(VMVa_List& tags)
@@ -699,6 +701,9 @@ void EventManager::WorldThingDied(AActor* actor, AActor* inflictor)
 
 	for (DStaticEventHandler* handler = FirstEventHandler; handler; handler = handler->next)
 		handler->WorldThingDied(actor, inflictor);
+  
+  // Yoshi Custom!
+//  IOS_OnWorldThingDied(actor, inflictor);
 }
 
 void EventManager::WorldThingGround(AActor* actor, FState* st)

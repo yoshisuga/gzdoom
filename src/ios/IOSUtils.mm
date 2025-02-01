@@ -21,6 +21,7 @@
 #include "SDL_syswm.h"
 #include "d_eventbase.h"
 #include "ios-input-hook.h"
+#include "ios-event-hook.h"
 #include "m_argv.h"
 #include "keydef.h"
 #include "m_joy.h"
@@ -234,6 +235,14 @@ const UInt8 DIK_TO_ASCII[128] =
     DIK_A, DIK_S, DIK_D, DIK_F, DIK_H, DIK_G, DIK_Z, DIK_X,
     DIK_C, DIK_V, 0, DIK_B, DIK_Q
 };
+
+void IOS_OnWorldThingDied(AActor *actor, AActor *inflictor) {
+//  FString tagOfDied = actor->GetTag();
+//  NSLog(@"IOS_OnWorldThingDied: %@", [NSString stringWithUTF8String:tagOfDied.GetChars()]);
+//  if (actor->target->player != nullptr) {
+//    [[MonsterKillTracker shared] addKillWithMonsterType:[NSString stringWithUTF8String:tagOfDied.GetChars()]];
+//  }
+}
 
 #if TARGET_OS_IOS
 @interface IOSUtils()<EmulatorKeyboardKeyPressedDelegate, EmulatorKeyboardModifierPressedDelegate>

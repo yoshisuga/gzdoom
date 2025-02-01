@@ -1245,6 +1245,12 @@ set( GAME_SOURCES
 set( GAME_NONPCH_SOURCES ${GAME_SOURCES} )
 list( REMOVE_ITEM GAME_NONPCH_SOURCES ${PCH_SOURCES} )
 
+# Yoshi Custom
+if(APPLE AND (CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_OSX_SYSROOT MATCHES "iphone"))
+		file(GLOB_RECURSE IOS_SOURCES "ios/*.swift" "ios/*.m" "ios/*.mm" "ios/*.cpp" "ios/*.h")
+    list(APPEND GAME_SOURCES ${IOS_SOURCES})
+endif()
+
 add_executable( zdoom WIN32 MACOSX_BUNDLE ${GAME_SOURCES} )
 
 target_precompile_headers( zdoom PRIVATE g_pch.h )
@@ -1426,22 +1432,30 @@ if( DEM_CMAKE_COMPILER_IS_GNUCXX_COMPATIBLE )
 		APPEND_STRING PROPERTY COMPILE_FLAGS " ${SSE2_ENABLE}" )
 endif()
 
+# Yoshi Custom: Xcode project for iOS
 if( APPLE )
-	set( LINK_FRAMEWORKS "-framework Cocoa -framework IOKit -framework OpenGL")
+  if(CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_OSX_SYSROOT MATCHES "iphone")
+	  set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path/Frameworks/MoltenVK.framework -rpath @executable_path/Frameworks" )
+		set_target_properties(zdoom PROPERTIES
+			XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.yoshisuga.genZD"
+			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "" )
+	else()
+		set( LINK_FRAMEWORKS "-framework Cocoa -framework IOKit -framework OpenGL")
 
-	if( HAVE_VULKAN )
-		set( LINK_FRAMEWORKS "${LINK_FRAMEWORKS} -framework QuartzCore" )
+		if( HAVE_VULKAN )
+			set( LINK_FRAMEWORKS "${LINK_FRAMEWORKS} -framework QuartzCore" )
+		endif()
+
+		set_target_properties(zdoom PROPERTIES
+			LINK_FLAGS "${LINK_FRAMEWORKS}"
+			MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/posix/osx/zdoom-info.plist"
+			XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "org.drdteam.gzdoom"
+			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "" )
+
+		# Dymanic libraries like libvulkan.dylib or libMoltenVK.dylib will be loaded by dlopen()
+		# if placed in the directory with the main executable
+		set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path" )
 	endif()
-
-	set_target_properties(zdoom PROPERTIES
-		LINK_FLAGS "${LINK_FRAMEWORKS}"
-		MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/posix/osx/zdoom-info.plist"
-		XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "org.drdteam.gzdoom"
-		XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "" )
-
-	# Dymanic libraries like libvulkan.dylib or libMoltenVK.dylib will be loaded by dlopen()
-	# if placed in the directory with the main executable
-	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path" )
 endif()
 
 if( WIN32 )
@@ -1548,3 +1562,10 @@ source_group("Launcher" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/launche
 source_group("Versioning" FILES version.h win32/zdoom.rc)
 source_group("Xlat" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/xlat/.+" FILES ${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c ${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.h)
 source_group("Source Files" FILES ${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h common/engine/sc_man_scanner.re)
+
+if( APPLE )
+  if(CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_OSX_SYSROOT MATCHES "iphone")
+		message(STATUS "yoshi in making iOS source dir! ${CMAKE_CURRENT_SOURCE_DIR}")
+	  source_group("iOS" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/ios/.+")
+  endif()
+endif()
