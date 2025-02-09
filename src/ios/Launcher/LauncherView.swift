@@ -46,9 +46,6 @@ class HighlightManager: ObservableObject {
   @Published var nameToHighlight: String?
 }
 
-
-
-
 struct CreateLaunchConfigView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: LauncherViewModel
@@ -127,7 +124,7 @@ struct CreateLaunchConfigView: View {
                   Text(category.title)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                    .background(viewModel.selectedCategories.contains(category) ? category.color : Color.gray)
+                    .background(viewModel.selectedCategories.contains(category) ? category.color : Color.darkGray)
                     .foregroundColor(.white)
                     .cornerRadius(20)
                     .scaleEffect(dragOverCategory == category ? 1.2 : 1.0)
@@ -155,7 +152,7 @@ struct CreateLaunchConfigView: View {
                       handleDrop(providers: providers, category: category)
                     }
                 }
-              }.padding()
+              }
             }
             // List of Files
             List {
@@ -213,6 +210,7 @@ struct CreateLaunchConfigView: View {
       return viewModel.externalFiles
     }
     return viewModel.externalFiles.filter { file in
+      file.originalDoomEngineGame == nil &&
       viewModel.selectedCategories.contains(file.category ?? .addOns)
     }
   }
@@ -235,19 +233,6 @@ struct CreateLaunchConfigView: View {
       return true
     }
     return false
-//    providers.first?.loadItem(forTypeIdentifier: UTType.plainText.identifier as String, options: nil, completionHandler: { (item, error) in
-//      DispatchQueue.main.async {
-//        print("handleDrop: item = \(item)")
-//        if let fileName = item as? String {
-//          if let file = viewModel.externalFiles.first(where: { $0.displayName == fileName }) {
-//            viewModel.assignFileToCategory(file: file, category: category)
-//          }
-//        }
-//        // Reset the dragOverCategory state
-//        dragOverCategory = nil
-//      }
-//    })
-//    return true
   }
 }
 
@@ -427,13 +412,13 @@ struct LauncherView_Previews: PreviewProvider {
   static var viewModel: LauncherViewModel {
     let vm = LauncherViewModel()
     vm.iWadFiles = [
-      GZDoomFile(displayName: "doom.wad", fullPath: "doom.wad"),
-      GZDoomFile(displayName: "doom2.wad", fullPath: "doom2.wad"),
-      GZDoomFile(displayName: "finaldoom.wad", fullPath: "finaldoom.wad")
+      GZDoomFile(fullPath: "doom.wad"),
+      GZDoomFile(fullPath: "doom2.wad"),
+      GZDoomFile(fullPath: "finaldoom.wad")
     ]
     vm.externalFiles = [
-      GZDoomFile(displayName: "brutal.pk3", fullPath: "brutal.pk3"),
-      GZDoomFile(displayName: "zelda.pk3", fullPath: "zelda.pk3"),
+      GZDoomFile(fullPath: "brutal.pk3"),
+      GZDoomFile(fullPath: "zelda.pk3"),
     ]
     return vm
   }
@@ -543,4 +528,8 @@ extension Collection {
     subscript (safe index: Index) -> Element? {
         return indices.contains(index) ? self[index] : nil
     }
+}
+
+extension Color {
+  static var darkGray: Color { Color(red: 0.2, green: 0.2, blue: 0.2) }
 }

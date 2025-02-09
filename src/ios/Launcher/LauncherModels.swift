@@ -7,11 +7,58 @@
 
 import Foundation
 
+enum OriginalDoomEngineGame: String, Codable {
+  case doom = "doom.wad"
+  case doom2 = "doom2.wad"
+  case plutonia = "plutonia.wad"
+  case tnt = "tnt.wad"
+  case hexen = "hexen.wad"
+  case heretic = "heretic.wad"
+  case strife = "strife1.wad"
+  case chex = "chex.wad"
+  case freedoom1 = "freedoom1.wad"
+  case freedoom2 = "freedoom2.wad"
+  
+  var title: String {
+    switch self {
+    case .doom: return "DOOM"
+    case .doom2: return "DOOM II"
+    case .plutonia: return "The Plutonia Experiment"
+    case .tnt: return "TNT: Evilution"
+    case .hexen: return "Hexen"
+    case .heretic: return "Heretic"
+    case .strife: return "Strife: Quest for the Sigil"
+    case .chex: return "Chex Quest"
+    case .freedoom1: return "FreeDoom: Phase 1"
+    case .freedoom2: return "FreeDoom: Phase 2"
+    }
+  }
+  
+  init?(filename: String) {
+    let lowerfilename = filename.lowercased()
+    self.init(rawValue: lowerfilename)
+  }
+}
+
 struct GZDoomFile: Identifiable, Hashable, Codable {
-  let displayName: String
   let fullPath: String
+  
+  var filename: String {
+    (fullPath as NSString).lastPathComponent
+  }
+  
+  var displayName: String {
+    if let game = OriginalDoomEngineGame(filename: filename) {
+      return game.title
+    }
+    return filename
+  }
+  
   var id: String { displayName }
   var category: FileCategory? = .addOns
+  var originalDoomEngineGame: OriginalDoomEngineGame? {
+    OriginalDoomEngineGame(filename: filename)
+  }
 }
 
 struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {
@@ -30,11 +77,11 @@ struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {
   }
   
   var baseIWAD: GZDoomFile {
-    return GZDoomFile(displayName: baseIWADName, fullPath: "\(documentsPath)/\(baseIWADName)")
+    return GZDoomFile(fullPath: "\(documentsPath)/\(baseIWADName)")
   }
   
   var arguments: [GZDoomFile] {
-    return argumentsByName.map { GZDoomFile(displayName: $0, fullPath: "\(documentsPath)/\($0)") }
+    return argumentsByName.map { GZDoomFile(fullPath: "\(documentsPath)/\($0)") }
   }
   
   init(name: String, baseIWAD: GZDoomFile, arguments: [GZDoomFile]) {

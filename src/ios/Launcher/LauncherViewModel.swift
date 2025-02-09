@@ -109,8 +109,7 @@ class LauncherViewModel: NSObject, ObservableObject {
       for item in docItems {
         let itemNS = item as NSString
         let pathExt = itemNS.pathExtension
-        let displayName = itemNS.lastPathComponent
-        let file = GZDoomFile(displayName: displayName, fullPath: "\(documentsPath)/\(item)")
+        let file = GZDoomFile(fullPath: "\(documentsPath)/\(item)")
         if pathExt.lowercased() == "wad" || pathExt.lowercased() == "iwad" || pathExt.lowercased() == "ipk3" {
           iwads.append(file)
           if pathExt.lowercased() == "wad" || pathExt.lowercased() == "ipk3" {
@@ -146,7 +145,7 @@ class LauncherViewModel: NSObject, ObservableObject {
           continue
         }
         
-        let file = GZDoomFile(displayName: displayName, fullPath: item)
+        let file = GZDoomFile(fullPath: item)
         if pathExt.lowercased() == "wad" || pathExt.lowercased() == "iwad" {
           iwads.append(file)
           if pathExt.lowercased() == "wad" {
@@ -199,7 +198,7 @@ class LauncherViewModel: NSObject, ObservableObject {
     let demo = "\(Bundle.main.bundlePath)/GenZDDemo.ipk3"
     return LauncherConfig(
       name: "GenZD Tutorial and Showcase",
-      baseIWAD: GZDoomFile(displayName: "GenZDDemo.ipk3", fullPath: demo),
+      baseIWAD: GZDoomFile(fullPath: demo),
       arguments: [GZDoomFile]()
     )
   }

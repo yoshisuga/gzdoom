@@ -10,29 +10,86 @@ import SwiftUI
 struct SelectIWADView: View {
   @ObservedObject var viewModel: LauncherViewModel
   
+  enum DisplayMode: CaseIterable {
+    case games
+    case iwads
+    case all
+    
+    var title: String {
+      switch self {
+      case .games: return "Games"
+      case .iwads: return "IWADs"
+      case .all: return "All"
+      }
+    }
+    
+    var color: Color {
+      switch self {
+      case .games: return .red
+      case .iwads: return .purple
+      case .all: return .orange
+      }
+    }
+  }
+  @State private var displayMode: DisplayMode = .games
+  
   var namespace: Namespace.ID
   
+  let darkGray = Color(red: 0.2, green: 0.2, blue: 0.2)
+  
   var body: some View {
-    Text("Select the base game file:").foregroundColor(.cyan)
-    List(viewModel.iWadFiles.sorted(by: { fileA, fileB in
-      return fileA.displayName.lowercased() < fileB.displayName.lowercased()
-    })) { file in
-      Button {
-        withAnimation {
-          viewModel.selectedIWAD = file
-        }
-        viewModel.externalFiles.removeAll(where: { $0.displayName == file.displayName })
-      } label: {
-        Text(file.displayName)
-          .matchedGeometryEffect(id: file.displayName, in: namespace)
-          .font(viewModel.selectedIWAD?.displayName == file.displayName ? .selected : .body)
-      }.foregroundColor(.yellow)
+    VStack {
+      Text("Select the base game file:").foregroundColor(.cyan)
       
-//      Button(file.displayName) {
-//        viewModel.selectedIWAD = file
-//        viewModel.externalFiles.removeAll(where: { $0.displayName == file.displayName })
-//      }.foregroundColor(.yellow)
-    }.listStyle(PlainListStyle())
+      // Tabs
+      HStack {
+        Spacer()
+        ForEach(DisplayMode.allCases, id: \.self) { mode in
+          Text(mode.title)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(displayMode == mode ? mode.color : darkGray)
+            .foregroundStyle(displayMode == mode ? Color.white : mode.color)
+            .cornerRadius(20)
+            .onTapGesture {
+              if mode != displayMode {
+                displayMode = mode
+              }
+            }
+        }
+        Spacer()
+      }
+      
+      List(filteredFiles().sorted(by: { fileA, fileB in
+        return fileA.displayName.lowercased() < fileB.displayName.lowercased()
+      })) { file in
+        Button {
+          withAnimation {
+            viewModel.selectedIWAD = file
+          }
+          viewModel.externalFiles.removeAll(where: { $0.displayName == file.displayName })
+        } label: {
+          Text(file.displayName)
+            .matchedGeometryEffect(id: file.displayName, in: namespace)
+            .font(viewModel.selectedIWAD?.displayName == file.displayName ? .selected : .body)
+        }.foregroundColor(.yellow)
+        
+        //      Button(file.displayName) {
+        //        viewModel.selectedIWAD = file
+        //        viewModel.externalFiles.removeAll(where: { $0.displayName == file.displayName })
+        //      }.foregroundColor(.yellow)
+      }.listStyle(PlainListStyle())
+    }
+  }
+  
+  private func filteredFiles() -> [GZDoomFile] {
+    return viewModel.iWadFiles.filter { file in
+      switch displayMode {
+      case .games: return file.originalDoomEngineGame != nil
+      case .iwads: return file.originalDoomEngineGame == nil
+      case .all: return true
+      }
+    }
   }
 }
 
