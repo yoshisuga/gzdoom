@@ -5,6 +5,7 @@
 //  Created by Yoshi Sugawara on 7/28/24.
 //
 
+import AVFoundation
 import SwiftUI
 
 @objcMembers class ObjCControlOptionsViewModel: NSObject {
@@ -23,9 +24,24 @@ class ControlOptionsViewModel: ObservableObject {
   @Published var gyroUpdateInterval: Float = 0.06
   @Published var enableTouchControlsGuideOverlay: Bool = true
   @Published var touchJoystickDeadzone: Float = 10
+  @Published var audioSessionSetting: AudioSessionSetting = .mixWithOthers
+  @Published var touchButtonDraggingToAim: Bool = true
   
   let userDefaultsKey = "controlOptions"
   private static let userDefaultsKeyPrefix = "controlOptions_"
+  
+  enum AudioSessionSetting: String {
+    case exclusive, mixWithOthers
+  }
+  
+  var audioSessionMixWithOthersBinding: Binding<Bool> {
+    Binding<Bool> { [weak self] in
+      self?.audioSessionSetting == .mixWithOthers
+    } set: { [weak self] newValue in
+      self?.audioSessionSetting = newValue ? .mixWithOthers : .exclusive
+      self?.configureAudioSession()
+    }
+  }
   
   enum OptionKeys: String {
     case touchControlsOpacity, aimSensitivity, touchControlHapticFeedback,
@@ -33,6 +49,8 @@ class ControlOptionsViewModel: ObservableObject {
     case gyroEnabled, gyroSensitivity, gyroUpdateInterval
     case enableTouchControlsGuideOverlay
     case touchJoystickDeadzone
+    case audioSessionSetting
+    case touchButtonDraggingToAim
     
     var keyName: String {
       return "\(userDefaultsKeyPrefix)\(self.rawValue)"
@@ -81,13 +99,13 @@ class ControlOptionsViewModel: ObservableObject {
     } else {
       gyroSensitivity = 5.0
     }
-
+    
     if let gyroUpdateDef = UserDefaults.standard.object(forKey: OptionKeys.gyroUpdateInterval.keyName) as? Float {
       gyroUpdateInterval = gyroUpdateDef
     } else {
       gyroUpdateInterval = 0.06
     }
-
+    
     if let touchControlsGuideOverlayDef = UserDefaults.standard.object(forKey: OptionKeys.enableTouchControlsGuideOverlay.keyName) as? Bool {
       enableTouchControlsGuideOverlay = touchControlsGuideOverlayDef
     } else {
@@ -98,6 +116,19 @@ class ControlOptionsViewModel: ObservableObject {
       touchJoystickDeadzone = joystickDeadzoneDef
     } else {
       touchJoystickDeadzone = 10
+    }
+    
+    if let audioSettingDef = UserDefaults.standard.object(forKey: OptionKeys.audioSessionSetting.keyName) as? String,
+       let audioSetting = AudioSessionSetting(rawValue: audioSettingDef) {
+      audioSessionSetting = audioSetting
+    } else {
+      audioSessionSetting = .mixWithOthers
+    }
+    
+    if let touchButtonDraggingToAimDef = UserDefaults.standard.object(forKey: OptionKeys.touchButtonDraggingToAim.keyName) as? Bool {
+      touchButtonDraggingToAim = touchButtonDraggingToAimDef
+    } else {
+      touchButtonDraggingToAim = true
     }
   }
   
@@ -111,6 +142,22 @@ class ControlOptionsViewModel: ObservableObject {
     UserDefaults.standard.set(gyroUpdateInterval, forKey: OptionKeys.gyroUpdateInterval.keyName)
     UserDefaults.standard.set(touchJoystickDeadzone, forKey: OptionKeys.touchJoystickDeadzone.keyName)
     UserDefaults.standard.set(enableTouchControlsGuideOverlay, forKey: OptionKeys.enableTouchControlsGuideOverlay.keyName)
+    UserDefaults.standard.set(audioSessionSetting.rawValue, forKey: OptionKeys.audioSessionSetting.keyName)
+    UserDefaults.standard.set(touchButtonDraggingToAim, forKey: OptionKeys.touchButtonDraggingToAim.keyName)
+  }
+  
+  func configureAudioSession() {
+    do {
+      let session = AVAudioSession.sharedInstance()
+      if audioSessionSetting == .exclusive {
+        try session.setCategory(.soloAmbient)
+      } else {
+        try session.setCategory(.ambient, options: [.mixWithOthers])
+      }
+      try session.setActive(true)
+    } catch {
+      print("Error configuring audio session: \(error)")
+    }
   }
 }
 
@@ -359,6 +406,7 @@ struct ControlOptionsView: View {
           Section(header: Text("Touch Controls").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.touchControlHapticFeedback, label: "Haptic Feedback")
             OptionsSliderRow(sliderValue: $viewModel.touchJoystickDeadzone, label: "Movement Joystick Deadzone", min: 0, max: 40.0)
+            OptionsSwitchRow(isOn: $viewModel.touchButtonDraggingToAim, label: "Enable aiming and dragging with touch buttons", subtitle: "Allow you to fire and aim at the same time by hold down a touch button and dragging. Only affects buttons on the aiming side of the screen.")
           }
           Section(header: Text("Gyroscope").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.gyroEnabled, label: "Gyroscope Aiming")
@@ -370,6 +418,10 @@ struct ControlOptionsView: View {
 #endif
           Section(header: Text("Game Controller").font(.small)) {
             OptionsSwitchRow(isOn: $viewModel.controllerInvertYAxis, label: "Invert Y-Axis for Aiming/Right Stick")
+          }
+          
+          Section(header: Text("Audio").font(.small)) {
+            OptionsSwitchRow(isOn: viewModel.audioSessionMixWithOthersBinding, label: "Play other audio sources")
           }
 
           #if ZERO

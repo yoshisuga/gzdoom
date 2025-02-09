@@ -11,6 +11,7 @@ struct GZDoomFile: Identifiable, Hashable, Codable {
   let displayName: String
   let fullPath: String
   var id: String { displayName }
+  var category: FileCategory? = .addOns
 }
 
 struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {

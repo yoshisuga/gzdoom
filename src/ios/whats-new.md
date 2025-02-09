@@ -1,5 +1,17 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.2.1](colored: 'yellow')
+
+- New option: ^[Enable aiming and dragging with touch buttons](colored: 'white'). This has been the default behavior of the app, but you can now disable it if you want to use two fingers to aim and fire using the touch controls.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2025.2.0](colored: 'yellow')
+
+- ^[New Audio Option: Play other audio sources](colored: 'white'): The default setting is on, so you can frag and gib while you play your own music!
+ 
+ Apologies for the lack of updates! I've been testing an updated GZDoom 4.13 core, and looking into supporting other source ports for different engines (Raze, eduke32) like the Build engine used in Duke3D and Shadow Warrior. Can't promise Build engine support would happen, but I'm looking into it!
+
 ^[Version 2024.10.0](colored: 'yellow')
 
 ^[°°±±²²ÛÛ Special Thanks For Your Support! ÛÛ²²±±°°](colored: 'cyan')
@@ -16,7 +28,6 @@ To add the control center widget, look for it under "GenZD" when editing Control
 
 You can change the app icon in the settings screen by going to the Settings gear icon in the first screen or while in-game using the buttons at the top of the screen.
 
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2024.9.8](colored: 'yellow')
 

@@ -18,6 +18,8 @@ class LauncherViewModel: NSObject, ObservableObject {
   
   @Published var multiplayerConfig: MultiplayerConfig?
   
+  @Published var selectedCategories: Set<FileCategory> = Set(FileCategory.allCases)
+  
   var currentConfig: LauncherConfig? {
     didSet {
       if let currentConfig {
@@ -28,6 +30,8 @@ class LauncherViewModel: NSObject, ObservableObject {
   }
   
   @Published var savedConfigs = [LauncherConfig]()
+  
+  let categoryManager = FileCategoryManager()
   
   private let userDefaultsKey = "configs"
   
@@ -155,10 +159,28 @@ class LauncherViewModel: NSObject, ObservableObject {
       
       iWadFiles = iwads
       externalFiles = mods
+      
+      applyCategoryMappings()
     } catch {
       print("Could not read docs dir: \(error)")
     }
     refreshSavedConfigs()
+  }
+
+  private func applyCategoryMappings() {
+    for (category, files) in categoryManager.categoryMap {
+      for mappedFile in files {
+        if let index = externalFiles.firstIndex(where: { $0.displayName == mappedFile.displayName }) {
+          externalFiles[index].category = category
+        }
+      }
+    }
+  }
+
+  func assignFileToCategory(file: GZDoomFile, category: FileCategory) {
+    if var file = externalFiles.first(where: { $0 == file }) {
+      categoryManager.assign(&file, to: category, in: &externalFiles)
+    }
   }
   
   #if os(tvOS)

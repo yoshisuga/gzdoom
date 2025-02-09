@@ -46,13 +46,20 @@ class HighlightManager: ObservableObject {
   @Published var nameToHighlight: String?
 }
 
+
+
+
 struct CreateLaunchConfigView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: LauncherViewModel
   @State var isEditing = false
   @State private var showDocumentPicker = false
   
+  @State private var dragOverCategory: FileCategory?
+  
   @Namespace var namespace
+  
+  let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
   let zdFileType = UTType(exportedAs: "com.yoshisuga.genzd.data", conformingTo: .data)
   
@@ -71,11 +78,11 @@ struct CreateLaunchConfigView: View {
             dismiss()
           }.buttonStyle(.bordered).foregroundColor(.red).font(.body)
           Spacer()
-          #if !os(tvOS)
+#if !os(tvOS)
           Button("Import") {
             showDocumentPicker = true
           }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
-          #endif
+#endif
         }.padding()
       }
       if viewModel.iWadFiles.isEmpty {
@@ -83,7 +90,7 @@ struct CreateLaunchConfigView: View {
           Spacer()
           Text("You do not have any valid base game files available.")
           
-          #if os(tvOS)
+#if os(tvOS)
           if let webServer = viewModel.webServer {
             Spacer()
             Text("Upload files by navigating to one of the following URLs on another device:")
@@ -95,11 +102,11 @@ struct CreateLaunchConfigView: View {
             }
             Spacer()
           }
-          #else
+#else
           Button("Import Files") {
             showDocumentPicker = true
           }.buttonStyle(.bordered).foregroundColor(.yellow).font(.body)
-          #endif
+#endif
           Spacer()
         }
       } else {
@@ -113,16 +120,57 @@ struct CreateLaunchConfigView: View {
           }.frame(maxWidth: .infinity)
           VStack {
             Text("External Files/Mods").foregroundColor(.cyan)
+            // Categories
+            ScrollView(.horizontal, showsIndicators: false) {
+              HStack {
+                ForEach(FileCategory.allCases, id: \.self) { category in
+                  Text(category.title)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(viewModel.selectedCategories.contains(category) ? category.color : Color.gray)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+                    .scaleEffect(dragOverCategory == category ? 1.2 : 1.0)
+                    .animation(.easeInOut(duration: 0.2), value: dragOverCategory)
+                    .onTapGesture {
+                      if viewModel.selectedCategories.contains(category) {
+                        viewModel.selectedCategories.remove(category)
+                      } else {
+                        viewModel.selectedCategories.insert(category)
+                      }
+                    }
+                    .onDrop(of: [.text], isTargeted: Binding(
+                      get: {
+                        feedbackGenerator.impactOccurred()
+                        return dragOverCategory == category
+                      },
+                      set: { newValue in
+                        if newValue {
+                          dragOverCategory = category
+                        } else {
+                          dragOverCategory = nil
+                        }
+                      }
+                    )) { providers in
+                      handleDrop(providers: providers, category: category)
+                    }
+                }
+              }.padding()
+            }
+            // List of Files
             List {
-              ForEach(viewModel.externalFiles.sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
-                MultipleSelectionRow(file: file, isSelected: viewModel.selectedExternalFiles.contains(file)) {
+              ForEach(filteredFiles().sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
+                MultipleSelectionRow(
+                  file: file,
+                  isSelected: viewModel.selectedExternalFiles.contains(file)
+                ) {
                   if viewModel.selectedExternalFiles.contains(file) {
                     viewModel.selectedExternalFiles.removeAll(where: { $0 == file })
                   }
                   else {
                     viewModel.selectedExternalFiles.append(file)
                   }
-                }
+                }.environmentObject(viewModel)
               }
             }.frame(maxHeight: .infinity).listStyle(PlainListStyle())
           }
@@ -131,7 +179,7 @@ struct CreateLaunchConfigView: View {
     }.onAppear {
       viewModel.setup()
     }
-    #if os(iOS)
+#if os(iOS)
     .fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
       switch result {
       case .success(let files):
@@ -157,7 +205,49 @@ struct CreateLaunchConfigView: View {
         print("failure in import file: \(error)")
       }
     }
-    #endif
+#endif
+  }
+  
+  private func filteredFiles() -> [GZDoomFile] {
+    if viewModel.selectedCategories.isEmpty {
+      return viewModel.externalFiles
+    }
+    return viewModel.externalFiles.filter { file in
+      viewModel.selectedCategories.contains(file.category ?? .addOns)
+    }
+  }
+  
+  private func handleDrop(providers: [NSItemProvider], category: FileCategory) -> Bool {
+    let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    if let itemProvider = providers.first {
+      itemProvider.loadObject(ofClass: NSString.self) { (object, error) in
+        DispatchQueue.main.async {
+          if let fileName = object as? String {
+            if let file = viewModel.externalFiles.first(where: { $0.displayName == fileName }) {
+              viewModel.assignFileToCategory(file: file, category: category)
+              feedbackGenerator.impactOccurred()
+            }
+          }
+          // Reset the dragOverCategory state
+          dragOverCategory = nil
+        }
+      }
+      return true
+    }
+    return false
+//    providers.first?.loadItem(forTypeIdentifier: UTType.plainText.identifier as String, options: nil, completionHandler: { (item, error) in
+//      DispatchQueue.main.async {
+//        print("handleDrop: item = \(item)")
+//        if let fileName = item as? String {
+//          if let file = viewModel.externalFiles.first(where: { $0.displayName == fileName }) {
+//            viewModel.assignFileToCategory(file: file, category: category)
+//          }
+//        }
+//        // Reset the dragOverCategory state
+//        dragOverCategory = nil
+//      }
+//    })
+//    return true
   }
 }
 
@@ -186,7 +276,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2024.10.0"
+  static let currentVersion = "2025.2.1"
   
   var body: some View {
     VStack {
@@ -383,6 +473,7 @@ struct LauncherView_Previews: PreviewProvider {
           BonjourServicePublisher.shared.launcherVM = vm
         }
         #endif
+        ControlOptionsViewModel.shared.configureAudioSession()
         self?.startSDLMain(withArgs: arguments)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first {

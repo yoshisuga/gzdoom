@@ -310,7 +310,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
     }
     let touchLocationInButton = touch.location(in: button)
     let convertedTouch = button.convert(touchLocationInButton, to: self.view)
-    if aimControlsView.frame.contains(convertedTouch) {
+    if ControlOptionsViewModel.shared.touchButtonDraggingToAim && aimControlsView.frame.contains(convertedTouch) {
 //      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
       aimControlsView.touchesBegan(touches, with: event)
     }
@@ -322,7 +322,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
     }
     let touchLocationInButton = touch.location(in: button)
     let convertedTouch = button.convert(touchLocationInButton, to: self.view)
-    if aimControlsView.frame.contains(convertedTouch) {
+    if ControlOptionsViewModel.shared.touchButtonDraggingToAim && aimControlsView.frame.contains(convertedTouch) {
 //      print("gamePadButtonBegan: RT button pressed inside of aimControlsView!")
       aimControlsView.touchesMoved(touches, with: event)
     }
@@ -349,7 +349,7 @@ extension TouchControlViewController: GamepadButtonDelegate {
     }
 //    print("gamepadButtonReleased called: \(gamepadControl)")
     utils.handleGameControl(gamepadControl, isPressed: false)
-    if aimControlsView.frame.contains(button.center) {
+    if ControlOptionsViewModel.shared.touchButtonDraggingToAim && aimControlsView.frame.contains(button.center) {
       aimControlsView.touchesEnded(touches, with: event)
     }
     lastTouchTime = Date().timeIntervalSince1970
