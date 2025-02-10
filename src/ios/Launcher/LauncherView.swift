@@ -168,8 +168,40 @@ struct CreateLaunchConfigView: View {
                 }.environmentObject(viewModel)
               }
             }.frame(maxHeight: .infinity).listStyle(PlainListStyle())
+            
+            // Bottom bar
+            if !viewModel.selectedExternalFiles.isEmpty {
+              HStack {
+                Text("\(viewModel.selectedExternalFiles.count) file(s) selected")
+                  .padding(.top, 10).font(.small)
+
+                Menu {
+                     ForEach(FileCategory.allCases.filter { $0 != .all }, id: \.self) { category in
+                         Button(action: {
+                           viewModel.assignFilesToCategory(files: viewModel.selectedExternalFiles, category: category)
+                         }) {
+                             Text(category.title)
+                         }
+                     }
+                } label: {
+                  Text("Categorize")
+                    .foregroundColor(.white)
+                    .padding(6)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                    .font(.small)
+                }
+              }
+              .background(Color.black.opacity(0.7))
+              .cornerRadius(10)
+              .padding(.horizontal)
+              .shadow(radius: 5)
+              .transition(.move(edge: .bottom).combined(with: .opacity)) // Add transition
+              .animation(.easeInOut(duration: 0.3), value: viewModel.selectedExternalFiles.count) // Add animation
+            }
           }
         }
+        .animation(.easeInOut(duration: 0.3), value: viewModel.selectedExternalFiles.isEmpty) // Apply animation to the condition
       }
     }.onAppear {
       viewModel.setup()
@@ -259,7 +291,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2025.2.1"
+  static let currentVersion = "2025.2.2"
   
   var body: some View {
     VStack {

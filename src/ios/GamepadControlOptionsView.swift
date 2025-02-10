@@ -416,7 +416,7 @@ struct ControlOptionsView: View {
               .alert(isPresented: $showConfirmResetCategories) {
                 Alert(
                   title: Text("Remove category data"),
-                  message: Text("This will remove all the categories that have been applied to external files. Are you sure you want to do this?"),
+                  message: Text("This will remove the category that have been applied to all external files. Are you sure you want to do this?"),
                   primaryButton: .destructive(Text("Yes")) {
                     launcherViewModel.categoryManager.reset()
                   },

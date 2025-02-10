@@ -1,10 +1,18 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.2.2](colored: 'yellow')
+
+- ^[Categorize Mod Files](colored: 'white'): You can now organize your mod files by assigning a category to them. To assign a category, long-tap the mod file to open a context menu, and select a category.
+
+- ^[Option to reset category assignments](colored: 'white'): The options screen has an option to reset the category assignments if you want to start over.
+
+- ^[Better organization of Base Game file section](colored: 'white'): Game names are automatically detected from the filename, and tabs let you filter the list.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2025.2.1](colored: 'yellow')
 
 - New option: ^[Enable aiming and dragging with touch buttons](colored: 'white'). This has been the default behavior of the app, but you can now disable it if you want to use two fingers to aim and fire using the touch controls.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2025.2.0](colored: 'yellow')
 

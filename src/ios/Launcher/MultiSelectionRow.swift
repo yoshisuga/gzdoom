@@ -79,7 +79,7 @@ struct MultipleSelectionRow: View {
     .contextMenu {
       VStack {
         Text("Assign to category:")
-        ForEach(FileCategory.allCases, id: \.self) { category in
+        ForEach(FileCategory.allCases.filter { $0 != .all }, id: \.self) { category in
           Button {
             viewModel.assignFileToCategory(file: file, category: category)
           } label: {

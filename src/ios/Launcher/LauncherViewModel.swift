@@ -182,6 +182,13 @@ class LauncherViewModel: NSObject, ObservableObject {
     }
   }
   
+  func assignFilesToCategory(files: [GZDoomFile], category: FileCategory) {
+    for file in selectedExternalFiles {
+      var fileCopy = file
+      categoryManager.assign(&fileCopy, to: category, in: &externalFiles)
+    }
+  }
+  
   #if os(tvOS)
   func startWebUploader() {
     DispatchQueue.main.async { [weak self] in
