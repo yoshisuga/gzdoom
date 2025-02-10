@@ -18,7 +18,7 @@ class LauncherViewModel: NSObject, ObservableObject {
   
   @Published var multiplayerConfig: MultiplayerConfig?
   
-  @Published var selectedCategories: Set<FileCategory> = Set(FileCategory.allCases)
+  @Published var selectedCategory: FileCategory = .all
   
   var currentConfig: LauncherConfig? {
     didSet {

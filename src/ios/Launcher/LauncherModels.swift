@@ -54,10 +54,19 @@ struct GZDoomFile: Identifiable, Hashable, Codable {
     return filename
   }
   
-  var id: String { displayName }
+  var id: String { filename }
   var category: FileCategory? = .addOns
   var originalDoomEngineGame: OriginalDoomEngineGame? {
     OriginalDoomEngineGame(filename: filename)
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(filename)
+  }
+
+  // Equatable conformance based on filename property
+  static func == (lhs: GZDoomFile, rhs: GZDoomFile) -> Bool {
+    return lhs.filename == rhs.filename
   }
 }
 
@@ -77,6 +86,7 @@ struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {
   }
   
   var baseIWAD: GZDoomFile {
+    // Have to reconstitute this because the documentsPath changes in an update
     return GZDoomFile(fullPath: "\(documentsPath)/\(baseIWADName)")
   }
   
@@ -86,8 +96,8 @@ struct LauncherConfig: Identifiable, Hashable, Codable, Equatable {
   
   init(name: String, baseIWAD: GZDoomFile, arguments: [GZDoomFile]) {
     self.name = name
-    self.baseIWADName = baseIWAD.displayName
-    self.argumentsByName = arguments.map { $0.displayName }
+    self.baseIWADName = baseIWAD.filename
+    self.argumentsByName = arguments.map { $0.filename }
   }
 }
 

@@ -35,8 +35,6 @@ struct SelectIWADView: View {
   
   var namespace: Namespace.ID
   
-  let darkGray = Color(red: 0.2, green: 0.2, blue: 0.2)
-  
   var body: some View {
     VStack {
       Text("Select the base game file:").foregroundColor(.cyan)
@@ -48,7 +46,7 @@ struct SelectIWADView: View {
           Text(mode.title)
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
-            .background(displayMode == mode ? mode.color : darkGray)
+            .background(displayMode == mode ? mode.color : Color.darkGray)
             .foregroundStyle(displayMode == mode ? Color.white : mode.color)
             .cornerRadius(20)
             .onTapGesture {
@@ -65,6 +63,7 @@ struct SelectIWADView: View {
       })) { file in
         Button {
           withAnimation {
+            print("Setting selectedIWad to fullPath: \(file.fullPath)")
             viewModel.selectedIWAD = file
           }
           viewModel.externalFiles.removeAll(where: { $0.displayName == file.displayName })

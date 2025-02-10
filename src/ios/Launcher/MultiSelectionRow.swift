@@ -26,14 +26,14 @@ struct MultipleSelectionRow: View {
       
       Text(file.displayName)
         .foregroundColor(isSelected ? .red : .orange)
-        .onDrag {
-          let itemProvider = NSItemProvider(object: file.displayName as NSString)
-          let dragItem = UIDragItem(itemProvider: itemProvider)
-          dragItem.localObject = file
-          feedbackGenerator.impactOccurred()
-          longPressActivated = true
-          return itemProvider
-        }
+//        .onDrag {
+//          let itemProvider = NSItemProvider(object: file.displayName as NSString)
+//          let dragItem = UIDragItem(itemProvider: itemProvider)
+//          dragItem.localObject = file
+//          feedbackGenerator.impactOccurred()
+//          longPressActivated = true
+//          return itemProvider
+//        }
         .id(file.displayName)
       
       Spacer()

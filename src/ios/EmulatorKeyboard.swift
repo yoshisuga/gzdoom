@@ -775,14 +775,12 @@ struct KeyPosition {
   
   @objc func changeInputMode(_ sender: UIButton) {
     if sender == controlOptionsButton {
-      var optionsView = ControlOptionsView()
-      optionsView.dismissClosure = { [weak self] in
+      var optionsView = ControlOptionsView(dismissClosure: { [weak self] in
         self?.dismiss(animated: true)
 #if os(iOS)
-//        self?.touchControlsVC?.updateOpacity()
         self?.gyroHandler.setup()
 #endif
-      }
+      }).environmentObject(LauncherViewModel())
       let hostingController = UIHostingController(rootView: optionsView)
       present(hostingController, animated: true)
     } else if sender == toggleButton {

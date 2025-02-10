@@ -9,23 +9,25 @@ import Foundation
 import SwiftUI
 
 enum FileCategory: CaseIterable, Codable {
+  case all
   case addOns
   case totalConversions
+  case gameplay
   case maps
   case monsters
   case weapons
   case graphics
   case music
-  case gameplay
   case randomizers
   case demos
 
   var title: String {
     switch self {
+    case .all: return "All"
     case .totalConversions: return "Total Conversions"
     case .addOns: return "Add-Ons"
     case .demos: return "Demos"
-    case .music: return "Music"
+    case .music: return "Audio"
     case .maps: return "Maps"
     case .monsters: return "Monsters"
     case .weapons: return "Weapons"
@@ -37,15 +39,16 @@ enum FileCategory: CaseIterable, Codable {
   
   var color: Color {
     switch self {
+    case .all: return .red
     case .totalConversions: return .blue
-    case .addOns: return .green
+    case .addOns: return .gray
     case .demos: return .brown
     case .maps: return .orange
     case .music: return .purple
-    case .monsters: return .red
-    case .weapons: return .indigo
-    case .graphics: return .teal
-    case .gameplay: return .cyan
+    case .monsters: return .yellow
+    case .weapons: return Color(red: 0.780, green: 0.082, blue: 0.522)
+    case .graphics: return .green
+    case .gameplay: return Color(red: 0.0, green: 0.749, blue: 1.0)
     case .randomizers: return .pink
     }
   }
@@ -78,6 +81,7 @@ class FileCategoryManager: ObservableObject {
   }
   
   func assign(_ file: inout GZDoomFile, to category: FileCategory, in externalFiles: inout [GZDoomFile]) {
+    if category == .all { return }
     if categoryMap[category] == nil {
       categoryMap[category] = []
     }
@@ -97,4 +101,8 @@ class FileCategoryManager: ObservableObject {
     }
   }
   
+  func reset() {
+    categoryMap = [:]
+    UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+  }
 }

@@ -256,6 +256,10 @@ struct ControlOptionsView: View {
   
   @State private var selectedAppIcon: String? = UIApplication.shared.alternateIconName
   
+  @State private var showConfirmResetCategories = false
+  
+  @EnvironmentObject var launcherViewModel: LauncherViewModel
+  
   init(dismissClosure: (() -> Void)? = nil) {
     self.dismissClosure = dismissClosure
     let model = ControlOptionsViewModel.shared
@@ -401,6 +405,25 @@ struct ControlOptionsView: View {
 #if !os(tvOS)
             OptionsSwitchRow(isOn: $viewModel.enableTouchControlsGuideOverlay, label: "Show Move/Aim Overlay Guide")
 #endif
+            HStack {
+              Text("Reset categories for external files")
+              Spacer()
+              Button {
+                showConfirmResetCategories = true
+              } label: {
+                Text("Reset").font(.actionButton)
+              }
+              .alert(isPresented: $showConfirmResetCategories) {
+                Alert(
+                  title: Text("Remove category data"),
+                  message: Text("This will remove all the categories that have been applied to external files. Are you sure you want to do this?"),
+                  primaryButton: .destructive(Text("Yes")) {
+                    launcherViewModel.categoryManager.reset()
+                  },
+                  secondaryButton: .cancel()
+                )
+              }
+            }
           }
 #if !os(tvOS)
           Section(header: Text("Touch Controls").font(.small)) {

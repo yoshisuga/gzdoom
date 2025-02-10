@@ -124,16 +124,14 @@ struct CreateLaunchConfigView: View {
                   Text(category.title)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                    .background(viewModel.selectedCategories.contains(category) ? category.color : Color.darkGray)
-                    .foregroundColor(.white)
+                    .background(viewModel.selectedCategory == category ? category.color : Color.darkGray)
+                    .foregroundColor(viewModel.selectedCategory == category ? .white : category.color)
                     .cornerRadius(20)
                     .scaleEffect(dragOverCategory == category ? 1.2 : 1.0)
                     .animation(.easeInOut(duration: 0.2), value: dragOverCategory)
                     .onTapGesture {
-                      if viewModel.selectedCategories.contains(category) {
-                        viewModel.selectedCategories.remove(category)
-                      } else {
-                        viewModel.selectedCategories.insert(category)
+                      if viewModel.selectedCategory != category {
+                        viewModel.selectedCategory = category
                       }
                     }
                     .onDrop(of: [.text], isTargeted: Binding(
@@ -206,12 +204,12 @@ struct CreateLaunchConfigView: View {
   }
   
   private func filteredFiles() -> [GZDoomFile] {
-    if viewModel.selectedCategories.isEmpty {
-      return viewModel.externalFiles
+    if viewModel.selectedCategory == .all {
+      return viewModel.externalFiles.filter { $0.originalDoomEngineGame == nil }
     }
     return viewModel.externalFiles.filter { file in
       file.originalDoomEngineGame == nil &&
-      viewModel.selectedCategories.contains(file.category ?? .addOns)
+      file.category == viewModel.selectedCategory
     }
   }
   
@@ -349,7 +347,7 @@ struct LauncherView: View {
         case .settings:
           ControlOptionsView(dismissClosure: {
             activeSheet = nil
-          })
+          }).environmentObject(viewModel)
 
         #if ZERO
         case .upgrade:
