@@ -55,18 +55,40 @@ struct GZDoomFile: Identifiable, Hashable, Codable {
   }
   
   var id: String { filename }
+  
+  // Used only for the list view model
   var category: FileCategory? = .addOns
+  
   var originalDoomEngineGame: OriginalDoomEngineGame? {
     OriginalDoomEngineGame(filename: filename)
   }
-
+  
   func hash(into hasher: inout Hasher) {
     hasher.combine(filename)
   }
-
+  
   // Equatable conformance based on filename property
   static func == (lhs: GZDoomFile, rhs: GZDoomFile) -> Bool {
     return lhs.filename == rhs.filename
+  }
+  
+  init(fullPath: String) {
+    self.fullPath = fullPath
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case fullPath
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    fullPath = try container.decode(String.self, forKey: .fullPath)
+    category = .addOns // Default category for decoding
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(fullPath, forKey: .fullPath)
   }
 }
 

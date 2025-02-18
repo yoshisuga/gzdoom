@@ -16,6 +16,10 @@ struct MultipleSelectionRow: View {
   private let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
   @EnvironmentObject var viewModel: LauncherViewModel
   
+  #if ZERO
+  @State private var showUpgradeView = false
+  #endif
+  
   var body: some View {
 
     HStack {
@@ -81,6 +85,10 @@ struct MultipleSelectionRow: View {
         Text("Assign to category:")
         ForEach(FileCategory.allCases.filter { $0 != .all }, id: \.self) { category in
           Button {
+//            if !PurchaseViewModel.shared.isPurchased {
+//              showUpgradeView = true
+//              return
+//            }
             viewModel.assignFileToCategory(file: file, category: category)
           } label: {
             HStack {
@@ -92,6 +100,11 @@ struct MultipleSelectionRow: View {
           }
         }
       }
+//      #if ZERO
+//      .sheet(isPresented: $showUpgradeView) {
+//        UpgradeView()
+//      }
+//      #endif
     }
 //    Button(action: action) {
 //      HStack {

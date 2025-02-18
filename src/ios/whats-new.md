@@ -2,7 +2,7 @@
 
 ^[Version 2025.2.2](colored: 'yellow')
 
-- ^[Categorize Mod Files](colored: 'white'): You can now organize your mod files by assigning a category to them. To assign a category, long-tap the mod file to open a context menu, and select a category.
+- ^[Categorize Mod Files](colored: 'white'): You can now organize your mod files by assigning a category to them. To assign a category, long-tap the mod file to open a context menu to select a category, or you can bulk assign selected entries by using the "Categorize" button after selecting files.
 
 - ^[Option to reset category assignments](colored: 'white'): The options screen has an option to reset the category assignments if you want to start over.
 

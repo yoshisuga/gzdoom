@@ -170,7 +170,7 @@ class LauncherViewModel: NSObject, ObservableObject {
     for (category, files) in categoryManager.categoryMap {
       for mappedFile in files {
         if let index = externalFiles.firstIndex(where: { $0.displayName == mappedFile.displayName }) {
-          externalFiles[index].category = category
+          externalFiles[index].category = category.isUnknown ? .addOns : category
         }
       }
     }

@@ -54,6 +54,10 @@ struct CreateLaunchConfigView: View {
   
   @State private var dragOverCategory: FileCategory?
   
+  #if ZERO
+  @State private var showUpgradeView = false
+  #endif
+  
   @Namespace var namespace
   
   let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
@@ -115,95 +119,124 @@ struct CreateLaunchConfigView: View {
               SelectIWADView(viewModel: viewModel, namespace: namespace)
             }
           }.frame(maxWidth: .infinity)
-          VStack {
-            Text("External Files/Mods").foregroundColor(.cyan)
-            // Categories
-            ScrollView(.horizontal, showsIndicators: false) {
-              HStack {
-                ForEach(FileCategory.allCases, id: \.self) { category in
-                  Text(category.title)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(viewModel.selectedCategory == category ? category.color : Color.darkGray)
-                    .foregroundColor(viewModel.selectedCategory == category ? .white : category.color)
-                    .cornerRadius(20)
-                    .scaleEffect(dragOverCategory == category ? 1.2 : 1.0)
-                    .animation(.easeInOut(duration: 0.2), value: dragOverCategory)
-                    .onTapGesture {
-                      if viewModel.selectedCategory != category {
-                        viewModel.selectedCategory = category
-                      }
-                    }
-                    .onDrop(of: [.text], isTargeted: Binding(
-                      get: {
-                        feedbackGenerator.impactOccurred()
-                        return dragOverCategory == category
-                      },
-                      set: { newValue in
-                        if newValue {
-                          dragOverCategory = category
-                        } else {
-                          dragOverCategory = nil
+          ZStack {
+            VStack {
+              Text("External Files/Mods").foregroundColor(.cyan)
+              // Categories
+              ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                  ForEach(FileCategory.allCases, id: \.self) { category in
+                    Text(category.title)
+                      .padding(.horizontal, 10)
+                      .padding(.vertical, 5)
+                      .background(viewModel.selectedCategory == category ? category.color : Color.darkGray)
+                      .foregroundColor(viewModel.selectedCategory == category ? .white : category.color)
+                      .cornerRadius(20)
+                      .scaleEffect(dragOverCategory == category ? 1.2 : 1.0)
+                      .animation(.easeInOut(duration: 0.2), value: dragOverCategory)
+                      .onTapGesture {
+                        if viewModel.selectedCategory != category {
+                          viewModel.selectedCategory = category
                         }
                       }
-                    )) { providers in
-                      handleDrop(providers: providers, category: category)
-                    }
+                      .onDrop(of: [.text], isTargeted: Binding(
+                        get: {
+                          feedbackGenerator.impactOccurred()
+                          return dragOverCategory == category
+                        },
+                        set: { newValue in
+                          if newValue {
+                            dragOverCategory = category
+                          } else {
+                            dragOverCategory = nil
+                          }
+                        }
+                      )) { providers in
+                        handleDrop(providers: providers, category: category)
+                      }
+                  }
                 }
               }
-            }
-            // List of Files
-            List {
-              ForEach(filteredFiles().sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
-                MultipleSelectionRow(
-                  file: file,
-                  isSelected: viewModel.selectedExternalFiles.contains(file)
-                ) {
-                  if viewModel.selectedExternalFiles.contains(file) {
-                    viewModel.selectedExternalFiles.removeAll(where: { $0 == file })
-                  }
-                  else {
-                    viewModel.selectedExternalFiles.append(file)
-                  }
-                }.environmentObject(viewModel)
-              }
-            }.frame(maxHeight: .infinity).listStyle(PlainListStyle())
-            
-            // Bottom bar
-            if !viewModel.selectedExternalFiles.isEmpty {
-              HStack {
-                Text("\(viewModel.selectedExternalFiles.count) file(s) selected")
-                  .padding(.top, 10).font(.small)
 
-                Menu {
-                     ForEach(FileCategory.allCases.filter { $0 != .all }, id: \.self) { category in
-                         Button(action: {
-                           viewModel.assignFilesToCategory(files: viewModel.selectedExternalFiles, category: category)
-                         }) {
-                             Text(category.title)
-                         }
-                     }
-                } label: {
-                  Text("Categorize")
-                    .foregroundColor(.white)
-                    .padding(6)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .font(.small)
+              // List of Files
+//              #if ZERO
+//              if !PurchaseViewModel.shared.isPurchased && (viewModel.selectedCategory != .all) && filteredFiles().isEmpty {
+//                VStack {
+//                  Spacer()
+//                  Text("Upgrade to categorize your external mod files!")
+//                  Button {
+//                    showUpgradeView = true
+//                  } label: {
+//                    Text("Upgrade Now").font(.actionButton)
+//                  }
+//                  Spacer()
+//                }
+//              }
+//              #endif
+              
+              List {
+                ForEach(filteredFiles().sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
+                  MultipleSelectionRow(
+                    file: file,
+                    isSelected: viewModel.selectedExternalFiles.contains(file)
+                  ) {
+                    if viewModel.selectedExternalFiles.contains(file) {
+                      viewModel.selectedExternalFiles.removeAll(where: { $0 == file })
+                    }
+                    else {
+                      viewModel.selectedExternalFiles.append(file)
+                    }
+                  }.environmentObject(viewModel)
                 }
-              }
-              .background(Color.black.opacity(0.7))
-              .cornerRadius(10)
-              .padding(.horizontal)
-              .shadow(radius: 5)
-              .transition(.move(edge: .bottom).combined(with: .opacity)) // Add transition
-              .animation(.easeInOut(duration: 0.3), value: viewModel.selectedExternalFiles.count) // Add animation
+              }.frame(maxHeight: .infinity).listStyle(PlainListStyle())
+              
             }
+            VStack {
+              // Bottom bar
+              Spacer()
+              if !viewModel.selectedExternalFiles.isEmpty {
+                HStack {
+                  Text("\(viewModel.selectedExternalFiles.count) file(s) selected")
+                    .padding(.top, 10).font(.small)
+                  
+                  Menu {
+                    ForEach(FileCategory.allCases.filter { $0 != .all }.reversed(), id: \.self) { category in
+                      Button(action: {
+                        viewModel.assignFilesToCategory(files: viewModel.selectedExternalFiles, category: category)
+                        viewModel.selectedExternalFiles = []
+                      }) {
+                        Text(category.title).foregroundStyle(category.color)
+                      }
+                    }
+                  } label: {
+                    Text("Categorize")
+                      .foregroundColor(.white)
+                      .padding(6)
+                      .background(Color.blue)
+                      .cornerRadius(10)
+                      .font(.small)
+                  }
+                }
+                .background(Color.black.opacity(0.7))
+                .cornerRadius(10)
+                .padding(.horizontal)
+                .shadow(radius: 5)
+                .transition(.move(edge: .bottom).combined(with: .opacity)) // Add transition
+                .animation(.easeInOut(duration: 0.3), value: viewModel.selectedExternalFiles.count) // Add animation
+              }
+            }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.selectedExternalFiles.count) // Add animation
           }
         }
         .animation(.easeInOut(duration: 0.3), value: viewModel.selectedExternalFiles.isEmpty) // Apply animation to the condition
       }
-    }.onAppear {
+    }
+    #if ZERO
+    .sheet(isPresented: $showUpgradeView) {
+      UpgradeView()
+    }
+    #endif
+    .onAppear {
       viewModel.setup()
     }
 #if os(iOS)
