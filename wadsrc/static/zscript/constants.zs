@@ -276,6 +276,7 @@ enum ERadiusThrustFlags
 	RTF_NOIMPACTDAMAGE = 2,
 	RTF_NOTMISSILE = 4,
 	RTF_THRUSTZ = 16,
+  RTF_CIRCULARTHRUST = 512,
 };
 
 // Flags for A_RadiusDamageSelf
