@@ -59,6 +59,8 @@ struct GZDoomFile: Identifiable, Hashable, Codable {
   // Used only for the list view model
   var category: FileCategory? = .addOns
   
+  var fileAddedDate = Date(timeIntervalSince1970: 0)
+  
   var originalDoomEngineGame: OriginalDoomEngineGame? {
     OriginalDoomEngineGame(filename: filename)
   }
@@ -74,6 +76,10 @@ struct GZDoomFile: Identifiable, Hashable, Codable {
   
   init(fullPath: String) {
     self.fullPath = fullPath
+    let fileURL = URL(fileURLWithPath: fullPath)
+    if let resourceValues = try? fileURL.resourceValues(forKeys: [.addedToDirectoryDateKey]) {
+      fileAddedDate = resourceValues.addedToDirectoryDate ?? Date(timeIntervalSince1970: 0)
+    }
   }
   
   enum CodingKeys: String, CodingKey {

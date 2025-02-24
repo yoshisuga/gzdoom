@@ -46,6 +46,57 @@ class HighlightManager: ObservableObject {
   @Published var nameToHighlight: String?
 }
 
+enum FileSortBy: Codable, Hashable {
+  case name
+  case date
+
+  var view: some View {
+    HStack {
+      switch self {
+      case .date:
+        Text("Date")
+      case .name:
+        Text("Name")
+      }
+    }
+  }
+  
+  var label: String {
+      switch self {
+      case .date:
+          return "Date"
+      case .name:
+          return "Name"
+      }
+  }
+}
+  
+
+struct FileSortState: Codable {
+  let sortBy: FileSortBy
+  let isAscending: Bool
+  static let userDefaultsKey = "lastFileSortState"
+}
+
+extension FileSortState {
+  func saveToUserDefaults() {
+    let encoder = JSONEncoder()
+    if let encoded = try? encoder.encode(self) {
+      UserDefaults.standard.set(encoded, forKey: FileSortState.userDefaultsKey)
+    }
+  }
+  
+  static func loadFromUserDefaults() -> FileSortState {
+    if let savedData = UserDefaults.standard.data(forKey: FileSortState.userDefaultsKey) {
+      let decoder = JSONDecoder()
+      if let decoded = try? decoder.decode(FileSortState.self, from: savedData) {
+        return decoded
+      }
+    }
+    return .init(sortBy: .name, isAscending: true)
+  }
+}
+
 struct CreateLaunchConfigView: View {
   @Environment(\.dismiss) var dismiss
   @ObservedObject var viewModel: LauncherViewModel
@@ -63,6 +114,8 @@ struct CreateLaunchConfigView: View {
   let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
   let zdFileType = UTType(exportedAs: "com.yoshisuga.genzd.data", conformingTo: .data)
+  
+  @State private var sortState: FileSortState = .init(sortBy: .name, isAscending: true)
   
   var body: some View {
     VStack {
@@ -121,7 +174,35 @@ struct CreateLaunchConfigView: View {
           }.frame(maxWidth: .infinity)
           ZStack {
             VStack {
-              Text("External Files/Mods").foregroundColor(.cyan)
+              HStack {
+                Text("External Files/Mods").foregroundColor(.cyan)
+                Menu {
+                  Text("Sort By")
+                    ForEach([FileSortBy.name, FileSortBy.date], id: \.self) { option in
+                      Button(action: {
+                        if sortState.sortBy == option {
+                          sortState = FileSortState(sortBy: option, isAscending: !sortState.isAscending)
+                        } else {
+                          sortState = FileSortState(sortBy: option, isAscending: sortState.isAscending)
+                        }
+                        sortState.saveToUserDefaults()
+                      }) {
+                        HStack {
+                          Text((sortState.sortBy == option ? "✓ " : "") + option.label)
+                          if sortState.sortBy == option {
+                            if sortState.isAscending {
+                              Image(systemName: "arrow.up")
+                            } else {
+                              Image(systemName: "arrow.down")
+                            }
+                          }
+                        }
+                      }
+                    }
+                } label: {
+                  Image(systemName: "ellipsis.circle")
+                }
+              }
               // Categories
               ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
@@ -175,7 +256,21 @@ struct CreateLaunchConfigView: View {
 //              #endif
               
               List {
-                ForEach(filteredFiles().sorted(by: {$0.displayName.lowercased() < $1.displayName.lowercased() }), id:\.self) { file in
+                ForEach(filteredFiles().sorted(by: {
+                  if sortState.sortBy == .name {
+                    if sortState.isAscending {
+                      return $0.displayName.lowercased() < $1.displayName.lowercased()
+                    }
+                    return $0.displayName.lowercased() > $1.displayName.lowercased()
+                  } else {
+                    if sortState.isAscending {
+                      return $0.fileAddedDate < $1.fileAddedDate
+                    } else {
+                      return $0.fileAddedDate > $1.fileAddedDate
+                    }
+                  }
+                  
+                }), id:\.self) { file in
                   MultipleSelectionRow(
                     file: file,
                     isSelected: viewModel.selectedExternalFiles.contains(file)
@@ -238,6 +333,7 @@ struct CreateLaunchConfigView: View {
     #endif
     .onAppear {
       viewModel.setup()
+      sortState = FileSortState.loadFromUserDefaults()
     }
 #if os(iOS)
     .fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [zdFileType], allowsMultipleSelection: true) { result in
