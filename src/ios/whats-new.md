@@ -1,5 +1,13 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.2.3](colored: 'yellow')
+
+- ^[Sort External Files/Mods by Name or Date](colored: 'white'): I noticed that if you have a lot of mod files, sometimes you just want the mods you just downloaded to appear at the top. So I added a "sort by name/date" button to do just this. Tap the circle with the ellipsis (...) button to show the sorting options. Your last chosen sorting option is saved.
+
+- A small patch to GZDoom so that the Turok mod runs.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2025.2.2](colored: 'yellow')
 
 - ^[Categorize Mod Files](colored: 'white'): You can now organize your mod files by assigning a category to them. To assign a category, long-tap the mod file to open a context menu to select a category, or you can bulk assign selected entries by using the "Categorize" button after selecting files.
@@ -8,7 +16,6 @@
 
 - ^[Better organization of Base Game file section](colored: 'white'): Game names are automatically detected from the filename, and tabs let you filter the list.
 
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2025.2.1](colored: 'yellow')
 

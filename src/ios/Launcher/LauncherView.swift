@@ -420,7 +420,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2025.2.2"
+  static let currentVersion = "2025.2.3"
   
   var body: some View {
     VStack {
