@@ -58,6 +58,7 @@
 #include "sbar.h"
 #include "screenjob.h"
 #include "vm.h"
+#include "i_time.h"
 
 FIntermissionDescriptorList IntermissionDescriptors;
 
@@ -66,10 +67,15 @@ IMPLEMENT_CLASS(DIntermissionScreenFader, false, false)
 IMPLEMENT_CLASS(DIntermissionScreenText, false, false)
 IMPLEMENT_CLASS(DIntermissionScreenCast, false, false)
 IMPLEMENT_CLASS(DIntermissionScreenScroller, false, false)
+IMPLEMENT_CLASS(DIntermissionScreenCutscene, false, true)
 IMPLEMENT_CLASS(DIntermissionController, false, true)
 
 IMPLEMENT_POINTERS_START(DIntermissionController)
 	IMPLEMENT_POINTER(mScreen)
+IMPLEMENT_POINTERS_END
+
+IMPLEMENT_POINTERS_START(DIntermissionScreenCutscene)
+	IMPLEMENT_POINTER(mScreenJobRunner)
 IMPLEMENT_POINTERS_END
 
 extern int		NoWipe;
@@ -95,7 +101,7 @@ DEFINE_ACTION_FUNCTION(_Screen, GetTextScreenSize)
 void DrawFullscreenSubtitle(FFont* font, const char *text)
 {
 	if (!text || !*text || !inter_subtitles) return;
-	if (*text == '$') text = GStrings[text + 1];
+	text = GStrings.localize(text);
 
 	// This uses the same scaling as regular HUD messages
 	auto scale = active_con_scaletext(twod, generic_ui);
@@ -170,7 +176,7 @@ void DIntermissionScreen::Init(FIntermissionAction *desc, bool first)
 	}
 	else if (*texname == '$')
 	{
-		texname = GStrings(texname+1);
+		texname = GStrings.GetString(texname+1);
 	}
 	if (texname[0] != 0)
 	{
@@ -276,6 +282,66 @@ void DIntermissionScreen::OnDestroy()
 //
 //==========================================================================
 
+void DIntermissionScreenCutscene::Init(FIntermissionAction *desc, bool first)
+{
+	Super::Init(desc, first);
+	mScreenJobRunner = CreateRunner(false);
+	if(first) NoWipe++;
+	CreateCutscene(&static_cast<FIntermissionActionCutscene*>(desc)->scn, mScreenJobRunner, nullptr);
+}
+
+int DIntermissionScreenCutscene::Responder (FInputEvent *ev)
+{
+	ScaleOverrider ovr(twod);
+	IFVIRTUALPTRNAME(mScreenJobRunner, NAME_ScreenJobRunner, OnEvent)
+	{
+		FInputEvent evt = *ev;
+		int result = 0;
+		VMValue parm[] = { mScreenJobRunner, &evt };
+		VMReturn ret(&result);
+		VMCall(func, parm, 2, &ret, 1);
+		return result ? -1 : 0;
+	}
+	return Super::Responder(ev);
+}
+
+int DIntermissionScreenCutscene::Ticker()
+{
+	++mTicker;
+	ScaleOverrider ovr(twod);
+	IFVIRTUALPTRNAME(mScreenJobRunner, NAME_ScreenJobRunner, OnTick)
+	{
+		int result = 0;
+		VMValue parm[] = { mScreenJobRunner };
+		VMReturn ret(&result);
+		VMCall(func, parm, 1, &ret, 1);
+		return result ? -1 : 0;
+	}
+	return -1;
+}
+
+void DIntermissionScreenCutscene::Drawer ()
+{
+	ScaleOverrider ovr(twod);
+	IFVIRTUALPTRNAME(mScreenJobRunner, NAME_ScreenJobRunner, RunFrame)
+	{
+		VMValue parm[] = { mScreenJobRunner, I_GetTimeFrac() };
+		VMCall(func, parm, 2, nullptr, 0);
+	}
+}
+
+void DIntermissionScreenCutscene::OnDestroy()
+{
+	mScreenJobRunner->Destroy();
+	Super::OnDestroy();
+}
+
+//==========================================================================
+//
+//
+//
+//==========================================================================
+
 void DIntermissionScreenFader::Init(FIntermissionAction *desc, bool first)
 {
 	Super::Init(desc, first);
@@ -330,7 +396,7 @@ void DIntermissionScreenText::Init(FIntermissionAction *desc, bool first)
 {
 	Super::Init(desc, first);
 	mText = static_cast<FIntermissionActionTextscreen*>(desc)->mText;
-	if (mText[0] == '$') mText = GStrings(&mText[1]);
+	if (mText[0] == '$') mText = GStrings.GetString(&mText[1]);
 
 	auto lines = mText.Split("\n");
 	mText = "";
@@ -659,7 +725,7 @@ void DIntermissionScreenCast::Drawer ()
 	if (name != NULL)
 	{
 		auto font = generic_ui ? NewSmallFont : SmallFont;
-		if (*name == '$') name = GStrings(name+1);
+		if (*name == '$') name = GStrings.GetString(name+1);
 		DrawText(twod, font, CR_UNTRANSLATED,
 			(twod->GetWidth() - font->StringWidth (name) * CleanXfac)/2,
 			(twod->GetHeight() * 180) / 200,
@@ -1000,13 +1066,13 @@ void DIntermissionController::OnDestroy ()
 //
 //==========================================================================
 
-DIntermissionController* F_StartIntermission(FIntermissionDescriptor *desc, bool deleteme, bool ending)
+DIntermissionController* F_StartIntermission(FIntermissionDescriptor *desc, int state, bool deleteme, bool ending)
 {
 	ScaleOverrider s(twod);
 	S_StopAllChannels ();
 	gameaction = ga_nothing;
 	gamestate = GS_FINALE;
-	//if (state == FSTATE_InLevel) wipegamestate = GS_FINALE;	// don't wipe when within a level.
+	if (state == FSTATE_InLevelNoWipe) wipegamestate = GS_FINALE;	// don't wipe when within a level.
 	auto CurrentIntermission = Create<DIntermissionController>(desc, deleteme, ending);
 
 	// If the intermission finishes straight away then cancel the wipe.
@@ -1027,7 +1093,7 @@ DIntermissionController* F_StartIntermission(FIntermissionDescriptor *desc, bool
 //
 //==========================================================================
 
-DIntermissionController* F_StartIntermission(FName seq)
+DIntermissionController* F_StartIntermission(FName seq, int state)
 {
 	FIntermissionDescriptor **pdesc = IntermissionDescriptors.CheckKey(seq);
 	if (pdesc == nullptr || (*pdesc)->mActions.Size() == 0)
@@ -1044,7 +1110,7 @@ DIntermissionController* F_StartIntermission(FName seq)
 			return nullptr;
 		}
 
-		return F_StartIntermission(desc, false);
+		return F_StartIntermission(desc, state, false);
 	}
 }
 

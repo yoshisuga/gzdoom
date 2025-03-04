@@ -37,6 +37,7 @@
 
 #include <stdio.h>
 #include "basics.h"
+#include "tarray.h"
 #include "sfmt/SFMTObj.h"
 
 class FSerializer;
@@ -44,9 +45,9 @@ class FSerializer;
 class FRandom : public SFMTObj
 {
 public:
-	FRandom ();
-	FRandom (const char *name);
-	~FRandom ();
+	FRandom() : FRandom(false) {}
+	FRandom(const char* name) : FRandom(name, false) {}
+	~FRandom();
 
 	int Seed() const
 	{
@@ -170,11 +171,17 @@ public:
 	static void StaticClearRandom ();
 	static void StaticReadRNGState (FSerializer &arc);
 	static void StaticWriteRNGState (FSerializer &file);
-	static FRandom *StaticFindRNG(const char *name);
+	static FRandom *StaticFindRNG(const char *name, bool client);
+	static void SaveRNGState(TArray<FRandom>& backups);
+	static void RestoreRNGState(TArray<FRandom>& backups);
 
 #ifndef NDEBUG
 	static void StaticPrintSeeds ();
 #endif
+
+protected:
+	FRandom(bool client);
+	FRandom(const char* name, bool client);
 
 private:
 #ifndef NDEBUG
@@ -182,8 +189,16 @@ private:
 #endif
 	FRandom *Next;
 	uint32_t NameCRC;
+	bool bClient;
 
-	static FRandom *RNGList;
+	static FRandom *RNGList, *CRNGList;
+};
+
+class FCRandom : public FRandom
+{
+public:
+	FCRandom() : FRandom(true) {}
+	FCRandom(const char* name) : FRandom(name, true) {}
 };
 
 extern uint32_t rngseed;			// The starting seed (not part of state)
@@ -193,6 +208,6 @@ extern bool use_staticrng;
 
 
 // M_Random can be used for numbers that do not affect gameplay
-extern FRandom M_Random;
+extern FCRandom M_Random;
 
 #endif

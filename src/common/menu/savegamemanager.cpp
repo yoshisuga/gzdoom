@@ -49,8 +49,9 @@
 #include "m_argv.h"
 #include "i_specialpaths.h"
 
-CVAR(String, save_dir, "", CVAR_ARCHIVE | CVAR_GLOBALCONFIG);
+CVAR(String, save_dir, "", CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_SYSTEM_ONLY);
 FString SavegameFolder;
+CVAR(Int, save_sort_order, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 
 //=============================================================================
 //
@@ -84,7 +85,7 @@ int FSavegameManagerBase::RemoveSaveSlot(int index)
 	int listindex = SaveGames[0]->bNoDelete ? index - 1 : index;
 	if (listindex < 0) return index;
 
-	remove(SaveGames[index]->Filename.GetChars());
+	RemoveFile(SaveGames[index]->Filename.GetChars());
 	UnloadSaveData();
 
 	FSaveGameNode *file = SaveGames[index];
@@ -136,7 +137,19 @@ int FSavegameManagerBase::InsertSaveNode(FSaveGameNode *node)
 		//if (SaveGames[0] == &NewSaveNode) i++; // To not insert above the "new savegame" dummy entry.
 		for (; i < SaveGames.Size(); i++)
 		{
-			if (SaveGames[i]->bOldVersion || node->SaveTitle.CompareNoCase(SaveGames[i]->SaveTitle) <= 0)
+			bool sortcmp = false;
+			switch(save_sort_order)
+			{
+			case 1:
+				sortcmp = node->CreationTime.CompareNoCase(SaveGames[i]->CreationTime) > 0;
+				break;
+			default:
+			case 0:
+				sortcmp = node->SaveTitle.CompareNoCase(SaveGames[i]->SaveTitle) <= 0;
+				break;
+			}
+
+			if (SaveGames[i]->bOldVersion || sortcmp)
 			{
 				break;
 			}
@@ -170,12 +183,18 @@ void FSavegameManagerBase::NotifyNewSave(const FString &file, const FString &tit
 #endif
 		{
 			node->SaveTitle = title;
+			node->CreationTime = myasctime();
 			node->bOldVersion = false;
 			node->bMissingWads = false;
+
+			// refresh my game's position on the list (needed if time/name changed)
+			SaveGames.Delete(i);
+			int index = InsertSaveNode(node);
+
 			if (okForQuicksave)
 			{
 				if (quickSaveSlot == nullptr || quickSaveSlot == (FSaveGameNode*)1 || forceQuicksave) quickSaveSlot = node;
-				LastAccessed = LastSaved = i;
+				LastAccessed = LastSaved = index;
 			}
 			return;
 		}
@@ -183,6 +202,7 @@ void FSavegameManagerBase::NotifyNewSave(const FString &file, const FString &tit
 
 	auto node = new FSaveGameNode;
 	node->SaveTitle = title;
+	node->CreationTime = myasctime();
 	node->Filename = file;
 	node->bOldVersion = false;
 	node->bMissingWads = false;
@@ -274,7 +294,7 @@ DEFINE_ACTION_FUNCTION(FSavegameManager, DoSave)
 
 unsigned FSavegameManagerBase::ExtractSaveData(int index)
 {
-	FResourceFile *resf;
+	std::unique_ptr<FResourceFile> resf;
 	FSaveGameNode *node;
 
 	if (index == -1)
@@ -295,7 +315,7 @@ unsigned FSavegameManagerBase::ExtractSaveData(int index)
 		(node = SaveGames[index]) &&
 		!node->Filename.IsEmpty() &&
 		!node->bOldVersion &&
-		(resf = FResourceFile::OpenResourceFile(node->Filename.GetChars(), true)) != nullptr)
+		( (resf.reset(FResourceFile::OpenResourceFile(node->Filename.GetChars(), true))), resf != nullptr))
 	{
 		auto info = resf->FindEntry("info.json");
 		if (info < 0)
@@ -316,7 +336,8 @@ unsigned FSavegameManagerBase::ExtractSaveData(int index)
 		auto pic = resf->FindEntry("savepic.png");
 		if (pic >= 0)
 		{
-			FileReader picreader = resf->GetEntryReader(pic, FileSys::READER_NEW, FileSys::READERFLAG_SEEKABLE);
+			// This must use READER_CACHED or it will lock the savegame file.
+			FileReader picreader = resf->GetEntryReader(pic, FileSys::READER_CACHED, FileSys::READERFLAG_SEEKABLE);
 			PNGHandle *png = M_VerifyPNG(picreader);
 			if (png != nullptr)
 			{
@@ -329,7 +350,6 @@ unsigned FSavegameManagerBase::ExtractSaveData(int index)
 				}
 			}
 		}
-		delete resf;
 	}
 	return index;
 }
@@ -470,7 +490,7 @@ DEFINE_ACTION_FUNCTION(FSavegameManager, GetSavegame)
 
 void FSavegameManagerBase::InsertNewSaveNode()
 {
-	NewSaveNode.SaveTitle = GStrings("NEWSAVE");
+	NewSaveNode.SaveTitle = GStrings.GetString("NEWSAVE");
 	NewSaveNode.bNoDelete = true;
 	SaveGames.Insert(0, &NewSaveNode);
 }

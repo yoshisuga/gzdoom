@@ -62,6 +62,13 @@ void FBasicStartupScreen::NetDone()
     NSLog(@"FBasicStartupScreen::NetDone");
 }
 
+void FBasicStartupScreen::NetClose()
+{
+//   FConsoleWindow::GetInstance().NetClose();
+  NSLog(@"FBasicStartupScreen::NetClose");
+}
+
+
 bool FBasicStartupScreen::NetLoop(bool (*timerCallback)(void*), void* const userData)
 {
     while (true)

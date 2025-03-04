@@ -314,7 +314,7 @@ bool FCajunMaster::SpawnBot (const char *name, int color)
 		{
 			concat << colors[bot_next_color];
 		}
-		if (TeamLibrary.IsValidTeam (thebot->lastteam))
+		if (FTeam::IsValid (thebot->lastteam))
 		{ // Keep the bot on the same team when switching levels
 			concat.AppendFormat("\\team\\%d\n", thebot->lastteam);
 		}
@@ -405,7 +405,7 @@ bool FCajunMaster::DoAddBot (FLevelLocals *Level, uint8_t *info, botskill_t skil
 	else
 		Printf ("%s joined the game\n", players[bnum].userinfo.GetName());
 
-	Level->DoReborn (bnum, true);
+	Level->DoReborn (bnum);
 	Level->localEventManager->PlayerEntered(bnum, false);
 	return true;
 }
@@ -605,7 +605,7 @@ bool FCajunMaster::LoadBots ()
 					if (IsNum (sc.String))
 					{
 						teamnum = atoi (sc.String);
-						if (!TeamLibrary.IsValidTeam (teamnum))
+						if (!FTeam::IsValid (teamnum))
 						{
 							teamnum = TEAM_NONE;
 						}

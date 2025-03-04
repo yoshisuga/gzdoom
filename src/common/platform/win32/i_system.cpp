@@ -102,6 +102,7 @@
 // PUBLIC FUNCTION PROTOTYPES ----------------------------------------------
 
 void DestroyCustomCursor();
+bool isConsoleApp();
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
@@ -243,6 +244,9 @@ void CalculateCPUSpeed()
         // probably never use the performance statistics.
         min_diff = freq.LowPart * 11 / 200;
 
+		// just in case we were launched with a custom priority class, keep it
+		DWORD OldPriorityClass = GetPriorityClass(GetCurrentProcess());
+
 		// Minimize the chance of task switching during the testing by going very
 		// high priority. This is another reason to avoid timing for too long.
 		SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
@@ -257,7 +261,7 @@ void CalculateCPUSpeed()
 		do { QueryPerformanceCounter(&count1); } while ((count1.QuadPart - count2.QuadPart) < min_diff);
 		ClockCalibration.Unclock();
 
-		SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
+		SetPriorityClass(GetCurrentProcess(), OldPriorityClass);
 		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 
 		PerfToSec = double(count1.QuadPart - count2.QuadPart) / (double(ClockCalibration.GetRawCounter()) * freq.QuadPart);
@@ -306,6 +310,7 @@ static void PrintToStdOut(const char *cpt, HANDLE StdOut)
 			else break;
 		}
 	}
+
 	DWORD bytes_written;
 	WriteFile(StdOut, printData.GetChars(), (DWORD)printData.Len(), &bytes_written, NULL);
 	if (terminal) 
@@ -353,7 +358,7 @@ static void SetQueryIWad(HWND dialog)
 //
 //==========================================================================
 
-int I_PickIWad(WadStuff *wads, int numwads, bool showwin, int defaultiwad, int& autoloadflags)
+int I_PickIWad(WadStuff *wads, int numwads, bool showwin, int defaultiwad, int& autoloadflags, FString &extraArgs)
 {
 	int vkey;
 	if (stricmp(queryiwad_key, "shift") == 0)
@@ -370,7 +375,7 @@ int I_PickIWad(WadStuff *wads, int numwads, bool showwin, int defaultiwad, int& 
 	}
 	if (showwin || (vkey != 0 && GetAsyncKeyState(vkey)))
 	{
-		return LauncherWindow::ExecModal(wads, numwads, defaultiwad, &autoloadflags);
+		return LauncherWindow::ExecModal(wads, numwads, defaultiwad, &autoloadflags, &extraArgs);
 	}
 	return defaultiwad;
 }

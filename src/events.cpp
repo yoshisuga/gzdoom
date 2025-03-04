@@ -701,6 +701,69 @@ void EventManager::WorldThingDied(AActor* actor, AActor* inflictor)
 		handler->WorldThingDied(actor, inflictor);
 }
 
+bool EventManager::WorldHitscanPreFired(AActor* actor, DAngle angle, double distance, DAngle pitch, int damage, FName damageType, PClassActor *pufftype, int flags, double sz, double offsetforward, double offsetside)
+{
+	// don't call anything if actor was destroyed on PostBeginPlay/BeginPlay/whatever.
+	if (actor->ObjectFlags & OF_EuthanizeMe)
+		return false;
+
+	bool ret = false;
+	if (ShouldCallStatic(true)) ret = staticEventManager.WorldHitscanPreFired(actor, angle, distance, pitch, damage, damageType, pufftype, flags, sz, offsetforward, offsetside);
+
+	if (!ret)
+	{
+		for (DStaticEventHandler* handler = FirstEventHandler; handler && ret == false; handler = handler->next)
+			ret = handler->WorldHitscanPreFired(actor, angle, distance, pitch, damage, damageType, pufftype, flags, sz, offsetforward, offsetside);
+	}
+	
+	return ret;
+}
+
+bool EventManager::WorldRailgunPreFired(FName damageType, PClassActor* pufftype, FRailParams* param)
+{
+	auto actor = param->source;
+
+	// don't call anything if actor was destroyed on PostBeginPlay/BeginPlay/whatever.
+	if (actor->ObjectFlags & OF_EuthanizeMe)
+		return false;
+
+	bool ret = false;
+
+	if (ShouldCallStatic(true)) ret = staticEventManager.WorldRailgunPreFired(damageType, pufftype, param);
+
+	if (!ret)
+	{
+		for (DStaticEventHandler* handler = FirstEventHandler; handler && ret == false; handler = handler->next)
+			ret = handler->WorldRailgunPreFired(damageType, pufftype, param);
+	}
+
+	return ret;
+}
+
+void EventManager::WorldHitscanFired(AActor* actor, const DVector3& AttackPos, const DVector3& DamagePosition, AActor* Inflictor, int flags)
+{
+	// don't call anything if actor was destroyed on PostBeginPlay/BeginPlay/whatever.
+	if (actor->ObjectFlags & OF_EuthanizeMe)
+		return;
+
+	if (ShouldCallStatic(true)) staticEventManager.WorldHitscanFired(actor, AttackPos, DamagePosition, Inflictor, flags);
+
+	for (DStaticEventHandler* handler = FirstEventHandler; handler; handler = handler->next)
+		handler->WorldHitscanFired(actor, AttackPos, DamagePosition, Inflictor, flags);
+}
+
+void EventManager::WorldRailgunFired(AActor* actor, const DVector3& AttackPos, const DVector3& DamagePosition, AActor* Inflictor, int flags)
+{
+	// don't call anything if actor was destroyed on PostBeginPlay/BeginPlay/whatever.
+	if (actor->ObjectFlags & OF_EuthanizeMe)
+		return;
+
+	if (ShouldCallStatic(true)) staticEventManager.WorldRailgunFired(actor, AttackPos, DamagePosition, Inflictor, flags);
+
+	for (DStaticEventHandler* handler = FirstEventHandler; handler; handler = handler->next)
+		handler->WorldRailgunFired(actor, AttackPos, DamagePosition, Inflictor, flags);
+}
+
 void EventManager::WorldThingGround(AActor* actor, FState* st)
 {
 	// don't call anything if actor was destroyed on PostBeginPlay/BeginPlay/whatever.
@@ -806,6 +869,24 @@ void EventManager::PlayerSpawned(int num)
 
 	for (DStaticEventHandler* handler = FirstEventHandler; handler; handler = handler->next)
 		handler->PlayerSpawned(num);
+}
+
+bool EventManager::PlayerRespawning(int num)
+{
+	if (ShouldCallStatic(true))
+	{
+		bool res = staticEventManager.PlayerRespawning(num);
+		if (!res)
+			return false;
+	}
+
+	for (DStaticEventHandler* handler = FirstEventHandler; handler; handler = handler->next)
+	{
+		if (!handler->PlayerRespawning(num))
+			return false;
+	}
+
+	return true;
 }
 
 void EventManager::PlayerRespawned(int num)
@@ -1026,6 +1107,16 @@ DEFINE_FIELD_X(WorldEvent, FWorldEvent, DamagePosition);
 DEFINE_FIELD_X(WorldEvent, FWorldEvent, DamageIsRadius);
 DEFINE_FIELD_X(WorldEvent, FWorldEvent, NewDamage);
 DEFINE_FIELD_X(WorldEvent, FWorldEvent, CrushedState);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackPos);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackAngle);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackPitch);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackDistance);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackOffsetForward);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackOffsetSide);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackZ);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackPuffType);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, RailParams);
+DEFINE_FIELD_X(WorldEvent, FWorldEvent, AttackLineFlags);
 
 DEFINE_FIELD_X(PlayerEvent, FPlayerEvent, PlayerNumber);
 DEFINE_FIELD_X(PlayerEvent, FPlayerEvent, IsReturn);
@@ -1729,6 +1820,98 @@ void DStaticEventHandler::WorldThingDied(AActor* actor, AActor* inflictor)
 	}
 }
 
+bool DStaticEventHandler::WorldHitscanPreFired(AActor* actor, DAngle angle, double distance, DAngle pitch, int damage, FName damageType, PClassActor *pufftype, int flags, double sz, double offsetforward, double offsetside)
+{
+	IFVIRTUAL(DStaticEventHandler, WorldHitscanPreFired)
+	{
+		// don't create excessive DObjects if not going to be processed anyway
+		if (isEmpty(func)) return false;
+		FWorldEvent e = owner->SetupWorldEvent();
+		e.Thing = actor;
+		e.AttackAngle = angle;
+		e.AttackPitch = pitch;
+		e.AttackDistance = distance;
+		e.Damage = damage;
+		e.DamageType = damageType;
+		e.AttackPuffType = pufftype;
+		e.AttackOffsetForward = offsetforward;
+		e.AttackOffsetSide = offsetside;
+		e.AttackZ = sz;
+		e.AttackLineFlags = flags;
+		int processed;
+		VMReturn results[1] = { &processed };
+		VMValue params[2] = { (DStaticEventHandler*)this, &e };
+		VMCall(func, params, 2, results, 1);
+		return !!processed;
+	}
+
+	return false;
+}
+
+bool DStaticEventHandler::WorldRailgunPreFired(FName damageType, PClassActor* pufftype, FRailParams* param)
+{
+	IFVIRTUAL(DStaticEventHandler, WorldRailgunPreFired)
+	{
+		// don't create excessive DObjects if not going to be processed anyway
+		if (isEmpty(func)) return false;
+		FWorldEvent e = owner->SetupWorldEvent();
+		e.Thing = param->source;
+		e.AttackPuffType = pufftype;
+		e.DamageType = damageType;
+		e.Damage = param->damage;
+		e.AttackOffsetForward = 0;
+		e.AttackOffsetSide = param->offset_xy;
+		e.AttackDistance = param->distance;
+		e.AttackZ = param->offset_z;
+		e.AttackAngle = e.Thing->Angles.Yaw + param->angleoffset;
+		e.AttackPitch = e.Thing->Angles.Pitch + param->pitchoffset;
+		e.RailParams = *param;
+		e.RailParams.puff = pufftype;
+
+		int processed;
+		VMReturn results[1] = { &processed };
+		VMValue params[2] = { (DStaticEventHandler*)this, &e };
+		VMCall(func, params, 2, results, 1);
+		return !!processed;
+	}
+
+	return false;
+}
+
+void DStaticEventHandler::WorldHitscanFired(AActor* actor, const DVector3& AttackPos, const DVector3& DamagePosition, AActor* Inflictor, int flags)
+{
+	IFVIRTUAL(DStaticEventHandler, WorldHitscanFired)
+	{
+		// don't create excessive DObjects if not going to be processed anyway
+		if (isEmpty(func)) return;
+		FWorldEvent e = owner->SetupWorldEvent();
+		e.Thing = actor;
+		e.AttackPos = AttackPos;
+		e.DamagePosition = DamagePosition;
+		e.Inflictor = Inflictor;
+		e.AttackLineFlags = flags;
+		VMValue params[2] = { (DStaticEventHandler*)this, &e };
+		VMCall(func, params, 2, nullptr, 0);
+	}
+}
+
+void DStaticEventHandler::WorldRailgunFired(AActor* actor, const DVector3& AttackPos, const DVector3& DamagePosition, AActor* Inflictor, int flags)
+{
+	IFVIRTUAL(DStaticEventHandler, WorldRailgunFired)
+	{
+		// don't create excessive DObjects if not going to be processed anyway
+		if (isEmpty(func)) return;
+		FWorldEvent e = owner->SetupWorldEvent();
+		e.Thing = actor;
+		e.AttackPos = AttackPos;
+		e.DamagePosition = DamagePosition;
+		e.Inflictor = Inflictor;
+		e.AttackLineFlags = flags;
+		VMValue params[2] = { (DStaticEventHandler*)this, &e };
+		VMCall(func, params, 2, nullptr, 0);
+	}
+}
+
 void DStaticEventHandler::WorldThingGround(AActor* actor, FState* st)
 {
 	IFVIRTUAL(DStaticEventHandler, WorldThingGround)
@@ -1742,7 +1925,6 @@ void DStaticEventHandler::WorldThingGround(AActor* actor, FState* st)
 		VMCall(func, params, 2, nullptr, 0);
 	}
 }
-
 
 void DStaticEventHandler::WorldThingRevived(AActor* actor)
 {
@@ -1965,6 +2147,22 @@ void DStaticEventHandler::PlayerSpawned(int num)
 		VMValue params[2] = { (DStaticEventHandler*)this, &e };
 		VMCall(func, params, 2, nullptr, 0);
 	}
+}
+
+bool DStaticEventHandler::PlayerRespawning(int num)
+{
+	int res = true;
+	IFVIRTUAL(DStaticEventHandler, PlayerRespawning)
+	{
+		// don't create excessive DObjects if not going to be processed anyway
+		if (isEmpty(func)) return res;
+		FPlayerEvent e = { num, false };
+		VMValue params[] = { (DStaticEventHandler*)this, &e };
+		VMReturn returns[] = { &res };
+		VMCall(func, params, 2, returns, 1);
+	}
+
+	return res;
 }
 
 void DStaticEventHandler::PlayerRespawned(int num)

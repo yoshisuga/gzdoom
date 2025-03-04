@@ -164,6 +164,20 @@ bool CheckWarpTransMap (FString &mapname, bool substitute)
 //
 //==========================================================================
 
+bool SecretLevelVisited()
+{
+	for (unsigned int i = 0; i < wadlevelinfos.Size(); i++)
+		if ((wadlevelinfos[i].flags3 & LEVEL3_SECRET) && (wadlevelinfos[i].flags & LEVEL_VISITED))
+			return true;
+
+	return false;
+}
+
+//==========================================================================
+//
+//
+//==========================================================================
+
 static int FindWadClusterInfo (int cluster)
 {
 	for (unsigned int i = 0; i < wadclusterinfos.Size(); i++)
@@ -254,6 +268,7 @@ void level_info_t::Reset()
 	Music = "";
 	LevelName = "";
 	AuthorName = "";
+	MapLabel = "";
 	FadeTable = "COLORMAP";
 	CustomColorMap = "COLORMAP";
 	WallHorizLight = -8;
@@ -280,6 +295,8 @@ void level_info_t::Reset()
 	RedirectCVARMapName = "";
 	EnterPic = "";
 	ExitPic = "";
+	EnterAnim = "";
+	ExitAnim = "";
 	Intermission = NAME_None;
 	deathsequence = NAME_None;
 	slideshow = NAME_None;
@@ -323,7 +340,7 @@ FString level_info_t::LookupLevelName(uint32_t *langtable)
 	if (flags & LEVEL_LOOKUPLEVELNAME)
 	{
 		const char *thename;
-		const char *lookedup = GStrings.GetString(LevelName.GetChars(), langtable);
+		const char *lookedup = GStrings.CheckString(LevelName.GetChars(), langtable);
 		if (lookedup == NULL)
 		{
 			thename = LevelName.GetChars();
@@ -776,7 +793,7 @@ void FMapInfoParser::ParseMusic(FString &name, int &order)
 //
 //==========================================================================
 
-void FMapInfoParser::ParseCutscene(CutsceneDef& cdef)
+void FMapInfoParser::ParseCutscene(CutsceneDef& cdef, bool allow_function)
 {
 	FString sound;
 	sc.MustGetStringName("{");
@@ -784,7 +801,7 @@ void FMapInfoParser::ParseCutscene(CutsceneDef& cdef)
 	{
 		sc.MustGetString();
 		if (sc.Compare("video")) { ParseAssign(); sc.MustGetString(); cdef.video = sc.String; cdef.function = ""; }
-		else if (sc.Compare("function")) { ParseAssign(); sc.SetCMode(false); sc.MustGetString(); sc.SetCMode(true); cdef.function = sc.String; cdef.video = ""; }
+		else if (sc.Compare("function") && allow_function) { ParseAssign(); sc.SetCMode(false); sc.MustGetString(); sc.SetCMode(true); cdef.function = sc.String; cdef.video = ""; }
 		else if (sc.Compare("sound")) { ParseAssign(); sc.MustGetString(); cdef.soundName = sc.String; }
 		else if (sc.Compare("soundid")) { ParseAssign(); sc.MustGetNumber(); cdef.soundID = sc.Number; }
 		else if (sc.Compare("fps")) { ParseAssign();  sc.MustGetNumber();  cdef.framespersec = sc.Number; }
@@ -1010,6 +1027,13 @@ DEFINE_MAP_OPTION(author, true)
 	parse.ParseAssign();
 	parse.sc.MustGetString();
 	info->AuthorName = parse.sc.String;
+}
+
+DEFINE_MAP_OPTION(label, true)
+{
+	parse.ParseAssign();
+	parse.sc.MustGetString();
+	info->MapLabel = parse.sc.String;
 }
 
 DEFINE_MAP_OPTION(secretnext, true)
@@ -1254,6 +1278,20 @@ DEFINE_MAP_OPTION(enterpic, true)
 	parse.ParseAssign();
 	parse.sc.MustGetString();
 	info->EnterPic = parse.sc.String;
+}
+
+DEFINE_MAP_OPTION(exitanim, true)
+{
+	parse.ParseAssign();
+	parse.sc.MustGetString();
+	info->ExitAnim = parse.sc.String;
+}
+
+DEFINE_MAP_OPTION(enteranim, true)
+{
+	parse.ParseAssign();
+	parse.sc.MustGetString();
+	info->EnterAnim = parse.sc.String;
 }
 
 DEFINE_MAP_OPTION(specialaction, true)
@@ -1819,6 +1857,7 @@ MapFlagHandlers[] =
 	{ "disableskyboxao",				MITYPE_CLRFLAG3,	LEVEL3_SKYBOXAO, 0 },
 	{ "avoidmelee",						MITYPE_SETFLAG3,	LEVEL3_AVOIDMELEE, 0 },
 	{ "attenuatelights",				MITYPE_SETFLAG3,	LEVEL3_ATTENUATE, 0 },
+	{ "nofogofwar",					MITYPE_SETFLAG3,	LEVEL3_NOFOGOFWAR, 0 },
 	{ "nobotnodes",						MITYPE_IGNORE,	0, 0 },		// Skulltag option: nobotnodes
 	{ "nopassover",						MITYPE_COMPATFLAG, COMPATF_NO_PASSMOBJ, 0 },
 	{ "passover",						MITYPE_CLRCOMPATFLAG, COMPATF_NO_PASSMOBJ, 0 },
@@ -1867,6 +1906,7 @@ MapFlagHandlers[] =
 	{ "compat_stayonlift",				MITYPE_COMPATFLAG, 0, COMPATF2_STAYONLIFT },
 	{ "compat_nombf21",					MITYPE_COMPATFLAG, 0, COMPATF2_NOMBF21 },
 	{ "compat_voodoozombies",			MITYPE_COMPATFLAG, 0, COMPATF2_VOODOO_ZOMBIES },
+	{ "compat_noacsargcheck",			MITYPE_COMPATFLAG, 0, COMPATF2_NOACSARGCHECK },
 	{ "cd_start_track",					MITYPE_EATNEXT,	0, 0 },
 	{ "cd_end1_track",					MITYPE_EATNEXT,	0, 0 },
 	{ "cd_end2_track",					MITYPE_EATNEXT,	0, 0 },
@@ -2599,6 +2639,7 @@ void G_ParseMapInfo (FString basemapinfo)
 {
 	int lump, lastlump = 0;
 	level_info_t gamedefaults;
+	TArray<FString> secretMaps;
 
 	int flags1 = 0, flags2 = 0;
 	if (gameinfo.gametype == GAME_Doom)
@@ -2714,6 +2755,24 @@ void G_ParseMapInfo (FString basemapinfo)
 	if (AllSkills.Size() == 0)
 	{
 		I_FatalError ("You cannot use clearskills in a MAPINFO if you do not define any new skills after it.");
+	}
+
+	// Find any and all secret maps.
+	for (unsigned int i = 0; i < wadlevelinfos.Size(); i++)
+	{
+		if (wadlevelinfos[i].NextSecretMap.IsNotEmpty() && wadlevelinfos[i].NextSecretMap != wadlevelinfos[i].NextMap)
+		{
+			secretMaps.Push(wadlevelinfos[i].NextSecretMap);
+		}
+	}
+	// ...and then mark them all as secret maps.
+	for (unsigned int i = 0; i < secretMaps.Size(); i++)
+	{
+		auto* li = FindLevelInfo(secretMaps[i].GetChars(), false);
+		if (li)
+		{
+			li->flags3 |= LEVEL3_SECRET;
+		}
 	}
 }
 

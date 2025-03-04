@@ -6133,7 +6133,7 @@
 		92C6BEF32C9EC30600376CE9 /* PurchaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewModel.swift; sourceTree = "<group>"; };
 		92C6BEF62C9EC86E00376CE9 /* UpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
 		92C6BEF92CA0A96C00376CE9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
-		92C6BEFB2CA0AACC00376CE9 /* DefaultStoreConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = DefaultStoreConfig.storekit; path = src/ios/DefaultStoreConfig.storekit; sourceTree = "<group>"; };
+		92C6BEFB2CA0AACC00376CE9 /* DefaultStoreConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = DefaultStoreConfig.storekit; sourceTree = "<group>"; };
 		92C6C0302CA0EE0200376CE9 /* EffectsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EffectsLibrary.framework; path = bin/iOS/EffectsLibrary.framework; sourceTree = "<group>"; };
 		92DE4E2120474562AD8C08C0 /* 004C.lmp */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = file; name = 004C.lmp; path = wadsrc_extra/static/filter/doom.id/fonts/bigupper/004C.lmp; sourceTree = SOURCE_ROOT; };
 		92E318C7FF7F43FDB0DA918E /* utils.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = utils.c; path = libraries/webp/src/utils/utils.c; sourceTree = SOURCE_ROOT; };
@@ -14906,6 +14906,7 @@
 				924657992C97BB7900485339 /* MultiplayerHostDiscovery.swift */,
 				92C6BEF32C9EC30600376CE9 /* PurchaseViewModel.swift */,
 				92C6BEF62C9EC86E00376CE9 /* UpgradeView.swift */,
+				92C6BEFB2CA0AACC00376CE9 /* DefaultStoreConfig.storekit */,
 			);
 			name = ios;
 			path = src/ios;
@@ -18504,7 +18505,6 @@
 		E9A5359EE71C4727AAA45054 = {
 			isa = PBXGroup;
 			children = (
-				92C6BEFB2CA0AACC00376CE9 /* DefaultStoreConfig.storekit */,
 				921488AC2C71E11D003F7DA9 /* gzdoom.ini */,
 				921488702C71E112003F7DA9 /* ios */,
 				5261E4F325734EFDB50901F9 /* ALL_BUILD */,

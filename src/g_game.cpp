@@ -96,6 +96,8 @@
 static FRandom pr_dmspawn ("DMSpawn");
 static FRandom pr_pspawn ("PlayerSpawn");
 
+extern int startpos, laststartpos;
+
 bool WriteZip(const char* filename, const FileSys::FCompressedBuffer* content, size_t contentcount);
 bool	G_CheckDemoStatus (void);
 void	G_ReadDemoTiccmd (ticcmd_t *cmd, int player);
@@ -476,11 +478,17 @@ CCMD(invquery)
 	}
 }
 
+constexpr char True[] = "true";
+
 CCMD (use)
 {
 	if (argv.argc() > 1 && players[consoleplayer].mo != NULL)
 	{
-		SendItemUse = players[consoleplayer].mo->FindInventory(argv[1]);
+		bool subclass = false;
+		if (argv.argc() > 2)
+			subclass = !stricmp(argv[2], True) || atoi(argv[2]);
+
+		SendItemUse = players[consoleplayer].mo->FindInventory(argv[1], subclass);
 	}
 }
 
@@ -503,7 +511,11 @@ CCMD (drop)
 {
 	if (argv.argc() > 1 && players[consoleplayer].mo != NULL)
 	{
-		SendItemDrop = players[consoleplayer].mo->FindInventory(argv[1]);
+		bool subclass = false;
+		if (argv.argc() > 3)
+			subclass = !stricmp(argv[3], True) || atoi(argv[3]);
+
+		SendItemDrop = players[consoleplayer].mo->FindInventory(argv[1], subclass);
 		SendItemDropAmount = argv.argc() > 2 ? atoi(argv[2]) : -1;
 	}
 }
@@ -528,7 +540,11 @@ CCMD (select)
 	auto user = players[consoleplayer].mo;
 	if (argv.argc() > 1)
 	{
-		auto item = user->FindInventory(argv[1]);
+		bool subclass = false;
+		if (argv.argc() > 2)
+			subclass = !stricmp(argv[2], True) || atoi(argv[2]);
+
+		auto item = user->FindInventory(argv[1], subclass);
 		if (item != NULL)
 		{
 			user->PointerVar<AActor>(NAME_InvSel) = item;
@@ -1137,7 +1153,7 @@ void G_Ticker ()
 			}
 			if (players[i].playerstate == PST_REBORN || players[i].playerstate == PST_ENTER)
 			{
-				primaryLevel->DoReborn(i, false);
+				primaryLevel->DoReborn(i);
 			}
 		}
 	}
@@ -1222,6 +1238,7 @@ void G_Ticker ()
 		case ga_intro:
 			gamestate = GS_INTRO;
 			gameaction = ga_nothing;
+			C_HideConsole(); // On some systems, console is open during intro
 			break;
 
 
@@ -1421,11 +1438,12 @@ void FLevelLocals::PlayerReborn (int player)
 	p->cheats |= chasecam;
 	p->Bot = Bot;			//Added by MC:
 	p->settings_controller = settings_controller;
+	p->LastSafePos = p->mo->Pos();
 
 	p->oldbuttons = ~0, p->attackdown = true; p->usedown = true;	// don't do anything immediately
 	p->original_oldbuttons = ~0;
 	p->playerstate = PST_LIVE;
-	NetworkEntityManager::SetClientNetworkEntity(p);
+	NetworkEntityManager::SetClientNetworkEntity(p->mo, p - players);
 
 	if (gamestate != GS_TITLELEVEL)
 	{
@@ -1748,7 +1766,7 @@ void FLevelLocals::QueueBody (AActor *body)
 // G_DoReborn
 //
 EXTERN_CVAR(Bool, sv_singleplayerrespawn)
-void FLevelLocals::DoReborn (int playernum, bool freshbot)
+void FLevelLocals::DoReborn (int playernum, bool force)
 {
 	if (!multiplayer && !(flags2 & LEVEL2_ALLOWRESPAWN) && !sv_singleplayerrespawn &&
 		!G_SkillProperty(SKILLP_PlayerRespawn))
@@ -1768,6 +1786,13 @@ void FLevelLocals::DoReborn (int playernum, bool freshbot)
 	}
 	else
 	{
+		// Check if the player should be allowed to actually respawn first.
+		if (!force && players[playernum].playerstate == PST_REBORN && !localEventManager->PlayerRespawning(playernum))
+		{
+			players[playernum].playerstate = PST_DEAD;
+			return;
+		}
+
 		bool isUnfriendly;
 
 		PlayerSpawnPickClass(playernum);
@@ -1825,7 +1850,7 @@ void G_DoPlayerPop(int playernum)
 {
 	playeringame[playernum] = false;
 
-	FString message = GStrings(deathmatch? "TXT_LEFTWITHFRAGS" : "TXT_LEFTTHEGAME");
+	FString message = GStrings.GetString(deathmatch? "TXT_LEFTWITHFRAGS" : "TXT_LEFTTHEGAME");
 	message.Substitute("%s", players[playernum].userinfo.GetName());
 	message.Substitute("%d", FStringf("%d", players[playernum].fragcount));
 	Printf("%s\n", message.GetChars());
@@ -1903,7 +1928,7 @@ static bool CheckSingleWad (const char *name, bool &printRequires, bool printwar
 		{
 			if (!printRequires)
 			{
-				Printf ("%s:\n%s", GStrings("TXT_SAVEGAMENEEDS"), name);
+				Printf ("%s:\n%s", GStrings.GetString("TXT_SAVEGAMENEEDS"), name);
 			}
 			else
 			{
@@ -1941,7 +1966,7 @@ bool G_CheckSaveGameWads (FSerializer &arc, bool printwarn)
 
 static void LoadGameError(const char *label, const char *append = "")
 {
-	FString message = GStrings(label);
+	FString message = GStrings.GetString(label);
 	message.Substitute("%s", savename);
 	Printf ("%s %s\n", message.GetChars(), append);
 }
@@ -2060,12 +2085,12 @@ void G_DoLoadGame ()
 		FString message;
 		if (SaveVersion < MINSAVEVER)
 		{
-			message = GStrings("TXT_TOOOLDSG");
+			message = GStrings.GetString("TXT_TOOOLDSG");
 			message.Substitute("%e", FStringf("%d", MINSAVEVER));
 		}
 		else
 		{
-			message = GStrings("TXT_TOONEWSG");
+			message = GStrings.GetString("TXT_TOONEWSG");
 			message.Substitute("%e", FStringf("%d", SAVEVER));
 		}
 		message.Substitute("%d", FStringf("%d", SaveVersion));
@@ -2131,7 +2156,9 @@ void G_DoLoadGame ()
 
 	arc("ticrate", time[0])
 		("leveltime", time[1])
-		("globalfreeze", globalfreeze);
+		("globalfreeze", globalfreeze)
+		("startpos", startpos)
+		("laststartpos", laststartpos);
 	// dearchive all the modifications
 	level.time = Scale(time[1], TICRATE, time[0]);
 
@@ -2175,19 +2202,19 @@ void G_SaveGame (const char *filename, const char *description)
 {
 	if (sendsave || gameaction == ga_savegame)
 	{
-		Printf ("%s\n", GStrings("TXT_SAVEPENDING"));
+		Printf ("%s\n", GStrings.GetString("TXT_SAVEPENDING"));
 	}
     else if (!usergame)
 	{
-		Printf ("%s\n", GStrings("TXT_NOTSAVEABLE"));
+		Printf ("%s\n", GStrings.GetString("TXT_NOTSAVEABLE"));
     }
     else if (gamestate != GS_LEVEL)
 	{
-		Printf ("%s\n", GStrings("TXT_NOTINLEVEL"));
+		Printf ("%s\n", GStrings.GetString("TXT_NOTINLEVEL"));
     }
     else if (players[consoleplayer].health <= 0 && !multiplayer)
     {
-		Printf ("%s\n", GStrings("TXT_SPPLAYERDEAD"));
+		Printf ("%s\n", GStrings.GetString("TXT_SPPLAYERDEAD"));
     }
 	else
 	{
@@ -2311,7 +2338,7 @@ static void PutSaveComment (FSerializer &arc)
 	comment.Format("%s - %s\n", primaryLevel->MapName.GetChars(), primaryLevel->LevelName.GetChars());
 
 	// Append elapsed time
-	const char *const time = GStrings("SAVECOMMENT_TIME");
+	const char *const time = GStrings.GetString("SAVECOMMENT_TIME");
 	levelTime = primaryLevel->time / TICRATE;
 	comment.AppendFormat("%s: %02d:%02d:%02d", time, levelTime/3600, (levelTime%3600)/60, levelTime%60);
 
@@ -2419,6 +2446,10 @@ void G_DoSaveGame (bool okForQuicksave, bool forceQuicksave, FString filename, c
 		savegameglobals("leveltime", level.time);
 	}
 
+	savegameglobals("globalfreeze", globalfreeze)
+					("startpos", startpos)
+					("laststartpos", laststartpos);
+
 	STAT_Serialize(savegameglobals);
 	FRandom::StaticWriteRNGState(savegameglobals);
 	P_WriteACSDefereds(savegameglobals);
@@ -2463,12 +2494,12 @@ void G_DoSaveGame (bool okForQuicksave, bool forceQuicksave, FString filename, c
 		savegameManager.NotifyNewSave(filename, description, okForQuicksave, forceQuicksave);
 		BackupSaveName = filename;
 
-		if (longsavemessages) Printf("%s (%s)\n", GStrings("GGSAVED"), filename.GetChars());
-		else Printf("%s\n", GStrings("GGSAVED"));
+		if (longsavemessages) Printf("%s (%s)\n", GStrings.GetString("GGSAVED"), filename.GetChars());
+		else Printf("%s\n", GStrings.GetString("GGSAVED"));
 	}
 	else
 	{
-		Printf(PRINT_HIGH, "%s\n", GStrings("TXT_SAVEFAILED"));
+		Printf(PRINT_HIGH, "%s\n", GStrings.GetString("TXT_SAVEFAILED"));
 	}
 
 
@@ -3079,7 +3110,7 @@ bool G_CheckDemoStatus (void)
 			const size_t size = demo_p - demobuffer;
 			saved = fw->Write(demobuffer, size) == size;
 			delete fw;
-			if (!saved) remove(demoname.GetChars());
+			if (!saved) RemoveFile(demoname.GetChars());
 		}
 		M_Free (demobuffer); 
 		demorecording = false;
@@ -3097,10 +3128,10 @@ bool G_CheckDemoStatus (void)
 	return false; 
 }
 
-void G_StartSlideshow(FLevelLocals *Level, FName whichone)
+void G_StartSlideshow(FLevelLocals *Level, FName whichone, int state)
 {
 	auto SelectedSlideshow = whichone == NAME_None ? Level->info->slideshow : whichone;
-	auto slide = F_StartIntermission(SelectedSlideshow);
+	auto slide = F_StartIntermission(SelectedSlideshow, state);
 	RunIntermission(nullptr, nullptr, slide, nullptr, [](bool)
 	{
 		primaryLevel->SetMusic();
@@ -3115,7 +3146,7 @@ DEFINE_ACTION_FUNCTION(FLevelLocals, StartSlideshow)
 {
 	PARAM_SELF_STRUCT_PROLOGUE(FLevelLocals);
 	PARAM_NAME(whichone);
-	G_StartSlideshow(self, whichone);
+	G_StartSlideshow(self, whichone, FSTATE_InLevel);
 	return 0;
 }
 

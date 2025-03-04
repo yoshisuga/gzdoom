@@ -41,6 +41,8 @@ struct UMapEntry
 	FString LevelName;
 	FString InterText;
 	FString InterTextSecret;
+	FString author;
+	FString label;
 	TArray<FSpecialAction> BossActions;
 	bool BossCleared = false;
 
@@ -52,6 +54,8 @@ struct UMapEntry
 	char endpic[9] = "";
 	char exitpic[9] = "";
 	char enterpic[9] = "";
+	char exitanim[9] = "";
+	char enteranim[9] = "";
 	char interbackdrop[9] = "FLOOR4_8";
 	char intermusic[9] = "";
 	int partime = 0;
@@ -136,6 +140,30 @@ static int ParseStandardProperty(FScanner &scanner, UMapEntry *mape)
 		scanner.MustGetToken(TK_StringConst);
 		mape->LevelName = scanner.String;
 	}
+	else if (!pname.CompareNoCase("author"))
+	{
+		scanner.MustGetToken(TK_StringConst);
+		mape->author = scanner.String;
+	}
+	else if (!pname.CompareNoCase("label"))
+	{
+		if (scanner.CheckToken(TK_Identifier))
+		{
+			if (!stricmp(scanner.String, "clear"))
+			{
+				mape->label = "*";
+			}
+			else
+			{
+				scanner.ScriptError("Either 'clear' or string constant expected");
+			}
+		}
+		else
+		{
+			scanner.MustGetToken(TK_StringConst);
+			mape->label = scanner.String;
+		}
+	}
 	else if (!pname.CompareNoCase("next"))
 	{
 		ParseLumpName(scanner, mape->nextmap);
@@ -185,6 +213,14 @@ static int ParseStandardProperty(FScanner &scanner, UMapEntry *mape)
 	else if (!pname.CompareNoCase("enterpic"))
 	{
 		ParseLumpName(scanner, mape->enterpic);
+	}
+	else if (!pname.CompareNoCase("exitanim"))
+	{
+		ParseLumpName(scanner, mape->exitanim);
+	}
+	else if (!pname.CompareNoCase("enteranim"))
+	{
+		ParseLumpName(scanner, mape->enteranim);
 	}
 	else if (!pname.CompareNoCase("nointermission"))
 	{
@@ -403,6 +439,14 @@ void CommitUMapinfo(level_info_t *defaultinfo)
 			levelinfo->LevelName = map.LevelName;
 			levelinfo->PName = "";	// clear the map name patch to force the string version to be shown - unless explicitly overridden right next.
 		}
+		if (map.author.IsNotEmpty())
+		{
+			levelinfo->AuthorName = map.author;
+		}
+		if (map.label.IsNotEmpty())
+		{
+			levelinfo->MapLabel = map.label;
+		}
 		if (map.levelpic[0]) levelinfo->PName = map.levelpic;
 		if (map.nextmap[0]) levelinfo->NextMap = map.nextmap;
 		else if (map.endpic[0])
@@ -443,6 +487,8 @@ void CommitUMapinfo(level_info_t *defaultinfo)
 		if (map.partime > 0) levelinfo->partime = map.partime;
 		if (map.enterpic[0]) levelinfo->EnterPic = map.enterpic;
 		if (map.exitpic[0]) levelinfo->ExitPic = map.exitpic;
+		if (map.enteranim[0]) levelinfo->EnterAnim = map.enteranim;
+		if (map.exitanim[0]) levelinfo->ExitAnim = map.exitanim;
 		/* UMAPINFO's intermusic is for the text screen, not the summary.
 		if (map.intermusic[0])
 		{

@@ -124,6 +124,9 @@ int BlockMouseMove;
 static bool EventHandlerResultForNativeMouse;
 
 
+EXTERN_CVAR(Bool, i_pauseinbackground);
+
+
 CVAR (Bool, k_allowfullscreentoggle, true, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
 
 static void I_CheckGUICapture ()
@@ -481,15 +484,7 @@ LRESULT CALLBACK WndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_ACTIVATEAPP:
-		AppActive = wParam == TRUE;
-		if (wParam)
-		{
-			SetPriorityClass (GetCurrentProcess (), INGAME_PRIORITY_CLASS);
-		}
-		else if (!noidle && !(sysCallbacks.NetGame && sysCallbacks.NetGame()))
-		{
-			SetPriorityClass (GetCurrentProcess (), IDLE_PRIORITY_CLASS);
-		}
+		AppActive = (wParam == TRUE);
 		S_SetSoundPaused (wParam);
 		break;
 

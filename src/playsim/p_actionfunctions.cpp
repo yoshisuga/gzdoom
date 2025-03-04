@@ -1292,7 +1292,7 @@ DEFINE_ACTION_FUNCTION(AActor, A_Print)
 	PARAM_FLOAT	(time);
 	PARAM_NAME	(fontname);
 
-	if (text[0] == '$') text = GStrings(&text[1]);
+	if (text[0] == '$') text = GStrings.GetString(&text[1]);
 	if (self->CheckLocalView() ||
 		(self->target != NULL && self->target->CheckLocalView()))
 	{
@@ -1330,7 +1330,7 @@ DEFINE_ACTION_FUNCTION(AActor, A_PrintBold)
 	float saved = con_midtime;
 	FFont *font = NULL;
 	
-	if (text[0] == '$') text = GStrings(&text[1]);
+	if (text[0] == '$') text = GStrings.GetString(&text[1]);
 	if (fontname != NAME_None)
 	{
 		font = V_GetFont(fontname.GetChars());
@@ -1359,7 +1359,7 @@ DEFINE_ACTION_FUNCTION(AActor, A_Log)
 
 	if (local && !self->CheckLocalView()) return 0;
 
-	if (text[0] == '$') text = GStrings(&text[1]);
+	if (text[0] == '$') text = GStrings.GetString(&text[1]);
 	FString formatted = strbin1(text.GetChars());
 	Printf("%s\n", formatted.GetChars());
 	return 0;
@@ -5070,7 +5070,8 @@ DEFINE_ACTION_FUNCTION(AActor, A_SprayDecal)
 	PARAM_FLOAT(direction_z);
 	PARAM_BOOL(useBloodColor);
 	PARAM_COLOR(decalColor);
-	SprayDecal(self, name.GetChars(), dist, DVector3(offset_x, offset_y, offset_z), DVector3(direction_x, direction_y, direction_z), useBloodColor, decalColor);
+	PARAM_INT(translation);
+	SprayDecal(self, name.GetChars(), dist, DVector3(offset_x, offset_y, offset_z), DVector3(direction_x, direction_y, direction_z), useBloodColor, decalColor, FTranslationID::fromInt(translation));
 	return 0;
 }
 
@@ -5128,10 +5129,9 @@ enum ESetAnimationFlags
 	SAF_NOOVERRIDE = 1 << 2,
 };
 
-extern double getCurrentFrame(const AnimOverride &anim, double tic);
-
 void SetAnimationInternal(AActor * self, FName animName, double framerate, int startFrame, int loopFrame, int endFrame, int interpolateTics, int flags, double ticFrac)
 {
+
 	if(!self) ThrowAbortException(X_READ_NIL, "In function parameter self");
 
 	if(!(self->flags9 & MF9_DECOUPLEDANIMATIONS))
@@ -5150,7 +5150,7 @@ void SetAnimationInternal(AActor * self, FName animName, double framerate, int s
 
 	if(animName == NAME_None)
 	{
-		self->modelData->curAnim.flags = ANIMOVERRIDE_NONE;
+		self->modelData->curAnim.flags = MODELANIM_NONE;
 		return;
 	}
 
@@ -5160,13 +5160,38 @@ void SetAnimationInternal(AActor * self, FName animName, double framerate, int s
 		tic += ticFrac;
 	}
 
-	FModel * mdl = Models[(self->modelData->models.Size() > 0 && self->modelData->models[0].modelID >= 0) ? self->modelData->models[0].modelID : BaseSpriteModelFrames[self->GetClass()].modelIDs[0]];
+	int animID = -1;
 
-	int animStart = mdl->FindFirstFrame(animName);
+	
+	if(self->modelData->animationIDs.Size() > 0 && self->modelData->animationIDs[0] >= 0)
+	{
+		animID = self->modelData->animationIDs[0];
+	}
+	else
+	{
+		animID = BaseSpriteModelFrames[self->GetClass()].animationIDs[0];
+	}
+
+	FModel * animation = nullptr;
+	if (animID >= 0 && animID < Models.Size())
+	{
+		animation = Models[animID];
+	}
+	else if(self->modelData->models.Size() && self->modelData->models[0].modelID >= 0 && self->modelData->models[0].modelID < Models.Size())
+	{
+		animation = Models[self->modelData->models[0].modelID];
+	}
+	else
+	{
+		animation = Models[BaseSpriteModelFrames[self->GetClass()].modelIDs[0]];
+	}
+
+	int animStart = animation->FindFirstFrame(animName);
+
 	if(animStart == FErr_NotFound)
 	{
-		self->modelData->curAnim.flags = ANIMOVERRIDE_NONE;
-    // Yoshi custom: Alice crashes with this so work around
+		self->modelData->curAnim.flags = MODELANIM_NONE;
+    // GENZD: Alice crashes with this so work around
     if (animName.GetIndex() == -1) {
       printf("Could not find animation (animName.Index = -1)");
     } else {
@@ -5175,7 +5200,7 @@ void SetAnimationInternal(AActor * self, FName animName, double framerate, int s
 		return;
 	}
 
-	if((flags & SAF_NOOVERRIDE) && self->modelData->curAnim.flags != ANIMOVERRIDE_NONE && self->modelData->curAnim.firstFrame == animStart)
+	if((flags & SAF_NOOVERRIDE) && self->modelData->curAnim.flags != MODELANIM_NONE && self->modelData->curAnim.firstFrame == animStart)
 	{
 		//same animation as current, skip setting it
 		return;
@@ -5183,33 +5208,56 @@ void SetAnimationInternal(AActor * self, FName animName, double framerate, int s
 
 	if(!(flags & SAF_INSTANT))
 	{
-		self->modelData->prevAnim = self->modelData->curAnim;
+		if((self->modelData->curAnim.startTic - self->modelData->curAnim.switchOffset) != int(floor(tic)))
+		{ // don't change interpolation data if animation switch happened in the same tic
+			if(self->modelData->curAnim.startTic > tic)
+			{
+				ModelAnimFrameInterp to;
+				float inter;
+
+				calcFrames(self->modelData->curAnim, tic, to, inter);
+
+				const TArray<TRS>* animationData = animation->AttachAnimationData();
+
+				self->modelData->prevAnim = animation->PrecalculateFrame(self->modelData->prevAnim, to, inter, animationData);
+			}
+			else
+			{
+				self->modelData->prevAnim = ModelAnimFrameInterp{}; 
+
+				calcFrame(self->modelData->curAnim, tic, std::get<ModelAnimFrameInterp>(self->modelData->prevAnim));
+			}
+		}
+	}
+	else
+	{
+		self->modelData->prevAnim = nullptr;
 	}
 
-	int animEnd = mdl->FindLastFrame(animName);
+	int animEnd = animation->FindLastFrame(animName);
 
 	if(framerate < 0)
 	{
-		framerate = mdl->FindFramerate(animName);
+		framerate = animation->FindFramerate(animName);
 	}
 	
 	int len = animEnd - animStart;
 
 	if(startFrame >= len)
 	{
-		self->modelData->curAnim.flags = ANIMOVERRIDE_NONE;
+		self->modelData->curAnim.flags = MODELANIM_NONE;
 		Printf("frame %d (startFrame) is past the end of animation %s\n", startFrame, animName.GetChars());
 		return;
 	}
 	else if(loopFrame >= len)
 	{
-		self->modelData->curAnim.flags = ANIMOVERRIDE_NONE;
+		self->modelData->curAnim.flags = MODELANIM_NONE;
 		Printf("frame %d (loopFrame) is past the end of animation %s\n", startFrame, animName.GetChars());
 		return;
 	}
 	else if(endFrame >= len)
 	{
-		self->modelData->curAnim.flags = ANIMOVERRIDE_NONE;
+		self->modelData->curAnim.flags = MODELANIM_NONE;
 		Printf("frame %d (endFrame) is past the end of animation %s\n", endFrame, animName.GetChars());
 		return;
 	}
@@ -5218,19 +5266,19 @@ void SetAnimationInternal(AActor * self, FName animName, double framerate, int s
 	self->modelData->curAnim.lastFrame = endFrame < 0 ? animEnd - 1 : animStart + endFrame;
 	self->modelData->curAnim.startFrame = startFrame < 0 ? animStart : animStart + startFrame;
 	self->modelData->curAnim.loopFrame = loopFrame < 0 ? animStart : animStart + loopFrame;
-	self->modelData->curAnim.flags = (flags&SAF_LOOP) ? ANIMOVERRIDE_LOOP : 0;
-	self->modelData->curAnim.switchTic = tic;
+	self->modelData->curAnim.flags = (flags & SAF_LOOP) ? MODELANIM_LOOP : 0;
 	self->modelData->curAnim.framerate = (float)framerate;
 
 	if(!(flags & SAF_INSTANT))
 	{
-		self->modelData->prevAnim.startFrame = getCurrentFrame(self->modelData->prevAnim, tic);
-		
-		self->modelData->curAnim.startTic = floor(tic) + interpolateTics;
+		int startTic = int(floor(tic)) + interpolateTics;
+		self->modelData->curAnim.startTic = startTic;
+		self->modelData->curAnim.switchOffset = startTic - tic;
 	}
 	else
 	{
 		self->modelData->curAnim.startTic = tic;
+		self->modelData->curAnim.switchOffset = 0;
 	}
 }
 
@@ -5255,7 +5303,7 @@ void SetAnimationFrameRateInternal(AActor * self, double framerate, double ticFr
 
 	EnsureModelData(self);
 
-	if(self->modelData->curAnim.flags & ANIMOVERRIDE_NONE) return;
+	if(self->modelData->curAnim.flags & MODELANIM_NONE) return;
 
 	if(framerate < 0)
 	{
@@ -5275,11 +5323,11 @@ void SetAnimationFrameRateInternal(AActor * self, double framerate, double ticFr
 		return;
 	}
 
-	double frame = getCurrentFrame(self->modelData->curAnim, tic);
+	double frame = getCurrentFrame(self->modelData->curAnim, tic, nullptr);
 
 	self->modelData->curAnim.startFrame = frame;
 	self->modelData->curAnim.startTic = tic;
-	self->modelData->curAnim.switchTic = tic;
+	self->modelData->curAnim.switchOffset = 0;
 	self->modelData->curAnim.framerate = (float)framerate;
 }
 
@@ -5436,6 +5484,12 @@ void ChangeModelNative(
 		if(generatorindex != -1) mobj->modelData->modelFrameGenerators[modelindex] = generatorindex;
 	}
 
+	if(!(mobj->modelData->curAnim.flags & MODELANIM_NONE) && animationindex == 0 && (mobj->modelData->animationIDs.Size() == 0 || mobj->modelData->animationIDs[0] != queryAnimation))
+	{ // reset current animation if animation file changes
+		mobj->modelData->curAnim.flags |= MODELANIM_NONE;
+		mobj->modelData->prevAnim = nullptr;
+	}
+
 	if(mobj->modelData->animationIDs.Size() == animationindex)
 	{
 		mobj->modelData->animationIDs.Push(queryAnimation);
@@ -5490,7 +5544,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, A_ChangeModel, ChangeModelNative)
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimation, SetAnimationNative)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	PARAM_NAME(animName);
 	PARAM_FLOAT(framerate);
 	PARAM_INT(startFrame);
@@ -5506,7 +5560,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimation, SetAnimationNative)
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimationUI, SetAnimationUINative)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	PARAM_NAME(animName);
 	PARAM_FLOAT(framerate);
 	PARAM_INT(startFrame);
@@ -5522,7 +5576,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimationUI, SetAnimationUINative)
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimationFrameRate, SetAnimationFrameRateNative)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	PARAM_FLOAT(framerate);
 	
 	SetAnimationFrameRateInternal(self, framerate, 1);
@@ -5532,7 +5586,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimationFrameRate, SetAnimationFrameRa
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimationFrameRateUI, SetAnimationFrameRateUINative)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	PARAM_FLOAT(framerate);
 	
 	SetAnimationFrameRateInternal(self, framerate, I_GetTimeFrac());
@@ -5542,7 +5596,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetAnimationFrameRateUI, SetAnimationFrame
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetModelFlag, SetModelFlag)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	PARAM_INT(flag);
 
 	SetModelFlag(self, flag);
@@ -5552,7 +5606,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, SetModelFlag, SetModelFlag)
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, ClearModelFlag, ClearModelFlag)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	PARAM_INT(flag);
 
 	ClearModelFlag(self, flag);
@@ -5562,7 +5616,7 @@ DEFINE_ACTION_FUNCTION_NATIVE(AActor, ClearModelFlag, ClearModelFlag)
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, ResetModelFlags, ResetModelFlags)
 {
-	PARAM_ACTION_PROLOGUE(AActor);
+	PARAM_SELF_PROLOGUE(AActor);
 	
 	ResetModelFlags(self);
 

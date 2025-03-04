@@ -53,6 +53,7 @@ class FDecalBase
 public:
 	virtual const FDecalTemplate *GetDecal () const;
 	virtual void ReplaceDecalRef (FDecalBase *from, FDecalBase *to) = 0;
+	FName GetDecalName() const;
 	
 protected:
 	FDecalBase ();
@@ -80,7 +81,7 @@ public:
 	FRenderStyle RenderStyle;
 	FTextureID PicNum;
 	uint16_t RenderFlags;
-	bool opaqueBlood;
+	bool translatable;
 	double Alpha;				// same as actor->alpha
 	const FDecalAnimator *Animator;
 	const FDecalBase *LowerDecal;

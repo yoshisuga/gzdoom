@@ -387,6 +387,30 @@ void FxExpression::EmitCompare(VMFunctionBuilder *build, bool invert, TArray<siz
 	if (op.Konst)
 	{
 		ScriptPosition.Message(MSG_WARNING, "Conditional expression is constant");
+		ExpEmit temp(build, op.RegType);
+		switch (op.RegType)
+		{
+		case REGT_INT:
+			build->Emit(OP_LK, temp.RegNum, op.RegNum);
+			break;
+
+		case REGT_FLOAT:
+			build->Emit(OP_LKF, temp.RegNum, op.RegNum);
+			break;
+
+		case REGT_POINTER:
+			build->Emit(OP_LKP, temp.RegNum, op.RegNum);
+			break;
+
+		case REGT_STRING:
+			build->Emit(OP_LKS, temp.RegNum, op.RegNum);
+			break;
+
+		default:
+			break;
+		}
+		op.Free(build);
+		op = temp;
 	}
 	switch (op.RegType)
 	{
@@ -1842,6 +1866,12 @@ FxExpression *FxTypeCast::Resolve(FCompileContext &ctx)
 	{
 		goto basereturn;
 	}
+	else if (ctx.Version >= MakeVersion(4, 14, 1) && basex->ValueType == TypeNullPtr && (ValueType == TypeSpriteID || ValueType == TypeTextureID || ValueType == TypeTranslationID))
+	{
+		delete basex;
+		basex = new FxConstant(0, ScriptPosition);
+		goto basereturn;
+	}
 	else if (IsFloat())
 	{
 		FxExpression *x = new FxFloatCast(basex);
@@ -2828,83 +2858,104 @@ FxExpression *FxAssign::Resolve(FCompileContext &ctx)
 
 	// Special case: Assignment to a bitfield.
 	IsBitWrite = Base->GetBitValue();
+	if (IsBitWrite >= 0x10000)
+	{
+		// internal flags - need more here
+		IsBitWrite &= 0xffff;
+	}
 	return this;
 }
 
 ExpEmit FxAssign::Emit(VMFunctionBuilder *build)
 {
-	static const uint8_t loadops[] = { OP_LK, OP_LKF, OP_LKS, OP_LKP };
-	assert(Base->ValueType->GetRegType() == Right->ValueType->GetRegType());
-
-	ExpEmit pointer = Base->Emit(build);
-	Address = pointer;
-
-	ExpEmit result;
-	bool intconst = false;
-	int intconstval = 0;
-
-	if (Right->isConstant() && Right->ValueType->GetRegType() == REGT_INT)
+	if (IsBitWrite < 64)
 	{
-		intconst = true;
-		intconstval = static_cast<FxConstant*>(Right)->GetValue().GetInt();
-		result.Konst = true;
-		result.RegType = REGT_INT;
-	}
-	else
-	{
-		result = Right->Emit(build);
-	}
-	assert(result.RegType <= REGT_TYPE);
+		static const uint8_t loadops[] = { OP_LK, OP_LKF, OP_LKS, OP_LKP };
+		assert(Base->ValueType->GetRegType() == Right->ValueType->GetRegType());
 
-	if (pointer.Target)
-	{
-		if (result.Konst)
+		ExpEmit pointer = Base->Emit(build);
+		Address = pointer;
+
+		ExpEmit result;
+		bool intconst = false;
+		int intconstval = 0;
+
+		if (Right->isConstant() && Right->ValueType->GetRegType() == REGT_INT)
 		{
-			if (intconst) build->EmitLoadInt(pointer.RegNum, intconstval);
-			else build->Emit(loadops[result.RegType], pointer.RegNum, result.RegNum);
+			intconst = true;
+			intconstval = static_cast<FxConstant*>(Right)->GetValue().GetInt();
+			result.Konst = true;
+			result.RegType = REGT_INT;
 		}
 		else
 		{
-			build->Emit(Right->ValueType->GetMoveOp(), pointer.RegNum, result.RegNum);
+			result = Right->Emit(build);
 		}
-	}
-	else
-	{
-		if (result.Konst)
+		assert(result.RegType <= REGT_TYPE);
+
+		if (pointer.Target)
 		{
-			ExpEmit temp(build, result.RegType);
-			if (intconst) build->EmitLoadInt(temp.RegNum, intconstval);
-			else build->Emit(loadops[result.RegType], temp.RegNum, result.RegNum);
+			if (result.Konst)
+			{
+				if (intconst) build->EmitLoadInt(pointer.RegNum, intconstval);
+				else build->Emit(loadops[result.RegType], pointer.RegNum, result.RegNum);
+			}
+			else
+			{
+				build->Emit(Right->ValueType->GetMoveOp(), pointer.RegNum, result.RegNum);
+			}
+		}
+		else
+		{
+			if (result.Konst)
+			{
+				ExpEmit temp(build, result.RegType);
+				if (intconst) build->EmitLoadInt(temp.RegNum, intconstval);
+				else build->Emit(loadops[result.RegType], temp.RegNum, result.RegNum);
+				result.Free(build);
+				result = temp;
+			}
+
+			if (IsBitWrite == -1)
+			{
+				build->Emit(Base->ValueType->GetStoreOp(), pointer.RegNum, result.RegNum, build->GetConstantInt(0));
+			}
+			else
+			{
+				build->Emit(OP_SBIT, pointer.RegNum, result.RegNum, 1 << IsBitWrite);
+			}
+		}
+
+		if (AddressRequested)
+		{
 			result.Free(build);
-			result = temp;
+			return pointer;
 		}
 
-		if (IsBitWrite == -1)
-		{
-			build->Emit(Base->ValueType->GetStoreOp(), pointer.RegNum, result.RegNum, build->GetConstantInt(0));
+		pointer.Free(build);
+
+		if (intconst)
+		{	//fix int constant return for assignment
+			return Right->Emit(build);
 		}
 		else
 		{
-			build->Emit(OP_SBIT, pointer.RegNum, result.RegNum, 1 << IsBitWrite);
+			return result;
 		}
-
-	}
-
-	if (AddressRequested)
-	{
-		result.Free(build);
-		return pointer;
-	}
-
-	pointer.Free(build);
-
-	if(intconst)
-	{	//fix int constant return for assignment
-		return Right->Emit(build);
 	}
 	else
 	{
-		return result;
+		VMFunction* callfunc;
+		auto sym = FindBuiltinFunction(NAME_HandleDeprecatedFlags);
+
+		assert(sym);
+		callfunc = sym->Variants[0].Implementation;
+
+		FunctionCallEmitter emitters(callfunc);
+		emitters.AddParameter(build, Base);
+		emitters.AddParameter(build, Right);
+		emitters.AddParameterIntConst(IsBitWrite - 64);
+		return emitters.EmitCall(build);
 	}
 }
 
@@ -2934,23 +2985,40 @@ FxExpression *FxAssignSelf::Resolve(FCompileContext &ctx)
 
 ExpEmit FxAssignSelf::Emit(VMFunctionBuilder *build)
 {
-	ExpEmit pointer = Assignment->Address; // FxAssign should have already emitted it
-	if (!pointer.Target)
+	if (Assignment->IsBitWrite < 64)
 	{
-		ExpEmit out(build, ValueType->GetRegType(), ValueType->GetRegCount());
-		if (Assignment->IsBitWrite != -1)
+		ExpEmit pointer = Assignment->Address; // FxAssign should have already emitted it
+		if (!pointer.Target)
 		{
-			build->Emit(OP_LBIT, out.RegNum, pointer.RegNum, 1 << Assignment->IsBitWrite);
+			ExpEmit out(build, ValueType->GetRegType(), ValueType->GetRegCount());
+			if (Assignment->IsBitWrite == -1)
+			{
+				build->Emit(ValueType->GetLoadOp(), out.RegNum, pointer.RegNum, build->GetConstantInt(0));
+			}
+			else
+			{
+				build->Emit(OP_LBIT, out.RegNum, pointer.RegNum, 1 << Assignment->IsBitWrite);
+			}
+			return out;
 		}
 		else
 		{
-			build->Emit(ValueType->GetLoadOp(), out.RegNum, pointer.RegNum, build->GetConstantInt(0));
+			return pointer;
 		}
-		return out;
 	}
 	else
 	{
-		return pointer;
+		VMFunction* callfunc;
+		auto sym = FindBuiltinFunction(NAME_CheckDeprecatedFlags);
+
+		assert(sym);
+		callfunc = sym->Variants[0].Implementation;
+
+		FunctionCallEmitter emitters(callfunc);
+		emitters.AddParameter(build, Assignment->Base);
+		emitters.AddParameterIntConst(Assignment->IsBitWrite - 64);
+		emitters.AddReturn(REGT_INT);
+		return emitters.EmitCall(build);
 	}
 }
 
@@ -6739,11 +6807,8 @@ FxExpression *FxIdentifier::Resolve(FCompileContext& ctx)
 			{
 				if (sym->mVersion <= ctx.Version)
 				{
-					// Allow use of deprecated symbols in deprecated functions of the internal code. This is meant to allow deprecated code to remain as it was, 
-					// even if it depends on some deprecated symbol. 
-					// The main motivation here is to keep the deprecated static functions accessing the global level variable as they were.
-					// Print these only if debug output is active and at the highest verbosity level.
-					const bool internal = (ctx.Function->Variants[0].Flags & VARF_Deprecated) && fileSystem.GetFileContainer(ctx.Lump) == 0;
+					// Allow use of deprecated symbols in the internal code.
+					const bool internal = fileSystem.GetFileContainer(ctx.Lump) == 0;
 					const FString &deprecationMessage = vsym->DeprecationMessage;
 
 					ScriptPosition.Message(internal ? MSG_DEBUGMSG : MSG_WARNING, 
@@ -6833,8 +6898,12 @@ FxExpression *FxIdentifier::ResolveMember(FCompileContext &ctx, PContainerType *
 			{
 				if (sym->mVersion <= ctx.Version)
 				{
+					// Allow use of deprecated symbols in internal code.
+					const bool internal = fileSystem.GetFileContainer(ctx.Lump) == 0;
 					const FString &deprecationMessage = vsym->DeprecationMessage;
-					ScriptPosition.Message(MSG_WARNING, "Accessing deprecated member variable %s - deprecated since %d.%d.%d%s%s", sym->SymbolName.GetChars(), vsym->mVersion.major, vsym->mVersion.minor, vsym->mVersion.revision,
+
+					ScriptPosition.Message(internal ? MSG_DEBUGMSG : MSG_WARNING,
+						"Accessing deprecated member variable %s - deprecated since %d.%d.%d%s%s", sym->SymbolName.GetChars(), vsym->mVersion.major, vsym->mVersion.minor, vsym->mVersion.revision,
 						deprecationMessage.IsEmpty() ? "" : ", ", deprecationMessage.GetChars());
 				}
 			}
@@ -7728,56 +7797,73 @@ FxExpression *FxStructMember::Resolve(FCompileContext &ctx)
 
 ExpEmit FxStructMember::Emit(VMFunctionBuilder *build)
 {
-	ExpEmit obj = classx->Emit(build);
-	assert(obj.RegType == REGT_POINTER);
-
-	if (obj.Konst)
+	if (membervar->BitValue < 64 || AddressRequested)
 	{
-		// If the situation where we are dereferencing a constant
-		// pointer is common, then it would probably be worthwhile
-		// to add new opcodes for those. But as of right now, I
-		// don't expect it to be a particularly common case.
-		ExpEmit newobj(build, REGT_POINTER);
-		build->Emit(OP_LKP, newobj.RegNum, obj.RegNum);
-		obj = newobj;
-	}
+		ExpEmit obj = classx->Emit(build);
+		assert(obj.RegType == REGT_POINTER);
 
-	if (membervar->Flags & VARF_Meta)
-	{
-		obj.Free(build);
-		ExpEmit meta(build, REGT_POINTER);
-		build->Emit(OP_META, meta.RegNum, obj.RegNum);
-		obj = meta;
-	}
-
-	if (AddressRequested)
-	{
-		if (membervar->Offset == 0)
+		if (obj.Konst)
 		{
-			return obj;
+			// If the situation where we are dereferencing a constant
+			// pointer is common, then it would probably be worthwhile
+			// to add new opcodes for those. But as of right now, I
+			// don't expect it to be a particularly common case.
+			ExpEmit newobj(build, REGT_POINTER);
+			build->Emit(OP_LKP, newobj.RegNum, obj.RegNum);
+			obj = newobj;
+		}
+
+		if (membervar->Flags & VARF_Meta)
+		{
+			obj.Free(build);
+			ExpEmit meta(build, REGT_POINTER);
+			build->Emit(OP_META, meta.RegNum, obj.RegNum);
+			obj = meta;
+		}
+
+		if (AddressRequested)
+		{
+			if (membervar->Offset == 0)
+			{
+				return obj;
+			}
+			obj.Free(build);
+			ExpEmit out(build, REGT_POINTER);
+			build->Emit(OP_ADDA_RK, out.RegNum, obj.RegNum, build->GetConstantInt((int)membervar->Offset));
+			return out;
+		}
+
+		int offsetreg = build->GetConstantInt((int)membervar->Offset);
+		ExpEmit loc(build, membervar->Type->GetRegType(), membervar->Type->GetRegCount());
+
+		if (membervar->BitValue == -1)
+		{
+			build->Emit(membervar->Type->GetLoadOp(), loc.RegNum, obj.RegNum, offsetreg);
+		}
+		else
+		{
+			ExpEmit out(build, REGT_POINTER);
+			build->Emit(OP_ADDA_RK, out.RegNum, obj.RegNum, offsetreg);
+			build->Emit(OP_LBIT, loc.RegNum, out.RegNum, 1 << membervar->BitValue);
+			out.Free(build);
 		}
 		obj.Free(build);
-		ExpEmit out(build, REGT_POINTER);
-		build->Emit(OP_ADDA_RK, out.RegNum, obj.RegNum, build->GetConstantInt((int)membervar->Offset));
-		return out;
-	}
-
-	int offsetreg = build->GetConstantInt((int)membervar->Offset);
-	ExpEmit loc(build, membervar->Type->GetRegType(), membervar->Type->GetRegCount());
-
-	if (membervar->BitValue == -1)
-	{
-		build->Emit(membervar->Type->GetLoadOp(), loc.RegNum, obj.RegNum, offsetreg);
+		return loc;
 	}
 	else
 	{
-		ExpEmit out(build, REGT_POINTER);
-		build->Emit(OP_ADDA_RK, out.RegNum, obj.RegNum, offsetreg);
-		build->Emit(OP_LBIT, loc.RegNum, out.RegNum, 1 << membervar->BitValue);
-		out.Free(build);
+		VMFunction* callfunc;
+		auto sym = FindBuiltinFunction(NAME_CheckDeprecatedFlags);
+
+		assert(sym);
+		callfunc = sym->Variants[0].Implementation;
+
+		FunctionCallEmitter emitters(callfunc);
+		emitters.AddParameter(build, classx);
+		emitters.AddParameterIntConst(membervar->BitValue - 64);
+		emitters.AddReturn(REGT_INT);
+		return emitters.EmitCall(build);
 	}
-	obj.Free(build);
-	return loc;
 }
 
 
@@ -8213,8 +8299,12 @@ static bool CheckFunctionCompatiblity(FScriptPosition &ScriptPosition, PFunction
 FxFunctionCall::FxFunctionCall(FName methodname, FName rngname, FArgumentList &&args, const FScriptPosition &pos)
 : FxExpression(EFX_FunctionCall, pos)
 {
+	const bool isClient = methodname == NAME_CRandom || methodname == NAME_CFRandom
+							|| methodname == NAME_CRandomPick || methodname == NAME_CFRandomPick
+							|| methodname == NAME_CRandom2 || methodname == NAME_CSetRandomSeed;
+
 	MethodName = methodname;
-	RNG = &pr_exrandom;
+	RNG = isClient ? &M_Random : &pr_exrandom;
 	ArgList = std::move(args);
 	if (rngname != NAME_None)
 	{
@@ -8226,7 +8316,16 @@ FxFunctionCall::FxFunctionCall(FName methodname, FName rngname, FArgumentList &&
 		case NAME_FRandomPick:
 		case NAME_Random2:
 		case NAME_SetRandomSeed:
-			RNG = FRandom::StaticFindRNG(rngname.GetChars());
+			RNG = FRandom::StaticFindRNG(rngname.GetChars(), false);
+			break;
+
+		case NAME_CRandom:
+		case NAME_CFRandom:
+		case NAME_CRandomPick:
+		case NAME_CFRandomPick:
+		case NAME_CRandom2:
+		case NAME_CSetRandomSeed:
+			RNG = FRandom::StaticFindRNG(rngname.GetChars(), true);
 			break;
 
 		default:
@@ -8443,6 +8542,7 @@ FxExpression *FxFunctionCall::Resolve(FCompileContext& ctx)
 	case NAME_State:
 	case NAME_SpriteID:
 	case NAME_TextureID:
+	case NAME_TranslationID:
 		if (CheckArgSize(MethodName, ArgList, 1, 1, ScriptPosition))
 		{
 			PType *type = 
@@ -8492,13 +8592,22 @@ FxExpression *FxFunctionCall::Resolve(FCompileContext& ctx)
 		}
 		break;
 
+	case NAME_CSetRandomSeed:
+		if (CheckArgSize(NAME_CRandom, ArgList, 1, 1, ScriptPosition))
+		{
+			func = new FxRandomSeed(RNG, ArgList[0], ScriptPosition, ctx.FromDecorate);
+			ArgList[0] = nullptr;
+		}
+		break;
+
 	case NAME_Random:
+	case NAME_CRandom:
 		// allow calling Random without arguments to default to (0, 255)
 		if (ArgList.Size() == 0)
 		{
 			func = new FxRandom(RNG, new FxConstant(0, ScriptPosition), new FxConstant(255, ScriptPosition), ScriptPosition, ctx.FromDecorate);
 		}
-		else if (CheckArgSize(NAME_Random, ArgList, 2, 2, ScriptPosition))
+		else if (CheckArgSize(MethodName, ArgList, 2, 2, ScriptPosition))
 		{
 			func = new FxRandom(RNG, ArgList[0], ArgList[1], ScriptPosition, ctx.FromDecorate);
 			ArgList[0] = ArgList[1] = nullptr;
@@ -8506,7 +8615,8 @@ FxExpression *FxFunctionCall::Resolve(FCompileContext& ctx)
 		break;
 
 	case NAME_FRandom:
-		if (CheckArgSize(NAME_FRandom, ArgList, 2, 2, ScriptPosition))
+	case NAME_CFRandom:
+		if (CheckArgSize(MethodName, ArgList, 2, 2, ScriptPosition))
 		{
 			func = new FxFRandom(RNG, ArgList[0], ArgList[1], ScriptPosition);
 			ArgList[0] = ArgList[1] = nullptr;
@@ -8515,14 +8625,17 @@ FxExpression *FxFunctionCall::Resolve(FCompileContext& ctx)
 
 	case NAME_RandomPick:
 	case NAME_FRandomPick:
+	case NAME_CRandomPick:
+	case NAME_CFRandomPick:
 		if (CheckArgSize(MethodName, ArgList, 1, -1, ScriptPosition))
 		{
-			func = new FxRandomPick(RNG, ArgList, MethodName == NAME_FRandomPick, ScriptPosition, ctx.FromDecorate);
+			func = new FxRandomPick(RNG, ArgList, MethodName == NAME_FRandomPick || MethodName == NAME_CFRandomPick, ScriptPosition, ctx.FromDecorate);
 		}
 		break;
 
 	case NAME_Random2:
-		if (CheckArgSize(NAME_Random2, ArgList, 0, 1, ScriptPosition))
+	case NAME_CRandom2:
+		if (CheckArgSize(MethodName, ArgList, 0, 1, ScriptPosition))
 		{
 			func = new FxRandom2(RNG, ArgList.Size() == 0? nullptr : ArgList[0], ScriptPosition, ctx.FromDecorate);
 			if (ArgList.Size() > 0) ArgList[0] = nullptr;
@@ -8795,7 +8908,24 @@ FxExpression *FxMemberFunctionCall::Resolve(FCompileContext& ctx)
 			return Self;
 		}
 	}
-	else if (Self->ValueType == TypeTextureID)
+	else if (ctx.Version >= MakeVersion(4, 14, 1) && Self->ValueType == TypeSound && MethodName == NAME_IsValid)
+	{
+		if (ArgList.Size() > 0)
+		{
+			ScriptPosition.Message(MSG_ERROR, "Too many parameters in call to %s", MethodName.GetChars());
+			delete this;
+			return nullptr;
+		}
+
+		Self->ValueType = TypeSInt32;	// treat as integer
+		FxExpression *x = new FxCompareRel('>', Self, new FxConstant(0, ScriptPosition));
+		Self = nullptr;
+		SAFE_RESOLVE(x, ctx);
+
+		delete this;
+		return x;
+	}
+	else if (Self->ValueType == TypeTextureID || (ctx.Version >= MakeVersion(4, 14, 1) && (Self->ValueType == TypeTranslationID)))
 	{
 		if (MethodName == NAME_IsValid || MethodName == NAME_IsNull || MethodName == NAME_Exists || MethodName == NAME_SetInvalid || MethodName == NAME_SetNull)
 		{
@@ -8833,6 +8963,67 @@ FxExpression *FxMemberFunctionCall::Resolve(FCompileContext& ctx)
 			Self = nullptr;
 			SAFE_RESOLVE(x, ctx);
 			if (MethodName == NAME_SetInvalid || MethodName == NAME_SetNull) x->ValueType = TypeVoid; // override the default type of the assignment operator.
+			delete this;
+			return x;
+		}
+	}
+
+	else if (ctx.Version >= MakeVersion(4, 14, 1) && Self->ValueType == TypeSpriteID)
+	{
+		if (MethodName == NAME_IsValid || MethodName == NAME_IsEmpty || MethodName == NAME_IsFixed || MethodName == NAME_IsKeep
+			|| MethodName == NAME_Exists
+			|| MethodName == NAME_SetInvalid || MethodName == NAME_SetEmpty || MethodName == NAME_SetFixed || MethodName == NAME_SetKeep)
+		{
+			if (ArgList.Size() > 0)
+			{
+				ScriptPosition.Message(MSG_ERROR, "Too many parameters in call to %s", MethodName.GetChars());
+				delete this;
+				return nullptr;
+			}
+			// No need to create a dedicated node here, all builtins map directly to trivial operations.
+			Self->ValueType = TypeSInt32;	// all builtins treat the texture index as integer.
+			FxExpression *x = nullptr;
+			switch (MethodName.GetIndex())
+			{
+			case NAME_IsValid:
+				x = new FxCompareRel(TK_Geq, Self, new FxConstant(0, ScriptPosition));
+				break;
+
+			case NAME_IsEmpty: // TNT1
+				x = new FxCompareEq(TK_Eq, Self, new FxConstant(0, ScriptPosition));
+				break;
+
+			case NAME_IsFixed: // "----"
+				x = new FxCompareEq(TK_Eq, Self, new FxConstant(1, ScriptPosition));
+				break;
+
+			case NAME_IsKeep: // "####"
+				x = new FxCompareEq(TK_Eq, Self, new FxConstant(2, ScriptPosition));
+				break;
+
+			case NAME_Exists:
+				x = new FxCompareRel(TK_Geq, Self, new FxConstant(3, ScriptPosition));
+				break;
+
+			case NAME_SetInvalid:
+				x = new FxAssign(Self, new FxConstant(-1, ScriptPosition));
+				break;
+
+			case NAME_SetEmpty: // TNT1
+				x = new FxAssign(Self, new FxConstant(0, ScriptPosition));
+				break;
+
+			case NAME_SetFixed: // "----"
+				x = new FxAssign(Self, new FxConstant(1, ScriptPosition));
+				break;
+
+			case NAME_SetKeep: // "####"
+				x = new FxAssign(Self, new FxConstant(2, ScriptPosition));
+				break;
+			}
+			Self = nullptr;
+			SAFE_RESOLVE(x, ctx);
+			if (MethodName == NAME_SetInvalid || MethodName == NAME_SetEmpty || MethodName == NAME_SetFixed || MethodName == NAME_SetKeep) x->ValueType = TypeVoid; // override the default type of the assignment operator.
 			delete this;
 			return x;
 		}
@@ -8912,7 +9103,7 @@ FxExpression *FxMemberFunctionCall::Resolve(FCompileContext& ctx)
 		}
 		else
 		{
-			if (PFunction **Override; ctx.Version >= MakeVersion(4, 11, 0) && (Override = static_cast<PDynArray*>(Self->ValueType)->FnOverrides.CheckKey(MethodName)))
+			if (PFunction **Override; (Override = static_cast<PDynArray*>(Self->ValueType)->FnOverrides.CheckKey(MethodName)))
 			{
 				afd_override = *Override;
 			}
@@ -9495,8 +9686,12 @@ bool FxVMFunctionCall::CheckAccessibility(const VersionInfo &ver)
 	{
 		if (Function->mVersion <= ver)
 		{
+			// Allow use of deprecated symbols in internal code.
+			const bool internal = fileSystem.GetFileContainer(Function->OwningClass->mDefFileNo) == 0;
 			const FString &deprecationMessage = Function->Variants[0].DeprecationMessage;
-			ScriptPosition.Message(MSG_WARNING, "Accessing deprecated function %s - deprecated since %d.%d.%d%s%s", Function->SymbolName.GetChars(), Function->mVersion.major, Function->mVersion.minor, Function->mVersion.revision, 
+
+			ScriptPosition.Message(internal ? MSG_DEBUGMSG : MSG_WARNING,
+				"Accessing deprecated function %s - deprecated since %d.%d.%d%s%s", Function->SymbolName.GetChars(), Function->mVersion.major, Function->mVersion.minor, Function->mVersion.revision, 
 				deprecationMessage.IsEmpty() ? "" : ", ", deprecationMessage.GetChars());
 		}
 	}
@@ -9544,7 +9739,9 @@ FxExpression *FxVMFunctionCall::Resolve(FCompileContext& ctx)
 
 	if(FnPtrCall) static_cast<VMScriptFunction*>(ctx.Function->Variants[0].Implementation)->blockJit = true;
 
-	int implicit = Function->GetImplicitArgs();
+	unsigned implicit = Function->GetImplicitArgs();
+
+	bool relaxed_named_arugments = (ctx.Version >= MakeVersion(4, 13));
 
 	if (!CheckAccessibility(ctx.Version))
 	{
@@ -9576,21 +9773,128 @@ FxExpression *FxVMFunctionCall::Resolve(FCompileContext& ctx)
 	CallingFunction = ctx.Function;
 	if (ArgList.Size() > 0)
 	{
-		if (argtypes.Size() == 0)
+		if ((argtypes.Size() == 0) || (argtypes.Last() != nullptr && ArgList.Size() + implicit > argtypes.Size()))
 		{
 			ScriptPosition.Message(MSG_ERROR, "Too many arguments in call to %s", Function->SymbolName.GetChars());
 			delete this;
 			return nullptr;
 		}
 
+		bool isvararg = (argtypes.Last() == nullptr);
+
+		{
+			TDeletingArray<FxExpression*> OrderedArgs;
+			const unsigned count = (argtypes.Size() - implicit) - isvararg;
+
+			OrderedArgs.Resize(count);
+			memset(OrderedArgs.Data(), 0, sizeof(FxExpression*) * count);
+
+			unsigned index = 0;
+			unsigned n = ArgList.Size();
+
+			for(unsigned i = 0; i < n; i++)
+			{
+				if(ArgList[i]->ExprType == EFX_NamedNode)
+				{
+					if(FnPtrCall)
+					{
+						ScriptPosition.Message(MSG_ERROR, "Named arguments not supported in function pointer calls");
+						delete this;
+						return nullptr;
+					}
+					else if((index >= count) && isvararg)
+					{
+						ScriptPosition.Message(MSG_ERROR, "Cannot use a named argument in the varargs part of the parameter list.");
+						delete this;
+						return nullptr;
+					}
+					else
+					{
+						FName name = static_cast<FxNamedNode *>(ArgList[i])->name;
+						if(argnames[index + implicit] != name)
+						{
+							unsigned j;
+
+							for (j = 0; j < count; j++)
+							{
+								if (argnames[j + implicit] == name)
+								{
+									if(!relaxed_named_arugments && !(argflags[j + implicit] & VARF_Optional))
+									{
+										ScriptPosition.Message(MSG_ERROR, "Cannot use a named argument here - not all required arguments have been passed.");
+									}
+									else if(!relaxed_named_arugments && j < index)
+									{
+										ScriptPosition.Message(MSG_ERROR, "Named argument %s comes before current position in argument list.", name.GetChars());
+									}
+
+									// i don't think this needs any further optimization? 
+									//			O(N^2) complexity technically but N isn't likely to be large,
+									//			and the check itself is just an int comparison, so it should be fine
+									index = j;
+
+									break;
+								}
+							}
+
+							if(j == count)
+							{
+								ScriptPosition.Message(MSG_ERROR, "Named argument %s not found.", name.GetChars());
+								delete this;
+								return nullptr;
+							}
+						}
+						else if(!relaxed_named_arugments && !(argflags[index + implicit] & VARF_Optional))
+						{
+							ScriptPosition.Message(MSG_ERROR, "Cannot use a named argument here - not all required arguments have been passed.");
+						}
+					}
+				}
+
+				if(index >= count)
+				{
+					if(isvararg)
+					{
+						OrderedArgs.Push(ArgList[i]);
+						ArgList[i] = nullptr;
+						index++;
+					}
+					else
+					{
+						ScriptPosition.Message(MSG_ERROR, "Too many arguments in call to %s", Function->SymbolName.GetChars());
+						delete this;
+						return nullptr;
+					}
+				}
+				else
+				{
+					if(ArgList[i]->ExprType == EFX_NamedNode)
+					{
+						auto * node = static_cast<FxNamedNode *>(ArgList[i]);
+						OrderedArgs[index] = node->value;
+						node->value = nullptr;
+					}
+					else
+					{
+						OrderedArgs[index] = ArgList[i];
+					}
+					ArgList[i] = nullptr;
+					index++;
+				}
+			}
+
+			ArgList = std::move(OrderedArgs);
+		}
+
 		bool foundvarargs = false;
 		PType * type = nullptr;
 		int flag = 0;
-		if (argtypes.Size() > 0 && argtypes.Last() != nullptr && ArgList.Size() + implicit > argtypes.Size())
+
+		int defaults_index = 0;
+
+		for(unsigned i = 0; i < implicit; i++)
 		{
-			ScriptPosition.Message(MSG_ERROR, "Too many arguments in call to %s", Function->SymbolName.GetChars());
-			delete this;
-			return nullptr;
+			defaults_index += argtypes[i]->GetRegCount();
 		}
 
 		for (unsigned i = 0; i < ArgList.Size(); i++)
@@ -9608,93 +9912,44 @@ FxExpression *FxVMFunctionCall::Resolve(FCompileContext& ctx)
 			}
 			assert(type != nullptr);
 
-			if (ArgList[i]->ExprType == EFX_NamedNode)
+			if(!foundvarargs)
 			{
-				if(FnPtrCall)
+				if(ArgList[i] == nullptr)
 				{
-					ScriptPosition.Message(MSG_ERROR, "Named arguments not supported in function pointer calls");
-					delete this;
-					return nullptr;
-				}
-				if (!(flag & VARF_Optional))
-				{
-					ScriptPosition.Message(MSG_ERROR, "Cannot use a named argument here - not all required arguments have been passed.");
-					delete this;
-					return nullptr;
-				}
-				if (foundvarargs)
-				{
-					ScriptPosition.Message(MSG_ERROR, "Cannot use a named argument in the varargs part of the parameter list.");
-					delete this;
-					return nullptr;
-				}
-				unsigned j;
-				bool done = false;
-				FName name = static_cast<FxNamedNode *>(ArgList[i])->name;
-				for (j = 0; j < argnames.Size() - implicit; j++)
-				{
-					if (argnames[j + implicit] == name)
+					if(!(flag & VARF_Optional))
 					{
-						if (j < i)
+						ScriptPosition.Message(MSG_ERROR, "Required argument %s has not been passed in call to %s", argnames[i + implicit].GetChars(), Function->SymbolName.GetChars());
+						delete this;
+						return nullptr;
+					}
+
+					auto ntype = argtypes[i + implicit];
+					// If this is a reference argument, the pointer type must be undone because the code below expects the pointed type as value type.
+					if (argflags[i + implicit] & VARF_Ref)
+					{
+						assert(ntype->isPointer());
+						ntype = TypeNullPtr; // the default of a reference type can only be a null pointer
+					}
+					if (ntype->GetRegCount() == 1)
+					{
+						ArgList[i] = new FxConstant(ntype, (*defaults)[defaults_index], ScriptPosition);
+					}
+					else 
+					{
+						// Vectors need special treatment because they are not normal constants
+						FxConstant *cs[4] = { nullptr };
+						for (int l = 0; l < ntype->GetRegCount(); l++)
 						{
-							ScriptPosition.Message(MSG_ERROR, "Named argument %s comes before current position in argument list.", name.GetChars());
-							delete this;
-							return nullptr;
+							cs[l] = new FxConstant(TypeFloat64, (*defaults)[l + defaults_index], ScriptPosition);
 						}
-						// copy the original argument into the list
-						auto old = static_cast<FxNamedNode *>(ArgList[i]);
-						ArgList[i] = old->value; 
-						old->value = nullptr;
-						delete old;
-						// now fill the gap with constants created from the default list so that we got a full list of arguments.
-						int insert = j - i;
-						int skipdefs = 0;
-						// Defaults contain multiple entries for pointers so we need to calculate how much additional defaults we need to skip
-						for (unsigned k = 0; k < i + implicit; k++)
-						{
-							skipdefs += argtypes[k]->GetRegCount() - 1;
-						}
-						for (int k = 0; k < insert; k++)
-						{
-							auto ntype = argtypes[i + k + implicit];
-							// If this is a reference argument, the pointer type must be undone because the code below expects the pointed type as value type.
-							if (argflags[i + k + implicit] & VARF_Ref)
-							{
-								assert(ntype->isPointer());
-								ntype = TypeNullPtr; // the default of a reference type can only be a null pointer
-							}
-							if (ntype->GetRegCount() == 1)
-							{
-								auto x = new FxConstant(ntype, (*defaults)[i + k + skipdefs + implicit], ScriptPosition);
-								ArgList.Insert(i + k, x);
-							}
-							else 
-							{
-								// Vectors need special treatment because they are not normal constants
-								FxConstant *cs[4] = { nullptr };
-								for (int l = 0; l < ntype->GetRegCount(); l++)
-								{
-									cs[l] = new FxConstant(TypeFloat64, (*defaults)[l + i + k + skipdefs + implicit], ScriptPosition);
-								}
-								FxExpression *x = new FxVectorValue(cs[0], cs[1], cs[2], cs[3], ScriptPosition);
-								ArgList.Insert(i + k, x);
-								skipdefs += ntype->GetRegCount() - 1;
-							}
-						}
-						done = true;
-						break;
+						ArgList[i] = new FxVectorValue(cs[0], cs[1], cs[2], cs[3], ScriptPosition);
 					}
 				}
-				if (!done)
-				{
-					ScriptPosition.Message(MSG_ERROR, "Named argument %s not found.", name.GetChars());
-					delete this;
-					return nullptr;
-				}
-				// re-get the proper info for the inserted node.
-				type = argtypes[i + implicit];
-				flag = argflags[i + implicit];
+
+				defaults_index += argtypes[i + implicit]->GetRegCount();
 			}
+
+			assert(ArgList[i]);
 
 			FxExpression *x = nullptr;
 			if (foundvarargs && (Function->Variants[0].Flags & VARF_VarArg))
@@ -12112,7 +12367,7 @@ static PClass *NativeNameToClass(int _clsname, PClass *desttype)
 	if (clsname != NAME_None)
 	{
 		cls = PClass::FindClass(clsname);
-		if (cls != nullptr && (cls->VMType == nullptr || !cls->IsDescendantOf(desttype)))
+		if (cls != nullptr && (cls->VMType == nullptr || (desttype != nullptr && !cls->IsDescendantOf(desttype))))
 		{
 			// does not match required parameters or is invalid.
 			return nullptr;
@@ -12525,6 +12780,15 @@ FxExpression *FxLocalVariableDeclaration::Resolve(FCompileContext &ctx)
 	if (ValueType->RegType == REGT_NIL && ValueType != TypeAuto)
 	{
 		auto sfunc = static_cast<VMScriptFunction *>(ctx.Function->Variants[0].Implementation);
+
+		const unsigned MAX_STACK_ALLOC = 512 * 1024; // Windows stack is 1 MB, but we cannot go up there without problems
+		if (uint64_t(ValueType->Size) + uint64_t(sfunc->ExtraSpace) > MAX_STACK_ALLOC)
+		{
+			ScriptPosition.Message(MSG_ERROR, "%s exceeds max. allowed size of 512kb for local variables at variable %s", sfunc->Name.GetChars(), Name.GetChars());
+			delete this;
+			return nullptr;
+		}
+
 		StackOffset = sfunc->AllocExtraStack(ValueType);
 
 		if (Init != nullptr)

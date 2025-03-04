@@ -75,7 +75,9 @@
 
 EXTERN_CVAR (Int, disableautosave)
 EXTERN_CVAR (Int, autosavecount)
-EXTERN_CVAR(Bool, cl_capfps)
+EXTERN_CVAR (Bool, cl_capfps)
+EXTERN_CVAR (Bool, vid_vsync)
+EXTERN_CVAR (Int, vid_maxfps)
 
 //#define SIMULATEERRORS		(RAND_MAX/3)
 #define SIMULATEERRORS			0
@@ -85,6 +87,8 @@ extern FString	savedescription;
 extern FString	savegamefile;
 
 extern short consistancy[MAXPLAYERS][BACKUPTICS];
+
+extern bool AppActive;
 
 #define netbuffer (doomcom.data)
 
@@ -149,6 +153,9 @@ static int 	entertic;
 static int	oldentertics;
 
 extern	bool	 advancedemo;
+
+CVAR(Bool, vid_dontdowait, false, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
+CVAR(Bool, vid_lowerinbackground, true, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
 
 CVAR(Bool, net_ticbalance, false, CVAR_SERVERINFO | CVAR_NOSAVE)
 CUSTOM_CVAR(Int, net_extratic, 0, CVAR_SERVERINFO | CVAR_NOSAVE)
@@ -1878,6 +1885,12 @@ void TryRunTics (void)
 
 	bool doWait = (cl_capfps || pauseext || (r_NoInterpolate && !M_IsAnimated()));
 
+	if (vid_dontdowait && ((vid_maxfps > 0) || (vid_vsync == true)))
+		doWait = false;
+
+	if (!AppActive && vid_lowerinbackground)
+		doWait = true;
+
 	// get real tics
 	if (doWait)
 	{
@@ -2260,7 +2273,7 @@ void Net_DoCommand (int type, uint8_t **stream, int player)
 		cht_Give (&players[player], s, ReadInt32 (stream));
 		if (player != consoleplayer)
 		{
-			FString message = GStrings("TXT_X_CHEATS");
+			FString message = GStrings.GetString("TXT_X_CHEATS");
 			message.Substitute("%s", players[player].userinfo.GetName());
 			Printf("%s: give %s\n", message.GetChars(), s);
 		}
@@ -2378,7 +2391,6 @@ void Net_DoCommand (int type, uint8_t **stream, int player)
 	case DEM_SUMMONFRIEND2:
 	case DEM_SUMMONFOE2:
 		{
-			PClassActor *typeinfo;
 			int angle = 0;
 			int16_t tid = 0;
 			uint8_t special = 0;
@@ -2393,11 +2405,11 @@ void Net_DoCommand (int type, uint8_t **stream, int player)
 				for(i = 0; i < 5; i++) args[i] = ReadInt32(stream);
 			}
 
-			typeinfo = PClass::FindActor(s);
-			if (typeinfo != NULL)
+			AActor *source = players[player].mo;
+			if(source != NULL)
 			{
-				AActor *source = players[player].mo;
-				if (source != NULL)
+				PClassActor * typeinfo = PClass::FindActor(s);
+				if (typeinfo != NULL)
 				{
 					if (GetDefaultByType (typeinfo)->flags & MF_MISSILE)
 					{
@@ -2440,6 +2452,20 @@ void Net_DoCommand (int type, uint8_t **stream, int player)
 								}
 								if(tid) spawned->SetTID(tid);
 							}
+						}
+					}
+				}
+				else
+				{ // not an actor, must be a visualthinker
+					PClass * typeinfo = PClass::FindClass(s);
+					if(typeinfo && typeinfo->IsDescendantOf("VisualThinker"))
+					{
+						DVector3 spawnpos = source->Vec3Angle(source->radius * 4, source->Angles.Yaw, 8.);
+						auto vt = DVisualThinker::NewVisualThinker(source->Level, typeinfo);
+						if(vt)
+						{
+							vt->PT.Pos = spawnpos;
+							vt->UpdateSector();
 						}
 					}
 				}
@@ -2968,168 +2994,6 @@ int Net_GetLatency(int *ld, int *ad)
 	*ld = localdelay;
 	*ad = arbitratordelay;
 	return severity;
-}
-
-//==========================================================================
-//
-//
-//
-//==========================================================================
-
-void NetworkEntityManager::InitializeNetworkEntities()
-{
-	if (!s_netEntities.Size())
-		s_netEntities.AppendFill(nullptr, NetIDStart); // Allocate the first 0-8 slots for the world and clients.
-}
-
-// Clients need special handling since they always go in slots 1 - MAXPLAYERS.
-void NetworkEntityManager::SetClientNetworkEntity(player_t* const client)
-{
-	AActor* const mo = client->mo;
-	const uint32_t id = ClientNetIDStart + mo->Level->PlayerNum(client);
-
-	// If resurrecting, we need to swap the corpse's position with the new pawn's
-	// position so it's no longer considered the client's body.
-	DObject* const oldBody = s_netEntities[id];
-	if (oldBody != nullptr)
-	{
-		if (oldBody == mo)
-			return;
-
-		const uint32_t curID = mo->GetNetworkID();
-		
-		s_netEntities[curID] = oldBody;
-		oldBody->ClearNetworkID();
-		oldBody->SetNetworkID(curID);
-
-		mo->ClearNetworkID();
-	}
-	else
-	{
-		RemoveNetworkEntity(mo); // Free up its current id.
-	}
-
-	s_netEntities[id] = mo;
-	mo->SetNetworkID(id);
-}
-
-void NetworkEntityManager::AddNetworkEntity(DObject* const ent)
-{
-	if (ent->IsNetworked())
-		return;
-
-	// Slot 0 is reserved for the world.
-	// Clients go in the first 1 - MAXPLAYERS slots
-	// Everything else is first come first serve.
-	uint32_t id = WorldNetID;
-	if (s_openNetIDs.Size())
-	{
-		s_openNetIDs.Pop(id);
-		s_netEntities[id] = ent;
-	}
-	else
-	{
-		id = s_netEntities.Push(ent);
-	}
-
-	ent->SetNetworkID(id);
-}
-
-void NetworkEntityManager::RemoveNetworkEntity(DObject* const ent)
-{
-	if (!ent->IsNetworked())
-		return;
-
-	const uint32_t id = ent->GetNetworkID();
-	if (id == WorldNetID)
-		return;
-
-	assert(s_netEntities[id] == ent);
-	if (id >= NetIDStart)
-		s_openNetIDs.Push(id);
-	s_netEntities[id] = nullptr;
-	ent->ClearNetworkID();
-}
-
-DObject* NetworkEntityManager::GetNetworkEntity(const uint32_t id)
-{
-	if (id == WorldNetID || id >= s_netEntities.Size())
-		return nullptr;
-
-	return s_netEntities[id];
-}
-
-//==========================================================================
-//
-//
-//
-//==========================================================================
-
-void DObject::SetNetworkID(const uint32_t id)
-{
-	if (!IsNetworked())
-	{
-		ObjectFlags |= OF_Networked;
-		_networkID = id;
-	}
-}
-
-void DObject::ClearNetworkID()
-{
-	ObjectFlags &= ~OF_Networked;
-	_networkID = NetworkEntityManager::WorldNetID;
-}
-
-void DObject::EnableNetworking(const bool enable)
-{
-	if (enable)
-		NetworkEntityManager::AddNetworkEntity(this);
-	else
-		NetworkEntityManager::RemoveNetworkEntity(this);
-}
-
-void DObject::RemoveFromNetwork()
-{
-	NetworkEntityManager::RemoveNetworkEntity(this);
-}
-
-static unsigned int GetNetworkID(DObject* const self)
-{
-	return self->GetNetworkID();
-}
-
-DEFINE_ACTION_FUNCTION_NATIVE(DObject, GetNetworkID, GetNetworkID)
-{
-	PARAM_SELF_PROLOGUE(DObject);
-
-	ACTION_RETURN_INT(self->GetNetworkID());
-}
-
-static void EnableNetworking(DObject* const self, const bool enable)
-{
-	self->EnableNetworking(enable);
-}
-
-DEFINE_ACTION_FUNCTION_NATIVE(DObject, EnableNetworking, EnableNetworking)
-{
-	PARAM_SELF_PROLOGUE(DObject);
-	PARAM_BOOL(enable);
-
-	self->EnableNetworking(enable);
-	return 0;
-}
-
-static DObject* GetNetworkEntity(const unsigned int id)
-{
-	return NetworkEntityManager::GetNetworkEntity(id);
-}
-
-DEFINE_ACTION_FUNCTION_NATIVE(DObject, GetNetworkEntity, GetNetworkEntity)
-{
-	PARAM_PROLOGUE;
-	PARAM_UINT(id);
-
-	ACTION_RETURN_OBJECT(NetworkEntityManager::GetNetworkEntity(id));
 }
 
 //==========================================================================

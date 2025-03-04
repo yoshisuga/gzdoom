@@ -60,8 +60,8 @@ static TArray<uint8_t> DecalTranslations;
 // Sometimes two machines in a game will disagree on the state of
 // decals. I do not know why.
 
-static FRandom pr_decalchoice ("DecalChoice");
-static FRandom pr_decal ("Decal");
+static FCRandom pr_decalchoice ("DecalChoice");
+static FCRandom pr_decal ("Decal");
 
 class FDecalGroup : public FDecalBase
 {
@@ -175,7 +175,8 @@ static const char *DecalKeywords[] =
 	"colors",
 	"animator",
 	"lowerdecal",
-	"opaqueblood",
+	"opaqueblood", // Deprecated - use translatable instead!
+	"translatable",
 	NULL
 };
 
@@ -198,11 +199,17 @@ enum
 	DECAL_ANIMATOR,
 	DECAL_LOWERDECAL,
 	DECAL_OPAQUEBLOOD,
+	DECAL_TRANSLATABLE,
 };
 
 const FDecalTemplate *FDecalBase::GetDecal () const
 {
 	return NULL;
+}
+
+FName FDecalBase::GetDecalName() const
+{
+	return Name;
 }
 
 void FDecalTemplate::ReplaceDecalRef(FDecalBase *from, FDecalBase *to)
@@ -478,8 +485,9 @@ void FDecalLib::ParseDecal (FScanner &sc)
 			break;
 
 		case DECAL_OPAQUEBLOOD:
+		case DECAL_TRANSLATABLE:
 			newdecal.RenderStyle = STYLE_Normal;
-			newdecal.opaqueBlood = true;
+			newdecal.translatable = true;
 			break;
 		}
 	}
