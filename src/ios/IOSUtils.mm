@@ -165,6 +165,8 @@ void IOS_DismissSystemModal() {
 void IOS_StartBonjourService() {
 #if TARGET_OS_IOS
   [[BonjourServicePublisher shared] startPublishingWithPort:5029];
+  
+  [[CentralRegistryClient shared] startPublishingWithPort:5029];
 #endif
 }
 

@@ -1,12 +1,20 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.3.0](colored: 'yellow')
+
+- [Support Game Mode](colored: 'white')
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2025.2.4](colored: 'yellow')
+
+- ^[GZDoom 4.14.1 Update](colored: 'white'): The GZDoom core has been updated to the most recent release. This supports compatibility with the latest mods such as Project Brutality and Abyssal Marine, among others. You may need to update some of your mods to the latest version. The popular Gearbox mod, for example needs to be updated to 0.7.3, which adds support for GZDoom 4.14.
+
 ^[Version 2025.2.3](colored: 'yellow')
 
 - ^[Sort External Files/Mods by Name or Date](colored: 'white'): I noticed that if you have a lot of mod files, sometimes you just want the mods you just downloaded to appear at the top. So I added a "sort by name/date" button to do just this. Tap the circle with the ellipsis (...) button to show the sorting options. Your last chosen sorting option is saved.
 
 - A small patch to GZDoom so that the Turok mod runs.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2025.2.2](colored: 'yellow')
 

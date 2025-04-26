@@ -10,6 +10,7 @@ import Foundation
 enum OriginalDoomEngineGame: String, Codable {
   case doom = "doom.wad"
   case doom2 = "doom2.wad"
+  case doomUltimate = "doomu.wad"
   case plutonia = "plutonia.wad"
   case tnt = "tnt.wad"
   case hexen = "hexen.wad"
@@ -23,6 +24,7 @@ enum OriginalDoomEngineGame: String, Codable {
     switch self {
     case .doom: return "DOOM"
     case .doom2: return "DOOM II"
+    case .doomUltimate: return "DOOM Ultimate"
     case .plutonia: return "The Plutonia Experiment"
     case .tnt: return "TNT: Evilution"
     case .hexen: return "Hexen"

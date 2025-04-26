@@ -420,7 +420,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2025.2.3"
+  static let currentVersion = "2025.3.0"
   
   var body: some View {
     VStack {
@@ -615,6 +615,7 @@ struct LauncherView_Previews: PreviewProvider {
         #if !os(tvOS)
         if let vm = self?.viewModel {
           BonjourServicePublisher.shared.launcherVM = vm
+          CentralRegistryClient.shared.launcherVM = vm
         }
         #endif
         ControlOptionsViewModel.shared.configureAudioSession()
