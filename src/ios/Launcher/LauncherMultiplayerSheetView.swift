@@ -36,6 +36,40 @@ struct MultiplayerSheetView: View {
   
   @AppStorage("multiplayerHostDisplayName") private var hostDisplayName: String = UIDevice.current.name
   
+  private func createMultiplayerConfig() -> MultiplayerConfig? {
+    var multiplayerConfig: MultiplayerConfig?
+    if isHost && !numPlayers.isEmpty, let numPlayersInt = Int(numPlayers) {
+      var mapName: String?
+      if !startMap.isEmpty {
+        mapName = startMap
+      }
+      var skillLevelVal: String?
+      if !skillLevel.isEmpty {
+        skillLevelVal = skillLevel
+      }
+      multiplayerConfig = .host(numPlayers: numPlayersInt, isDeathmatch: isDeathmatch, mapName: mapName, skillLevel: skillLevelVal)
+    } else if !hostname.isEmpty {
+      multiplayerConfig = .player(joinIpAddress: hostname)
+    } else {
+      multiplayerConfig = nil
+    }
+    return multiplayerConfig
+  }
+  
+  private func createSelectedModFiles(filenames: [String]) -> [GZDoomFile] {
+    var documentsURL: URL {
+      #if os(tvOS)
+      FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+      #else
+      FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+      #endif
+    }
+
+    return filenames.map { filename in
+      GZDoomFile(fullPath: "\(documentsURL.path)/\(filename)")
+    }
+  }
+  
   var body: some View {
     NavigationView {
       VStack {
@@ -213,14 +247,38 @@ struct MultiplayerSheetView: View {
                         }
                         
                         if let modsCsv = game.metadata["mods"] {
+                          let mods = modsCsv.parseModsList()
+                          
                           Spacer()
-                          Text("Mods used:").foregroundStyle(.yellow)
+                          
+                          HStack {
+                            Text("Mods used:").foregroundStyle(.yellow)
+                            Spacer()
+                            GameStatusIndicator(gameId: game.game_id)
+                            JoinGameButton(gameId: game.game_id) {
+                              hostname = game.ip_address
+                              viewModel.multiplayerConfig = createMultiplayerConfig()
+                              // add mods
+                              if !mods.isEmpty {
+                                viewModel.selectedExternalFiles = createSelectedModFiles(filenames: mods)
+                              }
+                              print("joining mp game with mods - args: \(viewModel.arguments), selected mods=\(viewModel.selectedExternalFiles)")
+                              viewModel.launchActionClosure?(viewModel.arguments)
+                            }
+                          }
+                          .onAppear {
+                            ModFileChecker.shared.registerModsForGame(gameId: game.game_id, mods: mods)
+                          }
+                          
                           ForEach(modsCsv.split(separator: ","), id: \.self) { item in
-                            Text(String(item)).foregroundStyle(.cyan).font(.small)
+                            ModListItem(modName: String(item), gameId:game.game_id)
+//                            Text(String(item)).foregroundStyle(.cyan).font(.small)
                           }
                         }
                       }
                       Spacer()
+                                            
+                      
                       if selectedGame?.game_id == game.game_id {
                         Image(systemName: "checkmark")
                       }
@@ -415,4 +473,303 @@ Press "Done" and select "Launch Now without saving"
       }
     }
   }
+}
+
+
+// Model to represent a mod file with existence status
+struct ModFile: Identifiable {
+    let id = UUID()
+    let name: String
+    var exists: Bool? = nil // nil = loading, true/false = exists/doesn't exist
+}
+
+// View modifier to add status dot
+struct StatusDotModifier: ViewModifier {
+    let exists: Bool?
+    
+    func body(content: Content) -> some View {
+        HStack(spacing: 6) {
+            if exists == nil {
+                ProgressView()
+                    .frame(width: 12, height: 12)
+            } else {
+                Circle()
+                    .fill(exists == true ? Color.green : Color.red)
+                    .frame(width: 10, height: 10)
+            }
+            content
+        }
+    }
+}
+
+extension View {
+    func withStatusDot(exists: Bool?) -> some View {
+        modifier(StatusDotModifier(exists: exists))
+    }
+}
+
+// File existence checker
+//class ModFileChecker {
+//    static let shared = ModFileChecker()
+//    
+//    private init() {}
+//    
+//    // Get the Documents directory path
+//    func getDocumentsDirectory() -> URL {
+//        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+//    }
+//    
+//    // Check if a file exists in the Documents directory
+//    func checkModExists(modName: String) async -> Bool {
+//        let documentsURL = getDocumentsDirectory()
+//        let fileURL = documentsURL.appendingPathComponent(modName)
+//        
+//        return FileManager.default.fileExists(atPath: fileURL.path)
+//    }
+//}
+
+class ModFileChecker {
+    static let shared = ModFileChecker()
+    
+    // Individual mod file status cache
+    private var modStatus = [String: Bool]()
+    
+    // Game status tracking
+    private var gameModsMap = [String: Set<String>]() // gameId -> set of mod names
+    private var gameStatus = [String: Bool]() // gameId -> all mods available
+    
+    // Publisher for game status updates
+    let gameStatusPublisher = PassthroughSubject<(String, Bool), Never>()
+    
+    private init() {}
+    
+    // Get the Documents directory path
+    func getDocumentsDirectory() -> URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
+    
+    // Register mods for a game
+    func registerModsForGame(gameId: String, mods: [String]) {
+        let modSet = Set(mods)
+        gameModsMap[gameId] = modSet
+        
+        // Initialize game status as unknown
+        gameStatus[gameId] = nil
+        
+        // Check if we already have status for all mods
+        updateGameStatus(gameId: gameId)
+    }
+    
+    // Check if a file exists in the Documents directory
+    func checkModExists(modName: String, gameId: String? = nil) async -> Bool {
+        // Check cache first
+        if let cached = modStatus[modName] {
+            // If this mod is part of a game, update game status
+            if let gameId = gameId {
+                updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: cached)
+            }
+            return cached
+        }
+        
+        // Not in cache, check file system
+        let documentsURL = getDocumentsDirectory()
+        let fileURL = documentsURL.appendingPathComponent(modName)
+        
+        let exists = FileManager.default.fileExists(atPath: fileURL.path)
+        
+        // Update cache
+        modStatus[modName] = exists
+        
+        // If this mod is part of a game, update game status
+        if let gameId = gameId {
+            updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: exists)
+        }
+        
+        return exists
+    }
+    
+    // Update game status after a mod check
+    private func updateGameStatusAfterModCheck(gameId: String, modName: String, exists: Bool) {
+        // If mod doesn't exist, game status is false
+        if !exists {
+            DispatchQueue.main.async {
+                if self.gameStatus[gameId] != false {
+                    self.gameStatus[gameId] = false
+                    self.gameStatusPublisher.send((gameId, false))
+                }
+            }
+            return
+        }
+        
+        // Otherwise, update overall game status
+        updateGameStatus(gameId: gameId)
+    }
+    
+    // Update overall game status
+    private func updateGameStatus(gameId: String) {
+        guard let mods = gameModsMap[gameId] else { return }
+        
+        // Check if we have status for all mods
+        var allAvailable = true
+        var allChecked = true
+        
+        for mod in mods {
+            if let exists = modStatus[mod] {
+                if !exists {
+                    allAvailable = false
+                    break
+                }
+            } else {
+                // At least one mod not checked yet
+                allChecked = false
+                break
+            }
+        }
+        
+        // Only update if we've checked all mods and status has changed
+        if allChecked && gameStatus[gameId] != allAvailable {
+            DispatchQueue.main.async {
+                self.gameStatus[gameId] = allAvailable
+                self.gameStatusPublisher.send((gameId, allAvailable))
+            }
+        }
+    }
+    
+    // Get current game status
+    func getGameStatus(gameId: String) -> Bool? {
+        return gameStatus[gameId]
+    }
+}
+
+// ModListItem that updates game status when checking
+struct ModListItem: View {
+    let modName: String
+    let gameId: String?
+    
+    @State private var exists: Bool? = nil
+    
+    var body: some View {
+        Text(modName)
+            .foregroundStyle(.cyan)
+            .font(.small)
+            .withStatusDot(exists: exists)
+            .onAppear {
+                Task {
+                    // Asynchronously check if file exists when this view appears
+                    exists = await ModFileChecker.shared.checkModExists(modName: modName, gameId: gameId)
+                }
+            }
+    }
+}
+
+
+// ModListItem view that shows a mod with status dot
+//struct ModListItem: View {
+//    let modName: String
+//    @State private var exists: Bool? = nil
+//    
+//    var body: some View {
+//        Text(modName)
+//            .foregroundStyle(.cyan)
+//            .font(.small)
+//            .withStatusDot(exists: exists)
+//            .onAppear {
+//                Task {
+//                    // Asynchronously check if file exists when this view appears
+//                    exists = await ModFileChecker.shared.checkModExists(modName: modName)
+//                }
+//            }
+//    }
+//}
+
+// Helper extension to parse mods from CSV
+extension String {
+    func parseModsList() -> [String] {
+        self.split(separator: ",")
+            .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
+}
+
+
+struct GameStatusIndicator: View {
+    let gameId: String
+    
+    @State private var status: Bool? = nil
+    @State private var cancellables = Set<AnyCancellable>()
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            if status == nil {
+                ProgressView()
+                    .frame(width: 12, height: 12)
+                Text("Checking mods...")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            } else {
+                Circle()
+                    .fill(status == true ? Color.green : Color.red)
+                    .frame(width: 10, height: 10)
+                Text(status == true ? "All mods available" : "Missing mods")
+                    .font(.caption)
+                    .foregroundStyle(status == true ? .green : .red)
+            }
+        }
+        .onAppear {
+            // Get current status
+            status = ModFileChecker.shared.getGameStatus(gameId: gameId)
+            
+            // Subscribe to status updates
+            ModFileChecker.shared.gameStatusPublisher
+                .filter { $0.0 == gameId }
+                .map { $0.1 }
+                .sink { newStatus in
+                    self.status = newStatus
+                }
+                .store(in: &cancellables)
+        }
+    }
+    
+    // Function to check if all mods are available
+    func areAllModsAvailable() -> Bool {
+        return status == true
+    }
+}
+
+// A separate join button component
+struct JoinGameButton: View {
+    let gameId: String
+    let onJoinGame: () -> Void
+    
+    @State private var status: Bool? = nil
+    @State private var cancellables = Set<AnyCancellable>()
+    
+    var body: some View {
+        Button(action: onJoinGame) {
+            Text("Join Game")
+                .font(.callout)
+                .fontWeight(.medium)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .opacity(status == true ? 1.0 : 0.0)
+        .disabled(status != true)
+        .onAppear {
+            // Get current status
+            status = ModFileChecker.shared.getGameStatus(gameId: gameId)
+            
+            // Subscribe to status updates
+            ModFileChecker.shared.gameStatusPublisher
+                .filter { $0.0 == gameId }
+                .map { $0.1 }
+                .sink { newStatus in
+                    self.status = newStatus
+                }
+                .store(in: &cancellables)
+        }
+    }
 }
