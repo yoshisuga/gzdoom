@@ -328,6 +328,7 @@ struct RegisteredGame: Identifiable, Codable {
     
     // Extract metadata the same way as in BonjourServicePublisher
     if let launcherVM, let selectedIWAD = launcherVM.selectedIWAD {
+      metadata["iwadFilename"] = selectedIWAD.filename
       metadata["iwad"] = selectedIWAD.displayName
       
       if !launcherVM.selectedExternalFiles.isEmpty {

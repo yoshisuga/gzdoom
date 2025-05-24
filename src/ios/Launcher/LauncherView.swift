@@ -420,7 +420,20 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2025.3.0"
+  static let currentVersion = "2025.5.0"
+  
+  #if ZERO
+  private var fadingTexts = [
+    "^[Swipe left to reveal edit and delete options.](colored: 'yellow')",
+    "Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!"
+  ]
+  #else
+  private var fadingTexts = [
+    "^[Swipe left to reveal edit and delete options.](colored: 'yellow')",
+    "Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!",
+    "^[Thank you](colored: 'green') ^[for your support](colored: 'white') ❤️"
+  ]
+  #endif
   
   var body: some View {
     VStack {
@@ -483,11 +496,8 @@ struct LauncherView: View {
       
       LauncherConfigsView(viewModel: viewModel, showToast: $showToast, sortMode: $launchConfigSortOrder).padding(.bottom)
 
-      ColoredText("Swipe left to reveal edit and delete options.").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.yellow)
-      ColoredText("Questions? Chat with the community on [Discord](https://discord.gg/S4tVTNEmsj)!").font(Font.custom("PerfectDOSVGA437", size: 18)).foregroundColor(.gray)
-      #if !ZERO
-      ColoredText("^[Thank you](colored: 'green') ^[for your support](colored: 'white') ❤️").font(Font.custom("PerfectDOSVGA437", size: 12))
-      #endif
+      FadingTextView(texts: fadingTexts)
+      
     }.toast(isPresenting: $showToast) {
       AlertToast(type: .complete(.green), title: "Loaded Saved Configuration", style: AlertToast.AlertStyle.style(titleColor: .gray, titleFont: .small))
     }.padding([.bottom], 4)

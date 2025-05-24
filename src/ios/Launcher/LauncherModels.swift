@@ -40,6 +40,23 @@ enum OriginalDoomEngineGame: String, Codable {
     let lowerfilename = filename.lowercased()
     self.init(rawValue: lowerfilename)
   }
+  
+  static func filename(from title: String) -> String? {
+      switch title {
+      case "DOOM": return self.doom.rawValue
+      case "DOOM II": return self.doom2.rawValue
+      case "DOOM Ultimate": return self.doomUltimate.rawValue
+      case "The Plutonia Experiment": return self.plutonia.rawValue
+      case "TNT: Evilution": return self.tnt.rawValue
+      case "Hexen": return self.hexen.rawValue
+      case "Heretic": return self.heretic.rawValue
+      case "Strife: Quest for the Sigil": return self.strife.rawValue
+      case "Chex Quest": return self.chex.rawValue
+      case "FreeDoom: Phase 1": return self.freedoom1.rawValue
+      case "FreeDoom: Phase 2": return self.freedoom2.rawValue
+      default: return nil
+      }
+  }
 }
 
 struct GZDoomFile: Identifiable, Hashable, Codable {

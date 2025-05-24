@@ -18,10 +18,10 @@ class KeyboardButton: UIButton {
     // MARK: - Functions
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let newArea = CGRect(
-            x: self.bounds.origin.x - 5.0,
-            y: self.bounds.origin.y - 5.0,
-            width: self.bounds.size.width + 20.0,
-            height: self.bounds.size.height + 20.0
+            x: self.bounds.origin.x - 10.0,
+            y: self.bounds.origin.y - 10.0,
+            width: self.bounds.size.width + 30.0,
+            height: self.bounds.size.height + 30.0
         )
         return newArea.contains(point)
     }
@@ -83,11 +83,11 @@ class EmulatorKeyboardView: UIView {
   static var keyCornerRadius = 6.0
   static var keyBorderWidth = 1.0
   
-  static var rowSpacing = 12.0
-  static var keySpacing = 8.0
+  static var rowSpacing = 10.0
+  static var keySpacing = 6.0
   
-  static var keyNormalFont = UIFont.systemFont(ofSize: 12)
-  static var keyPressedFont = UIFont.boldSystemFont(ofSize: 24)
+  static var keyNormalFont = UIFont.systemFont(ofSize: 16)
+  static var keyPressedFont = UIFont.boldSystemFont(ofSize: 26)
   
   #if os(iOS)
   static var keyNormalBackgroundColor = UIColor.systemGray4.withAlphaComponent(0.5)
@@ -210,21 +210,21 @@ class EmulatorKeyboardView: UIView {
       addSubview(view)
       
       var tx = CGFloat.zero
-      let ty = sender.bounds.height * -1.20
+      let ty = sender.bounds.height * -1.2
       
       if let window = self.window {
         let rect = sender.convert(sender.bounds, to:window)
         
         if rect.maxX > window.bounds.width * 0.9 {
-          tx = sender.bounds.width * -0.5
+          tx = sender.bounds.width * -0.2
         }
         if rect.minX < window.bounds.width * 0.1 {
-          tx = sender.bounds.width * 0.5
+          tx = sender.bounds.width * 0.2
         }
       }
       
       sender.superview!.bringSubviewToFront(sender)
-      sender.transform = CGAffineTransform(translationX:tx, y:ty).scaledBy(x:2, y:2)
+      sender.transform = CGAffineTransform(translationX:tx, y:ty).scaledBy(x:1.5, y:1.5)
       
       pressedKeyViews[sender] = view
     }
@@ -303,8 +303,8 @@ class EmulatorKeyboardView: UIView {
       key.setTitleColor(EmulatorKeyboardView.keyPressedTextColor, for: .highlighted)
     }
     key.translatesAutoresizingMaskIntoConstraints = false
-    key.widthAnchor.constraint(equalToConstant: (25 * CGFloat(keyCoded.keySize.rawValue))).isActive = true
-    key.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    key.widthAnchor.constraint(equalToConstant: (40 * CGFloat(keyCoded.keySize.rawValue))).isActive = true
+    key.heightAnchor.constraint(equalToConstant: 45).isActive = true
     key.backgroundColor = EmulatorKeyboardView.keyNormalBackgroundColor
     key.layer.borderWidth = CGFloat(EmulatorKeyboardView.keyBorderWidth)
     key.layer.borderColor = EmulatorKeyboardView.keyNormalBorderColor.cgColor
@@ -675,8 +675,8 @@ struct KeyPosition {
     keyboardConstraints.removeAll()
     leftKeyboardView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(leftKeyboardView)
-    leftKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
-    leftKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
+    leftKeyboardView.heightAnchor.constraint(equalToConstant: 310).isActive = true
+    leftKeyboardView.widthAnchor.constraint(equalToConstant: 260).isActive = true
     keyboardConstraints.append(contentsOf: [
       leftKeyboardView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       leftKeyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -687,8 +687,8 @@ struct KeyPosition {
       rightKeyboardView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       rightKeyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
-    rightKeyboardView.heightAnchor.constraint(equalToConstant: 270).isActive = true
-    rightKeyboardView.widthAnchor.constraint(equalToConstant: 180).isActive = true
+    rightKeyboardView.heightAnchor.constraint(equalToConstant: 310).isActive = true
+    rightKeyboardView.widthAnchor.constraint(equalToConstant: 260).isActive = true
     NSLayoutConstraint.activate(keyboardConstraints)
     
 #if os(iOS)

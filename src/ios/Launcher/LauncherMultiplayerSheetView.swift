@@ -34,6 +34,8 @@ struct MultiplayerSheetView: View {
   
   @State private var wireGuardConfigError: String?
   
+  @StateObject private var statusManager = MultiplayerStatusManager()
+  
   @AppStorage("multiplayerHostDisplayName") private var hostDisplayName: String = UIDevice.current.name
   
   private func createMultiplayerConfig() -> MultiplayerConfig? {
@@ -58,16 +60,45 @@ struct MultiplayerSheetView: View {
   
   private func createSelectedModFiles(filenames: [String]) -> [GZDoomFile] {
     var documentsURL: URL {
-      #if os(tvOS)
+#if os(tvOS)
       FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-      #else
+#else
       FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-      #endif
+#endif
     }
-
+    
     return filenames.map { filename in
       GZDoomFile(fullPath: "\(documentsURL.path)/\(filename)")
     }
+  }
+  
+  private func saveMultiplayerConfig() {
+    var multiplayerConfig: MultiplayerConfig?
+    if isHost && !numPlayers.isEmpty, let numPlayersInt = Int(numPlayers) {
+      var mapName: String?
+      if !startMap.isEmpty {
+        mapName = startMap
+      }
+      var skillLevelVal: String?
+      if !skillLevel.isEmpty {
+        skillLevelVal = skillLevel
+      }
+      multiplayerConfig = .host(numPlayers: numPlayersInt, isDeathmatch: isDeathmatch, mapName: mapName, skillLevel: skillLevelVal)
+    } else if !hostname.isEmpty {
+      multiplayerConfig = .player(joinIpAddress: hostname)
+    } else {
+      multiplayerConfig = nil
+    }
+    viewModel.multiplayerConfig = multiplayerConfig
+  }
+  
+  private var multiplayerStatusCheck: Bool {
+    #if ZERO
+    if statusManager.status?.mpAvailableZero ?? false == false {
+      return false
+    }
+    #endif
+    return statusManager.status?.mpAvailable ?? false
   }
   
   var body: some View {
@@ -78,23 +109,7 @@ struct MultiplayerSheetView: View {
           Text("Multiplayer Options")
           Spacer()
           Button("Done") {
-            var multiplayerConfig: MultiplayerConfig?
-            if isHost && !numPlayers.isEmpty, let numPlayersInt = Int(numPlayers) {
-              var mapName: String?
-              if !startMap.isEmpty {
-                mapName = startMap
-              }
-              var skillLevelVal: String?
-              if !skillLevel.isEmpty {
-                skillLevelVal = skillLevel
-              }
-              multiplayerConfig = .host(numPlayers: numPlayersInt, isDeathmatch: isDeathmatch, mapName: mapName, skillLevel: skillLevelVal)
-            } else if !hostname.isEmpty {
-              multiplayerConfig = .player(joinIpAddress: hostname)
-            } else {
-              multiplayerConfig = nil
-            }
-            viewModel.multiplayerConfig = multiplayerConfig
+            saveMultiplayerConfig()
             dismiss()
           }
         }
@@ -102,6 +117,169 @@ struct MultiplayerSheetView: View {
           Section {
             NavigationLink(destination: MultiplayerInstructionsView()) {
               Text("View Instructions")
+            }
+          }
+          
+          Section(header: HStack {
+            Text("Online Multiplayer")
+            Spacer()
+            HStack(spacing: 4) {
+              Circle()
+                .fill(
+                  statusManager.status?.mpAvailable ?? false ?
+                  centralRegistry.isVPNConnected ? Color.green : Color.red
+                  : .red
+                )
+                .frame(width: 10, height: 10)
+              Text(
+                multiplayerStatusCheck ?
+                centralRegistry.isVPNConnected ? "Connected" : "Not Connected"
+                : "Unavailable"
+              )
+                .font(.caption)
+                .foregroundColor(
+                  multiplayerStatusCheck ?
+                  centralRegistry.isVPNConnected ? .green : .red
+                  : .red
+                )
+            }
+          }) {
+            
+            if multiplayerStatusCheck == false {
+              Text("Online Multiplayer is not available at this time.")
+            } else {
+              
+              VStack(alignment: .leading, spacing: 8) {
+                Text("For multiplayer over the internet, use the WireGuard app from the App Store to connect to the GenZD private network.")
+                  .font(.small).foregroundStyle(.orange).lineSpacing(4)
+                
+                NavigationLink(destination: OnlineMultiplayerPrivacyView()) {
+                  Text("View Privacy Policy")
+                }.padding()
+                
+                HStack {
+                  Spacer()
+                  Button(action: {
+                    if let appStoreURL = URL(string: "https://apps.apple.com/us/app/wireguard/id1441195209") {
+                      UIApplication.shared.open(appStoreURL)
+                    }
+                  }) {
+                    HStack {
+                      Image(systemName: "arrow.down.app")
+                      Text("Get WireGuard from the App Store")
+                    }
+                    .padding()
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.65)
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                  }
+                  .buttonStyle(PlainButtonStyle())
+                  Spacer()
+                }
+                
+                HStack {
+                  Spacer()
+                  Button(action: {
+                    downloadWireGuardConfig()
+                  }) {
+                    HStack {
+                      Image(systemName: "arrow.down.circle")
+                      Text("Download WireGuard Configuration")
+                    }
+                    .padding()
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.65)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                  }
+                  .buttonStyle(PlainButtonStyle())
+                  Spacer()
+                }
+                
+                if let error = wireGuardConfigError {
+                  Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding(.top, 4)
+                }
+                
+                Text("Available Games")
+                  .foregroundStyle(.orange).lineSpacing(4)
+                
+                if !centralRegistry.isVPNConnected {
+                  Text("Please connect to our WireGuard VPN network first.").font(.small).foregroundStyle(.gray).padding()
+                } else if centralRegistry.availableGames.isEmpty {
+                  Text("No VPN games found")
+                    .font(.small)
+                    .foregroundStyle(.gray)
+                    .padding()
+                } else {
+                  ForEach(centralRegistry.availableGames) { game in
+                    Button {
+                      hostname = game.ip_address
+                      selectedGame = game
+                      selectedService = nil
+                    } label: {
+                      HStack {
+                        VStack(alignment: .leading) {
+                          Text("\(game.host_name)")
+                          Text("\(game.ip_address):\(game.port)").font(.small).foregroundStyle(.gray)
+                          
+                          if let iwadName = game.metadata["iwad"],
+                             let iwadFilename = game.metadata["iwadFilename"],
+                             let modsCsv = game.metadata["mods"] {
+                            Spacer()
+                            ColoredText("^[\(iwadName)](colored: 'red')").foregroundStyle(.yellow)
+                            
+                            let mods = modsCsv.parseModsList()
+                            
+                            Spacer()
+                            
+                            HStack {
+                              Text("Mods used:").foregroundStyle(.yellow)
+                              Spacer()
+                              GameStatusIndicator(gameId: game.game_id)
+                              JoinGameButton(gameId: game.game_id) {
+                                hostname = game.ip_address
+                                viewModel.multiplayerConfig = createMultiplayerConfig()
+                                
+                                // set iwad
+                                if let iwadFilename = ModFileChecker.shared.gameIWADStatus[game.game_id] {
+                                  viewModel.selectedIWAD = GZDoomFile(fullPath: iwadFilename)
+                                }
+                                
+                                // add mods
+                                if !mods.isEmpty {
+                                  viewModel.selectedExternalFiles = createSelectedModFiles(filenames: mods)
+                                }
+                                print("joining mp game with mods - args: \(viewModel.arguments), selected mods=\(viewModel.selectedExternalFiles)")
+                                viewModel.launchActionClosure?(viewModel.arguments)
+                              }
+                            }
+                            .onAppear {
+                              ModFileChecker.shared.registerModsForGame(gameId: game.game_id, iwad: iwadFilename, mods: mods)
+                            }
+                            
+                            ForEach(modsCsv.split(separator: ","), id: \.self) { item in
+                              ModListItem(modName: String(item), gameId:game.game_id)
+                              //                            Text(String(item)).foregroundStyle(.cyan).font(.small)
+                            }
+                          }
+                        }
+                        Spacer()
+                        
+                        
+                        if selectedGame?.game_id == game.game_id {
+                          Image(systemName: "checkmark")
+                        }
+                      }
+                    }
+                  }
+                }
+                
+              }
+              .padding(.vertical, 8)
             }
           }
           
@@ -114,32 +292,71 @@ struct MultiplayerSheetView: View {
               }
             
             if isHost {
-              TextField("Display Name", text: $hostDisplayName)
-                .onChange(of: hostDisplayName) { newValue in
-                  CentralRegistryClient.shared.serviceName = newValue
-                }
-              TextField("Number of players", text: $numPlayers)
-                .keyboardType(.numberPad)
-                .onReceive(Just(numPlayers)) { newValue in
-                  let filtered = newValue.filter { "0123456789".contains($0) }
-                  if filtered != newValue {
-                    self.numPlayers = filtered
+              if let selectedIWAD = viewModel.selectedIWAD {
+                HStack {
+                  VStack(alignment: .leading) {
+                    ColoredText("^[\(selectedIWAD.displayName)](colored: 'red')\n").foregroundStyle(.yellow)
+                    Text("External Mods:").font(.small).foregroundStyle(.cyan)
+                    ForEach(viewModel.selectedExternalFiles, id: \.self) { modFile in
+                      Text("\(modFile.displayName)").foregroundStyle(.orange).font(.small)
+                    }
+                  }
+                  Spacer()
+                  Button(action: {
+                    saveMultiplayerConfig()
+                    viewModel.launchActionClosure?(viewModel.arguments)
+                    dismiss()
+                  }) {
+                    HStack {
+                      Image(systemName: "person.3.fill")
+                      Text("Start Hosting")
+                    }.padding()
+//                      .frame(maxWidth: UIScreen.main.bounds.width * 0.65)
+                      .background(.blue)
+                      .foregroundColor(.white)
+                      .cornerRadius(8)
                   }
                 }
-                .onChange(of: numPlayers) { newValue in
-                  // Remove leading zeros
-                  var input = newValue.trimmingCharacters(in: CharacterSet(charactersIn: "0")).isEmpty ? "0" : newValue.trimmingCharacters(in: CharacterSet(charactersIn: "0"))
-                  
-                  // Ensure the input is a valid number
-                  if let intValue = Int(input), intValue >= 0 {
-                    input = String(intValue)
-                  } else {
-                    input = ""
+              }
+              
+              HStack {
+                Text("Display Name")
+                Spacer()
+                TextField("Display Name", text: $hostDisplayName)
+                  .multilineTextAlignment(.trailing) // Ensures right alignment of the text input
+                  .frame(maxWidth: 200, alignment: .trailing)
+                  .onChange(of: hostDisplayName) { newValue in
+                    CentralRegistryClient.shared.serviceName = newValue
                   }
-                  if input.count > 2 {
-                    numPlayers = String(input.prefix(2))
+              }
+              HStack {
+                Text("Number of players")
+                Spacer()
+                TextField("Number of players", text: $numPlayers)
+                  .multilineTextAlignment(.trailing)
+                  .frame(maxWidth: .infinity, alignment: .trailing)
+                  .keyboardType(.numberPad)
+                  .onReceive(Just(numPlayers)) { newValue in
+                    let filtered = newValue.filter { "0123456789".contains($0) }
+                    if filtered != newValue {
+                      self.numPlayers = filtered
+                    }
                   }
-                }
+                  .onChange(of: numPlayers) { newValue in
+                    // Remove leading zeros
+                    var input = newValue.trimmingCharacters(in: CharacterSet(charactersIn: "0")).isEmpty ? "0" : newValue.trimmingCharacters(in: CharacterSet(charactersIn: "0"))
+                    
+                    // Ensure the input is a valid number
+                    if let intValue = Int(input), intValue >= 0 {
+                      input = String(intValue)
+                    } else {
+                      input = ""
+                    }
+                    if input.count > 2 {
+                      numPlayers = String(input.prefix(2))
+                    }
+                  }
+              }
               TextField("Starting map (optional)", text: $startMap)
               TextField("Skill level (optional)", text: $skillLevel)
                 .onReceive(Just(skillLevel)) { newValue in
@@ -155,142 +372,6 @@ struct MultiplayerSheetView: View {
               Toggle("Deathmatch", isOn: $isDeathmatch).disabled(!isHost)
             }
           }
-          
-          Section(header: HStack {
-            Text("Online Multiplayer")
-            Spacer()
-            HStack(spacing: 4) {
-                Circle()
-                    .fill(centralRegistry.isVPNConnected ? Color.green : Color.red)
-                    .frame(width: 10, height: 10)
-                Text(centralRegistry.isVPNConnected ? "Connected" : "Not Connected")
-                    .font(.caption)
-                    .foregroundColor(centralRegistry.isVPNConnected ? .green : .red)
-            }
-          }) {
-            VStack(alignment: .leading, spacing: 8) {
-              Text("For multiplayer over the internet, connect to our WireGuard VPN network.")
-                .font(.small).foregroundStyle(.orange).lineSpacing(4)
-              
-              HStack {
-                Spacer()
-                Button(action: {
-                  if let appStoreURL = URL(string: "https://apps.apple.com/us/app/wireguard/id1441195209") {
-                    UIApplication.shared.open(appStoreURL)
-                  }
-                }) {
-                  HStack {
-                    Image(systemName: "arrow.down.app")
-                    Text("Get WireGuard from the App Store")
-                  }
-                  .padding()
-                  .frame(maxWidth: UIScreen.main.bounds.width * 0.65)
-                  .background(Color.green)
-                  .foregroundColor(.white)
-                  .cornerRadius(8)
-                }
-                .buttonStyle(PlainButtonStyle())
-                Spacer()
-              }
-              
-              HStack {
-                Spacer()
-                Button(action: {
-                  downloadWireGuardConfig()
-                }) {
-                  HStack {
-                    Image(systemName: "arrow.down.circle")
-                    Text("Download WireGuard Configuration")
-                  }
-                  .padding()
-                  .frame(maxWidth: UIScreen.main.bounds.width * 0.65)
-                  .background(Color.blue)
-                  .foregroundColor(.white)
-                  .cornerRadius(8)
-                }
-                .buttonStyle(PlainButtonStyle())
-                Spacer()
-              }
-              
-              if let error = wireGuardConfigError {
-                Text(error)
-                  .font(.caption)
-                  .foregroundColor(.red)
-                  .padding(.top, 4)
-              }
-              
-              Text("Available Games")
-                .foregroundStyle(.orange).lineSpacing(4)
-              
-              if !centralRegistry.isVPNConnected {
-                Text("Please connect to our WireGuard VPN network first.").font(.small).foregroundStyle(.gray).padding()
-              } else if centralRegistry.availableGames.isEmpty {
-                Text("No VPN games found")
-                  .font(.small)
-                  .foregroundStyle(.gray)
-                  .padding()
-              } else {
-                ForEach(centralRegistry.availableGames) { game in
-                  Button {
-                    hostname = game.ip_address
-                    selectedGame = game
-                    selectedService = nil
-                  } label: {
-                    HStack {
-                      VStack(alignment: .leading) {
-                        Text("\(game.host_name)")
-                        Text("\(game.ip_address):\(game.port)").font(.small).foregroundStyle(.gray)
-                        
-                        if let iwadName = game.metadata["iwad"] {
-                          Spacer()
-                          ColoredText("Base game: ^[\(iwadName)](colored: 'red')").foregroundStyle(.yellow)
-                        }
-                        
-                        if let modsCsv = game.metadata["mods"] {
-                          let mods = modsCsv.parseModsList()
-                          
-                          Spacer()
-                          
-                          HStack {
-                            Text("Mods used:").foregroundStyle(.yellow)
-                            Spacer()
-                            GameStatusIndicator(gameId: game.game_id)
-                            JoinGameButton(gameId: game.game_id) {
-                              hostname = game.ip_address
-                              viewModel.multiplayerConfig = createMultiplayerConfig()
-                              // add mods
-                              if !mods.isEmpty {
-                                viewModel.selectedExternalFiles = createSelectedModFiles(filenames: mods)
-                              }
-                              print("joining mp game with mods - args: \(viewModel.arguments), selected mods=\(viewModel.selectedExternalFiles)")
-                              viewModel.launchActionClosure?(viewModel.arguments)
-                            }
-                          }
-                          .onAppear {
-                            ModFileChecker.shared.registerModsForGame(gameId: game.game_id, mods: mods)
-                          }
-                          
-                          ForEach(modsCsv.split(separator: ","), id: \.self) { item in
-                            ModListItem(modName: String(item), gameId:game.game_id)
-//                            Text(String(item)).foregroundStyle(.cyan).font(.small)
-                          }
-                        }
-                      }
-                      Spacer()
-                                            
-                      
-                      if selectedGame?.game_id == game.game_id {
-                        Image(systemName: "checkmark")
-                      }
-                    }
-                  }
-                }
-              }
-              
-            }
-            .padding(.vertical, 8)
-          }
-          
           
           if !isHost {
             Section(header: Text("Local WiFi Network")) {
@@ -316,7 +397,7 @@ struct MultiplayerSheetView: View {
                           if let iwadStrData = txtDict["iwad"],
                              let iwadName = String(data: iwadStrData, encoding: .utf8) {
                             Spacer()
-                            ColoredText("Base game: ^[\(iwadName)](colored: 'red')").foregroundStyle(.yellow)
+                            ColoredText("^[\(iwadName)](colored: 'red')").foregroundStyle(.yellow)
                           }
                           if let modsData = txtDict["mods"],
                              let modsCsv = String(data: modsData, encoding: .utf8) {
@@ -343,8 +424,8 @@ struct MultiplayerSheetView: View {
         
       }.onAppear {
         connectionCheckTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-            // This will update isVPNConnected in the centralRegistry
-            _ = centralRegistry.checkVPNStatus()
+          // This will update isVPNConnected in the centralRegistry
+          _ = centralRegistry.checkVPNStatus()
         }
         
         browser.startBrowsing()
@@ -371,6 +452,10 @@ struct MultiplayerSheetView: View {
           centralRegistry.discoverGames()
         }
         discoverTimer?.fire()
+        
+        Task {
+          await statusManager.fetchStatus()
+        }
       }.onDisappear {
         browser.stopBrowsing()
         discoverTimer?.invalidate()
@@ -451,20 +536,62 @@ struct MultiplayerSheetView: View {
   
 }
 
+struct OnlineMultiplayerPrivacyView: View {
+  var body: some View {
+    Form {
+      Section(header: Text("Online Multiplayer Privacy")) {
+        ColoredText("""
+        ^[Privacy Policy for Online Multiplayer](colored: 'yellow')
+        
+        When playing in an online multiplayer session, you are joining a private network (VPN) using WireGuard.
+        
+        Only traffic for GenZD is sent to the private network. Your internet traffic is NOT sent to the private network.
+        
+        No personal information is sent to the private network.
+        
+        Information that only pertains to GenZD, such as local network IP address and game information, is sent to a server on the private network, and the information is used to coordinate and facilitate joining games hosted by others on the private WireGuard network.
+        
+        Information is NOT sent to a third party service, and is NOT stored remotely on a server.
+        """)
+        .lineSpacing(4).foregroundStyle(.gray)
+      }
+    }
+  }
+}
+
 struct MultiplayerInstructionsView: View {
   var body: some View {
     Form {
       Section(header: Text("Multiplayer Setup Instructions")) {
         ColoredText("""
-^[You can either start a new game as a host, or join a game hosted by GenZD on another iOS device, or GZDoom running on a computer.](colored: 'orange')
+^[You can either start a new game as a host, join an online multiplayer game using WireGuard, or join a game on local WiFi.](colored: 'orange')
 
 ^[Hosting a New Game](colored: 'yellow')
 
 Enable ^["Start as Host"](colored: 'white') and specify the number of players. You may optionally specify a map name and/or skill level as well. The game mode will be co-op unless Deathmatch is enabled.
 
+To host an online multiplayer, make sure you are connected to the WireGuard network (see below).
+
 Once a host starts the multiplayer game, the host will be discoverable by other iOS devices running GenZD. 
 
 ^[Join an Existing Game](colored: 'yellow')
+
+^[Online Multiplayer](colored: 'cyan')
+
+Online multiplayer games work by using a private VPN network using the WireGuard app.
+
+1. Tap the button "Get WireGuard from the App Store" to download the app.
+2. Download the WireGuard configuration using the "Download WireGuard Configuration" button
+3. Open the configuration file you just downloaded in the WireGuard app.
+4. The WireGuard configuration should be shown as "GenZD-wireguard-[YYYY-MM-DD]".
+5. Activate the "GenZD-wireguard-[YYYY-MM-DD]" configuration by tapping the switch. 
+6. When you return to the GenZD Multiplayer section, you should see the connection status as "Connected" if you are successful.
+
+Hosted online multiplayer games will appear in the "Online Multiplayer" section. Tap on the "Join" button to join the multiplayer game.
+
+Note that if the host is using mod files, you must also have the same mod files to join the game. This is automatically checked for you.
+
+^[Local Network WiFi](colored: 'cyan')
 
 Wait for the host to start a multiplayer game, and the host's device name should appear in the "Join" section. Tap on the host to select it. The host information will also show the mods enabled, and you must ^[select the same mods as the host or the game may not run correctly](colored: 'red').
 
@@ -478,188 +605,240 @@ Press "Done" and select "Launch Now without saving"
 
 // Model to represent a mod file with existence status
 struct ModFile: Identifiable {
-    let id = UUID()
-    let name: String
-    var exists: Bool? = nil // nil = loading, true/false = exists/doesn't exist
+  let id = UUID()
+  let name: String
+  var exists: Bool? = nil // nil = loading, true/false = exists/doesn't exist
 }
 
 // View modifier to add status dot
 struct StatusDotModifier: ViewModifier {
-    let exists: Bool?
-    
-    func body(content: Content) -> some View {
-        HStack(spacing: 6) {
-            if exists == nil {
-                ProgressView()
-                    .frame(width: 12, height: 12)
-            } else {
-                Circle()
-                    .fill(exists == true ? Color.green : Color.red)
-                    .frame(width: 10, height: 10)
-            }
-            content
-        }
+  let exists: Bool?
+  
+  func body(content: Content) -> some View {
+    HStack(spacing: 6) {
+      if exists == nil {
+        ProgressView()
+          .frame(width: 12, height: 12)
+      } else {
+        Circle()
+          .fill(exists == true ? Color.green : Color.red)
+          .frame(width: 10, height: 10)
+      }
+      content
     }
+  }
 }
 
 extension View {
-    func withStatusDot(exists: Bool?) -> some View {
-        modifier(StatusDotModifier(exists: exists))
-    }
+  func withStatusDot(exists: Bool?) -> some View {
+    modifier(StatusDotModifier(exists: exists))
+  }
 }
 
 // File existence checker
 //class ModFileChecker {
 //    static let shared = ModFileChecker()
-//    
+//
 //    private init() {}
-//    
+//
 //    // Get the Documents directory path
 //    func getDocumentsDirectory() -> URL {
 //        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 //    }
-//    
+//
 //    // Check if a file exists in the Documents directory
 //    func checkModExists(modName: String) async -> Bool {
 //        let documentsURL = getDocumentsDirectory()
 //        let fileURL = documentsURL.appendingPathComponent(modName)
-//        
+//
 //        return FileManager.default.fileExists(atPath: fileURL.path)
 //    }
 //}
 
 class ModFileChecker {
-    static let shared = ModFileChecker()
+  static let shared = ModFileChecker()
+  
+  // Individual mod file status cache
+  private var modStatus = [String: Bool]()
+  
+  // Game status tracking
+  private var gameModsMap = [String: Set<String>]() // gameId -> set of mod names
+  private var gameStatus = [String: Bool]() // gameId -> all mods available
+  var gameIWADStatus = [String: String]() // gameId -> iwad filename
+  
+  // Publisher for game status updates
+  let gameStatusPublisher = PassthroughSubject<(String, Bool), Never>()
+  
+  private init() {}
+  
+  // Get the Documents directory path
+  func getDocumentsDirectory() -> URL {
+    FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+  }
+  
+  // Register mods for a game
+  func registerModsForGame(gameId: String, iwad: String, mods: [String]) {
+    let modSet = Set(mods)
+    gameModsMap[gameId] = modSet
     
-    // Individual mod file status cache
-    private var modStatus = [String: Bool]()
+    // Initialize game status as unknown
+    gameStatus[gameId] = nil
     
-    // Game status tracking
-    private var gameModsMap = [String: Set<String>]() // gameId -> set of mod names
-    private var gameStatus = [String: Bool]() // gameId -> all mods available
+    gameIWADStatus[gameId] = nil
     
-    // Publisher for game status updates
-    let gameStatusPublisher = PassthroughSubject<(String, Bool), Never>()
-    
-    private init() {}
-    
-    // Get the Documents directory path
-    func getDocumentsDirectory() -> URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    Task {
+      _ = await checkModExists(modName: iwad, gameId: gameId, isIWAD: true)
     }
     
-    // Register mods for a game
-    func registerModsForGame(gameId: String, mods: [String]) {
-        let modSet = Set(mods)
-        gameModsMap[gameId] = modSet
-        
-        // Initialize game status as unknown
-        gameStatus[gameId] = nil
-        
-        // Check if we already have status for all mods
-        updateGameStatus(gameId: gameId)
+    // Check if we already have status for all mods
+    updateGameStatus(gameId: gameId)
+  }
+  
+  // Check if a file exists in the Documents directory
+  func checkModExists(modName: String, gameId: String? = nil, isIWAD: Bool = false) async -> Bool {
+//    // Check cache first
+//    if let cached = modStatus[modName] {
+//      // If this mod is part of a game, update game status
+//      if let gameId = gameId {
+//        updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: cached)
+//      }
+//      return cached
+//    }
+//    
+    // Not in cache, check file system
+    let documentsURL = getDocumentsDirectory()
+    let fileURL = documentsURL.appendingPathComponent(modName)
+
+    var exists = false
+    
+    if isIWAD, let gameId {
+      let result = await performCaseInsensitiveFileSearch(fileName: modName)
+      if result.0, let iwadfilename = result.1 {
+        print("Found iWAD at \(iwadfilename)")
+        gameIWADStatus[gameId] = iwadfilename
+      } else {
+        gameIWADStatus[gameId] = nil
+      }
+    } else {
+      
+      exists = FileManager.default.fileExists(atPath: fileURL.path)
+      print("checkModExists: \(modName) -> \(exists)")
+      
+      // Update cache
+      modStatus[modName] = exists
     }
     
-    // Check if a file exists in the Documents directory
-    func checkModExists(modName: String, gameId: String? = nil) async -> Bool {
-        // Check cache first
-        if let cached = modStatus[modName] {
-            // If this mod is part of a game, update game status
-            if let gameId = gameId {
-                updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: cached)
-            }
-            return cached
+    // If this mod is part of a game, update game status
+    if let gameId {
+      updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: exists)
+    }
+    
+    return exists
+  }
+  
+  private func performCaseInsensitiveFileSearch(fileName: String) async -> (exists: Bool, filePath: String?) {
+    do {
+      // Get all files in the directory
+      let fileURLs = try FileManager.default.contentsOfDirectory(
+        at: getDocumentsDirectory(),
+        includingPropertiesForKeys: nil,
+        options: []
+      )
+      
+      // Convert the search filename to lowercase for comparison
+      let lowercaseFileName = fileName.lowercased()
+      
+      // Find the file with case-insensitive matching
+      for fileURL in fileURLs {
+        if fileURL.lastPathComponent.lowercased() == lowercaseFileName {
+          return (true, fileURL.path)
         }
-        
-        // Not in cache, check file system
-        let documentsURL = getDocumentsDirectory()
-        let fileURL = documentsURL.appendingPathComponent(modName)
-        
-        let exists = FileManager.default.fileExists(atPath: fileURL.path)
-        
-        // Update cache
-        modStatus[modName] = exists
-        
-        // If this mod is part of a game, update game status
-        if let gameId = gameId {
-            updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: exists)
+      }
+      
+      // No match found
+      return (false, nil)
+    } catch {
+      print("Error searching directory: \(error.localizedDescription)")
+      return (false, nil)
+    }
+  }
+  
+  // Update game status after a mod check
+  private func updateGameStatusAfterModCheck(gameId: String, modName: String, exists: Bool) {
+    // If mod doesn't exist, game status is false
+    if !exists {
+      DispatchQueue.main.async {
+        if self.gameStatus[gameId] != false {
+          self.gameStatus[gameId] = false
+          self.gameStatusPublisher.send((gameId, false))
         }
-        
-        return exists
+      }
+      return
     }
     
-    // Update game status after a mod check
-    private func updateGameStatusAfterModCheck(gameId: String, modName: String, exists: Bool) {
-        // If mod doesn't exist, game status is false
+    // Otherwise, update overall game status
+    updateGameStatus(gameId: gameId)
+  }
+  
+  // Update overall game status
+  private func updateGameStatus(gameId: String) {
+    guard let mods = gameModsMap[gameId] else { return }
+    
+    // Check if we have status for all mods
+    var allAvailable = true
+    var allChecked = true
+    
+    for mod in mods {
+      if let exists = modStatus[mod] {
         if !exists {
-            DispatchQueue.main.async {
-                if self.gameStatus[gameId] != false {
-                    self.gameStatus[gameId] = false
-                    self.gameStatusPublisher.send((gameId, false))
-                }
-            }
-            return
+          allAvailable = false
+          break
         }
-        
-        // Otherwise, update overall game status
-        updateGameStatus(gameId: gameId)
+      } else {
+        // At least one mod not checked yet
+        allChecked = false
+        break
+      }
     }
     
-    // Update overall game status
-    private func updateGameStatus(gameId: String) {
-        guard let mods = gameModsMap[gameId] else { return }
-        
-        // Check if we have status for all mods
-        var allAvailable = true
-        var allChecked = true
-        
-        for mod in mods {
-            if let exists = modStatus[mod] {
-                if !exists {
-                    allAvailable = false
-                    break
-                }
-            } else {
-                // At least one mod not checked yet
-                allChecked = false
-                break
-            }
-        }
-        
-        // Only update if we've checked all mods and status has changed
-        if allChecked && gameStatus[gameId] != allAvailable {
-            DispatchQueue.main.async {
-                self.gameStatus[gameId] = allAvailable
-                self.gameStatusPublisher.send((gameId, allAvailable))
-            }
-        }
+    if gameIWADStatus[gameId] == nil {
+      allAvailable = false
     }
     
-    // Get current game status
-    func getGameStatus(gameId: String) -> Bool? {
-        return gameStatus[gameId]
+    // Only update if we've checked all mods and status has changed
+    if allChecked && gameStatus[gameId] != allAvailable {
+      DispatchQueue.main.async {
+        self.gameStatus[gameId] = allAvailable
+        self.gameStatusPublisher.send((gameId, allAvailable))
+      }
     }
+  }
+  
+  // Get current game status
+  func getGameStatus(gameId: String) -> Bool? {
+    return gameStatus[gameId]
+  }
 }
 
 // ModListItem that updates game status when checking
 struct ModListItem: View {
-    let modName: String
-    let gameId: String?
-    
-    @State private var exists: Bool? = nil
-    
-    var body: some View {
-        Text(modName)
-            .foregroundStyle(.cyan)
-            .font(.small)
-            .withStatusDot(exists: exists)
-            .onAppear {
-                Task {
-                    // Asynchronously check if file exists when this view appears
-                    exists = await ModFileChecker.shared.checkModExists(modName: modName, gameId: gameId)
-                }
-            }
-    }
+  let modName: String
+  let gameId: String?
+  
+  @State private var exists: Bool? = nil
+  
+  var body: some View {
+    Text(modName)
+      .foregroundStyle(.cyan)
+      .font(.small)
+      .withStatusDot(exists: exists)
+      .onAppear {
+        Task {
+          // Asynchronously check if file exists when this view appears
+          exists = await ModFileChecker.shared.checkModExists(modName: modName, gameId: gameId)
+        }
+      }
+  }
 }
 
 
@@ -667,7 +846,7 @@ struct ModListItem: View {
 //struct ModListItem: View {
 //    let modName: String
 //    @State private var exists: Bool? = nil
-//    
+//
 //    var body: some View {
 //        Text(modName)
 //            .foregroundStyle(.cyan)
@@ -684,92 +863,92 @@ struct ModListItem: View {
 
 // Helper extension to parse mods from CSV
 extension String {
-    func parseModsList() -> [String] {
-        self.split(separator: ",")
-            .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-    }
+  func parseModsList() -> [String] {
+    self.split(separator: ",")
+      .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+      .filter { !$0.isEmpty }
+  }
 }
 
 
 struct GameStatusIndicator: View {
-    let gameId: String
-    
-    @State private var status: Bool? = nil
-    @State private var cancellables = Set<AnyCancellable>()
-    
-    var body: some View {
-        HStack(spacing: 6) {
-            if status == nil {
-                ProgressView()
-                    .frame(width: 12, height: 12)
-                Text("Checking mods...")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
-            } else {
-                Circle()
-                    .fill(status == true ? Color.green : Color.red)
-                    .frame(width: 10, height: 10)
-                Text(status == true ? "All mods available" : "Missing mods")
-                    .font(.caption)
-                    .foregroundStyle(status == true ? .green : .red)
-            }
-        }
-        .onAppear {
-            // Get current status
-            status = ModFileChecker.shared.getGameStatus(gameId: gameId)
-            
-            // Subscribe to status updates
-            ModFileChecker.shared.gameStatusPublisher
-                .filter { $0.0 == gameId }
-                .map { $0.1 }
-                .sink { newStatus in
-                    self.status = newStatus
-                }
-                .store(in: &cancellables)
-        }
+  let gameId: String
+  
+  @State private var status: Bool? = nil
+  @State private var cancellables = Set<AnyCancellable>()
+  
+  var body: some View {
+    HStack(spacing: 6) {
+      if status == nil {
+        ProgressView()
+          .frame(width: 12, height: 12)
+        Text("Checking files...")
+          .font(.caption)
+          .foregroundStyle(.gray)
+      } else {
+        Circle()
+          .fill(status == true ? Color.green : Color.red)
+          .frame(width: 10, height: 10)
+        Text(status == true ? "All files available" : "Missing files")
+          .font(.caption)
+          .foregroundStyle(status == true ? .green : .red)
+      }
     }
-    
-    // Function to check if all mods are available
-    func areAllModsAvailable() -> Bool {
-        return status == true
+    .onAppear {
+      // Get current status
+      status = ModFileChecker.shared.getGameStatus(gameId: gameId)
+      
+      // Subscribe to status updates
+      ModFileChecker.shared.gameStatusPublisher
+        .filter { $0.0 == gameId }
+        .map { $0.1 }
+        .sink { newStatus in
+          self.status = newStatus
+        }
+        .store(in: &cancellables)
     }
+  }
+  
+  // Function to check if all mods are available
+  func areAllModsAvailable() -> Bool {
+    return status == true
+  }
 }
 
 // A separate join button component
 struct JoinGameButton: View {
-    let gameId: String
-    let onJoinGame: () -> Void
-    
-    @State private var status: Bool? = nil
-    @State private var cancellables = Set<AnyCancellable>()
-    
-    var body: some View {
-        Button(action: onJoinGame) {
-            Text("Join Game")
-                .font(.callout)
-                .fontWeight(.medium)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-        }
-        .buttonStyle(PlainButtonStyle())
-        .opacity(status == true ? 1.0 : 0.0)
-        .disabled(status != true)
-        .onAppear {
-            // Get current status
-            status = ModFileChecker.shared.getGameStatus(gameId: gameId)
-            
-            // Subscribe to status updates
-            ModFileChecker.shared.gameStatusPublisher
-                .filter { $0.0 == gameId }
-                .map { $0.1 }
-                .sink { newStatus in
-                    self.status = newStatus
-                }
-                .store(in: &cancellables)
-        }
+  let gameId: String
+  let onJoinGame: () -> Void
+  
+  @State private var status: Bool? = nil
+  @State private var cancellables = Set<AnyCancellable>()
+  
+  var body: some View {
+    Button(action: onJoinGame) {
+      Text("Join Game")
+        .font(.callout)
+        .fontWeight(.medium)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Color.blue)
+        .foregroundColor(.white)
+        .cornerRadius(8)
     }
+    .buttonStyle(PlainButtonStyle())
+    .opacity(status == true ? 1.0 : 0.0)
+    .disabled(status != true)
+    .onAppear {
+      // Get current status
+      status = ModFileChecker.shared.getGameStatus(gameId: gameId)
+      
+      // Subscribe to status updates
+      ModFileChecker.shared.gameStatusPublisher
+        .filter { $0.0 == gameId }
+        .map { $0.1 }
+        .sink { newStatus in
+          self.status = newStatus
+        }
+        .store(in: &cancellables)
+    }
+  }
 }

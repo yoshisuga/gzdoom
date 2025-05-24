@@ -1,10 +1,22 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.5.0](colored: 'yellow')
+
+^[Online Multiplayer Support!](colored: 'white')
+
+Play with others online (Deathmatch or Co-op) over WiFi or cellular connection - even with mods!
+
+Requires installation of the WireGuard app (free), and downloading and installing a configuration from within the GenZD app to join the private network.
+
+Automatically discover when someone is hosting a game online and join the game right away.
+
+If the host requires mods, you must also have the same mod files in order to join a multiplayer session.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2025.3.0](colored: 'yellow')
 
 - [Support Game Mode](colored: 'white')
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2025.2.4](colored: 'yellow')
 
