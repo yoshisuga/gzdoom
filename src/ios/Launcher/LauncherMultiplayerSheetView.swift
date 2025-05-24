@@ -216,65 +216,57 @@ struct MultiplayerSheetView: View {
                     .padding()
                 } else {
                   ForEach(centralRegistry.availableGames) { game in
-                    Button {
-                      hostname = game.ip_address
-                      selectedGame = game
-                      selectedService = nil
-                    } label: {
-                      HStack {
-                        VStack(alignment: .leading) {
-                          Text("\(game.host_name)")
-                          Text("\(game.ip_address):\(game.port)").font(.small).foregroundStyle(.gray)
-                          
-                          if let iwadName = game.metadata["iwad"],
-                             let iwadFilename = game.metadata["iwadFilename"],
-                             let modsCsv = game.metadata["mods"] {
-                            Spacer()
-                            ColoredText("^[\(iwadName)](colored: 'red')").foregroundStyle(.yellow)
-                            
-                            let mods = modsCsv.parseModsList()
-                            
-                            Spacer()
-                            
-                            HStack {
-                              Text("Mods used:").foregroundStyle(.yellow)
-                              Spacer()
-                              GameStatusIndicator(gameId: game.game_id)
-                              JoinGameButton(gameId: game.game_id) {
-                                hostname = game.ip_address
-                                viewModel.multiplayerConfig = createMultiplayerConfig()
-                                
-                                // set iwad
-                                if let iwadFilename = ModFileChecker.shared.gameIWADStatus[game.game_id] {
-                                  viewModel.selectedIWAD = GZDoomFile(fullPath: iwadFilename)
-                                }
-                                
-                                // add mods
-                                if !mods.isEmpty {
-                                  viewModel.selectedExternalFiles = createSelectedModFiles(filenames: mods)
-                                }
-                                print("joining mp game with mods - args: \(viewModel.arguments), selected mods=\(viewModel.selectedExternalFiles)")
-                                viewModel.launchActionClosure?(viewModel.arguments)
-                              }
-                            }
-                            .onAppear {
-                              ModFileChecker.shared.registerModsForGame(gameId: game.game_id, iwad: iwadFilename, mods: mods)
-                            }
-                            
-                            ForEach(modsCsv.split(separator: ","), id: \.self) { item in
-                              ModListItem(modName: String(item), gameId:game.game_id)
-                              //                            Text(String(item)).foregroundStyle(.cyan).font(.small)
-                            }
-                          }
-                        }
+ 
+                    VStack(alignment: .leading, spacing: 4) {
+                      
+                      if let iwadName = game.metadata["iwad"],
+                         let iwadFilename = game.metadata["iwadFilename"],
+                         let modsCsv = game.metadata["mods"] {
+                        
+                        ColoredText("^[\(iwadName)](colored: 'red')")
+                        Text("\(game.host_name)").font(.small)
+                        Text("\(game.ip_address):\(game.port)").font(.small).foregroundStyle(.gray)
+                        
+                        let mods = modsCsv.parseModsList()
+                        
                         Spacer()
                         
-                        
-                        if selectedGame?.game_id == game.game_id {
-                          Image(systemName: "checkmark")
+                        HStack {
+                          Text("Mods used:").foregroundStyle(.yellow)
+                          Spacer()
+                          VStack {
+                            JoinGameButton(gameId: game.game_id) {
+                              hostname = game.ip_address
+                              viewModel.multiplayerConfig = createMultiplayerConfig()
+                              
+                              // set iwad
+                              if let iwadFilename = ModFileChecker.shared.gameIWADStatus[game.game_id] {
+                                viewModel.selectedIWAD = GZDoomFile(fullPath: iwadFilename)
+                              }
+                              
+                              // add mods
+                              if !mods.isEmpty {
+                                viewModel.selectedExternalFiles = createSelectedModFiles(filenames: mods)
+                              }
+                              print("joining mp game with mods - args: \(viewModel.arguments), selected mods=\(viewModel.selectedExternalFiles)")
+                              viewModel.launchActionClosure?(viewModel.arguments)
+                            }
+                            GameStatusIndicator(gameId: game.game_id)
+                          }
                         }
-                      }
-                    }
+                        .onAppear {
+                          ModFileChecker.shared.registerModsForGame(gameId: game.game_id, iwad: iwadFilename, mods: mods)
+                        }
+                        
+                        ForEach(modsCsv.split(separator: ","), id: \.self) { item in
+                          ModListItem(modName: String(item), gameId:game.game_id)
+                        }
+                      } // end if let wad
+                    } // end VStack for Hosted Game Entry
+                    .cornerRadius(8)
+                    .background(Color(.systemGray6))
+                    .padding(4)
+                    .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4))
                   }
                 }
                 
