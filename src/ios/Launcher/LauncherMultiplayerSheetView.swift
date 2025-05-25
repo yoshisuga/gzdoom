@@ -220,19 +220,17 @@ struct MultiplayerSheetView: View {
                     VStack(alignment: .leading, spacing: 4) {
                       
                       if let iwadName = game.metadata["iwad"],
-                         let iwadFilename = game.metadata["iwadFilename"],
-                         let modsCsv = game.metadata["mods"] {
+                         let iwadFilename = game.metadata["iwadFilename"] {
                         
-                        ColoredText("^[\(iwadName)](colored: 'red')")
-                        Text("\(game.host_name)").font(.small)
-                        Text("\(game.ip_address):\(game.port)").font(.small).foregroundStyle(.gray)
-                        
+                        let modsCsv = game.metadata["mods"] ?? ""
                         let mods = modsCsv.parseModsList()
                         
-                        Spacer()
-                        
                         HStack {
-                          Text("Mods used:").foregroundStyle(.yellow)
+                          VStack(alignment: .leading) {
+                            ColoredText("^[\(iwadName)](colored: 'red')")
+                            Text("\(game.host_name)").font(.small)
+                            Text("\(game.ip_address):\(game.port)").font(.small).foregroundStyle(.gray)
+                          }
                           Spacer()
                           VStack {
                             JoinGameButton(gameId: game.game_id) {
@@ -252,14 +250,19 @@ struct MultiplayerSheetView: View {
                               viewModel.launchActionClosure?(viewModel.arguments)
                             }
                             GameStatusIndicator(gameId: game.game_id)
-                          }
+                          }.padding(8)
                         }
                         .onAppear {
                           ModFileChecker.shared.registerModsForGame(gameId: game.game_id, iwad: iwadFilename, mods: mods)
                         }
-                        
-                        ForEach(modsCsv.split(separator: ","), id: \.self) { item in
-                          ModListItem(modName: String(item), gameId:game.game_id)
+                        .padding(8)
+                      
+                        if !mods.isEmpty {
+                          Spacer()
+                          Text("External Mods:").foregroundStyle(.yellow).padding(8)
+                          ForEach(modsCsv.split(separator: ","), id: \.self) { item in
+                            ModListItem(modName: String(item), gameId:game.game_id).padding(4)
+                          }
                         }
                       } // end if let wad
                     } // end VStack for Hosted Game Entry
@@ -497,7 +500,7 @@ struct MultiplayerSheetView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         let dateString = dateFormatter.string(from: Date())
-        let fileName = "GenZD-wireguard-\(dateString).conf"
+        let fileName = "GenZD-WireGuard-\(dateString).conf"
         let fileURL = tempDir.appendingPathComponent(fileName)
         
         do {
@@ -674,9 +677,10 @@ class ModFileChecker {
     gameModsMap[gameId] = modSet
     
     // Initialize game status as unknown
-    gameStatus[gameId] = nil
-    
-    gameIWADStatus[gameId] = nil
+    print("ModFileChecker: init states to nil")
+//    gameStatus[gameId] = nil
+//    
+//    gameIWADStatus[gameId] = nil
     
     Task {
       _ = await checkModExists(modName: iwad, gameId: gameId, isIWAD: true)
@@ -696,7 +700,8 @@ class ModFileChecker {
 //      }
 //      return cached
 //    }
-//    
+//
+    print("checkModExists: checking mod: \(modName) isIWAD: \(isIWAD)")
     // Not in cache, check file system
     let documentsURL = getDocumentsDirectory()
     let fileURL = documentsURL.appendingPathComponent(modName)
@@ -709,6 +714,7 @@ class ModFileChecker {
         print("Found iWAD at \(iwadfilename)")
         gameIWADStatus[gameId] = iwadfilename
       } else {
+        print("Did not find iWAD and setting gameIWADStatus to nil")
         gameIWADStatus[gameId] = nil
       }
     } else {
@@ -721,7 +727,7 @@ class ModFileChecker {
     }
     
     // If this mod is part of a game, update game status
-    if let gameId {
+    if let gameId, !isIWAD {
       updateGameStatusAfterModCheck(gameId: gameId, modName: modName, exists: exists)
     }
     
@@ -761,6 +767,7 @@ class ModFileChecker {
     if !exists {
       DispatchQueue.main.async {
         if self.gameStatus[gameId] != false {
+          print("updateGameStatusAfterModCheck: Setting gameStatus to false for \(gameId)")
           self.gameStatus[gameId] = false
           self.gameStatusPublisher.send((gameId, false))
         }
@@ -774,7 +781,7 @@ class ModFileChecker {
   
   // Update overall game status
   private func updateGameStatus(gameId: String) {
-    guard let mods = gameModsMap[gameId] else { return }
+    let mods = gameModsMap[gameId] ?? Set<String>()
     
     // Check if we have status for all mods
     var allAvailable = true
@@ -794,16 +801,18 @@ class ModFileChecker {
     }
     
     if gameIWADStatus[gameId] == nil {
+      print("updateGameStatus: gameIWADStatus is nil and allAvailable is set to false, gameId=\(gameId)")
       allAvailable = false
     }
-    
+    print("updateGameStatus: gameId=\(gameId), allChecked=\(allChecked), allAvailable=\(allAvailable), mods=\(mods)")
     // Only update if we've checked all mods and status has changed
-    if allChecked && gameStatus[gameId] != allAvailable {
+//    if allChecked && gameStatus[gameId] != allAvailable {
       DispatchQueue.main.async {
+        print("updateGameStatus: Setting gameStatus to \(allAvailable) for \(gameId)")
         self.gameStatus[gameId] = allAvailable
         self.gameStatusPublisher.send((gameId, allAvailable))
       }
-    }
+//    }
   }
   
   // Get current game status
@@ -918,8 +927,7 @@ struct JoinGameButton: View {
   var body: some View {
     Button(action: onJoinGame) {
       Text("Join Game")
-        .font(.callout)
-        .fontWeight(.medium)
+        .font(.body)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(Color.blue)

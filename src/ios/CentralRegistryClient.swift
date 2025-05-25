@@ -199,6 +199,7 @@ struct RegisteredGame: Identifiable, Codable {
           
           DispatchQueue.main.async {
             print("Registry: Discovered \(games.count) games")
+            print("Games: \(games)")
             self.availableGames = games
           }
         }
