@@ -1,5 +1,11 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.5.1](colored: 'yellow')
+
+Fixed downloading the WireGuard configuration for GenZD Zero.
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
 ^[Version 2025.5.0](colored: 'yellow')
 
 ^[Online Multiplayer Support!](colored: 'white')
@@ -12,7 +18,10 @@ Automatically discover when someone is hosting a game online and join the game r
 
 If the host requires mods, you must also have the same mod files in order to join a multiplayer session.
 
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+^[Improved Keyboard](colored: 'white')
+
+Increased the size of the on-screen keyboard so that it is easier to type on.
+
 
 ^[Version 2025.3.0](colored: 'yellow')
 
