@@ -102,7 +102,7 @@ if(UNIX)
         target_compile_options(discord-rpc PRIVATE -fPIC)
     endif (${BUILD_SHARED_LIBS})
 
-    if (APPLE)
+    if (APPLE AND NOT IOS)
         target_link_libraries(discord-rpc PRIVATE "-framework AppKit")
     endif (APPLE)
 endif(UNIX)

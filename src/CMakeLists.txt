@@ -295,7 +295,8 @@ if( NOT MSVC )
 	add_definitions( -D__forceinline=inline )
 endif()
 
-if( UNIX )
+# if( UNIX )
+if( UNIX AND NOT (IOS OR CMAKE_SYSTEM_NAME STREQUAL "iOS"))
 	CHECK_LIBRARY_EXISTS( rt clock_gettime "" CLOCK_GETTIME_IN_RT )
 	if( NOT CLOCK_GETTIME_IN_RT )
 		CHECK_FUNCTION_EXISTS( clock_gettime CLOCK_GETTIME_EXISTS )
@@ -1268,6 +1269,11 @@ if( UNIX )
 	endif()
 endif()
 
+if(IOS)
+  # This is done by adding the framework
+	set(ZMUSIC_LIBRARIES "")
+endif()
+
 target_link_libraries( zdoom ${PROJECT_LIBRARIES} lzma ${ZMUSIC_LIBRARIES} )
 
 include_directories(
@@ -1442,6 +1448,10 @@ if( APPLE )
 	# Dymanic libraries like libvulkan.dylib or libMoltenVK.dylib will be loaded by dlopen()
 	# if placed in the directory with the main executable
 	set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rpath @executable_path" )
+endif()
+
+if(IOS OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    include(${CMAKE_SOURCE_DIR}/src/ios/genzd_target_config.cmake OPTIONAL)
 endif()
 
 if( WIN32 )
