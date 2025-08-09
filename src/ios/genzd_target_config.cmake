@@ -27,8 +27,6 @@ set(IOS_FRAMEWORKS_TO_EMBED
     "${CMAKE_SOURCE_DIR}/bin/iOS/zmusiclite.framework"
 )
 
-set(ALTERNATE_APP_ICONS AppIcon AppIconZero AppIconGold2 AppIconGold1)
-
 set_target_properties(zdoom PROPERTIES
   OUTPUT_NAME "GenZD"
   XCODE_ATTRIBUTE_SDKROOT "iphoneos"
@@ -42,14 +40,14 @@ set_target_properties(zdoom PROPERTIES
   XCODE_ATTRIBUTE_INSTALL_PATH "/Applications"
 
   XCODE_ATTRIBUTE_FRAMEWORK_SEARCH_PATHS "$(PROJECT_DIR)/bin/iOS"
-  LINK_FLAGS "@executable_path/Frameworks/MoltenVK.framework -rpath @executable_path/Frameworks"
+  LINK_FLAGS "-rpath @executable_path/Frameworks/MoltenVK.framework -rpath @executable_path/Frameworks"
 
   XCODE_EMBED_FRAMEWORKS "${IOS_FRAMEWORKS_TO_EMBED}"
   XCODE_EMBED_FRAMEWORKS_CODE_SIGN_ON_COPY TRUE
   MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/genzd-template-info.plist"
 
   XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon18"
-  XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES ${ALTERNATE_APP_ICONS}
+  XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES "AppIcon;AppIconZero;AppIconGold2;AppIconGold1"
 )
 
 set( CMAKE_EXE_LINKER_FLAGS "" )
