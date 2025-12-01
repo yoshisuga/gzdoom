@@ -473,24 +473,24 @@ struct ControlOptionsView: View {
               dismissClosure?()
             }, label: {
               Text("Reset")
-            }).buttonStyle(.bordered).foregroundColor(.white).font(.actionButton)
+            }).foregroundColor(.white)
           }
-
+          
           ToolbarItem(placement: .topBarTrailing) {
             Button(action: {
               viewModel.saveToUserDefaults()
               dismissClosure?()
             }, label: {
               Text("Save")
-            }).buttonStyle(.bordered).foregroundColor(.green).font(.actionButton)
+            }).foregroundColor(.green)
           }
-
+          
           ToolbarItem(placement: .topBarTrailing) {
             Button(action: {
               dismissClosure?()
             }, label: {
               Text("Cancel")
-            }).buttonStyle(.bordered).foregroundColor(.red).font(.actionButton)
+            }).foregroundColor(.red)
           }
       }
     }

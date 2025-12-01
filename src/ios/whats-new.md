@@ -1,10 +1,19 @@
 ^[°°±±²²ÛÛ What's New in GenZD! ÛÛ²²±±°°](colored: 'red')
 
+^[Version 2025.10.1](colored: 'yellow')
+
+- Fixed crashing when launching any game. My sincere apologies for the inconvenience!
+
+^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
+
+^[Version 2025.10.0](colored: 'yellow')
+
+- GZDoom core updated to 4.14.2
+- Updated for iOS 26
+
 ^[Version 2025.5.1](colored: 'yellow')
 
 Fixed downloading the WireGuard configuration for GenZD Zero.
-
-^[°°±±²²ÛÛ Version History ÛÛ²²±±°°](colored: 'cyan')
 
 ^[Version 2025.5.0](colored: 'yellow')
 

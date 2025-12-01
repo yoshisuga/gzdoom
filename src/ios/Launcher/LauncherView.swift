@@ -420,7 +420,7 @@ struct LauncherView: View {
   @StateObject private var purchaseModel = PurchaseViewModel.shared
   #endif
   
-  static let currentVersion = "2025.5.0"
+  static let currentVersion = "2025.10.0"
   
   #if ZERO
   private var fadingTexts = [
